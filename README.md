@@ -2,7 +2,7 @@
 
 # Wallace (v2.0.5)
 
-*Wallace* is a modular platform for reproducible modeling of species niches and distributions, written in R. The application guides users through a complete analysis, from the acquisition of data to visualizing model predictions on an interactive map, thus bundling complex workflows into a single, streamlined interface.
+This is a fork on *Wallace*, a modular platform for reproducible modeling of species niches and distributions, written in R, for using disaggregation regression for predicting high-resolution disease incidence. The application guides users through a complete analysis, from the acquisition of data to visualizing model predictions on an interactive map, thus bundling complex workflows into a single, streamlined interface.
 
 Install *Wallace* via CRAN and run the application with the following R code.
 
