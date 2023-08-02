@@ -1,4 +1,3 @@
-library(wallace)
 library(glue)
 
 MB <- 1024^2
@@ -10,57 +9,25 @@ SAVE_SESSION_SIZE_MB_WARNING <- 100
 
 source("helpers.R")
 
-# Load all Wallace base modules (old format)
-# TODO this should not exist after moving all modules to the new format
-base_module_files <- list.files('modules', pattern = "\\.R$", full.names = TRUE)
-for (file in base_module_files) source(file, local = TRUE)
-
-
-
 # The components that have modules. These names must match the values of the
 # tabs of the components in the UI.
-COMPONENTS <- c("occs", "envs", "poccs", "penvs", "espace", "part", "model",
-                "vis", "xfer", "rep")
+COMPONENTS <- c("select", "plot","rep")
 
 # Information about modules that various parts of the app need access to
 COMPONENT_MODULES <- list()
 
 # Load all Wallace base modules
 base_module_configs <- c(
-  "modules/occs_queryDb.yml",
-  "modules/occs_paleoDb.yml",
-  "modules/occs_userOccs.yml",
-  "modules/envs_worldclim.yml",
-  "modules/envs_ecoclimate.yml",
-  "modules/envs_userEnvs.yml",
-  "modules/poccs_selectOccs.yml",
-  "modules/poccs_removeByID.yml",
-  "modules/poccs_thinOccs.yml",
-  "modules/penvs_bgExtent.yml",
-  "modules/penvs_drawBgExtent.yml",
-  "modules/penvs_userBgExtent.yml",
-  "modules/espace_pca.yml",
-  "modules/espace_occDens.yml",
-  "modules/espace_nicheOv.yml",
-  "modules/part_nonSpat.yml",
-  "modules/part_spat.yml",
-  "modules/model_maxent.yml",
-  "modules/model_bioclim.yml",
-  "modules/vis_mapPreds.yml",
-  "modules/vis_maxentEvalPlot.yml",
-  "modules/vis_responsePlot.yml",
-  "modules/vis_bioclimPlot.yml",
-  "modules/xfer_area.yml",
-  "modules/xfer_time.yml",
-  "modules/xfer_user.yml",
-  "modules/xfer_mess.yml",
+  "modules/select_query.yml",
+  "modules/select_user.yml",
+  "modules/plot_hist.yml",
+  "modules/plot_scatter.yml",
   "modules/rep_markdown.yml",
-  "modules/rep_rmms.yml",
   "modules/rep_refPackages.yml"
 )
 
 # Load user-defined modules
-user_module_configs <- getOption("wallace_module_configs")
+user_module_configs <- getOption("user_module_configs")
 
 all_module_configs <- c(base_module_configs, user_module_configs)
 for (module_config_file in all_module_configs) {

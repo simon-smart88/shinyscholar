@@ -44,12 +44,12 @@
   # Map logic
 }
 
-{{id}}_module_rmd <- function(species) {
+{{id}}_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    {{id}}_knit = species$rmm$code$wallace$someFlag,
-    var1 = species$rmm$code$wallace$someSetting1,
-    var2 = species$rmm$code$wallace$someSetting2
+    {{id}}_knit = !is.null(common$some_object),
+    var1 = common$meta$setting1,
+    var2 = common$meta$setting2
   )
 }
 

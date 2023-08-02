@@ -1,10 +1,10 @@
 resourcePath <- system.file("shiny", "www", package = "wallace")
-shiny::addResourcePath("wallaceres", resourcePath)
+shiny::addResourcePath("smartres", resourcePath)
 
 tagList(
   shinyjs::useShinyjs(),
   shinyjs::extendShinyjs(
-    script = file.path("wallaceres", "js", "shinyjs-funcs.js"),
+    script = file.path("smartres", "js", "shinyjs-funcs.js"),
     functions = c("scrollLogger", "disableModule", "enableModule")
   ),
   navbarPage(
@@ -17,22 +17,13 @@ tagList(
     ),
     title = img(src = "logo.png", height = '50', width = '50',
                 style = "margin-top: -15px"),
-    windowTitle = "#WallaceEcoMod",
+    windowTitle = "#SMART",
     tabPanel("Intro", value = 'intro'),
-    tabPanel("Occ Data", value = 'occs'),
-    tabPanel("Env Data", value = 'envs'),
-    tabPanel("Process Occs", value = 'poccs'),
-    tabPanel("Process Envs", value = 'penvs'),
-    tabPanel("Env Space", value = 'espace'),
-    tabPanel("Partition Occs", value = 'part'),
-    tabPanel("Model", value = 'model'),
-    tabPanel("Visualize", value = 'vis'),
-    tabPanel("Transfer", value = 'xfer'),
+    tabPanel("Select data", value = 'select'),
+    tabPanel("Plot data", value = 'plot'),
     tabPanel("Reproduce", value = 'rep'),
     navbarMenu("Support", icon = icon("life-ring"),
-               HTML('<a href="https://wallaceecomod.github.io/" target="_blank">Wallace Homepage</a>'),
-               HTML('<a href="https://groups.google.com/g/wallaceEcoMod" target="_blank">Google Group</a>'),
-               HTML('<a href="https://github.com/wallaceEcoMod/wallace/issues" target="_blank">GitHub Issues</a>'),
+               HTML('<a href="https://github.com/simon-smart88/SMART/issues" target="_blank">GitHub Issues</a>'),
                HTML('<a href="mailto: WallaceEcoMod@gmail.com" target="_blank">Send Email</a>')),
     tabPanel(NULL, icon = icon("power-off"), value = "_stopapp")
   ),
@@ -46,116 +37,31 @@ tagList(
             "input.tabs == 'intro'",
             includeMarkdown("Rmd/text_intro_tab.Rmd")
           ),
-          # OBTAIN OCCS ####
+          # SELECT DATA ####
           conditionalPanel(
-            "input.tabs == 'occs'",
-            div("Component: Obtain Occurrence Data", class = "componentName"),
-            help_comp_ui("occsHelp"),
+            "input.tabs == 'select'",
+            div("Component: Select Data", class = "componentName"),
+            help_comp_ui("selectHelp"),
             radioButtons(
-              "occsSel", "Modules Available:",
-              choices = insert_modules_options("occs"),
+              "selectSel", "Modules Available:",
+              choices = insert_modules_options("select"),
               selected = character(0)
             ),
             tags$hr(),
-            insert_modules_ui("occs")
+            insert_modules_ui("select")
           ),
-          # OBTAIN ENVS ####
+          # PLOT DATA ####
           conditionalPanel(
-            "input.tabs == 'envs'",
-            div("Component: Obtain Environmental Data", class = "componentName"),
-            help_comp_ui("envsHelp"),
+            "input.tabs == 'plot'",
+            div("Component: Plot Data", class = "componentName"),
+            help_comp_ui("plotHelp"),
             radioButtons(
-              "envsSel", "Modules Available:",
-              choices = insert_modules_options("envs"),
+              "plotSel", "Modules Available:",
+              choices = insert_modules_options("plot"),
               selected = character(0)
             ),
             tags$hr(),
-            insert_modules_ui("envs")
-          ),
-          # PROCESS OCCS ####
-          conditionalPanel(
-            "input.tabs == 'poccs'",
-            div("Component: Process Occurrence Data", class = "componentName"),
-            help_comp_ui("poccsHelp"),
-            radioButtons(
-              "poccsSel", "Modules Available:",
-              choices = insert_modules_options("poccs"),
-              selected = character(0)
-            ),
-            tags$hr(),
-            insert_modules_ui("poccs")
-          ),
-          conditionalPanel(
-            "input.tabs == 'penvs'",
-            div("Component: Process Environmental Data", class = "componentName"),
-            help_comp_ui("penvsHelp"),
-            radioButtons(
-              "penvsSel", "Modules Available:",
-              choices = insert_modules_options("penvs"),
-              selected = character(0)
-            ),
-            tags$hr(),
-            insert_modules_ui("penvs")
-          ),
-          # ESPACE ####
-          conditionalPanel(
-            "input.tabs == 'espace'",
-            div("Component: Characterize Environmental Space", class = "componentName"),
-            help_comp_ui("espaceHelp"),
-            radioButtons(
-              "espaceSel", "Modules Available:",
-              choices = insert_modules_options("espace"),
-              selected = character(0)
-            ),
-            tags$hr(),
-            insert_modules_ui("espace")
-          ),
-          # PARTITION ####
-          conditionalPanel(
-            "input.tabs == 'part'",
-            div("Component: Partition Occurrence Data", class = "componentName"),
-            help_comp_ui("partHelp"),
-            radioButtons(
-              "partSel", "Modules Available:",
-              choices = insert_modules_options("part"),
-              selected = character(0)
-            ),
-            tags$hr(),
-            insert_modules_ui("part")
-          ),
-          # MODEL ####
-          conditionalPanel(
-            "input.tabs == 'model'",
-            div("Component: Build and Evaluate Niche Model", class = "componentName"),
-            help_comp_ui("modelHelp"),
-            radioButtons("modelSel", "Modules Available:",
-                         choices = insert_modules_options("model"),
-                         selected = character(0)),
-            tags$hr(),
-            insert_modules_ui("model")
-          ),
-          # VISUALIZE ####
-          conditionalPanel(
-            "input.tabs == 'vis'",
-            div("Component: Visualize Model Results", class = "componentName"),
-            help_comp_ui("visHelp"),
-            radioButtons("visSel", "Modules Available:",
-                         choices = insert_modules_options("vis"),
-                         selected = character(0)),
-            tags$hr(),
-            insert_modules_ui("vis")
-          ),
-          # TRANSFER ####
-          conditionalPanel(
-            "input.tabs == 'xfer'",
-            div("Component: Model Transfer", class = "componentName"),
-            help_comp_ui("xferHelp"),
-            radioButtons(
-              "xferSel", "Modules Available:",
-              choices = insert_modules_options("xfer"),
-              selected = character(0)),
-            tags$hr(),
-            insert_modules_ui("xfer")
+            insert_modules_ui("plot")
           ),
           # REPRODUCIBILITY
           conditionalPanel(
@@ -283,164 +189,7 @@ tagList(
                     column(2, shinyjs::disabled(downloadButton('dlAllOccs', "CSV file")))
                   )
                 ),
-                # save envs #
-                conditionalPanel(
-                  "input.tabs == 'envs'",
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download environmental variables (Select download file type)")),
-                    column(2, selectInput('globalEnvsFileType',
-                                          label = NULL,
-                                          choices = list("GeoTIFF" = 'GTiff',
-                                                         "GRD" = 'raster',
-                                                         "ASCII" = 'ascii'))),
-                    column(2, shinyjs::disabled(downloadButton('dlGlobalEnvs', "ZIP file")))
-                  )
-                ),
-                # save poccs #
-                conditionalPanel(
-                  "input.tabs == 'poccs'",
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download processed occurence table")),
-                    column(2, shinyjs::disabled(downloadButton('dlProcOccs', "CSV file")))
-                  )
-                ),
-                # save penvs #
-                conditionalPanel(
-                  "input.tabs == 'penvs'",
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download shapefile of background extent")),
-                    column(2, shinyjs::disabled(downloadButton('dlBgShp', "ZIP file")))
-                  ),
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download predictor rasters masked to background extent (Select download file type)")),
-                    column(2, selectInput('bgMskFileType',
-                                          label = NULL,
-                                          choices = list("GeoTIFF" = 'GTiff',
-                                                         "GRD" = 'raster',
-                                                         "ASCII" = 'ascii'))),
-                    column(2, shinyjs::disabled(downloadButton('dlMskEnvs', "ZIP file")))
-                  ),
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download sample background points")),
-                    column(2, shinyjs::disabled(downloadButton('dlBgPts', "CSV file")))
-                  )
-                ),
-                # save espace #
-                conditionalPanel(
-                  "input.tabs == 'espace'",
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download PCA results")),
-                    column(2, shinyjs::disabled(downloadButton('dlPcaResults', "ZIP file")))
-                  ),
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download Occurence density grid")),
-                    column(2, shinyjs::disabled(downloadButton('dlOccDens', "PNG file")))
-                  ),
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download Niche Overlap plot")),
-                    column(2, shinyjs::disabled(downloadButton('dlNicheOvPlot', "PNG file")))
-                  )
-                ),
-                # save part #
-                conditionalPanel(
-                  "input.tabs == 'part'",
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download occurrence and background localities with partition values")),
-                    column(2, shinyjs::disabled(downloadButton('dlPart', "CSV file")))
-                  )
-                ),
-                # save model #
-                conditionalPanel(
-                  "input.tabs == 'model'",
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download evaluation table")),
-                    column(2, shinyjs::disabled(downloadButton('dlEvalTbl', "CSV file")))
-                  ), br(),
-                  fluidRow(
-                    column(3, h5("Download evaluation groups table")),
-                    column(2, shinyjs::disabled(downloadButton('dlEvalTblBins', "CSV file")))
-                  )
-                ),
-                # save vis #
-                conditionalPanel(
-                  "input.tabs == 'vis'",
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download Bioclim plot")),
-                    column(2, shinyjs::disabled(downloadButton('dlVisBioclim', "PNG file")))
-                  ),
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download Maxent plots")),
-                    column(2, shinyjs::disabled(downloadButton('dlMaxentPlots', "ZIP file")))
-                  ),
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download Response plots")),
-                    column(2, shinyjs::disabled(downloadButton('dlRespCurves', "ZIP file")))
-                  ),
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download current prediction (Select download file type**)")),
-                    column(2, selectInput('predFileType',
-                                          label = NULL,
-                                          choices = list("GeoTIFF" = 'GTiff',
-                                                         "GRD" = 'raster',
-                                                         "ASCII" = 'ascii',
-                                                         "PNG" = 'png'))),
-                    column(2, shinyjs::disabled(downloadButton('dlPred', "Prediction file")))
-                  )
-                ),
-                # save xfer #
-                conditionalPanel(
-                  "input.tabs == 'xfer'",
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download shapefile of extent of transfer")),
-                    column(2, shinyjs::disabled(downloadButton('dlXfShp', "ZIP file")))
-                  ),
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download environmental variables of transfer (Select download file type)")),
-                    column(2, selectInput('xferEnvsFileType',
-                                          label = NULL,
-                                          choices = list("GeoTIFF" = 'GTiff',
-                                                         "GRD" = 'raster',
-                                                         "ASCII" = 'ascii'))),
-                    column(2, shinyjs::disabled(downloadButton('dlXferEnvs', "ZIP file")))
-                  ),
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download transfer (Select download file type**)")),
-                    column(2, selectInput('xferFileType',
-                                          label = NULL,
-                                          choices = list("GeoTIFF" = 'GTiff',
-                                                         "GRD" = 'raster',
-                                                         "ASCII" = 'ascii',
-                                                         "PNG" = 'png'))),
-                    column(2, shinyjs::disabled(downloadButton('dlXfer', "Transfer file")))
-                  ),
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download MESS (Select download file type**)")),
-                    column(2, selectInput('messFileType',
-                                          label = NULL,
-                                          choices = list("GeoTIFF" = 'GTiff',
-                                                         "GRD" = 'raster',
-                                                         "ASCII" = 'ascii',
-                                                         "PNG" = 'png'))),
-                    column(2, shinyjs::disabled(downloadButton('dlMess', "MESS file")))
-                  )
+                
                 )
               )
             )
