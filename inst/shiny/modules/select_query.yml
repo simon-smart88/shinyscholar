@@ -1,0 +1,5 @@
+component: "select"
+short_name: "select_query"
+long_name: "select_query"
+authors: "Simon E. H. Smart"
+package: [terra]

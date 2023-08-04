@@ -1,0 +1,5 @@
+component: "plot"
+short_name: "plot_hist"
+long_name: "plot_hist"
+authors: "Simon E. H. Smart"
+package: []

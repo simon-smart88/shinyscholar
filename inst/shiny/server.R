@@ -58,7 +58,7 @@ function(input, output, session) {
   })
 
   # Help Component
-  help_components <- c("occs", "envs", "poccs", "penvs", "espace", "part", "model", "vis", "xfer")
+  help_components <- c("select","plot")
   lapply(help_components, function(component) {
     btn_id <- paste0(component, "Help")
     observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Component Guidance"))
@@ -80,7 +80,7 @@ function(input, output, session) {
     leaflet() %>%
       setView(0, 0, zoom = 2) %>%
       addProviderTiles('Esri.WorldTopoMap') %>%
-      leafem::addMouseCoordinates()
+      addDrawToolbar(polylineOptions=F,circleOptions = F, rectangleOptions = T, markerOptions = F, circleMarkerOptions = F, singleFeature = T)
   )
 
   # create map proxy to make further changes to existing map
@@ -101,6 +101,14 @@ function(input, output, session) {
     }
   })
 
+  observeEvent(input$map_draw_new_feature, {
+    coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
+    xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
+    colnames(xy) <- c('longitude', 'latitude')
+    common$poly <- xy
+    trigger("change_poly")
+  })
+
   ######################## #
   ### BUTTONS LOGIC ####
   ######################## #
@@ -109,8 +117,8 @@ function(input, output, session) {
   observe({
     shinyjs::toggleState("goLoad_session", !is.null(input$load_session$datapath))
     req(length(curSp()) == 1)
-    shinyjs::toggleState("dlDbOccs", !is.null(occs()))
-    shinyjs::toggleState("dlOccs", !is.null(occs()))
+    shinyjs::toggleState("dlData", !is.null(occs()))
+    shinyjs::toggleState("dlPlot", !is.null(occs()))
 
     # shinyjs::toggleState("dlWhatever", !is.null(spp[[curSp()]]$whatever))
   })
@@ -157,61 +165,8 @@ function(input, output, session) {
   ### COMPONENT: SELECT DATA ####
   ############################################# #
 
-  # # # # # # # # # # # # # # # # # #
-  # OBTAIN ENVS: other controls ####
-  # # # # # # # # # # # # # # # # # #
 
-  bcSel <- reactive(input$bcSel)
-  ecoClimSel <- reactive(input$ecoClimSel)
-  VarSelector <- reactive(input$VarSelector)
-  # shortcut to currently selected environmental variable, read from curEnvUI
-  curEnv <- reactive(input$curEnv)
 
-  # convenience function for environmental variables for current species
-  envs <- reactive({
-    req(curSp(), spp[[curSp()]]$envs)
-    envs.global[[spp[[curSp()]]$envs]]
-  })
-
-  # map center coordinates for 30 arcsec download
-  mapCntr <- reactive({
-    req(occs())
-    round(c(mean(occs()$longitude), mean(occs()$latitude)), digits = 3)
-  })
-
-  # CONSOLE PRINT
-  output$envsPrint <- renderPrint({
-    req(envs())
-    envs()
-  })
-
-  output$dlGlobalEnvs <- downloadHandler(
-    filename = function() paste0(spp[[curSp()]]$envs, '_envs.zip'),
-    content = function(file) {
-      withProgress(
-        message = paste0("Preparing ", paste0(spp[[curSp()]]$envs, '_envs.zip ...')), {
-          tmpdir <- tempdir()
-          owd <- setwd(tmpdir)
-          on.exit(setwd(owd))
-          type <- input$globalEnvsFileType
-          nm <- names(envs.global[[spp[[curSp()]]$envs]])
-
-          raster::writeRaster(envs.global[[spp[[curSp()]]$envs]], nm, bylayer = TRUE,
-                              format = type, overwrite = TRUE)
-          ext <- switch(type, raster = 'grd', ascii = 'asc', GTiff = 'tif')
-
-          fs <- paste0(nm, '.', ext)
-          if (ext == 'grd') {
-            fs <- c(fs, paste0(nm, '.gri'))
-          }
-          zip::zipr(zipfile = file, files = fs)
-          if (file.exists(paste0(file, ".zip"))) file.rename(paste0(file, ".zip"), file)
-        })
-    },
-    contentType = "application/zip"
-  )
-
-  
 
   ########################################### #
   ### RMARKDOWN FUNCTIONALITY ####
