@@ -1,23 +1,20 @@
-#' @title Run \emph{Wallace} Application
-#' @description This function runs the \emph{Wallace} application in the user's
+#' @title Run \emph{SMART} Application
+#' @description This function runs the \emph{SMART} application in the user's
 #' default web browser.
 #' @param launch.browser Whether or not to launch a new browser window.
 #' @param port The port for the shiny server to listen on. Defaults to a
 #' random available port.
-#' @note Please see the official website (\url{https://wallaceecomod.github.io/})
-#' for more details. If you have questions about the application,
-#' please participate in the \href{https://groups.google.com/forum/#!forum/wallaceecomod}{Google Group},
-#' or email the team directly: \email{wallaceEcoMod@@gmail.com}.
 #'
 #' @examples
 #' if(interactive()) {
-#' run_wallace()
+#' run_smart()
 #' }
 #' @author Jamie Kass <jkass@@gradcenter.cuny.edu>
 #' @author Gonzalo E. Pinilla-Buitrago <gpinillabuitrago@@gradcenter.cuny.edu>
+#' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
-run_wallace <- function(launch.browser = TRUE, port = getOption("shiny.port")) {
-  app_path <- system.file("shiny", package = "wallace")
+run_smart <- function(launch.browser = TRUE, port = getOption("shiny.port")) {
+  app_path <- system.file("shiny", package = "SMART")
   knitcitations::cleanbib()
   options("citation_format" = "pandoc")
   preexisting_objects <- ls(envir = .GlobalEnv)

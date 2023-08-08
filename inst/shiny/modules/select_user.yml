@@ -1,5 +1,5 @@
 component: "select"
-short_name: "select_user"
-long_name: "select_user"
+short_name: "Upload data"
+long_name: "Upload your own data"
 authors: "Simon E H Smart"
 package: [terra]

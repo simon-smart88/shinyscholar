@@ -53,7 +53,7 @@ select_user_module_map <- function(map, common) {
     pal <- colorBin("YlOrRd", domain = values(common$ras), bins = 9,na.color ="#00000000")
     map %>%
       clearGroup(common$ras$name) %>%
-      addRasterImage(common$ras,colors = pal,group=common$ras$name) %>%
+      addRasterImage(raster::raster(common$ras),colors = pal,group=common$ras$name) %>%
       fitBounds(lng1=ex[1],lng2=ex[2],lat1=ex[3],lat2=ex[4]) %>%
       addLegend(position ="bottomright",pal = pal, values = values(common$ras), group=common$ras$name, title=common$ras$name) %>%
       addLayersControl(overlayGroups = common$ras$name, options = layersControlOptions(collapsed = FALSE))

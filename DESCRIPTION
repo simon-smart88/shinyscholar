@@ -3,43 +3,25 @@ Version: 1.0.0
 Date: 2023-08-03
 Title: Shiny Modular Academic Reproducible Template
 Description: The 'shiny' application SMART is a modular platform for 
-    producing reproducible applications to academic standards. SMART is 
+    creating reproducible applications to academic standards. 'SMART' is 
     forked from 'wallace' and provides a template for producing applications 
     that are interactive, reproducible, adaptable and built to high standards.
-    
 Authors@R: 
-    c(person("Jamie M.", "Kass", email = "jamie.kass@oist.jp", role = "aut"),
-    person("Gonzalo E.", "Pinilla-Buitrago", email = "gpinillabuitrago@gradcenter.cuny.edu", role = c("aut", "cre")),
-	 	person("Andrea", "Paz", email = "paz.andreita@gmail.com", role = "aut"),
-	 	person("Bethany A.", "Johnson", email = "bjohnso005@citymail.cuny.edu", role = "aut"),
-	 	person("Valentina", "Grisales-Betancur", email = "vgrisale@eafit.edu.co", role = "aut"),
-	  person("Dean", "Attali", email = "daattali@gmail.com", role = "aut"),
-	  person("Matthew E.", "Aiello-Lammens", email = "matt.lammens@gmail.com", role = "aut"),
-	  person("Cory", "Merow", email = "corymerow@gmail.com", role = "aut"),
-	  person("Mary E.", "Blair", email = "mblair1@amnh.org", role = "aut"),
-	  person("Robert P.", "Anderson", email = "randerson@ccny.cuny.edu", role = "aut"),
-	  person("Sarah I.", "Meenan", email = "sarah.meenan@gmail.com", role = "ctb"),
-	  person("Olivier", "Broennimann", email = "olivier.broennimann@unil.ch", role = "ctb"),
-	  person("Peter J.", "Galante", email = "pgalante@amnh.org", role = "ctb"),
-	  person("Brian S.", "Maitner", email = "bmaitner@gmail.com", role = "ctb"),
-	  person("Hannah L.", "Owens", email = "hannah.owens@gmail.com", role = "ctb"),
-	  person("Sara", "Varela", email = "sara_varela@yahoo.com", role = "ctb"),
-	  person("Bruno", "Vilela", email = "bvilela@wustl.edu", role = "ctb"),
-	  person("Robert", "Muscarella", email = "bob.muscarella@gmail.com", role = "ctb"))
+    c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut","cre")))
 Depends:
     R (>= 3.5.0),
     shiny (>= 1.6.0),
-    leaflet (>= 2.0.2)
+    leaflet (>= 2.0.2),
+    terra,
+    R6 
 Imports:
     dplyr (>= 1.0.2),
     DT (>= 0.5),
-    ENMeval (>= 2.0.3),
     glue,
     knitcitations,
     leafem,
     leaflet.extras (>= 1.0.0),
     magrittr,
-    methods,
     RColorBrewer,
     rlang,
     rmarkdown,

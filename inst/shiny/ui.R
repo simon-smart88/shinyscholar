@@ -1,5 +1,6 @@
-resourcePath <- system.file("shiny", "www", package = "wallace")
+resourcePath <- system.file("shiny", "www", package = "SMART")
 shiny::addResourcePath("smartres", resourcePath)
+#shiny::addResourcePath("smartres", 'www/')
 
 tagList(
   shinyjs::useShinyjs(),
@@ -9,7 +10,7 @@ tagList(
   ),
   navbarPage(
     theme = bslib::bs_theme(version = 3,
-                            bootswatch = "simplex"),
+                            bootswatch = "spacelab"),
     id = 'tabs',
     collapsible = TRUE,
     header = tagList(
@@ -127,8 +128,8 @@ tagList(
               )
             ),
             tabPanel(
-              'Occurrences', br(),
-              DT::dataTableOutput('occTbl')
+              'Table', br(),
+              DT::dataTableOutput('table')
             ),
             tabPanel(
               'Results',
@@ -146,6 +147,11 @@ tagList(
             tabPanel(
               'Module Guidance', icon = icon("circle-info", class = "mod_icon"),
               uiOutput('gtext_module')
+            ),
+            tabPanel(
+              'Code',
+              radioButtons("code_choice","Choose file", choices=c('Module','Function'),selected='Module'),
+              verbatimTextOutput('code_module')
             ),
             tabPanel(
               'Save', icon = icon("floppy-disk", class = "save_icon"),

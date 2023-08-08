@@ -2,10 +2,7 @@ select_query_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     selectInput(ns("date"), "Select date",
-                choices = c('2023-01-10','2023-01-20','2023-01-31','2023-02-10','2023-02-20','2023-02-28',
-                          '2023-03-10','2023-03-20','2023-03-31','2023-04-10','2023-04-20','2023-04-30',
-                          '2023-05-10','2023-05-20','2023-05-31','2023-06-10','2023-06-20','2023-06-30',
-                          '2023-07-10','2023-07-20')),
+                choices = c('2023-06-20','2023-06-30','2023-07-10','2023-07-20')),
     actionButton(ns("run"), "Load imagery")
   )
 }
@@ -24,7 +21,7 @@ select_query_module_server <- function(input, output, session, common) {
     # METADATA ####
     common$meta$query$poly <- input$poly
     common$meta$query$date <- input$date
-    common$meta$ras$name <- 'Fcover'
+    common$meta$ras$name <- 'FCover'
     common$meta$query$used <- TRUE
     trigger("change_query_ras")
   })
@@ -53,7 +50,7 @@ select_query_module_map <- function(map, common) {
   observeEvent(watch("change_query_ras"),{
   req(common$meta$query$used == T)
   ex <- terra::ext(common$ras)
-  print(paste(x[1],ex[2],ex[3],ex[4]))
+  print(paste(ex[1],ex[2],ex[3],ex[4]))
   pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9,na.color ="#00000000")
   map %>%
     clearGroup(common$meta$ras$name) %>%

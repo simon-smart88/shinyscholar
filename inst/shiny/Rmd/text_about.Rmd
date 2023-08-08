@@ -13,7 +13,7 @@ The application is written in `R` with the web app development package `shiny` a
 
 ### **Attributes of _SMART_**
 
-* **accessible**: lowers barriers to implement cutting-edge SDM techniques, offers support through various networks (Google Group, email, etc.)
+* **accessible**: lowers barriers to implementing complex modular `shiny` apps for scientific analysis
 
 * **open**: the code is free to use and modify (GPL 3.0)
 
@@ -29,10 +29,10 @@ The application is written in `R` with the web app development package `shiny` a
 
 ### **Contact us**
 
-Please <a href="mailto:wallaceecomod@gmail.com" target="_blank">email us</a> with any other questions.
+Please <a href="mailto:simon.smart@cantab.net" target="_blank">email us</a> with any other questions.
 
 #### **Acknowledgments**
-SMART was developed as part of a project to develop digital tools for modelling infectious diseases <a href=https://wellcome.org/news/digital-tools-climate-sensitive-infectious-disease target="_blank"> funded by Wellcome<a/> at the University of Leicester.
+SMART was developed as part of a project to develop digital tools for modelling infectious diseases <a href=https://wellcome.org/news/digital-tools-climate-sensitive-infectious-disease target="_blank"> funded by Wellcome</a> at the University of Leicester.
 
 #### **References**
 

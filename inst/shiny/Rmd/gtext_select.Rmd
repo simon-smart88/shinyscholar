@@ -1,0 +1,11 @@
+---
+title: "select"
+output: html_document
+---
+
+### **Component: Select Data**
+
+**ORIENTATION**
+
+This module enables loading raster data, either using Module: *Query API* to obtain the data via an API or by using Module: *Upload data* to upload the data from an existing file.
+

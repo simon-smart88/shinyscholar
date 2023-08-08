@@ -2,17 +2,16 @@
 #' @aliases wallace
 #' @aliases wallace-package
 #' @docType package
-#' @title \emph{Wallace}: A modular platform for reproducible ecological modeling
-#' @description \emph{Wallace} is a \code{shiny} app that guides users through a complete
-#'   species niche/distributional modeling analysis, from the acquisition of
-#'   species occurrence and environmental data to visualizing model predictions
-#'   on an interactive map (\code{rleaflet}), thus bundling complex workflows
-#'   into a single, streamlined GUI interface. New functionality, in the form of
-#'    modules, can be added to \emph{Wallace} via contributions from the user
-#'    community. In addition, executable session code (R Markdown format) can
+#' @title \emph{SMART}: A modular platform for creating reproducible applications
+#' @description \emph{SMART} is a \code{shiny} app template for creating
+#'   reproducible applications to academic standards. SMART is forked from 'wallace'
+#'   and provides a template for producing applications that are interactive,
+#'   reproducible, adaptable and built to high standards. It was created to ease
+#'   the process of creating complex workflows in a single, streamlined GUI interface.
+#'   In addition, executable session code  (R Markdown format) can
 #'    be downloaded to share with others or use as supplementary information
 #'    for scientific papers and reports. The application is run via the
-#'    function \code{\link{run_wallace}}.
+#'    function \code{\link{run_smart}}.
 #'
 #' @details Please see the official website (\url{https://wallaceecomod.github.io/}) for
 #'   more details. If you have questions about the application, please participate

@@ -1,0 +1,11 @@
+---
+title: "plot"
+output: html_document
+---
+
+### **Component: Plot data**
+
+**ORIENTATION**
+This module enables you to plot values from the raster, either as a histogram or as a scatterplot.
+
+

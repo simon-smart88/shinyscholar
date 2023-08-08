@@ -1,5 +1,5 @@
 component: "select"
-short_name: "select_query"
-long_name: "select_query"
+short_name: "Query API"
+long_name: "Load data from an API"
 authors: "Simon E. H. Smart"
 package: [terra]

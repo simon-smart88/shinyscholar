@@ -1,5 +1,5 @@
 component: "plot"
-short_name: "plot_hist"
-long_name: "plot_hist"
+short_name: "Histogram"
+long_name: "Plot data on a histogram"
 authors: "Simon E. H. Smart"
-package: []
+package: [base]

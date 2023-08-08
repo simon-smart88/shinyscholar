@@ -1,5 +1,5 @@
 component: "plot"
-short_name: "plot_scatter"
-long_name: "plot_scatter"
+short_name: "Scatterplot"
+long_name: "Plot data on a histogram"
 authors: "Simon E H Smart"
 package: []

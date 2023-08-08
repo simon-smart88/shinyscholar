@@ -1,13 +1,10 @@
 library(leaflet)
 library(wallace)
 library(shiny)
-library(leaflet)
 library(leaflet.extras)
 library(gargoyle)
 library(terra)
 library(sp)
-library(raster)
-# switch extent to terra version
 
 function(input, output, session) {
   ########################## #
@@ -16,7 +13,7 @@ function(input, output, session) {
 
   # Variable to keep track of current log message
   initLogMsg <- function() {
-    intro <- '***WELCOME TO WALLACE***'
+    intro <- '***WELCOME TO SMART***'
     brk <- paste(rep('------', 14), collapse = '')
     expl <- 'Please find messages for the user in this log window.'
     logInit <- gsub('.{4}$', '', paste(intro, brk, expl, brk, '', sep = '<br>'))
@@ -87,7 +84,7 @@ function(input, output, session) {
     leaflet() %>%
       setView(0, 0, zoom = 2) %>%
       addProviderTiles('Esri.WorldTopoMap') %>%
-      addDrawToolbar(polylineOptions=F,circleOptions = F, rectangleOptions = T, markerOptions = F, circleMarkerOptions = F, singleFeature = T)
+      addDrawToolbar(polylineOptions=F,circleOptions = F, rectangleOptions = T, markerOptions = F, circleMarkerOptions = F, singleFeature = T,polygonOptions = F)
   )
 
   # create map proxy to make further changes to existing map
@@ -103,7 +100,6 @@ function(input, output, session) {
     # must have one species selected and occurrence data
     req(module())
     map_fx <- COMPONENT_MODULES[[component()]][[module()]]$map_function
-    print(map_fx)
     if (!is.null(map_fx)) {
       do.call(map_fx, list(map, common = common))
     }
@@ -124,7 +120,7 @@ function(input, output, session) {
   # Enable/disable buttons
   observe({
     shinyjs::toggleState("goLoad_session", !is.null(input$load_session$datapath))
-    req(common$query_ras)
+    req(common$ras)
     # shinyjs::toggleState("dlData", !is.null(occs()))
     # shinyjs::toggleState("dlPlot", !is.null(occs()))
 
@@ -137,18 +133,15 @@ function(input, output, session) {
   # # # # # # # # # # # # # # # # # #
 
   # TABLE
-  # options <- list(autoWidth = TRUE, columnDefs = list(list(width = '40%', targets = 7)),
-  #                 scrollX=TRUE, scrollY=400)
-  # output$occTbl <- DT::renderDataTable({
-  #   # check if spp has species in it
-  #   req(length(reactiveValuesToList(spp)) > 0)
-  #   occs() %>%
-  #     dplyr::mutate(occID = as.numeric(occID),
-  #                   longitude = round(as.numeric(longitude), digits = 2),
-  #                   latitude = round(as.numeric(latitude), digits = 2)) %>%
-  #     dplyr::select(-pop) %>%
-  #     dplyr::arrange(occID)
-  # }, rownames = FALSE, options = list(scrollX = TRUE))
+  output$table <- DT::renderDataTable({
+    # check that a raster exists
+    req(common$ras)
+    sample_table <- terra::spatSample(common$ras,100,method='random',xy=T,as.df=T)
+    colnames(sample_table) <- c('Longitude','Latitude','Value')
+    sample_table %>%
+      dplyr::mutate(Longitude = round(as.numeric(Longitude), digits = 4),
+                    Latitude = round(as.numeric(Latitude), digits = 4))
+  }, rownames = FALSE, options = list(scrollX = TRUE))
   #
   # # DOWNLOAD: current species occurrence data table
   # output$dlOccs <- downloadHandler(
@@ -254,62 +247,9 @@ function(input, output, session) {
         md_files <- c(md_files, species_md_file)
       }
 
-      if (!is.null(multSp())) {
-        for (sp in multSp()) {
-          namesMult <- unlist(strsplit(sp, "\\."))
-          multSpecies_rmds <- NULL
-          for (component in names(COMPONENT_MODULES[names(COMPONENT_MODULES) == "espace"])) {
-            for (module in COMPONENT_MODULES[[component]]) {
-              rmd_file <- module$rmd_file
-              rmd_function <- module$rmd_function
-              if (is.null(rmd_file)) next
-
-              if (is.null(rmd_function)) {
-                rmd_vars <- list()
-              } else {
-                rmd_vars <- do.call(rmd_function, list(species = spp[[sp]]))
-              }
-              knit_params <- c(
-                file = rmd_file,
-                spName1 = spName(namesMult[1]),
-                spName2 = spName(namesMult[2]),
-                sp1 = namesMult[1],
-                spAbr1 = spAbr[[namesMult[1]]],
-                sp2 = namesMult[2],
-                spAbr2 = spAbr[[namesMult[2]]],
-                multAbr = paste0(spAbr[[namesMult[1]]], "_", spAbr[[namesMult[2]]]),
-                rmd_vars
-              )
-              module_rmd <- do.call(knitr::knit_expand, knit_params)
-
-              module_rmd_file <- tempfile(pattern = paste0(module$id, "_"),
-                                          fileext = ".Rmd")
-              writeLines(module_rmd, module_rmd_file)
-              multSpecies_rmds <- c(multSpecies_rmds, module_rmd_file)
-            }
-          }
-
-          multSpecies_md_file <- tempfile(pattern = paste0(sp, "_"),
-                                          fileext = ".md")
-          rmarkdown::render(input = "Rmd/userReport_multSpecies.Rmd",
-                            params = list(child_rmds = multSpecies_rmds,
-                                          spName1 = spName(namesMult[1]),
-                                          spName2 = spName(namesMult[2]),
-                                          multAbr = paste0(spAbr[[namesMult[1]]], "_",
-                                                           spAbr[[namesMult[2]]])
-                            ),
-                            output_format = rmarkdown::github_document(html_preview = FALSE),
-                            output_file = multSpecies_md_file,
-                            clean = TRUE,
-                            encoding = "UTF-8")
-          md_files <- c(md_files, multSpecies_md_file)
-        }
-      }
-
       combined_md <-
         md_files %>%
         lapply(readLines) %>%
-        # lapply(readLines, encoding = "UTF-8") %>%
         lapply(paste, collapse = "\n") %>%
         paste(collapse = "\n\n")
 
@@ -339,24 +279,6 @@ function(input, output, session) {
     }
   )
 
-  ################################
-  ### METADATA FUNCTIONALITY ####
-  ################################
-
-  output$dlRMM <- downloadHandler(
-    filename = function() {paste0("wallace-metadata-", Sys.Date(), ".zip")},
-    content = function(file) {
-      tmpdir <- tempdir()
-      owd <- setwd(tmpdir)
-      on.exit(setwd(owd))
-      # REFERENCES ####
-      knitcitations::citep(citation("rangeModelMetadata"))
-      namesSpp <- allSp()
-      for (i in namesSpp) {
-        rangeModelMetadata::rmmToCSV(spp[[i]]$rmm, filename = paste0(i, "_RMM.csv"))
-      }
-      zip::zipr(zipfile = file, files = paste0(namesSpp, "_RMM.csv"))
-    })
 
   ################################
   ### REFERENCE FUNCTIONALITY ####
@@ -401,56 +323,19 @@ function(input, output, session) {
   ### COMMON LIST FUNTIONALITY ####
   ################################
 
-  common <- reactiveValues()
-  # common$logger <- logger
-  # # Create a data structure that holds variables and functions used by modules
-  # common = list(
-  #   # Reactive variables to pass on to modules
-  #   logger = logger,
-  #   spp = spp,
-  #   curSp = curSp,
-  #   allSp = allSp,
-  #   multSp = multSp,
-  #   curEnv = curEnv,
-  #   curModel = curModel,
-  #   component = component,
-  #   module = module,
-  #   envs.global = envs.global,
-  #   mapCntr = mapCntr,
-  #
-  #   # Shortcuts to values nested inside spp
-  #   occs = occs,
-  #   envs = envs,
-  #   bcSel = bcSel,
-  #   ecoClimSel = ecoClimSel,
-  #   bg = bg,
-  #   bgExt = bgExt,
-  #   bgMask = bgMask,
-  #   bgShpXY = bgShpXY,
-  #   selCatEnvs = selCatEnvs,
-  #   evalOut = evalOut,
-  #   mapPred = mapPred,
-  #   mapXfer = mapXfer,
-  #   rmm = rmm,
-  #
-  #   # Switch to a new component tab
-  #   update_component = function(tab = c("Map", "Table", "Results", "Download")) {
-  #     tab <- match.arg(tab)
-  #     updateTabsetPanel(session, "main", selected = tab)
-  #   },
-  #
-  #   # Disable a specific module so that it will not be selectable in the UI
-  #   disable_module = function(component = COMPONENTS, module) {
-  #     component <- match.arg(component)
-  #     shinyjs::js$disableModule(component = component, module = module)
-  #   },
-  #
-  #   # Enable a specific module so that it will be selectable in the UI
-  #   enable_module = function(component = COMPONENTS, module) {
-  #     component <- match.arg(component)
-  #     shinyjs::js$enableModule(component = component, module = module)
-  #   }
-  # )
+  common_class <- R6::R6Class(
+    classname = "common",
+    public = list(
+      ras = NULL,
+      hist = NULL,
+      scat = NULL,
+      meta = NULL,
+      logger = NULL
+    )
+  )
+
+  common <- common_class$new()
+  common$logger <- reactiveVal(initLogMsg())
 
   # Initialize all modules
   modules <- list()
@@ -471,8 +356,15 @@ function(input, output, session) {
   gargoyle::init("change_poly")
 
   observe({
-    common_size <- as.numeric(utils::object.size(reactiveValuesToList(common)))
+    common_size <- as.numeric(utils::object.size(common))
     shinyjs::toggle("save_warning", condition = (common_size >= SAVE_SESSION_SIZE_MB_WARNING * MB))
+  })
+
+  output$code_module <- renderPrint({
+    req(module())
+    if (input$code_choice == 'Module'){code <- readLines(glue("modules/{module()}.R"))}
+    if (input$code_choice == 'Function'){code <- readLines(glue("../../R/{module()}.R"))}
+    cat(code,sep='\n')
   })
 
   # Save the current session to a file
@@ -510,14 +402,14 @@ function(input, output, session) {
   # Load a wallace session from a file
   load_session <- function(file) {
     if (tools::file_ext(file) != "rds") {
-      shinyalert::shinyalert("Invalid Wallace session file", type = "error")
+      shinyalert::shinyalert("Invalid session file", type = "error")
       return()
     }
 
     state <- readRDS(file)
 
     if (!is.list(state) || is.null(state$main) || is.null(state$main$version)) {
-      shinyalert::shinyalert("Invalid Wallace session file", type = "error")
+      shinyalert::shinyalert("Invalid session file", type = "error")
       return()
     }
 
