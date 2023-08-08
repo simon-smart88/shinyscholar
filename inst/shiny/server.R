@@ -1,11 +1,18 @@
+library(leaflet)
+library(wallace)
+library(shiny)
+library(leaflet)
+library(leaflet.extras)
+library(gargoyle)
+library(terra)
+library(sp)
+library(raster)
+# switch extent to terra version
+
 function(input, output, session) {
   ########################## #
   # REACTIVE VALUES LISTS ####
   ########################## #
-
-  # single species list of lists
-  spp <- reactiveValues()
-  envs.global <- reactiveValues()
 
   # Variable to keep track of current log message
   initLogMsg <- function() {
@@ -94,8 +101,9 @@ function(input, output, session) {
   # Call the module-specific map function for the current module
   observe({
     # must have one species selected and occurrence data
-    #req(length(curSp()) == 1, occs(), module())
+    req(module())
     map_fx <- COMPONENT_MODULES[[component()]][[module()]]$map_function
+    print(map_fx)
     if (!is.null(map_fx)) {
       do.call(map_fx, list(map, common = common))
     }
@@ -116,9 +124,9 @@ function(input, output, session) {
   # Enable/disable buttons
   observe({
     shinyjs::toggleState("goLoad_session", !is.null(input$load_session$datapath))
-    req(length(curSp()) == 1)
-    shinyjs::toggleState("dlData", !is.null(occs()))
-    shinyjs::toggleState("dlPlot", !is.null(occs()))
+    req(common$query_ras)
+    # shinyjs::toggleState("dlData", !is.null(occs()))
+    # shinyjs::toggleState("dlPlot", !is.null(occs()))
 
     # shinyjs::toggleState("dlWhatever", !is.null(spp[[curSp()]]$whatever))
   })
@@ -131,34 +139,34 @@ function(input, output, session) {
   # TABLE
   # options <- list(autoWidth = TRUE, columnDefs = list(list(width = '40%', targets = 7)),
   #                 scrollX=TRUE, scrollY=400)
-  output$occTbl <- DT::renderDataTable({
-    # check if spp has species in it
-    req(length(reactiveValuesToList(spp)) > 0)
-    occs() %>%
-      dplyr::mutate(occID = as.numeric(occID),
-                    longitude = round(as.numeric(longitude), digits = 2),
-                    latitude = round(as.numeric(latitude), digits = 2)) %>%
-      dplyr::select(-pop) %>%
-      dplyr::arrange(occID)
-  }, rownames = FALSE, options = list(scrollX = TRUE))
-
-  # DOWNLOAD: current species occurrence data table
-  output$dlOccs <- downloadHandler(
-    filename = function() {
-      n <- fmtSpN(curSp())
-      source <- rmm()$data$occurrence$sources
-      glue("{n}_{source}.csv")
-    },
-    content = function(file) {
-      tbl <- occs() %>%
-        dplyr::select(-c(pop, occID))
-      # if bg values are present, add them to table
-      if(!is.null(bg())) {
-        tbl <- rbind(tbl, bg())
-      }
-      write_csv_robust(tbl, file, row.names = FALSE)
-    }
-  )
+  # output$occTbl <- DT::renderDataTable({
+  #   # check if spp has species in it
+  #   req(length(reactiveValuesToList(spp)) > 0)
+  #   occs() %>%
+  #     dplyr::mutate(occID = as.numeric(occID),
+  #                   longitude = round(as.numeric(longitude), digits = 2),
+  #                   latitude = round(as.numeric(latitude), digits = 2)) %>%
+  #     dplyr::select(-pop) %>%
+  #     dplyr::arrange(occID)
+  # }, rownames = FALSE, options = list(scrollX = TRUE))
+  #
+  # # DOWNLOAD: current species occurrence data table
+  # output$dlOccs <- downloadHandler(
+  #   filename = function() {
+  #     n <- fmtSpN(curSp())
+  #     source <- rmm()$data$occurrence$sources
+  #     glue("{n}_{source}.csv")
+  #   },
+  #   content = function(file) {
+  #     tbl <- occs() %>%
+  #       dplyr::select(-c(pop, occID))
+  #     # if bg values are present, add them to table
+  #     if(!is.null(bg())) {
+  #       tbl <- rbind(tbl, bg())
+  #     }
+  #     write_csv_robust(tbl, file, row.names = FALSE)
+  #   }
+  # )
 
 
   ############################################# #
@@ -393,54 +401,56 @@ function(input, output, session) {
   ### COMMON LIST FUNTIONALITY ####
   ################################
 
-  # Create a data structure that holds variables and functions used by modules
-  common = list(
-    # Reactive variables to pass on to modules
-    logger = logger,
-    spp = spp,
-    curSp = curSp,
-    allSp = allSp,
-    multSp = multSp,
-    curEnv = curEnv,
-    curModel = curModel,
-    component = component,
-    module = module,
-    envs.global = envs.global,
-    mapCntr = mapCntr,
-
-    # Shortcuts to values nested inside spp
-    occs = occs,
-    envs = envs,
-    bcSel = bcSel,
-    ecoClimSel = ecoClimSel,
-    bg = bg,
-    bgExt = bgExt,
-    bgMask = bgMask,
-    bgShpXY = bgShpXY,
-    selCatEnvs = selCatEnvs,
-    evalOut = evalOut,
-    mapPred = mapPred,
-    mapXfer = mapXfer,
-    rmm = rmm,
-
-    # Switch to a new component tab
-    update_component = function(tab = c("Map", "Table", "Results", "Download")) {
-      tab <- match.arg(tab)
-      updateTabsetPanel(session, "main", selected = tab)
-    },
-
-    # Disable a specific module so that it will not be selectable in the UI
-    disable_module = function(component = COMPONENTS, module) {
-      component <- match.arg(component)
-      shinyjs::js$disableModule(component = component, module = module)
-    },
-
-    # Enable a specific module so that it will be selectable in the UI
-    enable_module = function(component = COMPONENTS, module) {
-      component <- match.arg(component)
-      shinyjs::js$enableModule(component = component, module = module)
-    }
-  )
+  common <- reactiveValues()
+  # common$logger <- logger
+  # # Create a data structure that holds variables and functions used by modules
+  # common = list(
+  #   # Reactive variables to pass on to modules
+  #   logger = logger,
+  #   spp = spp,
+  #   curSp = curSp,
+  #   allSp = allSp,
+  #   multSp = multSp,
+  #   curEnv = curEnv,
+  #   curModel = curModel,
+  #   component = component,
+  #   module = module,
+  #   envs.global = envs.global,
+  #   mapCntr = mapCntr,
+  #
+  #   # Shortcuts to values nested inside spp
+  #   occs = occs,
+  #   envs = envs,
+  #   bcSel = bcSel,
+  #   ecoClimSel = ecoClimSel,
+  #   bg = bg,
+  #   bgExt = bgExt,
+  #   bgMask = bgMask,
+  #   bgShpXY = bgShpXY,
+  #   selCatEnvs = selCatEnvs,
+  #   evalOut = evalOut,
+  #   mapPred = mapPred,
+  #   mapXfer = mapXfer,
+  #   rmm = rmm,
+  #
+  #   # Switch to a new component tab
+  #   update_component = function(tab = c("Map", "Table", "Results", "Download")) {
+  #     tab <- match.arg(tab)
+  #     updateTabsetPanel(session, "main", selected = tab)
+  #   },
+  #
+  #   # Disable a specific module so that it will not be selectable in the UI
+  #   disable_module = function(component = COMPONENTS, module) {
+  #     component <- match.arg(component)
+  #     shinyjs::js$disableModule(component = component, module = module)
+  #   },
+  #
+  #   # Enable a specific module so that it will be selectable in the UI
+  #   enable_module = function(component = COMPONENTS, module) {
+  #     component <- match.arg(component)
+  #     shinyjs::js$enableModule(component = component, module = module)
+  #   }
+  # )
 
   # Initialize all modules
   modules <- list()
@@ -455,9 +465,14 @@ function(input, output, session) {
     })
   })
 
+  # should add these as part of the setup
+  gargoyle::init("change_user_ras")
+  gargoyle::init("change_query_ras")
+  gargoyle::init("change_poly")
+
   observe({
-    spp_size <- as.numeric(utils::object.size(reactiveValuesToList(spp)))
-    shinyjs::toggle("save_warning", condition = (spp_size >= SAVE_SESSION_SIZE_MB_WARNING * MB))
+    common_size <- as.numeric(utils::object.size(reactiveValuesToList(common)))
+    shinyjs::toggle("save_warning", condition = (common_size >= SAVE_SESSION_SIZE_MB_WARNING * MB))
   })
 
   # Save the current session to a file

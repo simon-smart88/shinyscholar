@@ -9,7 +9,7 @@ tagList(
   ),
   navbarPage(
     theme = bslib::bs_theme(version = 3,
-                            bootswatch = "united"),
+                            bootswatch = "simplex"),
     id = 'tabs',
     collapsible = TRUE,
     header = tagList(
@@ -188,9 +188,9 @@ tagList(
                     column(3, h5("Download all data")),
                     column(2, shinyjs::disabled(downloadButton('dlAllOccs', "CSV file")))
                   )
-                ),
-                
                 )
+
+
               )
             )
           )

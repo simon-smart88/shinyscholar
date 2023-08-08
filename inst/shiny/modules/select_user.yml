@@ -1,5 +1,5 @@
-component: ""
-short_name: ""
-long_name: ""
-authors: ""
-package: []
+component: "select"
+short_name: "select_user"
+long_name: "select_user"
+authors: "Simon E H Smart"
+package: [terra]

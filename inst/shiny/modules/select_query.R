@@ -2,10 +2,10 @@ select_query_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     selectInput(ns("date"), "Select date",
-                choices = '2023-01-10','2023-01-20','2023-01-31','2023-02-10','2023-02-20','2023-02-28',
+                choices = c('2023-01-10','2023-01-20','2023-01-31','2023-02-10','2023-02-20','2023-02-28',
                           '2023-03-10','2023-03-20','2023-03-31','2023-04-10','2023-04-20','2023-04-30',
                           '2023-05-10','2023-05-20','2023-05-31','2023-06-10','2023-06-20','2023-06-30',
-                          '2023-07-10','2023-07-20'),
+                          '2023-07-10','2023-07-20')),
     actionButton(ns("run"), "Load imagery")
   )
 }
@@ -16,20 +16,20 @@ select_query_module_server <- function(input, output, session, common) {
     # WARNING ####
     req(input$date,common$poly)
     poly <- SpatialPolygons(list(Polygons(list(Polygon(common$poly)),1)))
-    extent <- extent(poly)
+    extent <- terra::ext(poly)
     # FUNCTION CALL ####
-    ras <- select_query(extent,date)
+    ras <- select_query(extent,input$date)
     # LOAD INTO COMMON ####
     common$ras <- ras
     # METADATA ####
     common$meta$query$poly <- input$poly
     common$meta$query$date <- input$date
-    common$meta$query$used <- T
+    common$meta$ras$name <- 'Fcover'
+    common$meta$query$used <- TRUE
+    trigger("change_query_ras")
   })
 
-  output$result <- renderText({
-    # Result
-  })
+
 
   return(list(
     save = function() {
@@ -50,15 +50,17 @@ select_query_module_result <- function(id) {
 }
 
 select_query_module_map <- function(map, common) {
-  observeEvent(watch("change_shape"),{
-  ex <- extent(common$ras)
-  pal <- colorBin("YlOrRd", domain = as.numeric(common$select_ras), bins = 9,na.color ="#00000000")
+  observeEvent(watch("change_query_ras"),{
+  req(common$meta$query$used == T)
+  ex <- terra::ext(common$ras)
+  print(paste(x[1],ex[2],ex[3],ex[4]))
+  pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9,na.color ="#00000000")
   map %>%
-    clearGroup("Fcover") %>%
-    addRasterImage(common$ras,colors = pal,group="Fcover") %>%
-    fitBounds(lng1=ex@xmin,lng2=ex@xmax,lat1=ex@ymin,lat2=ex@ymax) %>%
-    addLegend(position ="bottomright",pal = pal, values = as.numeric(common$ras), group="Fcover", title="Fcover") %>%
-    addLayersControl(overlayGroups = "Fcover", options = layersControlOptions(collapsed = FALSE))
+    clearGroup(common$meta$ras$name) %>%
+    addRasterImage(raster::raster(common$ras),colors = pal,group=common$meta$ras$name) %>%
+    fitBounds(lng1=ex[1],lng2=ex[2],lat1=ex[3],lat2=ex[4]) %>%
+    addLegend(position ="bottomright",pal = pal, values = terra::values(common$ras), group=common$meta$ras$name, title=common$meta$ras$name) %>%
+    addLayersControl(overlayGroups = common$meta$ras$name, options = layersControlOptions(collapsed = FALSE))
   })
 }
 
@@ -67,7 +69,9 @@ select_query_module_rmd <- function(species) {
   list(
     select_query_knit = !is.null(common$meta$query$used),
     select_date = common$meta$query$date,
-    select_poly = common$meta$query$poly
+    select_poly = common$meta$query$poly,
+    select_name = common$ras$name
+
   )
 }
 

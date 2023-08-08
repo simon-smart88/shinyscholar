@@ -9,12 +9,13 @@ plot_hist_module_ui <- function(id) {
 
 plot_hist_module_server <- function(input, output, session, common) {
 
+  # logger <- common$logger
   observeEvent(input$run, {
     # WARNING ####
-    if (is.null(common$ras)) {
-      logger %>% writeLog(type = 'error', "Please load a raster file")
-      return()
-    }
+    # if (is.null(common$ras)) {
+    #   logger %>% writeLog(type = 'error', "Please load a raster file")
+    #   return()
+    # }
     # FUNCTION CALL ####
     hist_values <- plot_hist(common$ras)
     # LOAD INTO SPP ####
@@ -23,9 +24,9 @@ plot_hist_module_server <- function(input, output, session, common) {
     common$meta$hist$bins <- input$bins
   })
 
-  output$result <- renderPlot({
+  output$hist <- renderPlot({
     req(common$hist)
-    hist(common$hist,bins=input$bins)
+    hist(common$hist,breaks=as.numeric(input$bins),main='',xaxis = common$meta$ras$name)
   })
 
   return(list(

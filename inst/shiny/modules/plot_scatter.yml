@@ -1,5 +1,5 @@
-component: ""
-short_name: ""
-long_name: ""
-authors: ""
+component: "plot"
+short_name: "plot_scatter"
+long_name: "plot_scatter"
+authors: "Simon E H Smart"
 package: []
