@@ -1,10 +1,4 @@
-library(leaflet)
-library(wallace)
-library(shiny)
-library(leaflet.extras)
-library(gargoyle)
-library(terra)
-library(sp)
+library(SMART)
 
 function(input, output, session) {
   ########################## #
@@ -19,11 +13,10 @@ function(input, output, session) {
     logInit <- gsub('.{4}$', '', paste(intro, brk, expl, brk, '', sep = '<br>'))
     logInit
   }
-  logger <- reactiveVal(initLogMsg())
 
   # Write out logs to the log Window
-  observeEvent(logger(), {
-    shinyjs::html(id = "logHeader", html = logger(), add = FALSE)
+  observeEvent(common$logger(), {
+    shinyjs::html(id = "logHeader", html = common$logger(), add = FALSE)
     shinyjs::js$scrollLogger()
   })
 
@@ -187,10 +180,9 @@ function(input, output, session) {
   # handler for R Markdown download
   output$dlRMD <- downloadHandler(
     filename = function() {
-      paste0("wallace-session-", Sys.Date(), filetype_to_ext(input$rmdFileType))
+      paste0("SMART-session-", Sys.Date(), filetype_to_ext(input$rmdFileType))
     },
     content = function(file) {
-      spp <- common$spp
       md_files <- c()
       md_intro_file <- tempfile(pattern = "intro_", fileext = ".md")
       rmarkdown::render("Rmd/userReport_intro.Rmd",
@@ -199,53 +191,42 @@ function(input, output, session) {
                         clean = TRUE,
                         encoding = "UTF-8")
       md_files <- c(md_files, md_intro_file)
-      # Abbreviation for one species
-      spAbr <- plyr::alply(abbreviate(stringr::str_replace(allSp(), "_", " "),
-                                      minlength = 2),
-                           .margins = 1, function(x) {x <- as.character(x)})
-      names(spAbr) <- allSp()
 
-      for (sp in allSp()) {
-        species_rmds <- NULL
-        for (component in names(COMPONENT_MODULES[names(COMPONENT_MODULES) != c("espace", "rep")])) {
-          for (module in COMPONENT_MODULES[[component]]) {
-            rmd_file <- module$rmd_file
-            rmd_function <- module$rmd_function
-            if (is.null(rmd_file)) next
 
-            if (is.null(rmd_function)) {
-              rmd_vars <- list()
-            } else {
-              rmd_vars <- do.call(rmd_function, list(species = spp[[sp]]))
-            }
-            knit_params <- c(
-              file = rmd_file,
-              spName = spName(sp),
-              sp = sp,
-              spAbr = spAbr[[sp]],
-              rmd_vars
-            )
-            module_rmd <- do.call(knitr::knit_expand, knit_params)
+      module_rmds <- NULL
+      for (component in names(COMPONENT_MODULES[names(COMPONENT_MODULES) != c("rep")])) {
+        for (module in COMPONENT_MODULES[[component]]) {
+          rmd_file <- module$rmd_file
+          rmd_function <- module$rmd_function
+          if (is.null(rmd_file)) next
 
-            module_rmd_file <- tempfile(pattern = paste0(module$id, "_"),
-                                        fileext = ".Rmd")
-            writeLines(module_rmd, module_rmd_file)
-            species_rmds <- c(species_rmds, module_rmd_file)
+          if (is.null(rmd_function)) {
+            rmd_vars <- list()
+          } else {
+            rmd_vars <- do.call(rmd_function, list(common))
           }
-        }
+          knit_params <- c(
+            file = rmd_file,
+            rmd_vars
+          )
+          module_rmd <- do.call(knitr::knit_expand, knit_params)
 
-        species_md_file <- tempfile(pattern = paste0(sp, "_"),
-                                    fileext = ".md")
-        rmarkdown::render(input = "Rmd/userReport_species.Rmd",
-                          params = list(child_rmds = species_rmds,
-                                        spName = spName(sp),
-                                        spAbr = spAbr[[sp]]),
-                          output_format = rmarkdown::github_document(html_preview = FALSE),
-                          output_file = species_md_file,
-                          clean = TRUE,
-                          encoding = "UTF-8")
-        md_files <- c(md_files, species_md_file)
+          module_rmd_file <- tempfile(pattern = paste0(module$id, "_"),
+                                      fileext = ".Rmd")
+          writeLines(module_rmd, module_rmd_file)
+          module_rmds <- c(module_rmds, module_rmd_file)
+        }
       }
+
+      module_md_file <- tempfile(pattern = paste0(module$id, "_"),
+                                  fileext = ".md")
+      rmarkdown::render(input = "Rmd/userReport_module.Rmd",
+                        params = list(child_rmds = module_rmds),
+                        output_format = rmarkdown::github_document(html_preview = FALSE),
+                        output_file = module_md_file,
+                        clean = TRUE,
+                        encoding = "UTF-8")
+      md_files <- c(md_files, module_md_file)
 
       combined_md <-
         md_files %>%
@@ -330,6 +311,7 @@ function(input, output, session) {
       hist = NULL,
       scat = NULL,
       meta = NULL,
+      poly = NULL,
       logger = NULL
     )
   )
@@ -360,117 +342,59 @@ function(input, output, session) {
     shinyjs::toggle("save_warning", condition = (common_size >= SAVE_SESSION_SIZE_MB_WARNING * MB))
   })
 
+  #code module
   output$code_module <- renderPrint({
     req(module())
-    if (input$code_choice == 'Module'){code <- readLines(glue("modules/{module()}.R"))}
-    if (input$code_choice == 'Function'){code <- readLines(glue("../../R/{module()}.R"))}
+
+    if (input$code_choice == 'Module'){
+      code <- readLines(system.file(glue("shiny/modules/{module()}.R"),package = "SMART"))
+      }
+    if (input$code_choice == 'Function'){
+      #seperate call required in case there are multiple functions
+      ga_call <- getAnywhere(module())
+      code <- capture.output(print(getAnywhere(module())[which(ga_call$where == "package:SMART")]))
+      code <- code[1:(length(code)-2)]
+    }
+    if (input$code_choice == 'Markdown'){
+      code <- readLines(system.file(glue("shiny/modules/{module()}.Rmd"),package = "SMART"))
+    }
     cat(code,sep='\n')
   })
 
+
   # Save the current session to a file
   save_session <- function(file) {
-    state <- list()
+    # # Ask each module to save whatever data it wants
+    # for (module_id in names(modules)) {
+    #   state[[module_id]] <- modules[[module_id]]$save()
+    # }
 
-    spp_save <- reactiveValuesToList(spp)
-
-    # Save general data
-    state$main <- list(
-      version = as.character(packageVersion("wallace")),
-      spp = spp_save,
-      envs_global = reactiveValuesToList(envs.global),
-      cur_sp = input$curSp,
-      selected_module = sapply(COMPONENTS, function(x) input[[glue("{x}Sel")]], simplify = FALSE)
-    )
-
-    # Ask each module to save whatever data it wants
-    for (module_id in names(modules)) {
-      state[[module_id]] <- modules[[module_id]]$save()
-    }
-
-    saveRDS(state, file)
+    saveRDS(common, file)
   }
 
   output$save_session <- downloadHandler(
     filename = function() {
-      paste0("wallace-session-", Sys.Date(), ".rds")
+      paste0("SMART-session-", Sys.Date(), ".rds")
     },
     content = function(file) {
       save_session(file)
     }
   )
 
-  # Load a wallace session from a file
   load_session <- function(file) {
-    if (tools::file_ext(file) != "rds") {
-      shinyalert::shinyalert("Invalid session file", type = "error")
-      return()
+    temp <- readRDS(input$load_session$datapath)
+    temp
     }
-
-    state <- readRDS(file)
-
-    if (!is.list(state) || is.null(state$main) || is.null(state$main$version)) {
-      shinyalert::shinyalert("Invalid session file", type = "error")
-      return()
-    }
-
-    # Load general data
-    new_version <- as.character(packageVersion("wallace"))
-    if (state$main$version != new_version) {
-      shinyalert::shinyalert(
-        glue("The input file was saved using Wallace v{state$main$version}, but you are using Wallace v{new_version}"),
-        type = "warning"
-      )
-    }
-
-    for (spname in names(state$main$spp)) {
-      spp[[spname]] <- state$main$spp[[spname]]
-    }
-    for (envname in names(state$main$envs_global)) {
-      envs.global[[envname]] <- state$main$envs_global[[envname]]
-    }
-    for (component in names(state$main$selected_module)) {
-      value <- state$main$selected_module[[component]]
-      updateRadioButtons(session, glue("{component}Sel"), selected = value)
-    }
-    updateSelectInput(session, "curSp", selected = state$main$cur_sp)
-
-    state$main <- NULL
-
-    # Ask each module to load its own data
-    for (module_id in names(state)) {
-      modules[[module_id]]$load(state[[module_id]])
-    }
-  }
 
   observeEvent(input$goLoad_session, {
-    load_session(input$load_session$datapath)
-    # Select names of species in spp object
-    sppLoad <- grep("\\.", names(spp), value = TRUE, invert = TRUE)
-    # Storage species with no env data
-    noEnvsSpp <- NULL
-    for (i in sppLoad) {
-      # Check if envs.global object exists in spp
-      if (!is.null(spp[[i]]$envs)) {
-        diskRast <- raster::fromDisk(envs.global[[spp[[i]]$envs]])
-        if (diskRast) {
-          if (class(envs.global[[spp[[i]]$envs]]) == "RasterStack") {
-            diskExist <- !file.exists(envs.global[[spp[[i]]$envs]]@layers[[1]]@file@name)
-          } else if (class(envs.global[[spp[[i]]$envs]]) == "RasterBrick") {
-            diskExist <- !file.exists(envs.global[[spp[[i]]$envs]]@file@name)
-          }
-          if (diskExist) {
-            noEnvsSpp <- c(noEnvsSpp, i)
-          }
-        }
-      }
+    temp <- load_session(input$load_session$datapath)
+    temp_names <- names(temp)
+    #exclude the non-public and function objects
+    temp_names  <- temp_names[!temp_names %in% c('clone',".__enclos_env__","logger")]
+    for (name in temp_names){
+      common[[name]] <- temp[[name]]
     }
-    if (is.null(noEnvsSpp)) {
-      shinyalert::shinyalert(title = "Session loaded", type = "success")
-    } else {
-      msgEnvAgain <- paste0("Load variables again for: ",
-                            paste0(noEnvsSpp, collapse = ", "))
-      shinyalert::shinyalert(title = "Session loaded", type = "warning",
-                             text = msgEnvAgain)
-    }
+    common$logger %>% writeLog(type='info','The previous session has been loaded successfully')
   })
+
 }

@@ -15,14 +15,21 @@ select_user_module_server <- function(input, output, session, common) {
 
   observeEvent(input$run, {
     # WARNING ####
-
+    if (is.null(input$ras)) {
+      common$logger %>% writeLog(type = 'error', "Please upload a raster file")
+      return()
+    }
+    if (is.null(input$name)) {
+      common$logger %>% writeLog(type = 'error', "Please enter a name for the raster file")
+      return()
+    }
     # FUNCTION CALL ####
     ras <- select_user(input$ras$datapath)
     # LOAD INTO SPP ####
     common$ras <- ras
-    common$ras$name <- input$name
     # METADATA ####
-    common$meta$user$path <- input$ras$datapath
+    common$meta$ras$name <- input$name
+    common$meta$user$path <- input$ras$name
     common$meta$user$used <- TRUE
     trigger("change_user_ras")
   })
@@ -51,21 +58,22 @@ select_user_module_map <- function(map, common) {
     req(common$meta$user$used == TRUE)
     ex <- terra::ext(common$ras)
     pal <- colorBin("YlOrRd", domain = values(common$ras), bins = 9,na.color ="#00000000")
+    raster_name <- common$meta$ras$name
     map %>%
-      clearGroup(common$ras$name) %>%
-      addRasterImage(raster::raster(common$ras),colors = pal,group=common$ras$name) %>%
+      clearGroup(raster_name) %>%
+      addRasterImage(raster::raster(common$ras),colors = pal,group=raster_name) %>%
       fitBounds(lng1=ex[1],lng2=ex[2],lat1=ex[3],lat2=ex[4]) %>%
-      addLegend(position ="bottomright",pal = pal, values = values(common$ras), group=common$ras$name, title=common$ras$name) %>%
-      addLayersControl(overlayGroups = common$ras$name, options = layersControlOptions(collapsed = FALSE))
+      addLegend(position ="bottomright",pal = pal, values = values(common$ras), group=raster_name, title=raster_name) %>%
+      addLayersControl(overlayGroups = raster_name, options = layersControlOptions(collapsed = FALSE))
   })
 }
 
-select_user_module_rmd <- function(species) {
+select_user_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     select_user_knit = !is.null(common$meta$user$used),
     user_path = common$meta$user$path,
-    user_name = common$ras$name
+    user_name = common$meta$ras$name
   )
 }
 

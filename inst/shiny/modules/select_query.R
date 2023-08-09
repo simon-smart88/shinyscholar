@@ -11,16 +11,20 @@ select_query_module_server <- function(input, output, session, common) {
 
   observeEvent(input$run, {
     # WARNING ####
+    if (is.null(common$poly)) {
+      common$logger %>% writeLog(type = 'error', "Please draw a rectangle on the map")
+      return()
+    }
     req(input$date,common$poly)
+    # FUNCTION CALL ####
     poly <- SpatialPolygons(list(Polygons(list(Polygon(common$poly)),1)))
     extent <- terra::ext(poly)
-    # FUNCTION CALL ####
     ras <- select_query(extent,input$date)
     # LOAD INTO COMMON ####
     common$ras <- ras
     # METADATA ####
-    common$meta$query$poly <- input$poly
     common$meta$query$date <- input$date
+    common$meta$query$poly <- common$poly
     common$meta$ras$name <- 'FCover'
     common$meta$query$used <- TRUE
     trigger("change_query_ras")
@@ -61,12 +65,12 @@ select_query_module_map <- function(map, common) {
   })
 }
 
-select_query_module_rmd <- function(species) {
+select_query_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     select_query_knit = !is.null(common$meta$query$used),
     select_date = common$meta$query$date,
-    select_poly = common$meta$query$poly,
+    select_poly = printVecAsis(common$meta$query$poly),
     select_name = common$ras$name
 
   )

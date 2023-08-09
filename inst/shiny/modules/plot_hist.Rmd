@@ -1,9 +1,10 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{plot_hist_knit}}, eval = {{plot_hist_knit}}, include = {{plot_hist_knit}}}
+Plots the data as a histogram
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{plot_hist_knit}}, include = {{plot_hist_knit}}}
+
+hist <- plot_hist(ras,{{hist_bins}})
+
+plot(hist,main='',xlab = "{{hist_name}}",ylab='Frequency (%)')
 ```

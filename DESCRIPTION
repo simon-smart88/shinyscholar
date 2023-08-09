@@ -13,14 +13,16 @@ Depends:
     shiny (>= 1.6.0),
     leaflet (>= 2.0.2),
     terra,
-    R6 
+    R6,
+    gargoyle,
+    sp,
+    leaflet.extras (>= 1.0.0)
 Imports:
     dplyr (>= 1.0.2),
     DT (>= 0.5),
     glue,
     knitcitations,
     leafem,
-    leaflet.extras (>= 1.0.0),
     magrittr,
     RColorBrewer,
     rlang,

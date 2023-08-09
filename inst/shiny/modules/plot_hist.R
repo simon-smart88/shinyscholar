@@ -12,21 +12,22 @@ plot_hist_module_server <- function(input, output, session, common) {
   # logger <- common$logger
   observeEvent(input$run, {
     # WARNING ####
-    # if (is.null(common$ras)) {
-    #   logger %>% writeLog(type = 'error', "Please load a raster file")
-    #   return()
-    # }
+    if (is.null(common$ras)) {
+      common$logger %>% writeLog(type = 'error', "Please load a raster file")
+      return()
+    }
     # FUNCTION CALL ####
-    hist_values <- plot_hist(common$ras)
+    hist <- plot_hist(common$ras,input$bins)
     # LOAD INTO SPP ####
-    common$hist <- hist_values
+    common$hist <- hist
     # METADATA ####
     common$meta$hist$bins <- input$bins
+    common$meta$hist$name <- common$meta$ras$name
   })
 
   output$hist <- renderPlot({
     req(common$hist)
-    hist(common$hist,breaks=as.numeric(input$bins),main='',xaxis = common$meta$ras$name)
+    plot(common$hist,main='',xlab = common$meta$hist$name,ylab='Frequency (%)')
   })
 
   return(list(
@@ -47,11 +48,12 @@ plot_hist_module_result <- function(id) {
 }
 
 
-plot_hist_module_rmd <- function(species) {
+plot_hist_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     plot_hist_knit = !is.null(common$hist),
-    hist_bins = common$meta$hist$bins
+    hist_bins = common$meta$hist$bins,
+    hist_name = common$meta$hist$name
   )
 }
 

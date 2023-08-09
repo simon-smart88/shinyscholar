@@ -4,7 +4,7 @@
 \alias{plot_hist}
 \title{plot_hist}
 \usage{
-plot_hist(ras)
+plot_hist(ras, bins)
 }
 \value{
 a vector of values extracted from the raster
@@ -13,6 +13,7 @@ a vector of values extracted from the raster
 This function is called by the plot_hist module and extracts
  values from a raster image.
  @param ras SpatRaster object
+ @param bins The number of breaks in the histogram
 }
 \author{
 Simon Smart <simon.smart@cantab.net>

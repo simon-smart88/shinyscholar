@@ -1,7 +1,5 @@
 ---
 params:
-  spName: ""
-  spAbr: ""
   child_rmds: ""
 ---
 
@@ -14,8 +12,6 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, eval = FALSE)
 ```
 
 -------------------------------------------------------------------------------
-
-## Analysis for *`r params$spName`* (`r params$spAbr`)
 
 ```{r, comment='', echo=FALSE, message=FALSE, warning=FALSE, eval=TRUE, results="asis"}
 for (component_rmds in params$child_rmds) {

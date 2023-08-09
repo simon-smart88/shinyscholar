@@ -1,9 +1,9 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{select_user_knit}}, eval = {{select_user_knit}}, include = {{select_user_knit}}}
+Uploads the user-specified raster image. If the raster is not in the current working directory, please provide the path to the directory.
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{select_user_knit}}, include = {{select_user_knit}}}
+raster_directory <- ''
+ras <- select_user(file.path(raster_directory, "{{user_path}}"))
+raster_name <- "{{user_name}}"
 ```

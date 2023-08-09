@@ -1,9 +1,11 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{plot_scatter_knit}}, eval = {{plot_scatter_knit}}, include = {{plot_scatter_knit}}}
+Plots the data on a scatter plot
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{plot_scatter_knit}}, include = {{plot_scatter_knit}}}
+
+scat <- plot_scatter(ras,{{scat_sample}},{{scat_axis_short}})
+
+plot(scat[[1]],scat[[2]],xlab={{scat_axis_short}},ylab={{scat_name}})
+
 ```

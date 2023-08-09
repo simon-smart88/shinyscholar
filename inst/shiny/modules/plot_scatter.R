@@ -11,19 +11,24 @@ plot_scatter_module_server <- function(input, output, session, common) {
 
   observeEvent(input$run, {
     # WARNING ####
-
+    if (is.null(common$ras)) {
+      common$logger %>% writeLog(type = 'error', "Please load a raster file")
+      return()
+    }
     # FUNCTION CALL ####
     if (input$axis == 'Longitude'){axis <- 'x'} else {axis <- 'y'}
     scat <- plot_scatter(common$ras,input$sample,axis)
     # LOAD INTO SPP ####
     common$scat <- scat
     # METADATA ####
-    common$meta$scat$axis <- axis
+    common$meta$scat$axis_short <- axis
+    common$meta$scat$axis_long <- input$axis
     common$meta$scat$sample <- input$sample
+    common$meta$scat$name <- common$meta$ras$name
   })
 
   output$result <- renderPlot({
-    plot(common$scat[[1]],common$scat[[2]],xaxt=input$axis,yaxt=common$meta$ras$name)
+    plot(common$scat[[1]],common$scat[[2]],xlab=common$meta$scat$axis_long,ylab=common$meta$scat$name)
   })
 
   return(list(
@@ -43,11 +48,13 @@ plot_scatter_module_result <- function(id) {
   plotOutput(ns("result"))
 }
 
-plot_scatter_module_rmd <- function(species) {
+plot_scatter_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     plot_scatter_knit = !is.null(common$scat),
-    scat_axis = common$meta$scat$axis,
-    scat_sample = common$meta$scat$sample   )
+    scat_axis_short = common$meta$scat$axis_short,
+    scat_axis_long = common$meta$scat$axis_long,
+    scat_sample = common$meta$scat$sample,
+    scat_name = common$meta$scat$name)
 }
 

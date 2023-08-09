@@ -1,6 +1,5 @@
 resourcePath <- system.file("shiny", "www", package = "SMART")
 shiny::addResourcePath("smartres", resourcePath)
-#shiny::addResourcePath("smartres", 'www/')
 
 tagList(
   shinyjs::useShinyjs(),
@@ -25,7 +24,7 @@ tagList(
     tabPanel("Reproduce", value = 'rep'),
     navbarMenu("Support", icon = icon("life-ring"),
                HTML('<a href="https://github.com/simon-smart88/SMART/issues" target="_blank">GitHub Issues</a>'),
-               HTML('<a href="mailto: WallaceEcoMod@gmail.com" target="_blank">Send Email</a>')),
+               HTML('<a href="mailto: simon.smart@cantab.net" target="_blank">Send Email</a>')),
     tabPanel(NULL, icon = icon("power-off"), value = "_stopapp")
   ),
   tags$div(
@@ -85,15 +84,6 @@ tagList(
           "input.tabs != 'intro' & input.tabs != 'rep'",
           fixedRow(
             column(
-              4,
-              absolutePanel(
-                div(style = "margin-top: -10px"),
-                uiOutput("curSpUI"),
-                div(style = "margin-top: -12px"),
-                uiOutput("curModelUI")
-              )
-            ),
-            column(
               2,
               offset = 1,
               align = "left",
@@ -150,7 +140,7 @@ tagList(
             ),
             tabPanel(
               'Code',
-              radioButtons("code_choice","Choose file", choices=c('Module','Function'),selected='Module'),
+              radioButtons("code_choice","Choose file", choices=c('Module','Function','Markdown'),selected='Module'),
               verbatimTextOutput('code_module')
             ),
             tabPanel(

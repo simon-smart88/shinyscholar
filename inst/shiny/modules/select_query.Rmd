@@ -1,9 +1,11 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{select_query_knit}}, eval = {{select_query_knit}}, include = {{select_query_knit}}}
+Loads the raster image for the area selected on the map
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{select_query_knit}}, include = {{select_query_knit}}}
+poly <- matrix({{select_poly}}, ncol = 2, byrow = FALSE)
+poly <- SpatialPolygons(list(Polygons(list(Polygon(poly)),1)))
+extent <- terra::ext(poly)
+ras <- select_query(extent,"{{select_date}}")
+raster_name <- "{{select_name}}"
 ```
