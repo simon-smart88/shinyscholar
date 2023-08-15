@@ -31,7 +31,7 @@ select_user_module_server <- function(input, output, session, common) {
     common$meta$ras$name <- input$name
     common$meta$user$path <- input$ras$name
     common$meta$user$used <- TRUE
-    trigger("change_user_ras")
+    trigger("select_user")
   })
 
 
@@ -54,15 +54,15 @@ select_user_module_result <- function(id) {
 }
 
 select_user_module_map <- function(map, common) {
-  observeEvent(watch("change_user_ras"),{
+  observeEvent(watch("select_user"),{
     req(common$meta$user$used == TRUE)
-    ex <- terra::ext(common$ras)
+    ex <- as.vector(terra::ext(common$ras))
     pal <- colorBin("YlOrRd", domain = values(common$ras), bins = 9,na.color ="#00000000")
     raster_name <- common$meta$ras$name
     map %>%
       clearGroup(raster_name) %>%
       addRasterImage(raster::raster(common$ras),colors = pal,group=raster_name) %>%
-      fitBounds(lng1=ex[1],lng2=ex[2],lat1=ex[3],lat2=ex[4]) %>%
+      fitBounds(lng1=ex[[1]],lng2=ex[[2]],lat1=ex[[3]],lat2=ex[[4]]) %>%
       addLegend(position ="bottomright",pal = pal, values = values(common$ras), group=raster_name, title=raster_name) %>%
       addLayersControl(overlayGroups = raster_name, options = layersControlOptions(collapsed = FALSE))
   })

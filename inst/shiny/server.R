@@ -67,7 +67,6 @@ function(input, output, session) {
   observeEvent(input$plot_histHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$plot_scatterHelp, updateTabsetPanel(session, "main", "Module Guidance"))
 
-
   ######################## #
   ### MAPPING LOGIC ####
   ######################## #
@@ -156,9 +155,26 @@ function(input, output, session) {
 
 
   ############################################# #
-  ### COMPONENT: SELECT DATA ####
+  ### CODE MODULE ####
   ############################################# #
 
+    output$code_module <- renderPrint({
+    req(module())
+
+    if (input$code_choice == 'Module'){
+      code <- readLines(system.file(glue("shiny/modules/{module()}.R"),package = "SMART"))
+    }
+    if (input$code_choice == 'Function'){
+      #seperate call required in case there are multiple functions
+      ga_call <- getAnywhere(module())
+      code <- capture.output(print(getAnywhere(module())[which(ga_call$where == "package:SMART")]))
+      code <- code[1:(length(code)-2)]
+    }
+    if (input$code_choice == 'Markdown'){
+      code <- readLines(system.file(glue("shiny/modules/{module()}.Rmd"),package = "SMART"))
+    }
+    cat(code,sep='\n')
+  })
 
 
 
@@ -319,6 +335,19 @@ function(input, output, session) {
   common <- common_class$new()
   common$logger <- reactiveVal(initLogMsg())
 
+  ################################
+  ### DEBUG ###
+  ################################
+
+  # output$common <- renderPrint({
+  #   watch(c("select_user","select_query","change_poly","plot_hist","plot_scatter"))
+  #   print(common)})
+  #
+  # output$meta <- renderPrint({
+  #   watch(c("select_user","select_query","change_poly","plot_hist","plot_scatter"))
+  #   print(common$meta)})
+
+
   # Initialize all modules
   modules <- list()
   lapply(names(COMPONENT_MODULES), function(component) {
@@ -333,34 +362,16 @@ function(input, output, session) {
   })
 
   # should add these as part of the setup
-  gargoyle::init("change_user_ras")
-  gargoyle::init("change_query_ras")
+  gargoyle::init("select_user")
+  gargoyle::init("select_query")
+  gargoyle::init("plot_hist")
+  gargoyle::init("plot_scatter")
   gargoyle::init("change_poly")
 
   observe({
     common_size <- as.numeric(utils::object.size(common))
     shinyjs::toggle("save_warning", condition = (common_size >= SAVE_SESSION_SIZE_MB_WARNING * MB))
   })
-
-  #code module
-  output$code_module <- renderPrint({
-    req(module())
-
-    if (input$code_choice == 'Module'){
-      code <- readLines(system.file(glue("shiny/modules/{module()}.R"),package = "SMART"))
-      }
-    if (input$code_choice == 'Function'){
-      #seperate call required in case there are multiple functions
-      ga_call <- getAnywhere(module())
-      code <- capture.output(print(getAnywhere(module())[which(ga_call$where == "package:SMART")]))
-      code <- code[1:(length(code)-2)]
-    }
-    if (input$code_choice == 'Markdown'){
-      code <- readLines(system.file(glue("shiny/modules/{module()}.Rmd"),package = "SMART"))
-    }
-    cat(code,sep='\n')
-  })
-
 
   # Save the current session to a file
   save_session <- function(file) {
@@ -369,6 +380,8 @@ function(input, output, session) {
     #   state[[module_id]] <- modules[[module_id]]$save()
     # }
 
+    #required due to terra objects being pointers to c++ objects
+    common$ras <- terra::wrap(common$ras)
     saveRDS(common, file)
   }
 
@@ -382,7 +395,7 @@ function(input, output, session) {
   )
 
   load_session <- function(file) {
-    temp <- readRDS(input$load_session$datapath)
+    temp <- readRDS(file)
     temp
     }
 
@@ -394,6 +407,12 @@ function(input, output, session) {
     for (name in temp_names){
       common[[name]] <- temp[[name]]
     }
+
+    #required due to terra objects being pointers to c++ objects
+    common$ras <- terra::unwrap(common$ras)
+
+    trigger("select_user","select_query","plot_hist","plot_scatter")
+
     common$logger %>% writeLog(type='info','The previous session has been loaded successfully')
   })
 

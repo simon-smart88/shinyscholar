@@ -27,7 +27,5 @@ inst/doc
 *Thumbs.db
 # .zip from occCite
 .zip
-
-# cory's rproj
-wallaceFork.Rproj
-docs
+inst/shiny/rsconnect/
+inst/shiny/debug*

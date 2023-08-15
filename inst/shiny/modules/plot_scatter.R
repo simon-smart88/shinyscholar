@@ -25,9 +25,11 @@ plot_scatter_module_server <- function(input, output, session, common) {
     common$meta$scat$axis_long <- input$axis
     common$meta$scat$sample <- input$sample
     common$meta$scat$name <- common$meta$ras$name
+    trigger("plot_scatter")
   })
 
   output$result <- renderPlot({
+    watch("plot_scatter")
     plot(common$scat[[1]],common$scat[[2]],xlab=common$meta$scat$axis_long,ylab=common$meta$scat$name)
   })
 

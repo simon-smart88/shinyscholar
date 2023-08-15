@@ -93,7 +93,11 @@ writeLog <- function(logger, ..., type = 'default') {
   } else if (is.function(logger)) {
     if (type == "default") {
       pre <- "> "
-    } else if (type == 'error') {
+    } else if (type == 'info') {
+      shinyalert::shinyalert(...,
+                             type = "info")
+      pre <- '> <font color="blue"><b>INFO</b></font> : '}
+    else if (type == 'error') {
       shinyalert::shinyalert("Please, check Log window for more information ",
                              type = "error")
       pre <- '> <font color="red"><b>! ERROR</b></font> : '

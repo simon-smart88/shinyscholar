@@ -27,7 +27,7 @@ select_query_module_server <- function(input, output, session, common) {
     common$meta$query$poly <- common$poly
     common$meta$ras$name <- 'FCover'
     common$meta$query$used <- TRUE
-    trigger("change_query_ras")
+    trigger("select_query")
   })
 
 
@@ -51,15 +51,14 @@ select_query_module_result <- function(id) {
 }
 
 select_query_module_map <- function(map, common) {
-  observeEvent(watch("change_query_ras"),{
+  observeEvent(watch("select_query"),{
   req(common$meta$query$used == T)
-  ex <- terra::ext(common$ras)
-  print(paste(ex[1],ex[2],ex[3],ex[4]))
+  ex <- as.vector(terra::ext(common$ras))
   pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9,na.color ="#00000000")
   map %>%
     clearGroup(common$meta$ras$name) %>%
     addRasterImage(raster::raster(common$ras),colors = pal,group=common$meta$ras$name) %>%
-    fitBounds(lng1=ex[1],lng2=ex[2],lat1=ex[3],lat2=ex[4]) %>%
+    fitBounds(lng1=ex[[1]],lng2=ex[[2]],lat1=ex[[3]],lat2=ex[[4]]) %>%
     addLegend(position ="bottomright",pal = pal, values = terra::values(common$ras), group=common$meta$ras$name, title=common$meta$ras$name) %>%
     addLayersControl(overlayGroups = common$meta$ras$name, options = layersControlOptions(collapsed = FALSE))
   })
@@ -71,7 +70,7 @@ select_query_module_rmd <- function(common) {
     select_query_knit = !is.null(common$meta$query$used),
     select_date = common$meta$query$date,
     select_poly = printVecAsis(common$meta$query$poly),
-    select_name = common$ras$name
+    select_name = common$meta$ras$name
 
   )
 }

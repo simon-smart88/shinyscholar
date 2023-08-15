@@ -23,9 +23,11 @@ plot_hist_module_server <- function(input, output, session, common) {
     # METADATA ####
     common$meta$hist$bins <- input$bins
     common$meta$hist$name <- common$meta$ras$name
+    trigger("plot_hist")
   })
 
   output$hist <- renderPlot({
+    watch("plot_hist")
     req(common$hist)
     plot(common$hist,main='',xlab = common$meta$hist$name,ylab='Frequency (%)')
   })

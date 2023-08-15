@@ -159,6 +159,8 @@ tagList(
                          "downloaded file may be large and the download might",
                          " take a long time.")
                   )),
+                # verbatimTextOutput("common"),
+                # verbatimTextOutput("meta"),
                 downloadButton("save_session", "Save Session"),
                 br()
               ),
