@@ -14,7 +14,16 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-select_query <- function(extent,date) {
+select_query <- function(poly,date,logger) {
+
+poly <- terra::vect(poly,crs="+init=EPSG:4326",type='polygons')
+area <- terra::expanse(poly,unit='km')
+if (area > 3000) {
+  logger %>% writeLog(type = 'error', glue::glue("Your selected area is too large ({round(area,0)} km2) when the maximum is 3000 km2. Please select a smaller area"))
+  return()
+}
+extent <- terra::ext(poly)
+
 #convert the extent into a bounding box
 bbox <- paste(as.character(extent[3]),as.character(extent[1]),as.character(extent[4]),as.character(extent[2]),sep=',')
 

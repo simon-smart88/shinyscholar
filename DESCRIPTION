@@ -15,7 +15,6 @@ Depends:
     terra,
     R6,
     gargoyle,
-    sp,
     leaflet.extras (>= 1.0.0)
 Imports:
     dplyr (>= 1.0.2),

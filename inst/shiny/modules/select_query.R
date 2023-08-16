@@ -1,3 +1,4 @@
+
 select_query_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
@@ -17,9 +18,9 @@ select_query_module_server <- function(input, output, session, common) {
     }
     req(input$date,common$poly)
     # FUNCTION CALL ####
-    poly <- SpatialPolygons(list(Polygons(list(Polygon(common$poly)),1)))
-    extent <- terra::ext(poly)
-    ras <- select_query(extent,input$date)
+    showModal(modalDialog(title = "Info","Please wait while the data is loaded. This will close once it is complete", easyClose = F))
+    ras <- select_query(common$poly,input$date,common$logger)
+    removeModal()
     # LOAD INTO COMMON ####
     common$ras <- ras
     # METADATA ####
@@ -53,9 +54,12 @@ select_query_module_result <- function(id) {
 select_query_module_map <- function(map, common) {
   observeEvent(watch("select_query"),{
   req(common$meta$query$used == T)
+  req(common$ras)
   ex <- as.vector(terra::ext(common$ras))
   pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9,na.color ="#00000000")
   map %>%
+    removeDrawToolbar(clearFeatures=TRUE) %>%
+    addDrawToolbar(polylineOptions=F,circleOptions = F, rectangleOptions = T, markerOptions = F, circleMarkerOptions = F, singleFeature = T,polygonOptions = F) %>%
     clearGroup(common$meta$ras$name) %>%
     addRasterImage(raster::raster(common$ras),colors = pal,group=common$meta$ras$name) %>%
     fitBounds(lng1=ex[[1]],lng2=ex[[2]],lat1=ex[[3]],lat2=ex[[4]]) %>%
@@ -63,6 +67,8 @@ select_query_module_map <- function(map, common) {
     addLayersControl(overlayGroups = common$meta$ras$name, options = layersControlOptions(collapsed = FALSE))
   })
 }
+
+
 
 select_query_module_rmd <- function(common) {
   # Variables used in the module's Rmd code

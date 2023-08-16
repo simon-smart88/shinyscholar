@@ -2,4 +2,4 @@ component: "plot"
 short_name: "Scatterplot"
 long_name: "Plot data on a histogram"
 authors: "Simon E H Smart"
-package: []
+package: [graphics,RColorBrewer]

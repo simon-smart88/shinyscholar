@@ -336,7 +336,7 @@ function(input, output, session) {
   common$logger <- reactiveVal(initLogMsg())
 
   ################################
-  ### DEBUG ###
+  ### DEBUG ####
   ################################
 
   # output$common <- renderPrint({
@@ -361,12 +361,20 @@ function(input, output, session) {
     })
   })
 
+  ####################
+  ### GARGOYLE ####
+  ###################
+
   # should add these as part of the setup
   gargoyle::init("select_user")
   gargoyle::init("select_query")
   gargoyle::init("plot_hist")
   gargoyle::init("plot_scatter")
   gargoyle::init("change_poly")
+
+  observeEvent(gargoyle::watch("plot_hist"),updateTabsetPanel(session, "main",selected = 'Results'),ignoreInit = TRUE)
+  observeEvent(gargoyle::watch("plot_scatter"),updateTabsetPanel(session, "main",selected = 'Results'),ignoreInit = TRUE)
+
 
   observe({
     common_size <- as.numeric(utils::object.size(common))

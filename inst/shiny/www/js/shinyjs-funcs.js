@@ -38,3 +38,4 @@ shinyjs.enableModule = function(params) {
   $radio.attr("disabled", false);
   $radio.closest(".radio").removeClass("disabled");
 }
+

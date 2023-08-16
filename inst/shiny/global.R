@@ -14,6 +14,7 @@ source("helpers.R")
 # source("~/Documents/wallace-disag/R/plot_scatter.R")
 
 
+
 # The components that have modules. These names must match the values of the
 # tabs of the components in the UI.
 COMPONENTS <- c("select", "plot","rep")
