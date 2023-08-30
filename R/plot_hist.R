@@ -8,9 +8,9 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-plot_hist <- function(ras,bins) {
+plot_hist <- function(ras, bins) {
   ras_values <- terra::values(ras)
-  h = hist(ras_values,breaks=as.numeric(bins))
-  h$density = h$counts/sum(h$counts)*100
+  h <- hist(ras_values, breaks = as.numeric(bins))
+  h$density <- h$counts / sum(h$counts) * 100
   h
-  }
+}

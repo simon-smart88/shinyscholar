@@ -2,8 +2,8 @@ plot_hist_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     # UI
-    selectInput(ns("bins"),"Number of bins",choices=c(10,20,50,100)),
-    #selectInput(ns("pal"),"Colour palette",choices=c('Greens','Greys','Blues')),
+    selectInput(ns("bins"), "Number of bins", choices = c(10, 20, 50, 100)),
+    #selectInput(ns("pal"), "Colour palette", choices = c("Greens", "Greys", "Blues")),
     actionButton(ns("run"), "Plot histogram")
   )
 }
@@ -14,11 +14,11 @@ plot_hist_module_server <- function(input, output, session, common) {
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$ras)) {
-      common$logger %>% writeLog(type = 'error', "Please load a raster file")
+      common$logger %>% writeLog(type = "error", "Please load a raster file")
       return()
     }
     # FUNCTION CALL ####
-    hist <- plot_hist(common$ras,input$bins)
+    hist <- plot_hist(common$ras, input$bins)
     # LOAD INTO COMMON ####
     common$hist <- hist
     # METADATA ####
@@ -32,11 +32,11 @@ plot_hist_module_server <- function(input, output, session, common) {
     watch("plot_hist")
     req(common$hist)
     # pal <- brewer.pal(9, common$meta$hist$pal)
-    # pal_ramp <- colorRampPalette(c(pal[1],pal[9]))
+    # pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
     # bins <- common$meta$hist$bins
-    # cols <- rep(pal_ramp(bins),1,each=100/bins)[min(common$hist$breaks):max(common$hist$breaks)]
+    # cols <- rep(pal_ramp(bins), 1, each = 100/bins)[min(common$hist$breaks):max(common$hist$breaks)]
 
-    plot(common$hist,freq=F,main='',xlab = common$meta$hist$name,ylab='Frequency (%)')
+    plot(common$hist, freq = FALSE, main = "", xlab = common$meta$hist$name, ylab = "Frequency (%)")
   })
 
   return(list(
@@ -66,4 +66,3 @@ plot_hist_module_rmd <- function(common) {
     hist_name = common$meta$hist$name
   )
 }
-

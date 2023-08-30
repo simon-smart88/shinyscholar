@@ -1,6 +1,6 @@
-#' @name wallace-package
-#' @aliases wallace
-#' @aliases wallace-package
+#' @name SMART-package
+#' @aliases SMART
+#' @aliases SMART-package
 #' @docType package
 #' @title \emph{SMART}: A modular platform for creating reproducible applications
 #' @description \emph{SMART} is a \code{shiny} app template for creating

@@ -66,7 +66,7 @@ spurious <- function(x) {
 #' @keywords internal
 #' @export
 smartProgress <- function(logs, message, expr) {
-  if(!is.null(logs)) {
+  if (!is.null(logs)) {
     withProgress(message = message, expr)
   } else {
     message(message)
@@ -81,11 +81,11 @@ smartProgress <- function(logs, message, expr) {
 #' @param type One of "default", "error", "warning"
 #' @keywords internal
 #' @export
-writeLog <- function(logger, ..., type = 'default') {
+writeLog <- function(logger, ..., type = "default") {
   if (is.null(logger)) {
-    if (type == 'error') {
+    if (type == "error") {
       stop(paste0(..., collapse = ""), call. = FALSE)
-    } else if (type == 'warning') {
+    } else if (type == "warning") {
       warning(paste0(..., collapse = ""), call. = FALSE)
     } else {
       message(paste0(..., collapse = ""))
@@ -93,24 +93,22 @@ writeLog <- function(logger, ..., type = 'default') {
   } else if (is.function(logger)) {
     if (type == "default") {
       pre <- "> "
-    } else if (type == 'info') {
-      shinyalert::shinyalert(...,
-                             type = "info")
-      pre <- '> <font color="blue"><b>INFO</b></font> : '}
-    else if (type == 'error') {
+    } else if (type == "info") {
+      shinyalert::shinyalert(..., type = "info")
+      pre <- '> <font color="blue"><b>INFO</b></font> : '
+    } else if (type == "error") {
       shinyalert::shinyalert("Please, check Log window for more information ",
                              type = "error")
       pre <- '> <font color="red"><b>! ERROR</b></font> : '
-    } else if (type == 'warning') {
+    } else if (type == "warning") {
       shinyalert::shinyalert("Please, check Log window for more information ",
                              type = "warning")
       pre <- '> <font color="orange"><b>! WARNING</b></font> : '
     }
-    newEntries <- paste0('<br>', pre, ..., collapse = "")
+    newEntries <- paste0("<br>", pre, ..., collapse = "")
     logger(paste0(logger(), newEntries))
   } else {
     warning("Invalid logger type")
   }
   invisible()
 }
-
