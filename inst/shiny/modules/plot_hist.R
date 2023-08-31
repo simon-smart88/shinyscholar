@@ -3,7 +3,7 @@ plot_hist_module_ui <- function(id) {
   tagList(
     # UI
     selectInput(ns("bins"), "Number of bins", choices = c(10, 20, 50, 100)),
-    #selectInput(ns("pal"), "Colour palette", choices = c("Greens", "Greys", "Blues")),
+    selectInput(ns("pal"), "Colour palette", choices = c("Greens", "Greys", "Blues")),
     actionButton(ns("run"), "Plot histogram")
   )
 }
@@ -31,12 +31,12 @@ plot_hist_module_server <- function(input, output, session, common) {
   output$hist <- renderPlot({
     watch("plot_hist")
     req(common$hist)
-    # pal <- brewer.pal(9, common$meta$hist$pal)
-    # pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
-    # bins <- common$meta$hist$bins
-    # cols <- rep(pal_ramp(bins), 1, each = 100/bins)[min(common$hist$breaks):max(common$hist$breaks)]
+    pal <- brewer.pal(9, common$meta$hist$pal)
+    pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
+    bins <- common$meta$hist$bins
+    cols <- rep(pal_ramp(bins), 1, each = 100/bins)[min(common$hist$breaks):max(common$hist$breaks)]
 
-    plot(common$hist, freq = FALSE, main = "", xlab = common$meta$hist$name, ylab = "Frequency (%)")
+    plot(common$hist, freq = FALSE, main = "", xlab = common$meta$hist$name, ylab = "Frequency (%)", cols = cols)
   })
 
   return(list(
