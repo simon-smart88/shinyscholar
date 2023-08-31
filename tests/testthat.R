@@ -1,5 +1,5 @@
 Sys.setenv("R_TEST" = "")
 library(testthat)
-library(wallace)
+library(SMART)
 
-test_check("wallace")
+test_check("SMART")
