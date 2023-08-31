@@ -4,7 +4,7 @@
 \alias{select_query}
 \title{select_query}
 \usage{
-select_query(extent, date)
+select_query(poly, date, logger = NULL)
 }
 \value{
 a SpatRaster object

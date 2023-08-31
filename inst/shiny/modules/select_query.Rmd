@@ -4,8 +4,6 @@ Loads the raster image for the area selected on the map
 
 ```{r, echo = {{select_query_knit}}, include = {{select_query_knit}}}
 poly <- matrix({{select_poly}}, ncol = 2, byrow = FALSE)
-poly <- SpatialPolygons(list(Polygons(list(Polygon(poly)),1)))
-extent <- terra::ext(poly)
-ras <- select_query(extent,"{{select_date}}")
+ras <- select_query(poly,"{{select_date}}")
 raster_name <- "{{select_name}}"
 ```

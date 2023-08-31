@@ -20,7 +20,7 @@ select_query_module_server <- function(input, output, session, common) {
     # FUNCTION CALL ####
     showModal(modalDialog(title = "Info","Please wait while the data is loaded. This will close once it is complete", easyClose = F))
     ras <- select_query(common$poly,input$date,common$logger)
-    removeModal()
+    if (is.null(ras)){removeModal()} #close if the function returns null
     # LOAD INTO COMMON ####
     common$ras <- ras
     # METADATA ####
@@ -65,6 +65,7 @@ select_query_module_map <- function(map, common) {
     fitBounds(lng1=ex[[1]],lng2=ex[[2]],lat1=ex[[3]],lat2=ex[[4]]) %>%
     addLegend(position ="bottomright",pal = pal, values = terra::values(common$ras), group=common$meta$ras$name, title=common$meta$ras$name) %>%
     addLayersControl(overlayGroups = common$meta$ras$name, options = layersControlOptions(collapsed = FALSE))
+  removeModal()
   })
 }
 

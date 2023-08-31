@@ -21,3 +21,5 @@ run_smart <- function(launch.browser = TRUE, port = getOption("shiny.port")) {
   on.exit(rm(list = setdiff(ls(envir = .GlobalEnv), preexisting_objects), envir = .GlobalEnv))
   return(shiny::runApp(app_path, launch.browser = launch.browser, port = port))
 }
+
+

@@ -97,13 +97,25 @@ function(input, output, session) {
     }
   })
 
-  observeEvent(input$map_draw_new_feature, {
+  # observeEvent(input$map_draw_new_feature, {
+  #   coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
+  #   xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
+  #   colnames(xy) <- c('longitude', 'latitude')
+  #   common$poly <- xy
+  #   trigger("change_poly")
+  # })
+
+
+
+    observe({
     coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
     xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
     colnames(xy) <- c('longitude', 'latitude')
     common$poly <- xy
     trigger("change_poly")
-  })
+  }) %>% bindEvent(input$map_draw_new_feature)
+
+  gargoyle::init("change_poly")
 
   ######################## #
   ### BUTTONS LOGIC ####
@@ -365,13 +377,14 @@ function(input, output, session) {
   ### GARGOYLE ####
   ###################
 
-  # should add these as part of the setup
-  gargoyle::init("select_user")
-  gargoyle::init("select_query")
-  gargoyle::init("plot_hist")
-  gargoyle::init("plot_scatter")
-  gargoyle::init("change_poly")
+  for (m in c("select_user","select_query","plot_hist","plot_scatter")){
+    gargoyle::init(m)
+  }
 
+  # gargoyle::init("select_user")
+  # gargoyle::init("select_query")
+  # gargoyle::init("plot_hist")
+  # gargoyle::init("plot_scatter")
   observeEvent(gargoyle::watch("plot_hist"),updateTabsetPanel(session, "main",selected = 'Results'),ignoreInit = TRUE)
   observeEvent(gargoyle::watch("plot_scatter"),updateTabsetPanel(session, "main",selected = 'Results'),ignoreInit = TRUE)
 
@@ -418,8 +431,10 @@ function(input, output, session) {
 
     #required due to terra objects being pointers to c++ objects
     common$ras <- terra::unwrap(common$ras)
-
-    trigger("select_user","select_query","plot_hist","plot_scatter")
+    for (component in names(COMPONENT_MODULES[names(COMPONENT_MODULES) != c("rep")])) {
+      for (module in COMPONENT_MODULES[[component]]) {
+      #trigger(module$id)
+      }}
 
     common$logger %>% writeLog(type='info','The previous session has been loaded successfully')
   })

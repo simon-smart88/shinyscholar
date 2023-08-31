@@ -14,7 +14,7 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-select_query <- function(poly,date,logger) {
+select_query <- function(poly,date,logger = NULL) {
 
 poly <- terra::vect(poly,crs="+init=EPSG:4326",type='polygons')
 area <- terra::expanse(poly,unit='km')
