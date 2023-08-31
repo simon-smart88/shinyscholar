@@ -21,7 +21,8 @@ select_query_module_server <- function(input, output, session, common) {
     showModal(modalDialog(title = "Info", "Please wait while the data is loaded.
                           This will close once it is complete", easyClose = FALSE))
     ras <- select_query(common$poly, input$date, common$logger)
-    if (is.null(ras)){removeModal()} #close if the function returns null
+    #close if the function returns null
+    if (is.null(ras)){removeModal()}
     # LOAD INTO COMMON ####
     common$ras <- ras
     # METADATA ####

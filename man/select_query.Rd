@@ -16,9 +16,10 @@ This function is called by the select_query module and loads an
  @param date character. Date of image to load
  @examples
  \dontrun{
- extent <- c(43,50,-26,-12)
- date <- '2023-06-20'
- ras <- select_query(extent,date)
+ poly <- matrix(c(0, 0, 0.5, 0.5, 0, 52, 52.5, 52.5, 52, 52), ncol=2)
+ colnames(poly) <- c("longitude", "latitude")
+ date <- "2023-06-20"
+ ras <- select_query(poly, date)
  }
 }
 \author{

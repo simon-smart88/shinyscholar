@@ -1,7 +1,3 @@
-library(testthat)
-
-context("Query data")
-
 poly_matrix <- matrix(c(0, 0, 0.5, 0.5, 0, 52, 52.5, 52.5, 52, 52), ncol=2)
 colnames(poly_matrix) <- c('longitude', 'latitude')
 
