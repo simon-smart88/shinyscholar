@@ -10,9 +10,9 @@
 
 plot_hist <- function(ras, bins) {
   ras_values <- terra::values(ras)
-  h <- graphics::hist(ras_values, breaks = seq(min(ras_values, na.rm = TRUE),
-                                               max(ras_values, na.rm = TRUE),
-                                               length.out = as.numeric(bins) + 1))
+  h <- graphics::hist(ras_values, plot = FALSE, breaks = seq(min(ras_values, na.rm = TRUE),
+                                                             max(ras_values, na.rm = TRUE),
+                                                             length.out = as.numeric(bins) + 1))
   h$density <- h$counts / sum(h$counts) * 100
   h
 }

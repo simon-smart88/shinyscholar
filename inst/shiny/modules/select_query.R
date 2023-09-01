@@ -19,7 +19,7 @@ select_query_module_server <- function(input, output, session, common) {
     req(input$date, common$poly)
     # FUNCTION CALL ####
     showModal(modalDialog(title = "Info", "Please wait while the data is loaded.
-                          This will close once it is complete", easyClose = FALSE))
+                          This window will close once it is complete.", easyClose = FALSE))
     ras <- select_query(common$poly, input$date, common$logger)
     #close if the function returns null
     if (is.null(ras)){removeModal()}
@@ -65,6 +65,7 @@ select_query_module_map <- function(map, common) {
                      circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE) %>%
       clearGroup(common$meta$ras$name) %>%
       addRasterImage(raster::raster(common$ras), colors = pal, group = common$meta$ras$name) %>%
+      addTiles(urlTemplate = "", attribution = "Copernicus Sentinel data 2023") %>%
       fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
       addLegend(position = "bottomright", pal = pal, values = terra::values(common$ras),
                 group = common$meta$ras$name, title = common$meta$ras$name) %>%

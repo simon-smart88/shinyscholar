@@ -23,6 +23,7 @@ For more detailed information see <http://rmarkdown.rstudio.com>).
 SMART uses the following R packages that must be installed and loaded before starting.
 ```{r}
 library(terra)
+library(leaflet)
 ```
 
 The *SMART* session code .Rmd file is composed of a chain of module functions that are internal to *SMART*. Each of these functions corresponds to a single module that the user ran during the session. To see the internal code for these module functions, click on the links in the .Rmd file. Users are encouraged to write custom code in the .Rmd directly to modify their analysis, and even modify the module function code to further customize. To see the source code for any module function, just type its name into the R console and press Return.

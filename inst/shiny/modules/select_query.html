@@ -354,17 +354,26 @@ display: none;
 
 <div id="query-raster" class="section level3">
 <h3><strong>Query raster:</strong></h3>
-<p><strong>BACKGROUND</strong> Fraction of Vegetation Cover (FCover) is
-a biophysical measurement corresponding to the percentage of land
-covered by green vegetation. The data is obtained from the Copernicus
-Global Land Service and is measured by the OLCI instrument on <a href="https://en.wikipedia.org/wiki/PROBA-V">Sentinel-3</a> satellites
-and the PROBA-V satellite. The image resolution is 333m but the
-resolution returned by this module will vary depending on the selected
-area. Images are a composite of data collected over a 10 day period.</p>
-<p><strong>IMPLEMENTATION</strong> Draw a polygon on the map over land,
-select a date and click run and the data will become visible on the
-map.</p>
-<p><strong>REFERENCES</strong> *<a href="https://land.copernicus.eu/global/products/fcover" class="uri">https://land.copernicus.eu/global/products/fcover</a></p>
+<p><strong>BACKGROUND</strong></p>
+<p>Fraction of Vegetation Cover (FCover) is a biophysical measurement
+corresponding to the percentage of land covered by green vegetation. The
+data is obtained from the Copernicus Global Land Service and is measured
+by the OLCI instrument on <a href="https://en.wikipedia.org/wiki/Sentinel-3#OLCI">Sentinel-3</a>
+satellites and the <a href="https://en.wikipedia.org/wiki/PROBA-V">PROBA-V</a> satellite, both
+operated by the European Space Agency. The image resolution is 333m but
+the resolution returned by this module will vary depending on the
+selected area. Images are a composite of data collected over a 10 day
+period.</p>
+<p><strong>IMPLEMENTATION</strong></p>
+<p>Draw a polygon on the map over land, select a date and click run and
+the data will become visible on the map. The maximum permitted area of
+the polygon is set to 3000 km<sup>2</sup></p>
+<p>Data are obtained from Copernicus via a GeoServer Web Map Service
+e.g. <a href="https://viewer.globalland.vgt.vito.be/geoserver/wms?SERVICE=WMS&amp;SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetMap&amp;FORMAT=image/geotiff&amp;LAYERS=CGLS:fcover300_v1_333m&amp;TILED=true&amp;TIME=2023-01-10T00:00:00.000Z&amp;WIDTH=2560&amp;HEIGHT=2560&amp;CRS=EPSG:4326&amp;BBOX=-26,43,-11,51" class="uri">https://viewer.globalland.vgt.vito.be/geoserver/wms?SERVICE=WMS&amp;SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetMap&amp;FORMAT=image/geotiff&amp;LAYERS=CGLS:fcover300_v1_333m&amp;TILED=true&amp;TIME=2023-01-10T00:00:00.000Z&amp;WIDTH=2560&amp;HEIGHT=2560&amp;CRS=EPSG:4326&amp;BBOX=-26,43,-11,51</a>’</p>
+<p><strong>REFERENCES</strong></p>
+<ul>
+<li><a href="https://land.copernicus.eu/global/products/fcover" class="uri">https://land.copernicus.eu/global/products/fcover</a></li>
+</ul>
 </div>
 
 

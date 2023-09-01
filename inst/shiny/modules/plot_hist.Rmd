@@ -5,7 +5,9 @@ Plots the data as a histogram
 ```{r, echo = {{plot_hist_knit}}, include = {{plot_hist_knit}}}
 
 hist <- plot_hist(ras,{{hist_bins}})
-#hist_cols <- brewer.pal({{hist_bins}}, "{{hist_pal}}")
+pal <- RColorBrewer::brewer.pal(9, "{{hist_pal}}")
+pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
+hist_cols <- pal_ramp({{hist_bins}})
 
-plot(hist,freq=F,main='',xlab = "{{hist_name}}",ylab='Frequency (%)')
+plot(hist, freq = F, main = "", xlab = "{{hist_name}}", ylab = "Frequency (%)", col = hist_cols)
 ```
