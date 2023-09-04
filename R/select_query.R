@@ -20,7 +20,8 @@ select_query <- function(poly, date, logger = NULL) {
   terra_poly <- terra::vect(poly, crs = "+init=EPSG:4326", type = "polygons")
   area <- terra::expanse(terra_poly, unit = "km")
   if (area > 3000) {
-    logger %>% writeLog(type = "error", glue::glue("Your selected area is too large ({round(area,0)} km2) when the maximum is 3000 km2. Please select a smaller area"))
+    logger %>% writeLog(type = "error", paste0("Your selected area is too large (",round(area,0)," km2)",
+                                              " when the maximum is 3000 km2. Please select a smaller area"))
     return()
   }
   extent <- terra::ext(poly)
@@ -31,18 +32,13 @@ select_query <- function(poly, date, logger = NULL) {
 
   #calculate polygon height and width
   #extract geometry
-  top_left <- sf::st_point(c(poly[1,2],poly[1,1]))
-  top_right <- sf::st_point(c(poly[2,2],poly[2,1]))
-  bottom_left <- sf::st_point(c(poly[4,2],poly[4,1]))
+  top_left <- c(poly[2,1],poly[2,2])
+  top_right <- c(poly[3,1],poly[3,2])
+  bottom_left <-c(poly[1,1],poly[1,2])
 
-  #create sf object
-  geom <- sf::st_sf(geometry = sf::st_sfc(top_left, top_right, bottom_left))
-  #set crs and transform to metres
-  sf::st_crs(geom) <- 4326
-  geom <- sf::st_transform(geom, crs=32632)
-  #calculate distances
-  width <- sf::st_distance(geom$geometry[1], geom$geometry[3])
-  height <- sf::st_distance(geom$geometry[1], geom$geometry[2])
+  width <- geosphere::distm(top_left, top_right, fun = geosphere::distHaversine)
+  height <- geosphere::distm(top_left, bottom_left, fun = geosphere::distHaversine)
+
   #convert to 333 m pixels
   height <- as.numeric(round(height / 333, 0))
   width <- as.numeric(round(width / 333, 0))

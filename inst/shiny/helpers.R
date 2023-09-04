@@ -9,12 +9,12 @@ uiTop <- function(mod_INFO) {
                         class = "modHelpButton"),
              br())
 
-  ls <- c(ls, list(span("R packages:", class = "rpkg"),
-                   span(paste(pkgName, collapse = ", "), class = "pkgDes"),
+  ls <- c(ls, list(shiny::span("R packages:", class = "rpkg"),
+                   shiny::span(paste(pkgName, collapse = ", "), class = "pkgDes"),
                    br()))
   # for (i in seq_along(pkgName)) {
-  #   ls <- c(ls, list(span(pkgName[i], class = "rpkg"),
-  #                    span(paste(':', pkgTitl[i]), class = "pkgDes"),
+  #   ls <- c(ls, list(shiny::span(pkgName[i], class = "rpkg"),
+  #                    shiny::span(paste(':', pkgTitl[i]), class = "pkgDes"),
   #                    br()))
   # }
 
@@ -28,12 +28,12 @@ uiBottom <- function(mod_INFO) {
   pkgAuts <- mod_INFO$pkgAuts
   pkgTitl <- mod_INFO$pkgTitl
 
-  ls <- list(span('Module Developers:', class = "rpkg"),
-             span(modAuts, class = "pkgDes"), br(), br())
+  ls <- list(shiny::span('Module Developers:', class = "rpkg"),
+             shiny::span(modAuts, class = "pkgDes"), br(), br())
 
   for (i in seq_along(pkgName)) {
     ls <- c(ls, list(
-      span(pkgName[i], class = "rpkg"),
+      shiny::span(pkgName[i], class = "rpkg"),
       "references", br(),
       div(paste(pkgTitl[i]), class = "pkgTitl"),
       div(paste('Package Developers:', pkgAuts[i]), class = "pkgDes"),

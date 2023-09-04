@@ -106,7 +106,6 @@ function(input, output, session) {
   # })
 
 
-
     observe({
     coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
     xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
