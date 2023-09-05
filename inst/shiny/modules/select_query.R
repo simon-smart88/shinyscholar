@@ -31,6 +31,16 @@ select_query_module_server <- function(input, output, session, common) {
     common$meta$ras$name <- "FCover"
     common$meta$query$used <- TRUE
     trigger("select_query")
+
+    # test <- reactive({
+    #   common
+    # })
+    #
+    # meta <- reactive({
+    #   common$meta
+    # })
+
+    # exportTestValues(common = test(), meta = meta())
   })
 
 

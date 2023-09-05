@@ -19,7 +19,6 @@ Depends:
 Imports:
     dplyr (>= 1.0.2),
     DT (>= 0.5),
-    geosphere,
     glue,
     knitcitations,
     leafem,

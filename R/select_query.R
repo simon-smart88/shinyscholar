@@ -32,9 +32,9 @@ select_query <- function(poly, date, logger = NULL) {
 
   #calculate polygon height and width
   #extract geometry
-  top_left <- c(poly[2,1],poly[2,2])
-  top_right <- c(poly[3,1],poly[3,2])
-  bottom_left <-c(poly[1,1],poly[1,2])
+  top_left <- c(poly[2,1], poly[2,2])
+  top_right <- c(poly[3,1], poly[3,2])
+  bottom_left <- c(poly[1,1], poly[1,2])
 
   width <- geosphere::distm(top_left, top_right, fun = geosphere::distHaversine)
   height <- geosphere::distm(top_left, bottom_left, fun = geosphere::distHaversine)
@@ -52,7 +52,8 @@ select_query <- function(poly, date, logger = NULL) {
   #count missing values and log accordingly
   missing_values <- length(values(raster_image)[values(raster_image) == 254])
   if (missing_values == length(values(raster_image))) {
-    logger %>% writeLog(type = "error", glue::glue("No data was found for your selected area. This could be due to cloud coverage or because the area is not over land."))
+    logger %>% writeLog(type = "error", paste0("No data was found for your selected area. ",
+                                               "This could be due to cloud coverage or because the area is not over land."))
     return()
   }
   logger %>% writeLog(glue::glue("{missing_values} pixels were removed due to cloud coverage."))
