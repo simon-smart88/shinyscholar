@@ -7,10 +7,10 @@ function(input, output, session) {
 
   # Variable to keep track of current log message
   initLogMsg <- function() {
-    intro <- '***WELCOME TO SMART***'
-    brk <- paste(rep('------', 14), collapse = '')
-    expl <- 'Please find messages for the user in this log window.'
-    logInit <- gsub('.{4}$', '', paste(intro, brk, expl, brk, '', sep = '<br>'))
+    intro <- "***WELCOME TO SMART***"
+    brk <- paste(rep("------", 14), collapse = "")
+    expl <- "Please find messages for the user in this log window."
+    logInit <- gsub(".{4}$", "", paste(intro, brk, expl, brk, "", sep = "<br>"))
     logInit
   }
 
@@ -41,7 +41,7 @@ function(input, output, session) {
 
   # UI for component guidance text
   output$gtext_component <- renderUI({
-    file <- file.path('Rmd', glue("gtext_{component()}.Rmd"))
+    file <- file.path("Rmd", glue("gtext_{component()}.Rmd"))
     if (!file.exists(file)) return()
     includeMarkdown(file)
   })
@@ -75,8 +75,9 @@ function(input, output, session) {
   output$map <- renderLeaflet(
     leaflet() %>%
       setView(0, 0, zoom = 2) %>%
-      addProviderTiles('Esri.WorldTopoMap') %>%
-      addDrawToolbar(polylineOptions=F,circleOptions = F, rectangleOptions = T, markerOptions = F, circleMarkerOptions = F, singleFeature = T,polygonOptions = F)
+      addProviderTiles("Esri.WorldTopoMap") %>%
+      addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
+                     markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE)
   )
 
   # create map proxy to make further changes to existing map
@@ -89,7 +90,6 @@ function(input, output, session) {
 
   # Call the module-specific map function for the current module
   observe({
-    # must have one species selected and occurrence data
     req(module())
     map_fx <- COMPONENT_MODULES[[component()]][[module()]]$map_function
     if (!is.null(map_fx)) {
@@ -97,19 +97,10 @@ function(input, output, session) {
     }
   })
 
-  # observeEvent(input$map_draw_new_feature, {
-  #   coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
-  #   xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
-  #   colnames(xy) <- c('longitude', 'latitude')
-  #   common$poly <- xy
-  #   trigger("change_poly")
-  # })
-
-
     observe({
     coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
     xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
-    colnames(xy) <- c('longitude', 'latitude')
+    colnames(xy) <- c("longitude", "latitude")
     common$poly <- xy
     trigger("change_poly")
   }) %>% bindEvent(input$map_draw_new_feature)
@@ -124,10 +115,7 @@ function(input, output, session) {
   observe({
     shinyjs::toggleState("goLoad_session", !is.null(input$load_session$datapath))
     req(common$ras)
-    # shinyjs::toggleState("dlData", !is.null(occs()))
-    # shinyjs::toggleState("dlPlot", !is.null(occs()))
-
-    # shinyjs::toggleState("dlWhatever", !is.null(spp[[curSp()]]$whatever))
+    shinyjs::toggleState("dlData", !is.null(common$ras))
   })
 
 
@@ -139,30 +127,30 @@ function(input, output, session) {
   output$table <- DT::renderDataTable({
     # check that a raster exists
     req(common$ras)
-    sample_table <- terra::spatSample(common$ras,100,method='random',xy=T,as.df=T)
-    colnames(sample_table) <- c('Longitude','Latitude','Value')
+    sample_table <- terra::spatSample(common$ras, 100, method = "random", xy = TRUE, as.df = TRUE)
+    colnames(sample_table) <- c("Longitude", "Latitude", "Value")
     sample_table %>%
       dplyr::mutate(Longitude = round(as.numeric(Longitude), digits = 4),
                     Latitude = round(as.numeric(Latitude), digits = 4))
   }, rownames = FALSE, options = list(scrollX = TRUE))
-  #
-  # # DOWNLOAD: current species occurrence data table
-  # output$dlOccs <- downloadHandler(
-  #   filename = function() {
-  #     n <- fmtSpN(curSp())
-  #     source <- rmm()$data$occurrence$sources
-  #     glue("{n}_{source}.csv")
-  #   },
-  #   content = function(file) {
-  #     tbl <- occs() %>%
-  #       dplyr::select(-c(pop, occID))
-  #     # if bg values are present, add them to table
-  #     if(!is.null(bg())) {
-  #       tbl <- rbind(tbl, bg())
-  #     }
-  #     write_csv_robust(tbl, file, row.names = FALSE)
-  #   }
-  # )
+
+  # DOWNLOAD: current species occurrence data table
+  output$dlOccs <- downloadHandler(
+    filename = function() {
+      n <- fmtSpN(curSp())
+      source <- rmm()$data$occurrence$sources
+      glue("{n}_{source}.csv")
+    },
+    content = function(file) {
+      tbl <- occs() %>%
+        dplyr::select(-c(pop, occID))
+      # if bg values are present, add them to table
+      if(!is.null(bg())) {
+        tbl <- rbind(tbl, bg())
+      }
+      write_csv_robust(tbl, file, row.names = FALSE)
+    }
+  )
 
 
   ############################################# #
@@ -172,19 +160,19 @@ function(input, output, session) {
     output$code_module <- renderPrint({
     req(module())
 
-    if (input$code_choice == 'Module'){
+    if (input$code_choice == "Module"){
       code <- readLines(system.file(glue("shiny/modules/{module()}.R"),package = "SMART"))
     }
-    if (input$code_choice == 'Function'){
-      #seperate call required in case there are multiple functions
+    if (input$code_choice == "Function"){
+      #separate call required in case there are multiple functions
       ga_call <- getAnywhere(module())
       code <- capture.output(print(getAnywhere(module())[which(ga_call$where == "package:SMART")]))
       code <- code[1:(length(code)-2)]
     }
-    if (input$code_choice == 'Markdown'){
-      code <- readLines(system.file(glue("shiny/modules/{module()}.Rmd"),package = "SMART"))
+    if (input$code_choice == "Markdown"){
+      code <- readLines(system.file(glue("shiny/modules/{module()}.Rmd"), package = "SMART"))
     }
-    cat(code,sep='\n')
+    cat(code,sep="\n")
   })
 
 
@@ -197,10 +185,10 @@ function(input, output, session) {
     type <- match.arg(type)
     switch(
       type,
-      Rmd = '.Rmd',
-      PDF = '.pdf',
-      HTML = '.html',
-      Word = '.docx'
+      Rmd = ".Rmd",
+      PDF = ".pdf",
+      HTML = ".html",
+      Word = ".docx"
     )
   }
 
@@ -263,7 +251,7 @@ function(input, output, session) {
 
       result_file <- tempfile(pattern = "result_", fileext = filetype_to_ext(input$rmdFileType))
       if (input$rmdFileType == "Rmd") {
-        combined_rmd <- gsub('``` r', '```{r}', combined_md)
+        combined_rmd <- gsub("``` r", "```{r}", combined_md)
         writeLines(combined_rmd, result_file, useBytes = TRUE)
       } else {
         combined_md_file <- tempfile(pattern = "combined_", fileext = ".md")
@@ -376,17 +364,12 @@ function(input, output, session) {
   ### GARGOYLE ####
   ###################
 
-  for (m in c("select_user","select_query","plot_hist","plot_scatter")){
+  for (m in c("select_user", "select_query", "plot_hist", "plot_scatter")){
     gargoyle::init(m)
   }
 
-  # gargoyle::init("select_user")
-  # gargoyle::init("select_query")
-  # gargoyle::init("plot_hist")
-  # gargoyle::init("plot_scatter")
-  observeEvent(gargoyle::watch("plot_hist"),updateTabsetPanel(session, "main",selected = 'Results'),ignoreInit = TRUE)
-  observeEvent(gargoyle::watch("plot_scatter"),updateTabsetPanel(session, "main",selected = 'Results'),ignoreInit = TRUE)
-
+  observeEvent(gargoyle::watch("plot_hist"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
+  observeEvent(gargoyle::watch("plot_scatter"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
 
   observe({
     common_size <- as.numeric(utils::object.size(common))
@@ -423,7 +406,7 @@ function(input, output, session) {
     temp <- load_session(input$load_session$datapath)
     temp_names <- names(temp)
     #exclude the non-public and function objects
-    temp_names  <- temp_names[!temp_names %in% c('clone',".__enclos_env__","logger")]
+    temp_names  <- temp_names[!temp_names %in% c("clone",".__enclos_env__","logger")]
     for (name in temp_names){
       common[[name]] <- temp[[name]]
     }
@@ -435,7 +418,7 @@ function(input, output, session) {
       #trigger(module$id)
       }}
 
-    common$logger %>% writeLog(type='info','The previous session has been loaded successfully')
+    common$logger %>% writeLog(type="info","The previous session has been loaded successfully")
   })
 
 }
