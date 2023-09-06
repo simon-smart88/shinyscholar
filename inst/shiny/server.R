@@ -1,6 +1,7 @@
 library(SMART)
 
 function(input, output, session) {
+
   ########################## #
   # REACTIVE VALUES LISTS ####
   ########################## #
@@ -97,11 +98,15 @@ function(input, output, session) {
     }
   })
 
-    observe({
+  # Capture coordinates of polygons
+  observe({
     coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
     xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
     colnames(xy) <- c("longitude", "latitude")
+    #convert any longitudes drawn outside of the original map
+    xy$longitude <- ((xy$longitude + 180) %% 360) - 180
     common$poly <- xy
+    print(common$poly)
     trigger("change_poly")
   }) %>% bindEvent(input$map_draw_new_feature)
 
@@ -119,14 +124,15 @@ function(input, output, session) {
   })
 
 
-  # # # # # # # # # # # # # # # # # #
-  # OBTAIN OCCS: other controls ####
-  # # # # # # # # # # # # # # # # # #
+  ############################################# #
+  ### TABLE TAB ####
+  ############################################# #
 
   # TABLE
   output$table <- DT::renderDataTable({
     # check that a raster exists
     req(common$ras)
+    gargoyle::watch(c("select_query", "select_user"))
     sample_table <- terra::spatSample(common$ras, 100, method = "random", xy = TRUE, as.df = TRUE)
     colnames(sample_table) <- c("Longitude", "Latitude", "Value")
     sample_table %>%
@@ -134,7 +140,7 @@ function(input, output, session) {
                     Latitude = round(as.numeric(Latitude), digits = 4))
   }, rownames = FALSE, options = list(scrollX = TRUE))
 
-  # DOWNLOAD: current species occurrence data table
+  # DOWNLOAD
   output$dlOccs <- downloadHandler(
     filename = function() {
       n <- fmtSpN(curSp())
@@ -154,7 +160,7 @@ function(input, output, session) {
 
 
   ############################################# #
-  ### CODE MODULE ####
+  ### CODE TAB ####
   ############################################# #
 
     output$code_module <- renderPrint({
@@ -174,8 +180,6 @@ function(input, output, session) {
     }
     cat(code,sep="\n")
   })
-
-
 
   ########################################### #
   ### RMARKDOWN FUNCTIONALITY ####
@@ -288,10 +292,11 @@ function(input, output, session) {
       bib_file <- "Rmd/references.bib"
       temp_bib_file <- tempfile(pattern = "ref_", fileext = ".bib")
       # Package always cited
-      knitcitations::citep(citation("wallace"))
+      knitcitations::citep(citation("SMART"))
       knitcitations::citep(citation("knitcitations"))
       knitcitations::citep(citation("knitr"))
       knitcitations::citep(citation("rmarkdown"))
+      knitcitations::citep(citation("terra"))
       knitcitations::citep(citation("raster"))
       # Write BIBTEX file
       knitcitations::write.bibtex(file = temp_bib_file)
@@ -346,6 +351,9 @@ function(input, output, session) {
   #   watch(c("select_user","select_query","change_poly","plot_hist","plot_scatter"))
   #   print(common$meta)})
 
+  ####################
+  ### INITIALISATION ####
+  ###################
 
   # Initialize all modules
   modules <- list()
@@ -360,16 +368,17 @@ function(input, output, session) {
     })
   })
 
-  ####################
-  ### GARGOYLE ####
-  ###################
-
+  # Initialize event triggers for each module
   for (m in c("select_user", "select_query", "plot_hist", "plot_scatter")){
     gargoyle::init(m)
   }
 
   observeEvent(gargoyle::watch("plot_hist"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
   observeEvent(gargoyle::watch("plot_scatter"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
+
+  ################################
+  ### SAVE / LOAD FUNCTIONALITY ####
+  ################################
 
   observe({
     common_size <- as.numeric(utils::object.size(common))
@@ -406,7 +415,7 @@ function(input, output, session) {
     temp <- load_session(input$load_session$datapath)
     temp_names <- names(temp)
     #exclude the non-public and function objects
-    temp_names  <- temp_names[!temp_names %in% c("clone",".__enclos_env__","logger")]
+    temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "logger")]
     for (name in temp_names){
       common[[name]] <- temp[[name]]
     }
