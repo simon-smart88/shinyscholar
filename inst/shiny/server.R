@@ -128,33 +128,30 @@ function(input, output, session) {
   ### TABLE TAB ####
   ############################################# #
 
+  sample_table <- reactive({
+  req(common$ras)
+  gargoyle::watch(c("select_query", "select_user"))
+  sample_table <- terra::spatSample(common$ras, 100, method = "random", xy = TRUE, as.df = TRUE)
+  colnames(sample_table) <- c("Longitude", "Latitude", "Value")
+  sample_table %>%
+    dplyr::mutate(Longitude = round(as.numeric(Longitude), digits = 4),
+                  Latitude = round(as.numeric(Latitude), digits = 4))
+  })
+
   # TABLE
   output$table <- DT::renderDataTable({
     # check that a raster exists
     req(common$ras)
-    gargoyle::watch(c("select_query", "select_user"))
-    sample_table <- terra::spatSample(common$ras, 100, method = "random", xy = TRUE, as.df = TRUE)
-    colnames(sample_table) <- c("Longitude", "Latitude", "Value")
-    sample_table %>%
-      dplyr::mutate(Longitude = round(as.numeric(Longitude), digits = 4),
-                    Latitude = round(as.numeric(Latitude), digits = 4))
+    sample_table()
   }, rownames = FALSE, options = list(scrollX = TRUE))
 
   # DOWNLOAD
-  output$dlOccs <- downloadHandler(
+  output$dl_table <- downloadHandler(
     filename = function() {
-      n <- fmtSpN(curSp())
-      source <- rmm()$data$occurrence$sources
-      glue("{n}_{source}.csv")
+      "SMART_sample_table.csv"
     },
     content = function(file) {
-      tbl <- occs() %>%
-        dplyr::select(-c(pop, occID))
-      # if bg values are present, add them to table
-      if(!is.null(bg())) {
-        tbl <- rbind(tbl, bg())
-      }
-      write_csv_robust(tbl, file, row.names = FALSE)
+      write.csv(sample_table(), file, row.names = FALSE)
     }
   )
 

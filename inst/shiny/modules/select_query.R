@@ -32,18 +32,10 @@ select_query_module_server <- function(input, output, session, common) {
     common$meta$query$used <- TRUE
     trigger("select_query")
 
-    # test <- reactive({
-    #   common
-    # })
-    #
-    # meta <- reactive({
-    #   common$meta
-    # })
-
-    # exportTestValues(common = test(), meta = meta())
   })
 
-
+  #exportTestValues(ras = terra::values(common$ras))
+  exportTestValues(common = common)
 
   return(list(
     save = function() {
