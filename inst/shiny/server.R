@@ -119,7 +119,7 @@ function(input, output, session) {
   observe({
     shinyjs::toggleState("goLoad_session", !is.null(input$load_session$datapath))
     req(common$ras)
-    shinyjs::toggleState("dlData", !is.null(common$ras))
+    #shinyjs::toggleState("dl_table", !is.null(common$ras))
   })
 
 
@@ -129,12 +129,15 @@ function(input, output, session) {
 
   sample_table <- reactive({
   req(common$ras)
-  gargoyle::watch(c("select_query", "select_user"))
+  gargoyle::watch("select_user")
+  gargoyle::watch("select_query")
+  set.seed(12345)
   sample_table <- terra::spatSample(common$ras, 100, method = "random", xy = TRUE, as.df = TRUE)
   colnames(sample_table) <- c("Longitude", "Latitude", "Value")
   sample_table %>%
     dplyr::mutate(Longitude = round(as.numeric(Longitude), digits = 4),
                   Latitude = round(as.numeric(Latitude), digits = 4))
+  sample_table
   })
 
   # TABLE
@@ -388,9 +391,10 @@ function(input, output, session) {
     #   state[[module_id]] <- modules[[module_id]]$save()
     # }
 
-    #required due to terra objects being pointers to c++ objects
+    # wrap and unwrap required due to terra objects being pointers to c++ objects
     common$ras <- terra::wrap(common$ras)
     saveRDS(common, file)
+    common$ras <- terra::unwrap(common$ras)
   }
 
   output$save_session <- downloadHandler(
@@ -426,6 +430,9 @@ function(input, output, session) {
     common$logger %>% writeLog(type="info","The previous session has been loaded successfully")
   })
 
+  ################################
+  ### EXPORT TEST VALUES ####
+  ################################
   exportTestValues(common = common)
 
 }

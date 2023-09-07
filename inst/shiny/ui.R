@@ -119,7 +119,8 @@ tagList(
             ),
             tabPanel(
               'Table', br(),
-              DT::dataTableOutput('table')
+              DT::dataTableOutput('table'),
+              downloadButton('dl_table', "CSV file")
             ),
             tabPanel(
               'Results',
