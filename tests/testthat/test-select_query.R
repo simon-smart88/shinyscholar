@@ -45,39 +45,13 @@ test_that("Check select_query returns missing values when over the sea", {
                                                     "This could be due to cloud coverage or because the area is not over land\\."))
 })
 
-source('~/Documents/wallace-disag/inst/shiny/modules/select_query.R')
-
-
-# test_that("Check select_query module works correctly", {
-#   # testServer(select_query_module_server, args=list(common = common), {
-#   #testServer(select_query_module_server, {
-#
-#     app <- shinytest2::AppDriver$new("~/Documents/wallace-disag/inst/shiny")
-#
-#     # common_class <- R6::R6Class(
-#     #   classname = "common",
-#     #   public = list(
-#     #     poly = NULL,
-#     #     ras = NULL
-#     #   )
-#     # )
-#     #
-#     # common <- common_class$new()
-#     # common$poly <- poly_matrix
-#     # app$setValue()
-#
-#     app$set_inputs(tabs = "select")
-#     app$set_inputs(selectSel = "select_query")
-#     app$click("select_query-run")
-#     Sys.sleep(30)
-#     meta <- app$get_value(export = "meta")
-#     print(meta)
-#     common <- app$get_value(export = "common")
-#     expect_is(common$ras, 'SpatRaster')
-#     expect_equal(meta$ras$name, "FCover")
-#     expect_equal(values$export$ras,NULL)
-#
-#
-#
-#   #})
-# })
+test_that("{shinytest2} recording: e2e_select_query", {
+  app <- shinytest2::AppDriver$new(app_dir = '../../inst/shiny', name = "e2e_select_query")
+  app$set_inputs(tabs = "select")
+  app$set_inputs(selectSel = "select_query")
+  app$click("select_query-run")
+  common <- app$get_value(export = "common")
+  expect_equal(is.null(common$poly), FALSE)
+  expect_is(common$ras, 'SpatRaster')
+  expect_equal(common$meta$ras$name, "FCover")
+})

@@ -1,6 +1,6 @@
 SMART 1.0.0
 =============
-- The template has been created mainly through the removal of functionality from Wallace and the addition of basic functionality to demonstrate how modules can be used. 
+- The template has been created mainly through the removal of functionality from `Wallace` and the addition of basic functionality to demonstrate how modules can be used. 
 - These are the key features which have been retained:
 1. Automatic loading of modules
 2. Saving and loading of the current app state
@@ -10,3 +10,4 @@ SMART 1.0.0
 - These changes have been made:
 1. `common` - the data structure passed between modules - has been changed from a `list()` containing `spp <- reactiveValues()` to an `R6::R6Class()`.
 2. A Code tab has been added to the Visualization panel to allow the code for each module and the function that each module calls to be viewed.
+3. Unit tests for each module have been created using `shinytest2` in addition to unit tests for the function that the module calls.

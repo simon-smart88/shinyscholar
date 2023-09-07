@@ -11,6 +11,8 @@ select_query_module_ui <- function(id) {
 select_query_module_server <- function(input, output, session, common) {
 
   observeEvent(input$run, {
+
+    #TEST MODE - required due to the polygon not being able to be tested correctly.
     if (isTRUE(getOption("shiny.testmode"))) {
       poly_matrix <- matrix(c(0, 0, 0.5, 0.5, 0, 52, 52.5, 52.5, 52, 52), ncol=2)
       colnames(poly_matrix) <- c('longitude', 'latitude')
