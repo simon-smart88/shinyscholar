@@ -11,6 +11,12 @@ select_query_module_ui <- function(id) {
 select_query_module_server <- function(input, output, session, common) {
 
   observeEvent(input$run, {
+    if (isTRUE(getOption("shiny.testmode"))) {
+      poly_matrix <- matrix(c(0, 0, 0.5, 0.5, 0, 52, 52.5, 52.5, 52, 52), ncol=2)
+      colnames(poly_matrix) <- c('longitude', 'latitude')
+      common$poly <- poly_matrix
+    }
+
     # WARNING ####
     if (is.null(common$poly)) {
       common$logger %>% writeLog(type = "error", "Please draw a rectangle on the map")
@@ -33,9 +39,6 @@ select_query_module_server <- function(input, output, session, common) {
     trigger("select_query")
 
   })
-
-  #exportTestValues(ras = terra::values(common$ras))
-  exportTestValues(common = common)
 
   return(list(
     save = function() {
@@ -60,7 +63,7 @@ select_query_module_map <- function(map, common) {
     req(common$meta$query$used == TRUE)
     req(common$ras)
     ex <- as.vector(terra::ext(common$ras))
-    pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9, na.color = "#00000000")
+    pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9, na.color = "pink")
     map %>%
       removeDrawToolbar(clearFeatures = TRUE) %>%
       addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE, markerOptions = FALSE,

@@ -104,9 +104,8 @@ function(input, output, session) {
     xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
     colnames(xy) <- c("longitude", "latitude")
     #convert any longitudes drawn outside of the original map
-    xy$longitude <- ((xy$longitude + 180) %% 360) - 180
+    xy[,1] <- ((xy[,1] + 180) %% 360) - 180
     common$poly <- xy
-    print(common$poly)
     trigger("change_poly")
   }) %>% bindEvent(input$map_draw_new_feature)
 
@@ -426,5 +425,7 @@ function(input, output, session) {
 
     common$logger %>% writeLog(type="info","The previous session has been loaded successfully")
   })
+
+  exportTestValues(common = common)
 
 }
