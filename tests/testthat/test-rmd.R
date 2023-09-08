@@ -30,6 +30,16 @@ test_that("{shinytest2} recording: e2e_markdown", {
   expect_gt(file.info(ref_file)$size, 10000)
   })
 
-
-
+test_that("{shinytest2} recording: e2e_table", {
+  app <- shinytest2::AppDriver$new(app_dir = '../../inst/shiny', name = "e2e_markdown")
+  app$set_inputs(tabs = "select")
+  app$set_inputs(selectSel = "select_user")
+  app$upload_file(`select_user-ras` = path)
+  app$set_inputs(`select_user-name` = "bio")
+  app$click("select_user-run")
+  app$set_inputs(main = "Table")
+  table_file <- app$get_download("dl_table")
+  df <- read.csv(table_file)
+  expect_equal(nrow(df),100)
+  })
 

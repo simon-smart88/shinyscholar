@@ -169,26 +169,23 @@ tagList(
                 h4(strong("Download Data")),
                 p(paste0("Download data/results from analyses from currently selected module")),
                 ## save module data BEGIN ##
-                # save occs #
+                # save histogram #
                 conditionalPanel(
-                  "input.tabs == 'occs'",
+                  "input.plotSel == 'plot_hist'",
                   br(),
                   fluidRow(
-                    column(3, h5("Download original occurrence data")),
-                    column(2, shinyjs::disabled(downloadButton('dlDbOccs', "CSV file")))
-                  ),
+                    column(3, h5("Download histogram")),
+                    column(2, downloadButton('dl_hist', "PNG file"))
+                  )
+                ),
+                conditionalPanel(
+                  "input.plotSel == 'plot_scatter'",
                   br(),
                   fluidRow(
-                    column(3, h5("Download current table")),
-                    column(2, shinyjs::disabled(downloadButton('dlOccs', "CSV file")))
-                  ),
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download all data")),
-                    column(2, shinyjs::disabled(downloadButton('dlAllOccs', "CSV file")))
+                    column(3, h5("Download scatterplot")),
+                    column(2, downloadButton('dl_scatter', "PNG file"))
                   )
                 )
-
 
               )
             )
