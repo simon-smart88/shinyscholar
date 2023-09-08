@@ -13,16 +13,21 @@ test_that("{shinytest2} recording: e2e_markdown", {
   app$click("plot_scatter-run")
   app$set_inputs(tabs = "rep")
   app$set_inputs(repSel = "rep_markdown")
-  save_file <- app$get_download("dlRMD")
-  expect_false(is.null(save_file))
-  lines <- readLines(save_file)
-  lines[42] <- paste0('raster_directory <- "',gsub("bio05.tif","",path),'"')
-  writeLines(lines,save_file)
-  rmarkdown::render(save_file)
+  sess_file <- app$get_download("dlRMD")
+  expect_false(is.null(sess_file))
+  lines <- readLines(sess_file)
+  lines[45] <- paste0('raster_directory <- "',gsub("bio05.tif","",path),'"')
+  writeLines(lines,sess_file)
+  rmarkdown::render(sess_file)
   #ras is internal to the Rmd so checks that the code runs
   expect_is(ras,"SpatRaster")
-  html_file <- gsub("Rmd","html",save_file)
+  html_file <- gsub("Rmd","html",sess_file)
   expect_gt(file.info(html_file)$size, 100000)
+
+  app$set_inputs(repSel = "rep_refPackages")
+  app$set_inputs(refFileType = "HTML")
+  ref_file <- app$get_download("dlrefPackages")
+  expect_gt(file.info(ref_file)$size, 10000)
   })
 
 

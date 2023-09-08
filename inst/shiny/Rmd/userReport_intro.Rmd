@@ -14,9 +14,9 @@ Please find below the R code history from your *SMART* v1.0.0 session.
 
 You can reproduce your session results by running this R Markdown file in RStudio. 
 
-Each code block is called a "chunk", and you can run them either one-by-one or all at once by choosing an option in the "Run" menu at the top-right corner of the "Source" pane in RStudio. 
+Each code block is called a "chunk", and you can run them either one-by-one or all at once by choosing an option in the "Run" menu at the top-right corner of the "Source" pane in RStudio. The file can also be rendered into an html file using `rmarkdown::render()` which will contain all of the outputs alongside the code used to generate them.
 
-For more detailed information see <http://rmarkdown.rstudio.com>).
+For more detailed information see <http://rmarkdown.rstudio.com>.
 
 ### Package installation
 
@@ -24,6 +24,7 @@ SMART uses the following R packages that must be installed and loaded before sta
 ```{r}
 library(terra)
 library(leaflet)
+library(SMART)
 ```
 
 The *SMART* session code .Rmd file is composed of a chain of module functions that are internal to *SMART*. Each of these functions corresponds to a single module that the user ran during the session. To see the internal code for these module functions, click on the links in the .Rmd file. Users are encouraged to write custom code in the .Rmd directly to modify their analysis, and even modify the module function code to further customize. To see the source code for any module function, just type its name into the R console and press Return.
