@@ -34,7 +34,7 @@ test_that("{shinytest2} recording: e2e_save_scat", {
 })
 
 #this may be temperamental
-test_that("{shinytest2} recording: e2e_save", {
+test_that("{shinytest2} recording: e2e_save_hist", {
   app <- shinytest2::AppDriver$new(app_dir = '../../inst/shiny', name = "e2e_save_hist")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
@@ -53,7 +53,7 @@ test_that("{shinytest2} recording: e2e_save", {
 })
 
 test_that("{shinytest2} recording: e2e_load", {
-  app <- shinytest2::AppDriver$new(app_dir = '../../inst/shiny', name = "e2e_select_user")
+  app <- shinytest2::AppDriver$new(app_dir = '../../inst/shiny', name = "e2e_load")
   app$set_inputs(introTabs = "Load Prior Session")
   app$upload_file(load_session = save_path)
   app$click("goLoad_session")
