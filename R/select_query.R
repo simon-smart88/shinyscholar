@@ -2,6 +2,7 @@
 #' @description
 #' This function is called by the select_query module and loads an
 #'  FCover raster for the selected area.
+#'
 #'  @param extent SpatExtent object of the area
 #'  @param date character. Date of image to load
 #'  @examples

@@ -1,9 +1,10 @@
 #' @title plot_hist
-#' @description
-#' This function is called by the plot_hist module and extracts
+#' @description This function is called by the plot_hist module and extracts
 #'  values from a raster image.
-#'  @param ras SpatRaster object
-#'  @param bins The number of breaks in the histogram
+#'
+#' @param ras SpatRaster object
+#' @param bins The number of breaks in the histogram
+
 #' @return a vector of values extracted from the raster
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export

@@ -1,5 +1,3 @@
-[![R-CMD-check](https://github.com/wallaceEcoMod/wallace/workflows/R-CMD-check/badge.svg)](https://github.com/wallaceEcoMod/wallace/actions) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![CRAN version](http://www.r-pkg.org/badges/version/wallace)](https://CRAN.R-project.org/package=wallace) [![downloads](https://cranlogs.r-pkg.org:443/badges/grand-total/wallace?color=orange)](https://cranlogs.r-pkg.org:443/badges/grand-total/wallace?color=orange)
-
 # SMART (v1.0.0)
 SMART (Shiny Modular Academic Reproducible Template) is a basic application written in R that can be used as a template to create . The application guides users through a complete analysis, from the acquisition of data to visualizing model predictions on an interactive map, thus bundling complex workflows into a single, streamlined interface. *SMART* was forked from *Wallace*, a modular platform for reproducible modeling of species niches and distributions and we are very grateful for the contributors of that package.
 
