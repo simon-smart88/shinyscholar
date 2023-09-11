@@ -3,3 +3,5 @@ library(testthat)
 library(SMART)
 
 test_check("SMART")
+
+test_dir('tests/testthat/')
