@@ -463,6 +463,15 @@ function(input, output, session) {
       #trigger(module$id)
       }}
 
+    updateTabsetPanel(session, "tabs", "select")
+    updateTabsetPanel(session, "selectSel", "select_user")
+    # updateTabsetPanel(session, "selectSel", "select_query")
+    updateTabsetPanel(session, "tabs", "plot")
+    # updateTabsetPanel(session, "plotSel", "plot_hist")
+    updateTabsetPanel(session, "plotSel", "plot_scatter")
+    updateTabsetPanel(session, "tabs", "intro")
+    updateTabsetPanel(session, "introTabs", "Load Prior Session")
+
     common$logger %>% writeLog(type="info","The previous session has been loaded successfully")
   })
 

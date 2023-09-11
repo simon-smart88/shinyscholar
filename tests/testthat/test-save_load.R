@@ -61,4 +61,3 @@ test_that("{shinytest2} recording: e2e_load", {
   expect_is(common$ras, 'SpatRaster')
 })
 
-
