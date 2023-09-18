@@ -1,7 +1,7 @@
 library(SMART)
 library(glue)
 
-module <- "plot_hist"
+module <- "plot_scatter"
 
 source(glue("modules/{module}.R"))
 
@@ -21,7 +21,6 @@ ui <- fluidPage(
   do.call(glue("{module}_module_ui"),list(module)),
   if (exists(glue("{module}_module_result"))){do.call(glue("{module}_module_result"),list(module))},
   if (exists(glue("{module}_module_map"))){leaflet::leafletOutput("map", height = 700)}
-
 )
 
 server <- function(input, output, session) {

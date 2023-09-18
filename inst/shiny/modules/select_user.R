@@ -36,10 +36,10 @@ select_user_module_server <- function(input, output, session, common) {
 
   return(list(
     save = function() {
-      # Save any values that should be saved when the current session is saved
+      list(user_name = input$name)
     },
-    load = function(state) {
-      # Load
+    load = function(common) {
+      updateTextInput(session, "name", selected = common$state$user_name)
     }
   ))
 

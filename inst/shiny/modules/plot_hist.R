@@ -41,10 +41,15 @@ plot_hist_module_server <- function(input, output, session, common) {
 
   return(list(
     save = function() {
-      # Save any values that should be saved when the current session is saved
-    },
-    load = function(state) {
-      # Load
+      list(
+        hist_bins = input$bins,
+        hist_pal = input$pal
+      )
+          },
+    load = function(common) {
+      updateSelectInput(session, "bins", selected = common$state$hist_bins)
+      updateSelectInput(session, "pal", selected = common$state$hist_pal)
+
     }
   ))
 

@@ -361,7 +361,8 @@ function(input, output, session) {
       scat = NULL,
       meta = NULL,
       poly = NULL,
-      logger = NULL
+      logger = NULL,
+      state = NULL
     )
   )
 
@@ -416,10 +417,10 @@ function(input, output, session) {
 
   # Save the current session to a file
   save_session <- function(file) {
-    # # Ask each module to save whatever data it wants
-    # for (module_id in names(modules)) {
-    #   state[[module_id]] <- modules[[module_id]]$save()
-    # }
+    # Ask each module to save whatever data it wants
+    for (module_id in names(modules)) {
+      common$state[[module_id]] <- modules[[module_id]]$save()
+    }
 
     # wrap and unwrap required due to terra objects being pointers to c++ objects
     if (is.null(common$ras) == FALSE){
@@ -445,6 +446,11 @@ function(input, output, session) {
   load_session <- function(file) {
     temp <- readRDS(file)
     temp
+
+    # Ask each module to load its own data
+    for (module_id in names(common$state)) {
+      modules[[module_id]]$load(common$state[[module_id]])
+    }
     }
 
   observeEvent(input$goLoad_session, {
@@ -458,19 +464,15 @@ function(input, output, session) {
 
     #required due to terra objects being pointers to c++ objects
     common$ras <- terra::unwrap(common$ras)
-    for (component in names(COMPONENT_MODULES[names(COMPONENT_MODULES) != c("rep")])) {
-      for (module in COMPONENT_MODULES[[component]]) {
-      #trigger(module$id)
-      }}
 
     updateTabsetPanel(session, "tabs", "select")
-    updateTabsetPanel(session, "selectSel", "select_user")
-    # updateTabsetPanel(session, "selectSel", "select_query")
-    updateTabsetPanel(session, "tabs", "plot")
-    # updateTabsetPanel(session, "plotSel", "plot_hist")
-    updateTabsetPanel(session, "plotSel", "plot_scatter")
-    updateTabsetPanel(session, "tabs", "intro")
-    updateTabsetPanel(session, "introTabs", "Load Prior Session")
+    # if (common$meta$user$used == TRUE){updateTabsetPanel(session, "selectSel", "select_user")}
+    # if (common$meta$query$used == TRUE){updateTabsetPanel(session, "selectSel", "select_query")}
+    # updateTabsetPanel(session, "tabs", "plot")
+    # if (!is.null(common$hist) == TRUE){updateTabsetPanel(session, "plotSel", "plot_hist")}
+    # if (!is.null(common$scat) == TRUE){updateTabsetPanel(session, "plotSel", "plot_scatter")}
+    # updateTabsetPanel(session, "tabs", "intro")
+    # updateTabsetPanel(session, "introTabs", "Load Prior Session")
 
     common$logger %>% writeLog(type="info","The previous session has been loaded successfully")
   })

@@ -44,10 +44,12 @@ select_query_module_server <- function(input, output, session, common) {
 
   return(list(
     save = function() {
-      # Save any values that should be saved when the current session is saved
+      list(
+        select_date = input$date
+      )
     },
-    load = function(state) {
-      # Load
+    load = function(common) {
+      updateSelectInput(session, "date", selected = common$state$select_date)
     }
   ))
 

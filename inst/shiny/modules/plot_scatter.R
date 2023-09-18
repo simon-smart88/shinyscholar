@@ -36,10 +36,14 @@ plot_scatter_module_server <- function(input, output, session, common) {
 
   return(list(
     save = function() {
-      # Save any values that should be saved when the current session is saved
-    },
-    load = function(state) {
-      # Load
+      list(
+      scatter_sample = input$sample,
+      scatter_axis = input$axis
+      )
+          },
+    load = function(common) {
+      updateSliderInput(session, "sample", selected = common$state$scatter_sample)
+      updateRadioButtons(session, "axis", selected = common$state$scatter_axis)
     }
   ))
 }
