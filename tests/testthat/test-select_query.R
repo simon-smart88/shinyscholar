@@ -31,7 +31,7 @@ test_that("Check select_query returns an error if the polygon is too large", {
                             date = "2023-06-20",
                             logger = NULL),
                paste0("Your selected area is too large \\(110703 km2\\)",
-                    " when the maximum is 3000 km2\\. Please select a smaller area"))
+                    " when the maximum is 10000 km2\\. Please select a smaller area"))
 })
 
 
