@@ -157,7 +157,6 @@ function(input, output, session) {
     }
   )
 
-
   ############################################# #
   ### CODE TAB ####
   ############################################# #
@@ -179,7 +178,6 @@ function(input, output, session) {
     }
     cat(code,sep="\n")
   })
-
 
   ########################################### #
   ### DOWNLOAD PLOTS ####
@@ -208,7 +206,6 @@ function(input, output, session) {
       plot(common$scat[[1]], common$scat[[2]], xlab = common$meta$scat$axis_long, ylab = common$meta$scat$name)
       dev.off()
     })
-
 
   ########################################### #
   ### RMARKDOWN FUNCTIONALITY ####
@@ -307,7 +304,6 @@ function(input, output, session) {
       file.rename(result_file, file)
     }
   )
-
 
   ################################
   ### REFERENCE FUNCTIONALITY ####
@@ -417,6 +413,11 @@ function(input, output, session) {
 
   # Save the current session to a file
   save_session <- function(file) {
+
+    common$state$main <- list(
+      selected_module = sapply(COMPONENTS, function(x) input[[glue("{x}Sel")]], simplify = FALSE)
+    )
+
     # Ask each module to save whatever data it wants
     for (module_id in names(modules)) {
       common$state[[module_id]] <- modules[[module_id]]$save()
@@ -460,20 +461,17 @@ function(input, output, session) {
 
     # Ask each module to load its own data
     for (module_id in names(common$state)) {
+      if (module_id != "main"){
       modules[[module_id]]$load(common$state[[module_id]])
+    }}
+
+    for (component in names(common$state$main$selected_module)) {
+      value <- common$state$main$selected_module[[component]]
+      updateRadioButtons(session, glue("{component}Sel"), selected = value)
     }
 
     #required due to terra objects being pointers to c++ objects
     common$ras <- terra::unwrap(common$ras)
-
-    # updateTabsetPanel(session, "tabs", "select")
-    # if (common$meta$user$used == TRUE){updateTabsetPanel(session, "selectSel", "select_user")}
-    # if (common$meta$query$used == TRUE){updateTabsetPanel(session, "selectSel", "select_query")}
-    # updateTabsetPanel(session, "tabs", "plot")
-    # # if (!is.null(common$hist) == TRUE){updateTabsetPanel(session, "plotSel", "plot_hist")}
-    # # if (!is.null(common$scat) == TRUE){updateTabsetPanel(session, "plotSel", "plot_scatter")}
-    # updateTabsetPanel(session, "tabs", "intro")
-    # updateTabsetPanel(session, "introTabs", "Load Prior Session")
 
     common$logger %>% writeLog(type="info","The previous session has been loaded successfully")
   })
