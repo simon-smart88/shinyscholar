@@ -9,5 +9,7 @@ SMART 1.0.0
 
 - These changes have been made:
 1. `common` - the data structure passed between modules - has been changed from a `list()` containing `spp <- reactiveValues()` to an `R6::R6Class()`.
-2. A Code tab has been added to the Visualization panel to allow the code for each module and the function that each module calls to be viewed.
-3. Unit tests for each module have been created using `shinytest2` in addition to unit tests for the function that the module calls.
+2. Due to objects inside `common` not being inherently reactive, event triggers have been added using `gargoyle`
+3. A Code tab has been added to the Visualization panel to allow the code for each module and the function that each module calls to be viewed.
+4. Unit tests for each module have been created using `shinytest2` in addition to unit tests for the function that the module calls.
+5. A new function `module_tester()` has been created in order to run a single module.
