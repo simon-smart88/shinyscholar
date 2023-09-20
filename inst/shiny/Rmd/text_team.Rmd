@@ -8,9 +8,7 @@ output: html_document
 
 ## Developers
 
-<img src="img/jamie.jpg" alt="jamie" style="width: 100px;"/>
-
-<a href=" https://simon-smart88.github.io/" target="_blank">Simon Smart</a> (co-lead developer) received his PhD in Plant Sciences from the University of Cambridge and is currently a software developer at the University of Leicester.
+<a href=" https://simon-smart88.github.io/" target="_blank">Simon Smart</a> received his PhD in Plant Sciences from the University of Cambridge and is currently a software developer in the Department of Population Health Sciences at the University of Leicester.
 
 
 

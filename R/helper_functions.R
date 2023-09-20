@@ -54,26 +54,6 @@ spurious <- function(x) {
 # SHINY LOG #
 ####################### #
 
-
-#' @title smartProgress
-#' @description For internal use. Either prints a message to console or makes
-#' a progress bar in the shiny app the entry of the first param "logs" turns on
-#' shiny functionality
-#' @param logs Wallace logger
-#' @param message A single-element character vector; the message to be displayed
-#'   to the user.
-#' @param expr The work to be done.
-#' @keywords internal
-#' @export
-smartProgress <- function(logs, message, expr) {
-  if (!is.null(logs)) {
-    withProgress(message = message, expr)
-  } else {
-    message(message)
-    expr
-  }
-}
-
 #' @title writeLog
 #' @description For internal use. Add text to a logger
 #' @param logger The logger to write the text to. Can be NULL or a function

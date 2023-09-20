@@ -1,9 +1,9 @@
 ---
-title: "How To Use Wallace"
+title: "How To Use SMART"
 output: html_document
 ---
 
-### **Overview of** ***Wallace***
+### **Overview of** ***SMART***
 This information is designed to orient the user to the *SMART* interface and the underlying codebase. 
 
 #### **Components and Modules**

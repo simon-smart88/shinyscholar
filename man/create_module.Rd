@@ -2,7 +2,7 @@
 % Please edit documentation in R/custom_modules.R
 \name{create_module}
 \alias{create_module}
-\title{Create a Wallace module}
+\title{Create a SMART module}
 \usage{
 create_module(id, dir, map = FALSE, result = FALSE, rmd = FALSE, save = FALSE)
 }
@@ -23,8 +23,8 @@ download.}
 user saves the current session.}
 }
 \description{
-Create the template of a new Wallace module.
+Create the template of a new SMART module.
 }
 \seealso{
-\code{\link[wallace]{register_module}}
+\code{\link[SMART]{register_module}}
 }

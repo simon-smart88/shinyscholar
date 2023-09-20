@@ -1,11 +1,11 @@
-#' Register a Wallace module
+#' Register a SMART module
 #'
-#' Before running the Wallace application with \code{run_wallace()}, you can
-#' register your own modules to be used in Wallace.
+#' Before running the SMART application with \code{run_smart()}, you can
+#' register your own modules to be used in SMART.
 #'
 #' @param config_file The path to a YAML file that contains the information about
 #' one or more modules.
-#' @seealso \code{\link[wallace]{create_module}}
+#' @seealso \code{\link[SMART]{create_module}}
 #' @export
 register_module <- function(config_file) {
   full_path <- NULL
@@ -20,13 +20,13 @@ register_module <- function(config_file) {
     stop("The provided file is not a YAML file: ", config_file, call. = FALSE)
   }
 
-  new_paths <- unique(c(getOption("wallace_module_configs"), full_path))
-  options("wallace_module_configs" = new_paths)
+  new_paths <- unique(c(getOption("SMART_module_configs"), full_path))
+  options("SMART_module_configs" = new_paths)
 }
 
-#' Create a Wallace module
+#' Create a SMART module
 #'
-#' Create the template of a new Wallace module.
+#' Create the template of a new SMART module.
 #'
 #' @param id The id of the module.
 #' @param dir A directory where the new module should be created.
@@ -37,7 +37,7 @@ register_module <- function(config_file) {
 #' download.
 #' @param save Whether or not the module has some custom data to save when the
 #' user saves the current session.
-#' @seealso \code{\link[wallace]{register_module}}
+#' @seealso \code{\link[SMART]{register_module}}
 #' @export
 create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, save = FALSE) {
   if (!grepl("^[A-Za-z0-9_]+$", id)) {
@@ -47,19 +47,19 @@ create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, sav
 
   # Copy the simple skeleton files to the new module directory
   dir.create(dir, showWarnings = FALSE, recursive = TRUE)
-  file.copy(system.file("module_skeleton", "skeleton.yml", package = "wallace"),
+  file.copy(system.file("module_skeleton", "skeleton.yml", package = "SMART"),
             file.path(dir, glue::glue("{id}.yml")), overwrite = TRUE)
-  file.copy(system.file("module_skeleton", "skeleton.md", package = "wallace"),
+  file.copy(system.file("module_skeleton", "skeleton.md", package = "SMART"),
             file.path(dir, glue::glue("{id}.md")), overwrite = TRUE)
 
   if (rmd) {
-    file.copy(system.file("module_skeleton", "skeleton.Rmd", package = "wallace"),
+    file.copy(system.file("module_skeleton", "skeleton.Rmd", package = "SMART"),
               file.path(dir, glue::glue("{id}.Rmd")), overwrite = TRUE)
   }
 
   # Copy the R code file, use the correct ID in all functions, and remove any
   # functions that the user doesn't want to use in this module
-  r_file <- readLines(system.file("module_skeleton", "skeleton.R", package = "wallace"))
+  r_file <- readLines(system.file("module_skeleton", "skeleton.R", package = "SMART"))
   r_file <- paste(r_file, collapse = "\n")
   if (!map) {
     r_file <- gsub("\n\\{\\{id}}_module_map <- function.*?}\n", "", r_file)
@@ -80,7 +80,7 @@ create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, sav
 
   message(glue::glue("Template for module `{id}` successfully created at ",
                      "`{normalizePath(dir)}`.\nDon't forget to call ",
-                     "`wallace::register_module(\"{dir}/{id}.yml\")` before running ",
-                     "the app to add your module to Wallace."))
+                     "`SMART::register_module(\"{dir}/{id}.yml\")` before running ",
+                     "the app to add your module to SMART."))
   invisible()
 }

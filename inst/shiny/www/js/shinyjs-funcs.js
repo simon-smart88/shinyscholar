@@ -1,5 +1,5 @@
 shinyjs.scrollLogger = function(params) {
-  var $logger = $('#wallaceLog');
+  var $logger = $('#messageLog');
   $logger.scrollTop($logger[0].scrollHeight);
 }
 

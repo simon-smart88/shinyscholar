@@ -2,7 +2,7 @@
 % Please edit documentation in R/custom_modules.R
 \name{register_module}
 \alias{register_module}
-\title{Register a Wallace module}
+\title{Register a SMART module}
 \usage{
 register_module(config_file)
 }
@@ -11,9 +11,9 @@ register_module(config_file)
 one or more modules.}
 }
 \description{
-Before running the Wallace application with \code{run_wallace()}, you can
-register your own modules to be used in Wallace.
+Before running the SMART application with \code{run_smart()}, you can
+register your own modules to be used in SMART.
 }
 \seealso{
-\code{\link[wallace]{create_module}}
+\code{\link[SMART]{create_module}}
 }

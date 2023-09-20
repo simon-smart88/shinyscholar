@@ -91,7 +91,7 @@ tagList(
               strong("Log window"),
               div(style = "margin-top: 5px"),
               div(
-                id = "wallaceLog",
+                id = "messageLog",
                 div(id = "logHeader", div(id = "logContent"))
               )
             )

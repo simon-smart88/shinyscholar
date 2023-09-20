@@ -16,7 +16,7 @@ COMPONENTS <- c("select", "plot","rep")
 # Information about modules that various parts of the app need access to
 COMPONENT_MODULES <- list()
 
-# Load all Wallace base modules
+# Load all SMART base modules
 base_module_configs <- c(
   "modules/select_query.yml",
   "modules/select_user.yml",
