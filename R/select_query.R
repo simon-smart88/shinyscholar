@@ -20,9 +20,9 @@ select_query <- function(poly, date, logger = NULL) {
   #convert to terra object to calculate area and extent
   terra_poly <- terra::vect(poly, crs = "+init=EPSG:4326", type = "polygons")
   area <- terra::expanse(terra_poly, unit = "km")
-  if (area > 3000) {
+  if (area > 10000) {
     logger %>% writeLog(type = "error", paste0("Your selected area is too large (",round(area,0)," km2)",
-                                              " when the maximum is 3000 km2. Please select a smaller area"))
+                                              " when the maximum is 10000 km2. Please select a smaller area"))
     return()
   }
   extent <- terra::ext(poly)
