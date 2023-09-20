@@ -19,7 +19,7 @@ select_user_module_server <- function(input, output, session, common) {
       common$logger %>% writeLog(type = "error", "Please upload a raster file")
       return()
     }
-    if (input$name = "") {
+    if (input$name == "") {
       common$logger %>% writeLog(type = "error", "Please enter a name for the raster file")
       return()
     }
