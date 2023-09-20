@@ -11,7 +11,7 @@ source("helpers.R")
 
 # The components that have modules. These names must match the values of the
 # tabs of the components in the UI.
-COMPONENTS <- c("select", "plot","rep")
+COMPONENTS <- c("select", "plot", "rep")
 
 # Information about modules that various parts of the app need access to
 COMPONENT_MODULES <- list()
