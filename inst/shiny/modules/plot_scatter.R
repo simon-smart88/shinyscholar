@@ -41,9 +41,9 @@ plot_scatter_module_server <- function(input, output, session, common) {
       scatter_axis = input$axis
       )
           },
-    load = function(common) {
-      updateSliderInput(session, "sample", selected = common$state$scatter_sample)
-      updateRadioButtons(session, "axis", selected = common$state$scatter_axis)
+    load = function(state) {
+      updateSliderInput(session, "sample", value = state$scatter_sample)
+      updateRadioButtons(session, "axis", selected = state$scatter_axis)
     }
   ))
 }

@@ -46,9 +46,9 @@ plot_hist_module_server <- function(input, output, session, common) {
         hist_pal = input$pal
       )
           },
-    load = function(common) {
-      updateSelectInput(session, "bins", selected = common$state$hist_bins)
-      updateSelectInput(session, "pal", selected = common$state$hist_pal)
+    load = function(state) {
+      updateSelectInput(session, "bins", selected = state$hist_bins)
+      updateSelectInput(session, "pal", selected = state$hist_pal)
 
     }
   ))

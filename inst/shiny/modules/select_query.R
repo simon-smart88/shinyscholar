@@ -48,8 +48,8 @@ select_query_module_server <- function(input, output, session, common) {
         select_date = input$date
       )
     },
-    load = function(common) {
-      updateSelectInput(session, "date", selected = common$state$select_date)
+    load = function(state) {
+      updateSelectInput(session, "date", selected = state$select_date)
     }
   ))
 

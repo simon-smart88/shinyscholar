@@ -447,10 +447,6 @@ function(input, output, session) {
     temp <- readRDS(file)
     temp
 
-    # Ask each module to load its own data
-    for (module_id in names(common$state)) {
-      modules[[module_id]]$load(common$state[[module_id]])
-    }
     }
 
   observeEvent(input$goLoad_session, {
@@ -462,15 +458,20 @@ function(input, output, session) {
       common[[name]] <- temp[[name]]
     }
 
+    # Ask each module to load its own data
+    for (module_id in names(common$state)) {
+      modules[[module_id]]$load(common$state[[module_id]])
+    }
+
     #required due to terra objects being pointers to c++ objects
     common$ras <- terra::unwrap(common$ras)
 
-    updateTabsetPanel(session, "tabs", "select")
+    # updateTabsetPanel(session, "tabs", "select")
     # if (common$meta$user$used == TRUE){updateTabsetPanel(session, "selectSel", "select_user")}
     # if (common$meta$query$used == TRUE){updateTabsetPanel(session, "selectSel", "select_query")}
     # updateTabsetPanel(session, "tabs", "plot")
-    # if (!is.null(common$hist) == TRUE){updateTabsetPanel(session, "plotSel", "plot_hist")}
-    # if (!is.null(common$scat) == TRUE){updateTabsetPanel(session, "plotSel", "plot_scatter")}
+    # # if (!is.null(common$hist) == TRUE){updateTabsetPanel(session, "plotSel", "plot_hist")}
+    # # if (!is.null(common$scat) == TRUE){updateTabsetPanel(session, "plotSel", "plot_scatter")}
     # updateTabsetPanel(session, "tabs", "intro")
     # updateTabsetPanel(session, "introTabs", "Load Prior Session")
 
@@ -481,5 +482,4 @@ function(input, output, session) {
   ### EXPORT TEST VALUES ####
   ################################
   exportTestValues(common = common)
-
 }

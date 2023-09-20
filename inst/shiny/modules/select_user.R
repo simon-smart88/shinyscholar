@@ -38,8 +38,8 @@ select_user_module_server <- function(input, output, session, common) {
     save = function() {
       list(user_name = input$name)
     },
-    load = function(common) {
-      updateTextInput(session, "name", selected = common$state$user_name)
+    load = function(state) {
+      updateTextInput(session, "name", value = state$user_name)
     }
   ))
 
