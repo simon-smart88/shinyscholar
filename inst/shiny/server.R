@@ -122,7 +122,6 @@ function(input, output, session) {
     #shinyjs::toggleState("dl_table", !is.null(common$ras))
   })
 
-
   ############################################# #
   ### TABLE TAB ####
   ############################################# #
@@ -346,7 +345,7 @@ function(input, output, session) {
     })
 
   ################################
-  ### COMMON LIST FUNTIONALITY ####
+  ### COMMON LIST FUNCTIONALITY ####
   ################################
 
   common_class <- R6::R6Class(
@@ -364,18 +363,6 @@ function(input, output, session) {
 
   common <- common_class$new()
   common$logger <- reactiveVal(initLogMsg())
-
-  ################################
-  ### DEBUG ####
-  ################################
-
-  # output$common <- renderPrint({
-  #   watch(c("select_user","select_query","change_poly","plot_hist","plot_scatter"))
-  #   print(common)})
-  #
-  # output$meta <- renderPrint({
-  #   watch(c("select_user","select_query","change_poly","plot_hist","plot_scatter"))
-  #   print(common$meta)})
 
   ####################
   ### INITIALISATION ####
