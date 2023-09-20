@@ -16,6 +16,9 @@
     # LOAD INTO COMMON ####
 
     # METADATA ####
+
+    # TRIGGER
+    gargoyle::trigger({{id}})
   })
 
   output$result <- renderText({
