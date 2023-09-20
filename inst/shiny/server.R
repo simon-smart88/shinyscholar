@@ -106,7 +106,7 @@ function(input, output, session) {
     #convert any longitudes drawn outside of the original map
     xy[,1] <- ((xy[,1] + 180) %% 360) - 180
     common$poly <- xy
-    trigger("change_poly")
+    gargoyle::trigger("change_poly")
   }) %>% bindEvent(input$map_draw_new_feature)
 
   gargoyle::init("change_poly")

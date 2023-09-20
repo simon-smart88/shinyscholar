@@ -12,7 +12,7 @@ select_query_module_server <- function(input, output, session, common) {
 
   observeEvent(input$run, {
 
-    #TEST MODE - required due to the polygon not being able to be tested correctly.
+    # TEST MODE - required due to the polygon not being able to be tested correctly.
     if (isTRUE(getOption("shiny.testmode"))) {
       poly_matrix <- matrix(c(0, 0, 0.5, 0.5, 0, 52, 52.5, 52.5, 52, 52), ncol=2)
       colnames(poly_matrix) <- c('longitude', 'latitude')
@@ -38,7 +38,8 @@ select_query_module_server <- function(input, output, session, common) {
     common$meta$query$poly <- common$poly
     common$meta$ras$name <- "FCover"
     common$meta$query$used <- TRUE
-    trigger("select_query")
+    # TRIGGER ####
+    gargoyle::trigger("select_query")
 
   })
 
@@ -63,7 +64,7 @@ select_query_module_result <- function(id) {
 }
 
 select_query_module_map <- function(map, common) {
-  observeEvent(watch("select_query"), {
+  observeEvent(gargoyle::watch("select_query"), {
     req(common$meta$query$used == TRUE)
     req(common$ras)
     ex <- as.vector(terra::ext(common$ras))

@@ -25,11 +25,12 @@ plot_hist_module_server <- function(input, output, session, common) {
     common$meta$hist$bins <- as.numeric(input$bins)
     common$meta$hist$pal <- input$pal
     common$meta$hist$name <- common$meta$ras$name
-    trigger("plot_hist")
+    # TRIGGER ####
+    gargoyle::trigger("plot_hist")
   })
 
   output$hist <- renderPlot({
-    watch("plot_hist")
+    gargoyle::watch("plot_hist")
     req(common$hist)
     pal <- RColorBrewer::brewer.pal(9, common$meta$hist$pal)
     pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
