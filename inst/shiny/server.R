@@ -372,6 +372,8 @@ function(input, output, session) {
   modules <- list()
   lapply(names(COMPONENT_MODULES), function(component) {
     lapply(COMPONENT_MODULES[[component]], function(module) {
+      # Initialize event triggers for each module
+      gargoyle::init(module$id)
       return <- callModule(get(module$server_function), module$id, common = common)
       if (is.list(return) &&
           "save" %in% names(return) && is.function(return$save) &&
@@ -380,11 +382,6 @@ function(input, output, session) {
       }
     })
   })
-
-  # Initialize event triggers for each module
-  for (m in c("select_user", "select_query", "plot_hist", "plot_scatter")){
-    gargoyle::init(m)
-  }
 
   observeEvent(gargoyle::watch("plot_hist"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
   observeEvent(gargoyle::watch("plot_scatter"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
