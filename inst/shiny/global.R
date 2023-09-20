@@ -118,8 +118,6 @@ for (module_config_file in all_module_configs) {
   # Load the module's code
   source(module_config$file, local = TRUE)
 
-  # #Initiate gargoyle
-  # gargoyle::init(module_config$id)
 }
 
 

@@ -12,11 +12,6 @@ uiTop <- function(mod_INFO) {
   ls <- c(ls, list(shiny::span("R packages:", class = "rpkg"),
                    shiny::span(paste(pkgName, collapse = ", "), class = "pkgDes"),
                    br()))
-  # for (i in seq_along(pkgName)) {
-  #   ls <- c(ls, list(shiny::span(pkgName[i], class = "rpkg"),
-  #                    shiny::span(paste(':', pkgTitl[i]), class = "pkgDes"),
-  #                    br()))
-  # }
 
   ls <- c(ls, list(HTML('<hr>')))
   ls
