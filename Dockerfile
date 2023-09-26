@@ -34,3 +34,4 @@ USER shiny
 
 # run app
 CMD ["/usr/bin/shiny-server"]
+
