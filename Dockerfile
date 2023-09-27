@@ -22,7 +22,7 @@ RUN R -e "install.packages('devtools')"
 RUN R -e "install.packages('shiny', repos='http://cran.rstudio.com/')"
 RUN R -e "devtools::install_github('timcdlucas/wallace-disag@dev')"
 
-COPY ./inst/shiny/ /srv/shiny-server/smart
+COPY ./inst/shiny/ /srv/shiny-server
 
 # select port
 EXPOSE 3838
