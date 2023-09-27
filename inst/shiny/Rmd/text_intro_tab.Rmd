@@ -19,6 +19,5 @@ output: html_document
 
 **3.** *Reproduce*  
 - Download Session Code  
-- Download Metadata  
 - Download Package References 
 
