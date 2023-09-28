@@ -12,7 +12,7 @@ test_that("Check select_user function works as expected", {
 })
 
 test_that("{shinytest2} recording: e2e_select_user", {
-  app <- shinytest2::AppDriver$new(app_dir = '../../inst/shiny', name = "e2e_select_user")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_select_user")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
   app$upload_file(`select_user-ras` = path)

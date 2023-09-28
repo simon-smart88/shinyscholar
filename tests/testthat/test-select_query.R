@@ -46,7 +46,7 @@ test_that("Check select_query returns missing values when over the sea", {
 })
 
 test_that("{shinytest2} recording: e2e_select_query", {
-  app <- shinytest2::AppDriver$new(app_dir = '../../inst/shiny', name = "e2e_select_query")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_select_query")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_query")
   app$click("select_query-run")

@@ -6,7 +6,7 @@ save_path <- list.files(system.file("extdata", package = "SMART"),
 
 #this works
 test_that("{shinytest2} recording: e2e_empty_save", {
-  app <- shinytest2::AppDriver$new(app_dir = '../../inst/shiny', name = "e2e_empty_save")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_empty_save")
   app$set_inputs(tabs = "select")
   app$set_inputs(main = "Save")
   save_file <- app$get_download("save_session")
@@ -16,7 +16,7 @@ test_that("{shinytest2} recording: e2e_empty_save", {
 
 #this works
 test_that("{shinytest2} recording: e2e_save_scat", {
-  app <- shinytest2::AppDriver$new(app_dir = '../../inst/shiny', name = "e2e_save_scat")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_save_scat")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
   app$upload_file(`select_user-ras` = path)
@@ -35,7 +35,7 @@ test_that("{shinytest2} recording: e2e_save_scat", {
 
 #this may be temperamental
 test_that("{shinytest2} recording: e2e_save_hist", {
-  app <- shinytest2::AppDriver$new(app_dir = '../../inst/shiny', name = "e2e_save_hist")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_save_hist")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
   app$upload_file(`select_user-ras` = path)
@@ -53,7 +53,7 @@ test_that("{shinytest2} recording: e2e_save_hist", {
 })
 
 test_that("{shinytest2} recording: e2e_load", {
-  app <- shinytest2::AppDriver$new(app_dir = '../../inst/shiny', name = "e2e_load")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_load")
   app$set_inputs(introTabs = "Load Prior Session")
   app$upload_file(load_session = save_path)
   app$click("goLoad_session")
