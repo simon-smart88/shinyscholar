@@ -34,7 +34,8 @@ Imports:
     tools,
     zip
 Suggests: 
-    testthat
+    testthat,
+    shinytest2
 License: GPL-3
 URL: 
 Encoding: UTF-8
