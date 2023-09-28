@@ -22,13 +22,14 @@ RUN R -e "install.packages('devtools')"
 RUN R -e "install.packages('shiny', repos='http://cran.rstudio.com/')"
 RUN R -e "devtools::install_github('timcdlucas/wallace-disag@dev')"
 
-COPY ./inst/shiny/ /srv/shiny-server
+COPY ./inst/shiny/ /srv/shiny-server/smart
 
 # select port
 EXPOSE 3838
 
 # allow permission
 RUN sudo chown -R shiny:shiny /srv/shiny-server
+RUN sudo chown -R shiny:shiny /srv/shiny-server/smart
 
 USER shiny
 
