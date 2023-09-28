@@ -1,0 +1,33 @@
+# Mac OS files
+.DS_Store
+# HTML files
+.html
+# History files
+.Rhistory
+.Rapp.history
+# Example code in package build process
+*-Ex.R
+# RStudio files
+.Rproj.user/
+# produced vignettes
+vignettes/*.html
+vignettes/*.pdf
+# worldclim files
+cmip5
+**/wc10
+# r proj files
+.Rproj.user
+.RData
+# .rmd files
+temp*
+#
+KeepNA
+keepInteger
+inst/doc
+*Thumbs.db
+# .zip from occCite
+.zip
+
+# cory's rproj
+wallaceFork.Rproj
+docs

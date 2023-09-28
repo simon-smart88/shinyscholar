@@ -1,0 +1,11 @@
+```{asis, echo = {{poccs_selectByID_knit}}, eval = {{poccs_selectByID_knit}}, include = {{poccs_selectByID_knit}}}
+### Process Occurrence Data
+Remove occurrences outside of user drawn polygon
+```
+
+```{r, echo = {{poccs_selectByID_knit}}, include = {{poccs_selectByID_knit}}}
+occs_{{spAbr}} <- poccs_selectOccs(
+  occs = occs_{{spAbr}},
+  polySelXY = matrix({{selectByID_xy_rmd}}, ncol = 2, byrow = FALSE),
+  polySelID = {{selectByID_id_rmd}})
+```

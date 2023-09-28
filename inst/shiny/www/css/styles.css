@@ -1,0 +1,121 @@
+#logHeader {
+	position:relative;
+	min-height:90px;
+	background: inherit;
+	z-index:10;
+}
+#logContent {
+  position:absolute;
+  z-index: 5;
+}
+#wallaceLog {
+  height:100px;
+  width:450px;
+  padding:5px;
+  overflow:auto;
+  border:1px solid grey;
+}
+hr {
+    border: none;
+    height: 5px;
+    color: #333; /* old IE */
+    background-color: #333; /* Modern Browsers */
+}
+.shiny-progress .bar {
+  background-color:#FF0000;
+  opacity:0.8;
+}
+.shiny-progress .progress {
+  height:7px;
+}
+.componentName {
+  color:#dd4814;
+  display:inline-block;
+  font-size:16pt;
+  font-weight:bold;
+}
+.compHelpButton {
+  display:inline-block;
+  margin:0px;
+  font-size:14pt;
+}
+.rpkg {
+  font-size:10pt;
+  font-weight:bold;
+}
+.mod {
+  display:inline;
+  color:#699FA1;
+  font-size:14pt;
+  font-weight:bold;
+}
+.modHelpButton {
+  color:#699FA1;
+  margin:0px;
+  font-size:12pt;
+}
+.modHelpButton:hover {
+  color:#A5D6D9;
+}
+.modHelpButton:focus {
+  color:#699FA1;
+}
+.pkgTitl {
+  font-size:10pt;
+  font-weight:bold;
+  font-style:italic;
+}
+.pkgDes {
+  font-size:10pt;
+  font-style:italic;
+}
+.step {
+  color: #DD8627;
+  font-weight:bold;
+  font-size:14pt;
+}
+.stepText {
+  font-style:italic;
+  font-size:14pt;
+}
+.butReset {
+  background-color: #C51E10;
+  color: white;
+  padding: 5px 5px;
+  border: none;
+}
+.butReset:hover {
+  background-color: #830D03;
+  color: white;
+}
+.butResXf {
+  background-color: #C51E10;
+  color: white;
+  padding: 1px 1px;
+  border: none;
+}
+.hrDashed {
+  border: 0;
+  border-bottom: 1px dashed #606060;
+  background: transparent;
+}
+.hrDotted {
+  border: 0;
+  border-bottom: 1px dotted #606060;
+  background: transparent;
+}
+
+.leaflet-top {
+  z-index: 999 !important;
+}
+#save_warning {
+  color: red;
+}
+.save_icon {
+  color:#606060;
+  margin:0px;
+}
+.mod_icon {
+  color:#699FA1;
+  margin:0px;
+}

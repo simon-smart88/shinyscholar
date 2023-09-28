@@ -1,0 +1,61 @@
+---
+title: "intro_tab"
+output: html_document
+---
+
+#### WORKFLOW
+
+*Wallace* (v2.0.5) currently includes ten components, or steps of a possible workflow. Each component includes two or more modules, which are possible analyses for that step.  
+
+**Components:**  
+
+**1.** *Obtain Occurrence Data*  
+- Query Present Database 
+- Query Paleo Database
+- User-specified Occurrences
+
+**2.** *Obtain Environmental Data*  
+- WorldClim
+- EcoClimate
+- User-specified Environmental Data
+
+**3.** *Process Occurrence Data*  
+- Select Occurrences on Map  
+- Remove Occurrences by ID  
+- Spatial Thin  
+
+**4.** *Process Environmental Data*  
+- Select Study Region by Extent
+- Draw Study Region
+- User-specified Study Region  
+
+**5.** *Characterize Environmental Space*  
+- Environmental Ordination  
+- Occurrence Density Grid  
+- Niche Overlap  
+
+**6.** *Partition Occurrence Data*  
+- Non-spatial Partition  
+- Spatial Partition  
+
+**7.** *Build and Evaluate Niche Model*  
+- Maxent  
+- BIOCLIM  
+
+**8.** *Visualize Model Results*  
+- Map Prediction  
+- Maxent Evaluation Plots  
+- Plot Response Curves  
+- BIOCLIM Envelope Plots  
+
+**9.** *Model Transfer*  
+- Transfer to New Extent  
+- Transfer to New Time  
+- Transfer to User Environments
+- Calculate Environmental Similarity  
+
+**10.** *Reproduce*  
+- Download Session Code  
+- Download Metadata  
+- Download Package References 
+
