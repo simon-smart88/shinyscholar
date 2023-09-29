@@ -11,7 +11,8 @@ select_user_module_ui <- function(id) {
   )
 }
 
-select_user_module_server <- function(input, output, session, common) {
+select_user_module_server <- function(id, common) {
+  moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {
     # WARNING ####
@@ -43,7 +44,7 @@ select_user_module_server <- function(input, output, session, common) {
       updateTextInput(session, "name", value = state$user_name)
     }
   ))
-
+})
 }
 
 select_user_module_result <- function(id) {

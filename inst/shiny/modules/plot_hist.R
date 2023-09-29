@@ -8,9 +8,9 @@ plot_hist_module_ui <- function(id) {
   )
 }
 
-plot_hist_module_server <- function(input, output, session, common) {
+plot_hist_module_server <- function(id, common) {
+  moduleServer(id, function(input, output, session) {
 
-  # logger <- common$logger
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$ras)) {
@@ -53,7 +53,7 @@ plot_hist_module_server <- function(input, output, session, common) {
 
     }
   ))
-
+})
 }
 
 plot_hist_module_result <- function(id) {

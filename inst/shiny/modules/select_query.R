@@ -8,7 +8,8 @@ select_query_module_ui <- function(id) {
   )
 }
 
-select_query_module_server <- function(input, output, session, common) {
+select_query_module_server <- function(id, common) {
+  moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {
 
@@ -53,7 +54,7 @@ select_query_module_server <- function(input, output, session, common) {
       updateSelectInput(session, "date", selected = state$select_date)
     }
   ))
-
+})
 }
 
 select_query_module_result <- function(id) {

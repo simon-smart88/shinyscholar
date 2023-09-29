@@ -7,7 +7,9 @@ plot_scatter_module_ui <- function(id) {
   )
 }
 
-plot_scatter_module_server <- function(input, output, session, common) {
+
+plot_scatter_module_server <- function(id, common) {
+  moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {
     # WARNING ####
@@ -47,7 +49,8 @@ plot_scatter_module_server <- function(input, output, session, common) {
       updateRadioButtons(session, "axis", selected = state$scatter_axis)
     }
   ))
-}
+  }
+)}
 
 plot_scatter_module_result <- function(id) {
   ns <- NS(id)

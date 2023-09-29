@@ -9,5 +9,5 @@ rep_refPackages_module_ui <- function(id) {
     downloadButton('dlrefPackages', 'Download References')
   )
 }
-
-rep_refPackages_module_server <- function(input, output, session, common) {}
+rep_refPackages_module_server <- function(id, common) {
+  moduleServer(id, function(input, output, session) {} )}

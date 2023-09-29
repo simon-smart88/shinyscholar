@@ -6,7 +6,8 @@
   )
 }
 
-{{id}}_module_server <- function(input, output, session, common) {
+{{id}}_module_server <- function(id, common) {
+  moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {
     # WARNING ####
@@ -33,7 +34,7 @@
       # Load
     }
   ))
-
+})
 }
 
 {{id}}_module_result <- function(id) {
