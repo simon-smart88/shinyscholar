@@ -30,12 +30,12 @@ Imports:
     rmarkdown,
     shinyalert,
     shinyjs,
+    shinytest2,
     shinyWidgets (>= 0.6.0),
     tools,
     zip
 Suggests: 
-    testthat,
-    shinytest2
+    testthat
 License: GPL-3
 URL: 
 Encoding: UTF-8
