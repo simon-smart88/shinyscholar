@@ -9,7 +9,7 @@ function(input, output, session) {
 
   # Variable to keep track of current log message
   initLogMsg <- function() {
-    intro <- "***WELCOME TO SMART***"
+    intro <- "***WELCOME TO {{app_library}}***"
     brk <- paste(rep("------", 14), collapse = "")
     expl <- "Please find messages for the user in this log window."
     logInit <- gsub(".{4}$", "", paste(intro, brk, expl, brk, "", sep = "<br>"))
@@ -57,16 +57,14 @@ function(input, output, session) {
   })
 
   # Help Component
-  help_components <- c("select","plot")
+  help_components <- {{help_component_list}}
   lapply(help_components, function(component) {
     btn_id <- paste0(component, "Help")
     observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Component Guidance"))
   })
-```
 
-```{r}
   # Help Module
-  #observeEvent(input$select_queryHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  
 ```
 
 ```{r, purl = {{include_map}}}  
@@ -184,7 +182,8 @@ function(input, output, session) {
     }
     cat(code,sep="\n")
   })
-
+```
+```{r}
   ########################################### #
   ### PLOT OBSERVERS ####
   ########################################### #
@@ -192,34 +191,6 @@ function(input, output, session) {
   #switch to the results tab so that the plot is shown when run
   observeEvent(gargoyle::watch("plot_hist"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
   observeEvent(gargoyle::watch("plot_scatter"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
-
-  ########################################### #
-  ### DOWNLOAD PLOTS ####
-  ########################################### #
-
-  output$dl_hist <- downloadHandler(
-    filename = function() {
-      "SMART_histogram.png"
-    },
-    content = function(file) {
-      png(file, width = 1000, height = 500)
-      pal <- RColorBrewer::brewer.pal(9, common$meta$hist$pal)
-      pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
-      bins <- common$meta$hist$bins
-      cols <- pal_ramp(bins)
-      plot(common$hist, freq = FALSE, main = "", xlab = common$meta$hist$name, ylab = "Frequency (%)", col = cols)
-      dev.off()
-  })
-
-  output$dl_scatter <- downloadHandler(
-    filename = function() {
-      "SMART_scatterplot.png"
-      },
-    content = function(file) {
-      png(file, width = 1000, height = 500)
-      plot(common$scat[[1]], common$scat[[2]], xlab = common$meta$scat$axis_long, ylab = common$meta$scat$name)
-      dev.off()
-    })
 
   ########################################### #
   ### RMARKDOWN FUNCTIONALITY ####

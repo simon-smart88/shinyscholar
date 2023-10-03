@@ -17,7 +17,7 @@ tagList(
     ),
     title = img(src = "logo.png", height = '50', width = '50',
                 style = "margin-top: -15px"),
-    windowTitle = "#SMART",
+    windowTitle = "SMART",
     tabPanel("Intro", value = 'intro'),
     tabPanel("Select data", value = 'select'),
     tabPanel("Plot data", value = 'plot'),
@@ -162,29 +162,6 @@ tagList(
                   )),
                 downloadButton("save_session", "Save Session"),
                 br()
-              ),
-              wellPanel(
-                h4(strong("Download Data")),
-                p(paste0("Download data/results from analyses from currently selected module")),
-                ## save module data BEGIN ##
-                # save histogram #
-                # conditionalPanel(
-                #   "input.plotSel == 'plot_hist'",
-                #   br(),
-                #   fluidRow(
-                #     column(3, h5("Download histogram")),
-                #     column(2, downloadButton('dl_hist', "PNG file"))
-                #   )
-                # ),
-                conditionalPanel(
-                  "input.plotSel == 'plot_scatter'",
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download scatterplot")),
-                    column(2, downloadButton('dl_scatter', "PNG file"))
-                  )
-                )
-
               )
             )
           )

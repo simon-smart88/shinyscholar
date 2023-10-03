@@ -19,3 +19,6 @@ common_objects <- list(
   logger = NULL,
   state = NULL
 )
+
+#components to create help tabs for (all but rep)
+help_component_list <- c("select","plot")
