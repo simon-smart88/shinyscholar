@@ -4,7 +4,8 @@ plot_hist_module_ui <- function(id) {
     # UI
     selectInput(ns("bins"), "Number of bins", choices = c(10, 20, 50, 100)),
     selectInput(ns("pal"), "Colour palette", choices = c("Greens", "YlOrRd", "Greys", "Blues")),
-    actionButton(ns("run"), "Plot histogram")
+    actionButton(ns("run"), "Plot histogram"),
+    downloadButton(ns("dl"), "Download plot")
   )
 }
 
@@ -39,6 +40,20 @@ plot_hist_module_server <- function(id, common) {
 
     plot(common$hist, freq = FALSE, main = "", xlab = common$meta$hist$name, ylab = "Frequency (%)", col = cols)
   })
+
+  output$dl <- downloadHandler(
+    filename = function() {
+      "SMART_histogram.png"
+    },
+    content = function(file) {
+      png(file, width = 1000, height = 500)
+      pal <- RColorBrewer::brewer.pal(9, common$meta$hist$pal)
+      pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
+      bins <- common$meta$hist$bins
+      cols <- pal_ramp(bins)
+      plot(common$hist, freq = FALSE, main = "", xlab = common$meta$hist$name, ylab = "Frequency (%)", col = cols)
+      dev.off()
+    })
 
   return(list(
     save = function() {

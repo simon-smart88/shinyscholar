@@ -187,34 +187,6 @@ function(input, output, session) {
   observeEvent(gargoyle::watch("plot_scatter"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
 
   ########################################### #
-  ### DOWNLOAD PLOTS ####
-  ########################################### #
-
-  output$dl_hist <- downloadHandler(
-    filename = function() {
-      "SMART_histogram.png"
-    },
-    content = function(file) {
-      png(file, width = 1000, height = 500)
-      pal <- RColorBrewer::brewer.pal(9, common$meta$hist$pal)
-      pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
-      bins <- common$meta$hist$bins
-      cols <- pal_ramp(bins)
-      plot(common$hist, freq = FALSE, main = "", xlab = common$meta$hist$name, ylab = "Frequency (%)", col = cols)
-      dev.off()
-  })
-
-  output$dl_scatter <- downloadHandler(
-    filename = function() {
-      "SMART_scatterplot.png"
-      },
-    content = function(file) {
-      png(file, width = 1000, height = 500)
-      plot(common$scat[[1]], common$scat[[2]], xlab = common$meta$scat$axis_long, ylab = common$meta$scat$name)
-      dev.off()
-    })
-
-  ########################################### #
   ### RMARKDOWN FUNCTIONALITY ####
   ########################################### #
 

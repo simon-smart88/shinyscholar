@@ -168,14 +168,14 @@ tagList(
                 p(paste0("Download data/results from analyses from currently selected module")),
                 ## save module data BEGIN ##
                 # save histogram #
-                conditionalPanel(
-                  "input.plotSel == 'plot_hist'",
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download histogram")),
-                    column(2, downloadButton('dl_hist', "PNG file"))
-                  )
-                ),
+                # conditionalPanel(
+                #   "input.plotSel == 'plot_hist'",
+                #   br(),
+                #   fluidRow(
+                #     column(3, h5("Download histogram")),
+                #     column(2, downloadButton('dl_hist', "PNG file"))
+                #   )
+                # ),
                 conditionalPanel(
                   "input.plotSel == 'plot_scatter'",
                   br(),

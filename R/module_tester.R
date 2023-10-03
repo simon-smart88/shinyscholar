@@ -97,7 +97,8 @@ test_server <- function(input, output, session) {
   }) %>% bindEvent(input$map_draw_new_feature)
 
   #main server function
-  callModule(get(glue::glue("{module}_module_server")), module, common)
+  #callModule(get(), module, common)
+  do.call(get(glue::glue("{module}_module_server")), args = list(id = module, common = common))
 
   #load map function if it exists
   if (exists(glue::glue("{module}_module_map"))){

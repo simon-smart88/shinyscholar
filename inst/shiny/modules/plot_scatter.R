@@ -3,7 +3,8 @@ plot_scatter_module_ui <- function(id) {
   tagList(
     sliderInput(ns("sample"), "Number of pixels", min = 100, max = 10000, value = 1000),
     radioButtons(ns("axis"), "x axis", choices = c("Longitude", "Latitude")),
-    actionButton(ns("run"), "Plot scatterplot")
+    actionButton(ns("run"), "Plot scatterplot"),
+    downloadButton(ns("dl"), "Download plot")
   )
 }
 
@@ -36,6 +37,16 @@ plot_scatter_module_server <- function(id, common) {
     req(common$scat)
     plot(common$scat[[1]], common$scat[[2]], xlab = common$meta$scat$axis_long, ylab = common$meta$scat$name)
   })
+
+  output$dl <- downloadHandler(
+    filename = function() {
+      "SMART_scatterplot.png"
+    },
+    content = function(file) {
+      png(file, width = 1000, height = 500)
+      plot(common$scat[[1]], common$scat[[2]], xlab = common$meta$scat$axis_long, ylab = common$meta$scat$name)
+      dev.off()
+    })
 
   return(list(
     save = function() {
