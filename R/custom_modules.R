@@ -39,7 +39,7 @@ register_module <- function(config_file) {
 #' user saves the current session.
 #' @seealso \code{\link[SMART]{register_module}}
 #' @export
-create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, save = FALSE) {
+create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, save = FALSE, init = FALSE) {
   if (!grepl("^[A-Za-z0-9_]+$", id)) {
     stop("The id can only contain English characters, digits, and underscores",
          call. = FALSE)
@@ -47,8 +47,12 @@ create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, sav
 
   # Copy the simple skeleton files to the new module directory
   dir.create(dir, showWarnings = FALSE, recursive = TRUE)
+
+  "only create the yml when not created with init() which otherwise creates it"
+  if (!init){
   file.copy(system.file("module_skeleton", "skeleton.yml", package = "SMART"),
             file.path(dir, glue::glue("{id}.yml")), overwrite = TRUE)
+  }
   file.copy(system.file("module_skeleton", "skeleton.md", package = "SMART"),
             file.path(dir, glue::glue("{id}.md")), overwrite = TRUE)
 
@@ -78,9 +82,11 @@ create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, sav
   r_file <- gsub("\\{\\{id}}", id, r_file)
   writeLines(r_file, file.path(dir, glue::glue("{id}.R")))
 
+  if (!init){
   message(glue::glue("Template for module `{id}` successfully created at ",
                      "`{normalizePath(dir)}`.\nDon't forget to call ",
                      "`SMART::register_module(\"{dir}/{id}.yml\")` before running ",
                      "the app to add your module to SMART."))
+  }
   invisible()
 }

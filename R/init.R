@@ -6,19 +6,24 @@
 #' @param include_table Whether to include a table tab
 #' @param include_code Whether to include a tab for viewing module code
 #' @param common_objects A list of the objects which will be shared between modules
-#' @param modules A dataframe containing long and short names of components (tabs), names of modules
+#' @param modules A dataframe containing long and short names of components (tabs) and modules
 #' in the order to be included and whether they should include mapping, save,
 #' markdown and result functionality.
+#' @param author The name of the author(s)
 #'
 #' @examples
-#' modules <- data.frame("module" = c("a","b","c","d"),
-#' "component" = c("m","m","n","n"),
-#' "long_component" = c("mmmm","mmmm","nnnn","nnnn"),
+#' modules <- data.frame(
+#' "component" = c("data","data","plot","plot"),
+#' "long_component" = c("Load data","Load data","Plot data","Plot data"),
+#' "module" = c("user","database","histogram","scatter"),
+#' "long_module" = c("Upload your own data", "Query a database to obtain data", "Plot the data as a histogram", "Plot the data as a scatterplot")
 #' "map" = c(TRUE,TRUE,FALSE,FALSE),
-#' "result" = c(TRUE,TRUE,FALSE,FALSE),
+#' "result" = c(FALSE,FALSE,TRUE,TRUE),
 #' "rmd" = c(TRUE,TRUE,TRUE,TRUE),
 #' "save" = c(TRUE,TRUE,TRUE,TRUE))
-#' init("select_query")
+#' common_objects = list("raster","histogram","scatter")
+#' init(path = "~/Documents", name = "demo_app",
+#' include_map = TRUE, include_table = TRUE, include_code = TRUE,  modules)
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 
@@ -148,6 +153,8 @@ for (m in 1:nrow(modules)){
   global_lines <- append(global_lines, list(glue::glue("modules/{modules$component[m]}_{modules$module[m]}.yml,"), global_yaml_target))
 }
 
+writeLines(global_lines, glue::glue("{path}/inst/shiny/global.R"))
+
 # Create modules ====
 
 for (m in 1:nrow(modules)){
@@ -159,16 +166,29 @@ for (m in 1:nrow(modules)){
                       map = modules$map[m],
                       result = modules$result[m],
                       rmd = modules$rmd[m],
-                      save = modules$save[m])
+                      save = modules$save[m],
+                      init = TRUE)
 
   #create function for each module
   writeLines(glue::glue("{module_name} <- function()"),  glue::glue("{path}/R/{module_name}.R"))
 
   #edit yaml configs
+  yml_lines <- rep(NA,5)
+
+  yml_lines[1] <- glue::glue('component: "{modules$component[m]}"')
+  yml_lines[2] <- glue::glue('short_name: "{modules$module[m]}"')
+  yml_lines[3] <- glue::glue('long_name: "{modules$long_module[m]}"')
+  yml_lines[4] <- glue::glue('authors: "{author}"')
+  yml_lines[5] <- "package: []"
+
+  writeLines(yml_lines,  glue::glue("{path}/inst/shiny/modules/{module_name}.yml"))
+
 }
 
 #copy rep modules
 
-#copy into rmds
+#copy intro rmds
+
+#edit create module not to create yaml
 
 }
