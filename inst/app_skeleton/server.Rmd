@@ -1,5 +1,6 @@
 ```{r}
 library({{app_library}})
+library(SMART)
 
 function(input, output, session) {
 
