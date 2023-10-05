@@ -4,7 +4,15 @@
 \alias{create_module}
 \title{Create a SMART module}
 \usage{
-create_module(id, dir, map = FALSE, result = FALSE, rmd = FALSE, save = FALSE)
+create_module(
+  id,
+  dir,
+  map = FALSE,
+  result = FALSE,
+  rmd = FALSE,
+  save = FALSE,
+  init = FALSE
+)
 }
 \arguments{
 \item{id}{The id of the module.}

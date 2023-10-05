@@ -58,7 +58,7 @@ function(input, output, session) {
   })
 
   # Help Component
-  help_components <- {{help_component_list}}
+  help_components <- {{added_component_list}}
   lapply(help_components, function(component) {
     btn_id <- paste0(component, "Help")
     observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Component Guidance"))
@@ -121,8 +121,6 @@ function(input, output, session) {
   # Enable/disable buttons
   observe({
     shinyjs::toggleState("goLoad_session", !is.null(input$load_session$datapath))
-    req(common$ras)
-    #shinyjs::toggleState("dl_table", !is.null(common$ras))
   })
 ```
 
@@ -132,29 +130,20 @@ function(input, output, session) {
   ############################################# #
 
   sample_table <- reactive({
-  req(common$ras)
-  gargoyle::watch("select_user")
-  gargoyle::watch("select_query")
-  set.seed(12345)
-  sample_table <- terra::spatSample(common$ras, 100, method = "random", xy = TRUE, as.df = TRUE)
-  colnames(sample_table) <- c("Longitude", "Latitude", "Value")
-  sample_table %>%
-    dplyr::mutate(Longitude = round(as.numeric(Longitude), digits = 4),
-                  Latitude = round(as.numeric(Latitude), digits = 4))
+  sample_table <- data.frame('a' = c(1:10), b = c(11:20))
   sample_table
   })
 
   # TABLE
   output$table <- DT::renderDataTable({
     # check that a raster exists
-    req(common$ras)
     sample_table()
   }, rownames = FALSE, options = list(scrollX = TRUE))
 
   # DOWNLOAD
   output$dl_table <- downloadHandler(
     filename = function() {
-      "SMART_sample_table.csv"
+      "{{app_library}}_sample_table.csv"
     },
     content = function(file) {
       write.csv(sample_table(), file, row.names = FALSE)
@@ -190,8 +179,7 @@ function(input, output, session) {
   ########################################### #
 
   #switch to the results tab so that the plot is shown when run
-  observeEvent(gargoyle::watch("plot_hist"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
-  observeEvent(gargoyle::watch("plot_scatter"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
+
 
   ########################################### #
   ### RMARKDOWN FUNCTIONALITY ####
@@ -211,7 +199,7 @@ function(input, output, session) {
   # handler for R Markdown download
   output$dlRMD <- downloadHandler(
     filename = function() {
-      paste0("SMART-session-", Sys.Date(), filetype_to_ext(input$rmdFileType))
+      paste0("{{app_library}}-session-", Sys.Date(), filetype_to_ext(input$rmdFileType))
     },
     content = function(file) {
       md_files <- c()
@@ -304,6 +292,7 @@ function(input, output, session) {
       temp_bib_file <- tempfile(pattern = "ref_", fileext = ".bib")
       # Package always cited
       knitcitations::citep(citation("SMART"))
+      knitcitations::citep(citation("{{app_library}}"))
       knitcitations::citep(citation("knitcitations"))
       knitcitations::citep(citation("knitr"))
       knitcitations::citep(citation("rmarkdown"))

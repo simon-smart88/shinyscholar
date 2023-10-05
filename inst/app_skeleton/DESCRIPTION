@@ -1,0 +1,30 @@
+Package: 
+Version: 1.0.0
+Date: 2023-08-03
+Title: Add a title
+Description: Describe your application
+Authors@R: 
+    c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut","cre")))
+Depends:
+    R (>= 3.5.0),
+    shiny (>= 1.6.0),
+    R6
+Imports:
+    DT (>= 0.5),
+    glue,
+    knitcitations,
+    magrittr,
+    markdown,
+    rmarkdown,
+    shinyalert,
+    shinyjs,
+    shinytest2,
+    shinyWidgets (>= 0.6.0),
+    tools,
+    zip
+Suggests: 
+    testthat
+License: GPL-3
+URL: 
+Encoding: UTF-8
+RoxygenNote: 7.2.3
