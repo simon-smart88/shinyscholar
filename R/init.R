@@ -8,7 +8,9 @@
 #' @param common_objects A vector of the objects which will be shared between modules
 #' @param modules A dataframe containing long and short names of components (tabs) and modules
 #' in the order to be included and whether they should include mapping, save,
-#' markdown and result functionality.
+#' markdown and result functionality. The component and module columns are used to generate file
+#' names for the modules. The long_component and long_module columns are used to generate UI and
+#' so should be formatted appropriately.
 #' @param author The name of the author(s)
 #'
 #' @examples
