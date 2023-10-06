@@ -6,17 +6,20 @@
 \usage{
 select_query(poly, date, logger = NULL)
 }
+\arguments{
+\item{poly}{matrix. Coordinates of area to load}
+
+\item{date}{character. Date of image to load}
+}
 \value{
 a SpatRaster object
 }
 \description{
 This function is called by the select_query module and loads an
  FCover raster for the selected area.
-
- @param poly matrix. Coordinates of area to load
- @param date character. Date of image to load
- @examples
- \dontrun{
+}
+\examples{
+\dontrun{
  poly <- matrix(c(0, 0, 0.5, 0.5, 0, 52, 52.5, 52.5, 52, 52), ncol=2)
  colnames(poly) <- c("longitude", "latitude")
  date <- "2023-06-20"

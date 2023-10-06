@@ -6,15 +6,19 @@
 \usage{
 plot_scatter(ras, sample, axis)
 }
+\arguments{
+\item{ras}{SpatRaster object. Image to be analysed}
+
+\item{sample}{numeric. Number of points to sample}
+
+\item{axis}{character.}
+}
 \value{
 a dataframe containing the axis values and the cell values
 }
 \description{
 This function is called by the plot_scatter module and samples
  values from a raster
- @param ras SpatRaster object. Image to be analysed
- @param sample numeric. Number of points to sample
- @param axis character.
 }
 \author{
 Simon Smart <simon.smart@cantab.net>
