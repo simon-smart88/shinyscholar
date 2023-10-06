@@ -2,6 +2,8 @@ path <- list.files(system.file("extdata/wc", package = "SMART"),
                    pattern = ".tif$", full.names = TRUE)
 
 test_that("{shinytest2} recording: e2e_markdown", {
+  testthat::skip_on_ci()
+
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_markdown")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
@@ -31,6 +33,8 @@ test_that("{shinytest2} recording: e2e_markdown", {
   })
 
 test_that("{shinytest2} recording: e2e_table_download", {
+  testthat::skip_on_ci()
+
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_table_download")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
@@ -44,6 +48,8 @@ test_that("{shinytest2} recording: e2e_table_download", {
   })
 
 test_that("{shinytest2} recording: e2e_plot_downloads", {
+  testthat::skip_on_ci()
+
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_plot_downloads")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
