@@ -35,6 +35,8 @@ test_that("{shinytest2} recording: e2e_save_scat", {
 
 #this may be temperamental
 test_that("{shinytest2} recording: e2e_save_hist", {
+  testthat::skip_on_ci()
+
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_save_hist")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")

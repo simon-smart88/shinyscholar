@@ -6,7 +6,7 @@ Fraction of Vegetation Cover (FCover) is a biophysical measurement corresponding
 
 **IMPLEMENTATION**
 
-Draw a polygon on the map over land, select a date and click run and the data will become visible on the map. The maximum permitted area of the polygon is set to 3000 km<sup>2</sup> and selecting a larger polygon will return an error.
+Draw a polygon on the map over land, select a date and click run and the data will become visible on the map. The maximum permitted area of the polygon is set to 10000 km<sup>2</sup> and selecting a larger polygon will return an error.
 
 Data are obtained from Copernicus via a GeoServer Web Map Service e.g. https://viewer.globalland.vgt.vito.be/geoserver/wms?SERVICE=WMS&SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/geotiff&LAYERS=CGLS:fcover300_v1_333m&TILED=true&TIME=2023-01-10T00:00:00.000Z&WIDTH=2560&HEIGHT=2560&CRS=EPSG:4326&BBOX=-26,43,-11,51'
 

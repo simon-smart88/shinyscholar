@@ -28,15 +28,16 @@ register_module <- function(config_file) {
 #'
 #' Create the template of a new SMART module.
 #'
-#' @param id The id of the module.
-#' @param dir A directory where the new module should be created.
-#' @param map Whether or not the module should support modifying the map.
-#' @param result Whether or not the module should support showing information in
+#' @param id character. The id of the module.
+#' @param dir character. A directory where the new module should be created.
+#' @param map logical. Whether or not the module should support modifying the map.
+#' @param result logical. Whether or not the module should support showing information in
 #' the Result tab.
-#' @param rmd Whether or not the module should add Rmd code to the Session Code
+#' @param rmd logical. Whether or not the module should add Rmd code to the Session Code
 #' download.
-#' @param save Whether or not the module has some custom data to save when the
+#' @param save logical. Whether or not the module has some custom data to save when the
 #' user saves the current session.
+#' @param init logical. Whether or not the function is being used inside of the init function
 #' @seealso \code{\link[SMART]{register_module}}
 #' @export
 create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, save = FALSE, init = FALSE) {

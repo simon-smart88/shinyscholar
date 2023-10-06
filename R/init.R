@@ -1,19 +1,20 @@
 #' @title Create a skeleton app
 #' @description This function creates a skeleton app containing empty modules
-#' @param path The path to where the app should be created
-#' @param name The name of the app which will be used as the package name
-#' @param include_map Whether to include a leaflet map
-#' @param include_table Whether to include a table tab
-#' @param include_code Whether to include a tab for viewing module code
-#' @param common_objects A vector of the objects which will be shared between modules
+#' @param path character. The path to where the app should be created
+#' @param name character. The name of the app which will be used as the package name
+#' @param include_map logical. Whether to include a leaflet map
+#' @param include_table logical. Whether to include a table tab
+#' @param include_code logical. Whether to include a tab for viewing module code
+#' @param common_objects character vector. Names of objects which will be shared between modules
 #' @param modules A dataframe containing long and short names of components (tabs) and modules
 #' in the order to be included and whether they should include mapping, save,
 #' markdown and result functionality. The component and module columns are used to generate file
 #' names for the modules. The long_component and long_module columns are used to generate UI and
 #' so should be formatted appropriately.
-#' @param author The name of the author(s)
+#' @param author character. The name of the author(s)
 #'
 #' @examples
+#' \dontrun{
 #' modules <- data.frame(
 #' "component" = c("data", "data", "plot", "plot"),
 #' "long_component" = c("Load data", "Load data", "Plot data", "Plot data"),
@@ -25,10 +26,11 @@
 #' "rmd" = c(TRUE, TRUE, TRUE, TRUE),
 #' "save" = c(TRUE, TRUE, TRUE, TRUE))
 #' common_objects = c("raster", "histogram", "scatter")
-#' init(path = "~/Documents", name = "demo_app",
+#' init(path = "~/Documents", name = "demo",
 #' include_map = TRUE, include_table = TRUE, include_code = TRUE,
 #' common_objects = common_objects, modules = modules,
 #' author = "Simon E. H. Smart")
+#' }
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 
@@ -54,10 +56,10 @@ if (dir.exists(file.path(path, name))){
 
 #update path to be the root
 path <- glue::glue("{path}/{name}")
-dir.create(file.path(path, 'R'))
-dir.create(file.path(path, 'inst/shiny/modules'), recursive = TRUE)
-dir.create(file.path(path, 'inst/shiny/Rmd'))
-dir.create(file.path(path, 'inst/shiny/www'))
+dir.create(file.path(path, "R"))
+dir.create(file.path(path, "inst/shiny/modules"), recursive = TRUE)
+dir.create(file.path(path, "inst/shiny/Rmd"))
+dir.create(file.path(path, "inst/shiny/www"))
 
 # Create common list ====
 #add always present objects to common
@@ -76,7 +78,7 @@ added_component_list <- components$component
 # Create Server ====
 
 server_params <- c(
-  file = system.file('app_skeleton/server.Rmd', package="SMART"),
+  file = system.file("app_skeleton/server.Rmd", package="SMART"),
   list(app_library = name,
        include_map = include_map,
        include_table = include_table,
@@ -96,7 +98,7 @@ knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{path}/inst/shiny/server.R"))
 
 #tidy up purl mess
 server_lines <- readLines(glue::glue("{path}/inst/shiny/server.R"))
-server_lines <- server_lines[!grepl('^## ----*', server_lines)]
+server_lines <- server_lines[!grepl("^## ----*", server_lines)]
 
 #insert help observers for each module
 help_target <- grep("  # Help Module*", server_lines)
@@ -117,7 +119,7 @@ writeLines(server_lines, glue::glue("{path}/inst/shiny/server.R"))
 # Create UI ====
 
 ui_params <- c(
-  file = system.file('app_skeleton/ui.Rmd', package="SMART"),
+  file = system.file("app_skeleton/ui.Rmd", package="SMART"),
   list(app_library = name,
        include_map = include_map,
        include_table = include_table,
@@ -132,7 +134,7 @@ writeLines(ui_rmd, glue::glue("{temp}.Rmd"))
 knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{path}/inst/shiny/ui.R"))
 
 ui_lines <- readLines(glue::glue("{path}/inst/shiny/ui.R"))
-ui_lines <- ui_lines[!grepl('^## ----*', ui_lines)]
+ui_lines <- ui_lines[!grepl("^## ----*", ui_lines)]
 
 component_tab_target <- grep("*value = 'intro'*", ui_lines)
 for (i in 1:nrow(components)){
@@ -163,10 +165,10 @@ writeLines(ui_lines, glue::glue("{path}/inst/shiny/ui.R"))
 
 # Create global ====
 
-full_component_list <- c(components$component,'rep')
+full_component_list <- c(components$component, "rep")
 
 global_params <- c(
-  file = system.file('app_skeleton/global.Rmd', package="SMART"),
+  file = system.file("app_skeleton/global.Rmd", package="SMART"),
   list(app_library = name,
        component_list = printVecAsis(full_component_list)
   )
@@ -179,7 +181,7 @@ writeLines(global_rmd, glue::glue("{temp}.Rmd"))
 knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{path}/inst/shiny/global.R"))
 
 global_lines <- readLines(glue::glue("{path}/inst/shiny/global.R"))
-global_lines <- global_lines[!grepl('^## ----*', global_lines)]
+global_lines <- global_lines[!grepl("^## ----*", global_lines)]
 
 global_yaml_target <- grep("*base_module_configs <-*", global_lines)
 for (m in 1:nrow(modules)){
@@ -227,7 +229,7 @@ lapply(rep_files,file.copy,glue::glue("{path}/inst/shiny/modules/"))
 rmd_files <- list.files(system.file("shiny/Rmd", package = "SMART"),
                         pattern = ".Rmd", full.names = TRUE)
 #exclude guidance for existing components
-rmd_files <- rmd_files[!grepl('gtext_plot|gtext_select', rmd_files)]
+rmd_files <- rmd_files[!grepl("gtext_plot|gtext_select", rmd_files)]
 lapply(rmd_files,file.copy,glue::glue("{path}/inst/shiny/Rmd/"))
 
 #create guidance rmds for components

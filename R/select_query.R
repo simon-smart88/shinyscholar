@@ -5,6 +5,9 @@
 #'
 #' @param poly matrix. Coordinates of area to load
 #' @param date character. Date of image to load
+#' @param logger Stores all notification messages to be displayed in the Log
+#'   Window. Insert the logger reactive list here for running in
+#'   shiny, otherwise leave the default NULL
 #' @examples
 #' \dontrun{
 #'  poly <- matrix(c(0, 0, 0.5, 0.5, 0, 52, 52.5, 52.5, 52, 52), ncol=2)
