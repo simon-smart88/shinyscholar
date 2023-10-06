@@ -10,7 +10,7 @@ function(input, output, session) {
 
   # Variable to keep track of current log message
   initLogMsg <- function() {
-    intro <- "***WELCOME TO {{app_library}}***"
+    intro <- "***WELCOME TO {{toupper(app_library)}}***"
     brk <- paste(rep("------", 14), collapse = "")
     expl <- "Please find messages for the user in this log window."
     logInit <- gsub(".{4}$", "", paste(intro, brk, expl, brk, "", sep = "<br>"))
@@ -370,16 +370,8 @@ function(input, output, session) {
       common$state[[module_id]] <- modules[[module_id]]$save()
     }
 
-    # wrap and unwrap required due to terra objects being pointers to c++ objects
-    if (is.null(common$ras) == FALSE){
-    common$ras <- terra::wrap(common$ras)
-    }
-
     saveRDS(common, file)
 
-    if (is.null(common$ras) == FALSE){
-    common$ras <- terra::unwrap(common$ras)
-    }
   }
 
   output$save_session <- downloadHandler(
@@ -416,9 +408,6 @@ function(input, output, session) {
       value <- common$state$main$selected_module[[component]]
       updateRadioButtons(session, glue("{component}Sel"), selected = value)
     }
-
-    #required due to terra objects being pointers to c++ objects
-    common$ras <- terra::unwrap(common$ras)
 
     common$logger %>% writeLog(type="info","The previous session has been loaded successfully")
   })
