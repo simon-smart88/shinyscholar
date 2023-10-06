@@ -14,9 +14,37 @@ run_smart()
 
 An individual module can be run using `module_tester()` e.g. `module_tester("select_query")`
 
+## Justification
+Shiny apps are a great way to lower the barrier for entry for users to complete complex analyses, but often apps produced by academics do not follow best practices in software development or open science. If apps become popular, more features are requested and developers move onto new roles, it may become difficult to maintain their codebase. If users cannot reproduce their analyses outside of the application, it prevents them from modifying analyses to suit their particular use-case, makes it harder to understand the analysis and limits their ability to use the results in publications. Additionally, it may not be possible to determine which R packages are being used in the application, making it more onerous to cite the packages in publications. Other packages exist for creating templates of shiny apps, e.g. `golem` and `rhino` but these are not geared towards use by academics.
+
+*Wallace* addressed these shortcomings and the attributes of *SMART* are built open those of Wallace. Apps built using *SMART* should maintain these characteristics:
+
+* **accessible**: lowers barriers to implementing complex modular `shiny` apps for scientific analysis
+
+* **open**: the code is free to use and modify (GPL 3.0)
+
+* **expandable**: users can author and contribute modules that enable new methodological options
+
+* **flexible**: options for user uploads and downloads of results
+
+* **interactive**: includes an embedded zoomable `leaflet` map, sortable `DF` data tables, and visualizations of results
+
+* **instructive**: features guidance text that educates users about theoretical and analytical aspects of each step in the workflow
+
+* **reproducible**: users can download an `rmarkdown` .Rmd file that when run reproduces the analysis, ability to save sessions and load later
+
+* **robust**: modules and their underlying functions are tested using `testthat` and `shinytest2`
+
+## Use cases
+SMART is aimed towards creating applications for complex analyses that have several steps and where there may be multiple options for each step e.g. where the data is sourced from, which model is used or how the results are plotted. It is probably not suitable for use if you have never developed a shiny app before, but if you have developed a simple app which is growing in complexity, it should be fairly straightforward to migrate your code across. 
+
 ## Using SMART as a template
+
+### License
+SMART is licensed under the GPLv3 license and consequently any apps made using SMART must be licensed under the same license. 
+
 ### Initialisation
-The `init` function can be used to create the template for a new app. For example, the following call will produce a folder called `demo` in your Documents folder and create an app containing two components (load and plot) each containing two modules. You can choose whether certain features are included in the overall app by setting the `include_` parameters and also whether each module contains mapping, result, rmarkdown and save functionality by setting the parameters inside `modules`. `common_objects` contains a list of the objects which will be shared between modules and will be available inside all of the modules as e.g. `common$raster`.
+The `init` function can be used to create the template for a new app. For example, the following call will produce a folder called `demo` in your Documents folder and create an app containing two components (load and plot) each containing two modules. You can choose whether certain features are included in the overall app by setting the `include_` parameters and also whether each module contains mapping, result, rmarkdown and save functionality by setting the parameters inside the `modules` dataframe. `common_objects` contains a list of the objects which will be shared between modules and will be available inside all of the modules as e.g. `common$raster`.
 
 ```
 modules <- data.frame(
@@ -40,11 +68,11 @@ include_map = TRUE, include_table = TRUE, include_code = TRUE, common_objects = 
 
 ### Development
 #### Modules
-After installing the initial version, the modules only contain skeleton code. There are four files for each module located in `demo/inst/shiny/modules` and each module calls a function found in `demo/R`:
+After installing the initial version, the modules only contain skeleton code. There are four files for each module located in `/inst/shiny/modules` and each module calls a function found in `/R`. It may be helpful to familiarise yourself with the code for the existing application either by viewing the code in `/inst/shiny/modules` or by using the Code tab in the app.
 
 ##### .R
 
-This is the main module file and contain the UI and server components as well as any other functionality specified at initialisation. The `_module_ui` function can be developed just like a normal UI function inside a shiny app, but function only contains input elements and the input ids need encapsulating inside `ns()` to create ids which are unique to the module. By default, all the modules contain an `actionButton` which runs code inside an `observeEvent` in the `_module_server` function, but depending on your use case you may wish to remove this. Inside the `observeEvent` there is a consistent structure to the code:
+This is the main module file and contains the UI and server components as well as any other functionality specified at initialisation. The `_module_ui` function can be developed just like a normal UI function inside a shiny app, but  only contains input elements and the input ids need encapsulating inside `ns()` to create ids which are unique to the module. By default, all the modules contain an `actionButton` which runs code inside an `observeEvent` in the `_module_server` function, but depending on your use case you may wish to remove this. Inside the `observeEvent` there is a consistent structure to the code:
 
 * In the *warning* block, examine inputs to check that they are as expected and issue warnings if not using `common$logger %>% writeLog()` See the documentation of `SMART::writeLog()` for more details.
 * In the *function call* block, pass the inputs to the module function.
@@ -56,12 +84,12 @@ This is the main module file and contain the UI and server components as well as
 
 The `_module_result` function contains the `Output` functions which would normally be included in the UI function. As in the `_module_ui` function, the object ids need encapsulating inside `ns()`.
 
-The `_module_map` function updates the `leaflet` map. `map` is a `leafletProxy` object created in the server file so leaflet functions can be piped to it e.g. `map &>&` 
+The `_module_map` function updates the `leaflet` map. `map` is a `leafletProxy` object created in the server file so leaflet functions can be piped to it e.g. `map &>& addRasterImage()` 
 
 The `_module_rmd` function creates a list of objects which are passed to the module .Rmd file in order to reproduce the analysis. The first `_knit` object is used to control whether or not the module has been used and therefore whether the markdown should be included in the user's markdown. If the object to be passed over is a vector, then it should be wrapped in `printVecAsis` which converts it to a string so that it can be knitted into the .Rmd.
 
 ##### .Rmd
-This is a template for the rmarkdown that can be used to reproduce the module. Objects from `_module_rmd` are passed into this template when the user downloads the rmarkdown. 
+This is a template for the rmarkdown that can be used to reproduce the module. Objects from `_module_rmd` are passed into this template when the user downloads the rmarkdown. Objects from the `_module_rmd` function are passed into the template when the document is knitted. If `module_setting` is added to the list in `_module_rmd` then the value will be substituted for `{{module_setting}}` inside the .Rmd. If `module_setting` is a string, then you need to use `"{{module_setting}}"` inside the .Rmd.
 
 ##### .md
 This is a guidance document to explain the theoretical background behind the module and how it has been implemented. 
@@ -70,10 +98,13 @@ This is a guidance document to explain the theoretical background behind the mod
 This is a configuration file used when the modules are loaded, and the only field which should require editing is  `package` which is used to list any packages which the module uses so that they can be cited. Note that the package names should be included as plain text rather than as strings e.g. `package: [dplyr,shiny]`
 
 ##### .R function
-This function should contain the actual computation of the module. Creating this function separately to the shiny functionality is advantageous because it is easier to test and because it can be called from inside the .Rmd file.
+This function should contain the actual computation of the module. Creating this function separately to the shiny functionality is advantageous because it is easier to test and because it can be called from inside the .Rmd file. Note that the messages can also be posted to the log from inside these functions if it is passed `common$logger` - see `/R/select_query.R` for an example.
 
 #### Components
 Each component has a skeleton guidance document located in `inst/shiny/Rmd` e.g. `gtext_plot` which you should use to describe the functionality of the component in general and also include any relevant references. 
+
+#### server.R and ui.R
+These should not require substantial editing unless you wish to change the layout/appearance of the app. One exception is the block of code in `server.R` that creates the table because this is shared between modules. If your app uses `terra` objects, note that they need to be wrapped and unwrapped using `terra::wrap` and `terra::unwrap` when they are saved and loaded (see the `server.R` file of this repository for an example).  
 
 ### Before using *SMART*
 

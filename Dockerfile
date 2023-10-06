@@ -17,10 +17,8 @@ RUN apt-get update && apt-get install -y \
     libgdal-dev
   
 # install R packages required 
-# (change it depending on the packages you need)
 RUN R -e "install.packages('devtools')"
-RUN R -e "install.packages('shiny', repos='http://cran.rstudio.com/')"
-RUN R -e "devtools::install_github('timcdlucas/wallace-disag@dev')"
+RUN R -e "devtools::install_github('simon-smart88/SMART')"
 
 COPY ./inst/shiny/ /srv/shiny-server/smart
 
@@ -29,7 +27,6 @@ EXPOSE 3838
 
 # allow permission
 RUN sudo chown -R shiny:shiny /srv/shiny-server
-RUN sudo chown -R shiny:shiny /srv/shiny-server/smart
 
 USER shiny
 

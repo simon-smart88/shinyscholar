@@ -12,4 +12,6 @@ SMART 1.0.0
 2. Due to objects inside `common` not being inherently reactive, event triggers have been added using `gargoyle`
 3. A Code tab has been added to the Visualization panel to allow the code for each module and the function that each module calls to be viewed.
 4. Unit tests for each module have been created using `shinytest2` in addition to unit tests for the function that the module calls.
-5. A new function `module_tester()` has been created in order to run a single module.
+5. Added a new function `module_tester()` which can be used to run a single module.
+6. Added a new function `init()` which can be used to create a skeleton app.
+7. Added a Dockerfile which can be used to run the app on a shiny-server.
