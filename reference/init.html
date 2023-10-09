@@ -62,27 +62,27 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>path</dt>
-<dd><p>The path to where the app should be created</p></dd>
+<dd><p>character. The path to where the app should be created</p></dd>
 
 
 <dt>name</dt>
-<dd><p>The name of the app which will be used as the package name</p></dd>
+<dd><p>character. The name of the app which will be used as the package name</p></dd>
 
 
 <dt>include_map</dt>
-<dd><p>Whether to include a leaflet map</p></dd>
+<dd><p>logical. Whether to include a leaflet map</p></dd>
 
 
 <dt>include_table</dt>
-<dd><p>Whether to include a table tab</p></dd>
+<dd><p>logical. Whether to include a table tab</p></dd>
 
 
 <dt>include_code</dt>
-<dd><p>Whether to include a tab for viewing module code</p></dd>
+<dd><p>logical. Whether to include a tab for viewing module code</p></dd>
 
 
 <dt>common_objects</dt>
-<dd><p>A vector of the objects which will be shared between modules</p></dd>
+<dd><p>character vector. Names of objects which will be shared between modules</p></dd>
 
 
 <dt>modules</dt>
@@ -94,7 +94,7 @@ so should be formatted appropriately.</p></dd>
 
 
 <dt>author</dt>
-<dd><p>The name of the author(s)</p></dd>
+<dd><p>character. The name of the author(s)</p></dd>
 
 </dl></div>
     <div id="author">
@@ -104,7 +104,8 @@ so should be formatted appropriately.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">modules</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">modules</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span><span class="st">"component"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"data"</span>, <span class="st">"plot"</span>, <span class="st">"plot"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span><span class="st">"long_component"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Load data"</span>, <span class="st">"Load data"</span>, <span class="st">"Plot data"</span>, <span class="st">"Plot data"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span><span class="st">"module"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"user"</span>, <span class="st">"database"</span>, <span class="st">"histogram"</span>, <span class="st">"scatter"</span><span class="op">)</span>,</span></span>
@@ -115,44 +116,11 @@ so should be formatted appropriately.</p></dd>
 <span class="r-in"><span><span class="st">"rmd"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span><span class="st">"save"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">common_objects</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raster"</span>, <span class="st">"histogram"</span>, <span class="st">"scatter"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">init</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"~/Documents"</span>, name <span class="op">=</span> <span class="st">"demo_app"</span>,</span></span>
+<span class="r-in"><span><span class="fu">init</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"~/Documents"</span>, name <span class="op">=</span> <span class="st">"demo"</span>,</span></span>
 <span class="r-in"><span>include_map <span class="op">=</span> <span class="cn">TRUE</span>, include_table <span class="op">=</span> <span class="cn">TRUE</span>, include_code <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>common_objects <span class="op">=</span> <span class="va">common_objects</span>, modules <span class="op">=</span> <span class="va">modules</span>,</span></span>
 <span class="r-in"><span>author <span class="op">=</span> <span class="st">"Simon E. H. Smart"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot create dir '/home/runner/Documents/demo_app', reason 'No such file or directory'</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot create dir '/home/runner/Documents/demo_app/R', reason 'No such file or directory'</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> processing file: /tmp/RtmpWrVOpK/file245c5bc25962.Rmd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1/9 [unnamed-chunk-1]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2/9                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3/9 [unnamed-chunk-2]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4/9                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5/9 [unnamed-chunk-3]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6/9                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7/9 [unnamed-chunk-4]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8/9 [unnamed-chunk-5]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9/9 [unnamed-chunk-6]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> output file: ~/Documents/demo_app/inst/shiny/server.R</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> processing file: /tmp/RtmpWrVOpK/file245c5359c31e.Rmd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1/7 [unnamed-chunk-1]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2/7 [unnamed-chunk-2]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3/7 [unnamed-chunk-3]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4/7 [unnamed-chunk-4]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5/7 [unnamed-chunk-5]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6/7 [unnamed-chunk-6]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7/7                  </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> output file: ~/Documents/demo_app/inst/shiny/ui.R</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> processing file: /tmp/RtmpWrVOpK/file245c3ece10f7.Rmd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1/2 [unnamed-chunk-1]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2/2                  </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> output file: ~/Documents/demo_app/inst/shiny/global.R</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open file '/home/runner/Documents/demo_app/R/data_user.R': No such file or directory</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in file(con, "w"):</span> cannot open the connection</span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
