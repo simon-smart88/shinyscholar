@@ -15,20 +15,22 @@ create_module(
 )
 }
 \arguments{
-\item{id}{The id of the module.}
+\item{id}{character. The id of the module.}
 
-\item{dir}{A directory where the new module should be created.}
+\item{dir}{character. A directory where the new module should be created.}
 
-\item{map}{Whether or not the module should support modifying the map.}
+\item{map}{logical. Whether or not the module should support modifying the map.}
 
-\item{result}{Whether or not the module should support showing information in
+\item{result}{logical. Whether or not the module should support showing information in
 the Result tab.}
 
-\item{rmd}{Whether or not the module should add Rmd code to the Session Code
+\item{rmd}{logical. Whether or not the module should add Rmd code to the Session Code
 download.}
 
-\item{save}{Whether or not the module has some custom data to save when the
+\item{save}{logical. Whether or not the module has some custom data to save when the
 user saves the current session.}
+
+\item{init}{logical. Whether or not the function is being used inside of the init function}
 }
 \description{
 Create the template of a new SMART module.

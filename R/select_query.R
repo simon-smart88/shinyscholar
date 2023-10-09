@@ -54,8 +54,8 @@ select_query <- function(poly, date, logger = NULL) {
   raster_image <- terra::rast(url)
 
   #count missing values and log accordingly
-  missing_values <- length(values(raster_image)[values(raster_image) == 254])
-  if (missing_values == length(values(raster_image))) {
+  missing_values <- length(terra::values(raster_image)[terra::values(raster_image) == 254])
+  if (missing_values == length(terra::values(raster_image))) {
     logger %>% writeLog(type = "error", paste0("No data was found for your selected area. ",
                                                "This could be due to cloud coverage or because the area is not over land."))
     return()

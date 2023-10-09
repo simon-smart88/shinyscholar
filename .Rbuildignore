@@ -5,10 +5,11 @@
 ^NEWS\.md$          # A news file written in Markdown
 \.DS_Store$	    # for macs
 cmip5*    # worldclim files
-^wallace.Rproj
+^SMART.Rproj
 ^\.github$
 ^wc10
 ^vignettes$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^LICENSE.md

@@ -10,6 +10,10 @@ select_query(poly, date, logger = NULL)
 \item{poly}{matrix. Coordinates of area to load}
 
 \item{date}{character. Date of image to load}
+
+\item{logger}{Stores all notification messages to be displayed in the Log
+Window. Insert the logger reactive list here for running in
+shiny, otherwise leave the default NULL}
 }
 \value{
 a SpatRaster object
