@@ -64,7 +64,7 @@
 <div class="section level1">
 <div class="page-header"><h1 id="smart-v100">SMART (v1.0.0)<a class="anchor" aria-label="anchor" href="#smart-v100"></a>
 </h1></div>
-<p>SMART (Shiny Modular Academic Reproducible Template) is a basic application written in R that can be used as a template to create complex applications that are modular and can be reproduced outside of the application. <em>SMART</em> was forked from <em>Wallace</em>, a modular platform for reproducible modeling of species niches and distributions and we are very grateful to the contributors of that package. The features retained from <em>Wallace</em> and the new features added in <em>SMART</em> are described in <code>NEWS</code>.</p>
+<p>SMART (Shiny Modular Academic Reproducible Template) is a basic application written in R that can be used as a template to create complex applications that are modular and reproducible outside of the application. <em>SMART</em> was forked from <a href="https://github.com/wallaceEcoMod/wallace" class="external-link"><em>Wallace</em></a>, a modular platform for reproducible modeling of species distributions and we are very grateful to the contributors of that package. The features retained from <em>Wallace</em> and the new features added in <em>SMART</em> are described in <code>NEWS</code>.</p>
 <p><em>SMART</em> contains two components (Select, Plot, Reproduce) each of which contain two modules (<code>select_query</code>, <code>select_user</code>, <code>plot_hist</code>, <code>plot_scatter</code>, <code>rep_markdown</code> and <code>rep_refPackages</code>) and their code is found in the <code>inst/shiny/modules</code> directory. Each of the modules in the Select and Plot components calls a function with the same name that is found in the <code>R</code> directory. The <code>select_query</code> module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used.</p>
 <p>Install <em>SMART</em> via Github and run the application with the following R code.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -79,14 +79,23 @@
 <p>Shiny apps are a great way to lower the barrier for entry for users to complete complex analyses, but often apps produced by academics do not follow best practices in software development or open science. If apps become popular, more features are requested and developers move onto new roles, it may become difficult to maintain their codebase. If users cannot reproduce their analyses outside of the application, it prevents them from modifying analyses to suit their particular use-case, makes it harder to understand the analysis and limits their ability to use the results in publications. Additionally, it may not be possible to determine which R packages are being used in the application, making it more onerous to cite the packages in publications. Other packages exist for creating templates of shiny apps, e.g. <code>golem</code> and <code>rhino</code> but these are not geared towards use by academics.</p>
 <p><em>Wallace</em> addressed these shortcomings and the attributes of <em>SMART</em> are built open those of Wallace. Apps built using <em>SMART</em> should maintain these characteristics:</p>
 <ul>
-<li><p><strong>accessible</strong>: lowers barriers to implementing complex modular <code>shiny</code> apps for scientific analysis</p></li>
-<li><p><strong>open</strong>: the code is free to use and modify (GPL 3.0)</p></li>
-<li><p><strong>expandable</strong>: users can author and contribute modules that enable new methodological options</p></li>
-<li><p><strong>flexible</strong>: options for user uploads and downloads of results</p></li>
-<li><p><strong>interactive</strong>: includes an embedded zoomable <code>leaflet</code> map, sortable <code>DF</code> data tables, and visualizations of results</p></li>
-<li><p><strong>instructive</strong>: features guidance text that educates users about theoretical and analytical aspects of each step in the workflow</p></li>
-<li><p><strong>reproducible</strong>: users can download an <code>rmarkdown</code> .Rmd file that when run reproduces the analysis, ability to save sessions and load later</p></li>
-<li><p><strong>robust</strong>: modules and their underlying functions are tested using <code>testthat</code> and <code>shinytest2</code></p></li>
+<li>
+<strong>accessible</strong>: lowers barriers to implementing complex modular <code>shiny</code> apps for scientific analysis</li>
+<li>
+<strong>open</strong>: the code is free to use and modify (GPL 3.0)</li>
+<li>
+<strong>expandable</strong>: users can author and contribute modules that enable new methodological options</li>
+<li>
+<strong>flexible</strong>: options for user uploads and downloads of results</li>
+<li>
+<strong>interactive</strong>: includes an embedded zoomable <code>leaflet</code> map, sortable <code>DF</code> data tables, and visualizations of results</li>
+<li>
+<strong>instructive</strong>: features guidance text that educates users about theoretical and analytical aspects of each step in the workflow</li>
+<li>
+<strong>reproducible</strong>: users can download an <code>rmarkdown</code> .Rmd file that when run reproduces the analysis, ability to save sessions and load later</li>
+<li>
+<strong>robust</strong>: modules and their underlying functions are tested using <code>testthat</code> and <code>shinytest2</code>
+</li>
 </ul>
 </div>
 <div class="section level2">
@@ -132,23 +141,25 @@
 <div class="section level4">
 <h4 id="modules">Modules<a class="anchor" aria-label="anchor" href="#modules"></a>
 </h4>
-<p>After installing the initial version, the modules only contain skeleton code. There are four files for each module located in <code>/inst/shiny/modules</code> and each module calls a function found in <code>/R</code>. It may be helpful to familiarise yourself with the code for the existing application either by viewing the code in <code>/inst/shiny/modules</code> or by using the Code tab in the app.</p>
+<p>After installing the initial version, the modules only contain skeleton code. There are four files for each module located in <code>/inst/shiny/modules</code> and each module calls a function found in <code>/R</code>. It may be helpful to familiarise yourself with the code for the existing application either by viewing the files in <code>/inst/shiny/modules</code> or by using the Code tab in the app.</p>
 <div class="section level5">
 <h5 id="r">.R<a class="anchor" aria-label="anchor" href="#r"></a>
 </h5>
-<p>This is the main module file and contains the UI and server components as well as any other functionality specified at initialisation. The <code>_module_ui</code> function can be developed just like a normal UI function inside a shiny app, but only contains input elements and the input ids need encapsulating inside <code>ns()</code> to create ids which are unique to the module. By default, all the modules contain an <code>actionButton</code> which runs code inside an <code>observeEvent</code> in the <code>_module_server</code> function, but depending on your use case you may wish to remove this. Inside the <code>observeEvent</code> there is a consistent structure to the code:</p>
+<p>This is the main module file and contains the UI and server components as well as any other functionality specified at initialisation.</p>
+<p>The <code>_module_ui</code> function can be developed just like a normal UI function inside a shiny app, but only contains *Input elements and the input ids need wrapping inside <code>ns()</code> to create ids that are unique to the module. The template contains an <code>actionButton</code> which when clicked runs the code inside the <code>_module_server</code> function. If the computations performed by the module are simple, then you could choose to remove the <code>actionButton</code> in the UI and the <code>observeEvent</code> so that the server runs reactively whenever the inputs are changed.</p>
+<p>The <code>_module_server</code> function contains an <code>observeEvent</code> which is run when the <code>actionButton</code> in the UI is clicked. Inside the <code>observeEvent</code> there is a consistent structure to the code:</p>
 <ul>
 <li>In the <em>warning</em> block, examine inputs to check that they are as expected and issue warnings if not using <code>common$logger %&gt;% writeLog()</code> See the documentation of <code><a href="reference/writeLog.html">SMART::writeLog()</a></code> for more details.</li>
 <li>In the <em>function call</em> block, pass the inputs to the module function.</li>
 <li>In the <em>load into common</em> block, store the result(s) of the function call in the relevant <code>common</code> object.</li>
 <li>In the <em>metadata</em> block, store any relevant input metadata which is required to reproduce the function call in the <code>common$meta</code> object.</li>
-<li>In the <em>trigger</em> block, <code><a href="https://rdrr.io/pkg/gargoyle/man/Event.html" class="external-link">gargoyle::trigger()</a></code> is called can be used to trigger later actions. This should not need editing.</li>
-<li>In the <em>result</em> block, use the relevant <code>input</code> values or <code>common</code> objects to produce <code>render</code> objects which will be passed to the <code>_module_result</code> function.</li>
+<li>In the <em>trigger</em> block, <code><a href="https://rdrr.io/pkg/gargoyle/man/Event.html" class="external-link">gargoyle::trigger()</a></code> is called which can be used to trigger actions elsewhere in the module or app using <code><a href="https://rdrr.io/pkg/gargoyle/man/Event.html" class="external-link">gargoyle::watch()</a></code>. This should not need editing.</li>
+<li>In the <em>result</em> block, use the relevant <code>input</code> values or <code>common</code> objects to produce <code>render*</code> objects which will be passed to the <code>_module_result</code> function.</li>
 <li>In the <em>return</em> block, the current <code>input</code> values can be stored as a <code>list</code> inside the <code>save</code> function e.g. <code>select_date = input$date</code> when the app is saved and then retrieved when the app is loaded using various <code>updateInput</code> functions inside the <code>load</code> function e.g. <code>updateSelectInput(session, "date", selected = state$select_date</code>).</li>
 </ul>
-<p>The <code>_module_result</code> function contains the <code>Output</code> functions which would normally be included in the UI function. As in the <code>_module_ui</code> function, the object ids need encapsulating inside <code>ns()</code>.</p>
-<p>The <code>_module_map</code> function updates the <code>leaflet</code> map. <code>map</code> is a <code>leafletProxy</code> object created in the server file so leaflet functions can be piped to it e.g. <code>map &amp;&gt;&amp; addRasterImage()</code></p>
-<p>The <code>_module_rmd</code> function creates a list of objects which are passed to the module .Rmd file in order to reproduce the analysis. The first <code>_knit</code> object is used to control whether or not the module has been used and therefore whether the markdown should be included in the user’s markdown. If the object to be passed over is a vector, then it should be wrapped in <code>printVecAsis</code> which converts it to a string so that it can be knitted into the .Rmd.</p>
+<p>The <code>_module_result</code> function contains the <code>*Output</code> functions which would normally be included in the UI function. As in the <code>_module_ui</code> function, the object ids need wrapping inside <code>ns()</code>.</p>
+<p>The <code>_module_map</code> function updates the <code>leaflet</code> map. <code>map</code> is a <code>leafletProxy</code> object created in the main server function so leaflet functions can be piped to it e.g. <code>map &amp;&gt;&amp; addRasterImage()</code></p>
+<p>The <code>_module_rmd</code> function creates a list of objects which are passed to the module’s .Rmd file to reproduce the analysis. The first <code>_knit</code> object is a boolean used to control whether or not the module has been used and therefore whether the markdown should be included in the user’s markdown. If the object to be passed over is a vector, then it should be wrapped in <code><a href="reference/printVecAsis.html">printVecAsis()</a></code> which converts it to a string so that it can be knitted into the .Rmd.</p>
 </div>
 <div class="section level5">
 <h5 id="rmd">.Rmd<a class="anchor" aria-label="anchor" href="#rmd"></a>
@@ -163,23 +174,23 @@
 <div class="section level5">
 <h5 id="yml">.yml<a class="anchor" aria-label="anchor" href="#yml"></a>
 </h5>
-<p>This is a configuration file used when the modules are loaded, and the only field which should require editing is <code>package</code> which is used to list any packages which the module uses so that they can be cited. Note that the package names should be included as plain text rather than as strings e.g. <code>package: [dplyr,shiny]</code></p>
+<p>This is a configuration file used when the modules are loaded. Add any R packages used inside the module or the function that it calls to <code>package</code> so that they can be cited. Package names should be included as plain text rather than as strings e.g. <code>package: [dplyr,shiny]</code>. The <code>short_name</code> field is used to generate the UI for selecting which module to use. By default it uses the <code>module</code> column of the <code>modules</code> dataframe but you may wish to edit this for clarity.</p>
 </div>
 <div class="section level5">
 <h5 id="r-function">.R function<a class="anchor" aria-label="anchor" href="#r-function"></a>
 </h5>
-<p>This function should contain the actual computation of the module. Creating this function separately to the shiny functionality is advantageous because it is easier to test and because it can be called from inside the .Rmd file. Note that the messages can also be posted to the log from inside these functions if it is passed <code>common$logger</code> - see <code>/R/select_query.R</code> for an example.</p>
+<p>This function performs the computation of the module. Creating this function separately to the shiny functionality is advantageous because it is easier to test and because it can be called from inside the .Rmd file. Messages can be posted to the log from inside these functions if it is passed <code>common$logger</code> - see <code>/R/select_query.R</code> for an example.</p>
 </div>
 </div>
 <div class="section level4">
 <h4 id="components">Components<a class="anchor" aria-label="anchor" href="#components"></a>
 </h4>
-<p>Each component has a skeleton guidance document located in <code>inst/shiny/Rmd</code> e.g. <code>gtext_plot</code> which you should use to describe the functionality of the component in general and also include any relevant references.</p>
+<p>Each component has a skeleton guidance document located in <code>inst/shiny/Rmd</code> e.g. <code>gtext_plot.Rmd</code> which you should use to describe the functionality of the component in general and also include any relevant references.</p>
 </div>
 <div class="section level4">
 <h4 id="serverr-and-uir">server.R and ui.R<a class="anchor" aria-label="anchor" href="#serverr-and-uir"></a>
 </h4>
-<p>These should not require substantial editing unless you wish to change the layout/appearance of the app. One exception is the block of code in <code>server.R</code> that creates the table because this is shared between modules. If your app uses <code>terra</code> objects, note that they need to be wrapped and unwrapped using <code><a href="https://rdrr.io/pkg/terra/man/wrap.html" class="external-link">terra::wrap</a></code> and <code><a href="https://rdrr.io/pkg/terra/man/wrap.html" class="external-link">terra::unwrap</a></code> when they are saved and loaded (see the <code>server.R</code> file of this repository for an example).</p>
+<p>These should not require substantial editing unless you wish to change the layout/appearance of the app. One exception is the block of code in <code>server.R</code> that creates the table because this is shared between modules. If your app uses <code>terra</code> objects, they need to be wrapped and unwrapped using <code><a href="https://rdrr.io/pkg/terra/man/wrap.html" class="external-link">terra::wrap()</a></code> and <code><a href="https://rdrr.io/pkg/terra/man/wrap.html" class="external-link">terra::unwrap()</a></code> when they are saved and loaded (see the <code>server.R</code> file of this repository for an example).</p>
 </div>
 </div>
 <div class="section level3">
