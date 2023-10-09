@@ -210,8 +210,12 @@ for (m in 1:nrow(modules)){
   #edit yaml configs
   yml_lines <- rep(NA,5)
 
+  #Capitalise module name for UI
+  short_mod <- modules$module[m]
+  substr(short_mod, 1, 1) <- toupper(substr(short_mod, 1, 1))
+
   yml_lines[1] <- glue::glue('component: "{modules$component[m]}"')
-  yml_lines[2] <- glue::glue('short_name: "{modules$module[m]}"')
+  yml_lines[2] <- glue::glue('short_name: "{short_mod}"')
   yml_lines[3] <- glue::glue('long_name: "{modules$long_module[m]}"')
   yml_lines[4] <- glue::glue('authors: "{author}"')
   yml_lines[5] <- "package: []"
