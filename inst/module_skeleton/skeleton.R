@@ -19,7 +19,7 @@
     # METADATA ####
 
     # TRIGGER
-    gargoyle::trigger({{id}})
+    gargoyle::trigger("{{id}}")
   })
 
   output$result <- renderText({
