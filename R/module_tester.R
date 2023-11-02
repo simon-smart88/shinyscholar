@@ -80,7 +80,7 @@ test_server <- function(input, output, session) {
     leaflet() %>%
       setView(0, 0, zoom = 2) %>%
       addProviderTiles("Esri.WorldTopoMap") %>%
-      addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
+      leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                      markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE)
   })
 
@@ -93,11 +93,10 @@ test_server <- function(input, output, session) {
     #convert any longitudes drawn outside of the original map
     xy[,1] <- ((xy[,1] + 180) %% 360) - 180
     common$poly <- xy
-    trigger("change_poly")
+    gargoyle::trigger("change_poly")
   }) %>% bindEvent(input$map_draw_new_feature)
 
   #main server function
-  #callModule(get(), module, common)
   do.call(get(glue::glue("{module}_module_server")), args = list(id = module, common = common))
 
   #load map function if it exists

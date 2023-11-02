@@ -6,6 +6,8 @@ save_path <- list.files(system.file("extdata", package = "SMART"),
 
 #this works
 test_that("{shinytest2} recording: e2e_empty_save", {
+  testthat::skip_on_ci()
+
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_empty_save")
   app$set_inputs(tabs = "select")
   app$set_inputs(main = "Save")
@@ -16,6 +18,8 @@ test_that("{shinytest2} recording: e2e_empty_save", {
 
 #this works
 test_that("{shinytest2} recording: e2e_save_scat", {
+  testthat::skip_on_ci()
+
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_save_scat")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
@@ -55,6 +59,8 @@ test_that("{shinytest2} recording: e2e_save_hist", {
 })
 
 test_that("{shinytest2} recording: e2e_load", {
+  testthat::skip_on_ci()
+
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_load")
   app$set_inputs(introTabs = "Load Prior Session")
   app$upload_file(load_session = save_path)

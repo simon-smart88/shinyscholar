@@ -16,17 +16,17 @@ init(
 )
 }
 \arguments{
-\item{path}{The path to where the app should be created}
+\item{path}{character. The path to where the app should be created}
 
-\item{name}{The name of the app which will be used as the package name}
+\item{name}{character. The name of the app which will be used as the package name}
 
-\item{include_map}{Whether to include a leaflet map}
+\item{include_map}{logical. Whether to include a leaflet map}
 
-\item{include_table}{Whether to include a table tab}
+\item{include_table}{logical. Whether to include a table tab}
 
-\item{include_code}{Whether to include a tab for viewing module code}
+\item{include_code}{logical. Whether to include a tab for viewing module code}
 
-\item{common_objects}{A vector of the objects which will be shared between modules}
+\item{common_objects}{character vector. Names of objects which will be shared between modules}
 
 \item{modules}{A dataframe containing long and short names of components (tabs) and modules
 in the order to be included and whether they should include mapping, save,
@@ -34,12 +34,13 @@ markdown and result functionality. The component and module columns are used to 
 names for the modules. The long_component and long_module columns are used to generate UI and
 so should be formatted appropriately.}
 
-\item{author}{The name of the author(s)}
+\item{author}{character. The name of the author(s)}
 }
 \description{
 This function creates a skeleton app containing empty modules
 }
 \examples{
+\dontrun{
 modules <- data.frame(
 "component" = c("data", "data", "plot", "plot"),
 "long_component" = c("Load data", "Load data", "Plot data", "Plot data"),
@@ -51,10 +52,11 @@ modules <- data.frame(
 "rmd" = c(TRUE, TRUE, TRUE, TRUE),
 "save" = c(TRUE, TRUE, TRUE, TRUE))
 common_objects = c("raster", "histogram", "scatter")
-init(path = "~/Documents", name = "demo_app",
+init(path = "~/Documents", name = "demo",
 include_map = TRUE, include_table = TRUE, include_code = TRUE,
 common_objects = common_objects, modules = modules,
 author = "Simon E. H. Smart")
+}
 }
 \author{
 Simon E. H. Smart <simon.smart@cantab.net>

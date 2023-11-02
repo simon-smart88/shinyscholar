@@ -22,6 +22,7 @@ Imports:
     geosphere,
     glue,
     knitcitations,
+    knitr,
     leafem,
     magrittr,
     markdown,
