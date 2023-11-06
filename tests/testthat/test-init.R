@@ -26,6 +26,9 @@ test_that("Check init function works as expected", {
   expect_true(file.exists(paste0(directory,"/SMART/inst/shiny/global.R")))
   expect_true(file.exists(paste0(directory,"/SMART/R/select_user.R")))
   expect_true(file.exists(paste0(directory,"/SMART/inst/shiny/modules/select_user.R")))
+  expect_true(file.exists(paste0(directory,"/SMART/inst/shiny/modules/select_user.Rmd")))
+  expect_true(file.exists(paste0(directory,"/SMART/inst/shiny/modules/select_user.yml")))
+  expect_true(file.exists(paste0(directory,"/SMART/inst/shiny/modules/select_user.md")))
 
   #there is not much to test when running the app, but this confirms that it runs
   test_that("{shinytest2} recording: testing_init", {
