@@ -52,7 +52,11 @@ if (any(modules$map) == FALSE & include_map == TRUE){
 }
 
 if (any(common_objects %in% c("meta", "logger", "state", "poly"))){
-  stop("One of the common_objects is called meta, logger, state or poly which are used by default")
+  conflicts <- common_objects[common_objects %in% c("meta", "logger", "state", "poly")]
+  conflicts <- paste(conflicts, collapse=',')
+
+  stop(glue::glue("common_objects contains {conflicts} which are included
+        in common by default. Please choose a different name."))
 }
 
 # Create directories ====
