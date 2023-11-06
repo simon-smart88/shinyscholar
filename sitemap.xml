@@ -40,6 +40,9 @@
     <loc>/reference/register_module.html</loc>
   </url>
   <url>
+    <loc>/reference/run_module.html</loc>
+  </url>
+  <url>
     <loc>/reference/run_smart.html</loc>
   </url>
   <url>
@@ -50,9 +53,6 @@
   </url>
   <url>
     <loc>/reference/spurious.html</loc>
-  </url>
-  <url>
-    <loc>/reference/test_module.html</loc>
   </url>
   <url>
     <loc>/reference/writeLog.html</loc>

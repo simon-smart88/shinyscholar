@@ -64,7 +64,7 @@
 <div class="section level1">
 <div class="page-header"><h1 id="smart-v100">SMART (v1.0.0)<a class="anchor" aria-label="anchor" href="#smart-v100"></a>
 </h1></div>
-<p>SMART (Shiny Modular Academic Reproducible Template) is a basic application written in R that can be used as a template to create complex applications that are modular and reproducible outside of the application. <em>SMART</em> was forked from <a href="https://github.com/wallaceEcoMod/wallace" class="external-link"><code>{wallace}</code></a>, a modular platform for reproducible modeling of species distributions and we are very grateful to the contributors of that package. The features retained from <code>{wallace}</code> and the new features added in <em>SMART</em> are described in <code>NEWS</code>.</p>
+<p>SMART (Shiny Modular Academic Reproducible Template) is a basic application written in R that can be used as a template to create complex applications that are modular and reproducible outside of the application. <em>SMART</em> was forked from <code>{wallace}</code> (<a href="https://cran.r-project.org/package=wallace" class="external-link">CRAN</a>, <a href="https://wallaceecomod.github.io/wallace/index.html" class="external-link">website</a>) a modular platform for reproducible modeling of species distributions . we are very grateful to the contributors of that package. The features retained from <code>{wallace}</code> and the new features added in <em>SMART</em> are described in <code>NEWS</code>.</p>
 <p><em>SMART</em> contains three components (Select, Plot, Reproduce) each of which contain two modules (<code>select_query</code>, <code>select_user</code>, <code>plot_hist</code>, <code>plot_scatter</code>, <code>rep_markdown</code> and <code>rep_refPackages</code>) and their code is found in the <code>inst/shiny/modules</code> directory. Each of the modules in the Select and Plot components calls a function with the same name that is found in the <code>R</code> directory. The <code>select_query</code> module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used.</p>
 <p>Install <em>SMART</em> via Github and run the application with the following R code.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -133,7 +133,7 @@
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
-<p><code><a href="reference/init.html">init()</a></code> creates the file structure of a package and to install it, run <code>devtools::install_local(path = "~/Documents/demo", force=TRUE)</code> (assuming as in the example above the app was initiated in <code>~/Documents/demo</code>). You need to repeat this process after making changes to the app. Now you can run the app using <code>shiny::runApp(system.file('shiny', package='demo'))</code>.</p>
+<p><code><a href="reference/init.html">init()</a></code> creates the file structure of a package and if <code>install</code> is set to <code>TRUE</code> it will be installed automatically. If you wish to install manually, run <code>devtools::install_local(path = "~/Documents/demo", force=TRUE)</code> (assuming as in the example above the app was initiated in <code>~/Documents/demo</code>). You need to repeat this process after making changes to the app, or if using Rstudio, use Ctrl+Shift+B or Command+Shift+B. Now you can run the app using <code>shiny::runApp(system.file('shiny', package='demo'))</code> or <code>demo::run_demo()</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="development">Development<a class="anchor" aria-label="anchor" href="#development"></a>
@@ -191,6 +191,11 @@
 <h4 id="serverr-and-uir">server.R and ui.R<a class="anchor" aria-label="anchor" href="#serverr-and-uir"></a>
 </h4>
 <p>These should not require substantial editing unless you wish to change the layout/appearance of the app. One exception is the block of code in <code>server.R</code> that creates the table because this is shared between modules. If your app uses <a href="https://rspatial.org/" class="external-link">terra</a> objects, they need to be wrapped and unwrapped using <code><a href="https://rdrr.io/pkg/terra/man/wrap.html" class="external-link">terra::wrap()</a></code> and <code><a href="https://rdrr.io/pkg/terra/man/wrap.html" class="external-link">terra::unwrap()</a></code> when they are saved and loaded (see the <code>server.R</code> file of this repository for an example).</p>
+</div>
+<div class="section level4">
+<h4 id="commonr">common.R<a class="anchor" aria-label="anchor" href="#commonr"></a>
+</h4>
+<p>This file contains the data structure that is shared between modules.</p>
 </div>
 </div>
 <div class="section level3">
