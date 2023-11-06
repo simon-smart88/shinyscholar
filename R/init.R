@@ -5,7 +5,10 @@
 #' @param include_map logical. Whether to include a leaflet map
 #' @param include_table logical. Whether to include a table tab
 #' @param include_code logical. Whether to include a tab for viewing module code
-#' @param common_objects character vector. Names of objects which will be shared between modules
+#' @param common_objects character vector. Names of objects which will be shared
+#' between modules. The objects meta, logger and state are included by default
+#' and if include_map is TRUE, the object poly is included to store polygons
+#' drawn on the map.
 #' @param modules A dataframe containing long and short names of components (tabs) and modules
 #' in the order to be included and whether they should include mapping, save,
 #' markdown and result functionality. The component and module columns are used to generate file
@@ -46,6 +49,10 @@ if (any(modules$map) == TRUE & include_map == FALSE){
 
 if (any(modules$map) == FALSE & include_map == TRUE){
   stop("You have included a map but none of your modules use it")
+}
+
+if (any(common_objects %in% c("meta", "logger", "state", "poly"))){
+  stop("One of the common_objects is called meta, logger, state or poly which are used by default")
 }
 
 # Create directories ====
