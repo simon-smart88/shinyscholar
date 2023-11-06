@@ -1,10 +1,10 @@
 resourcePath <- system.file("shiny", "www", package = "SMART")
-shiny::addResourcePath("smartres", resourcePath)
+shiny::addResourcePath("resources", resourcePath)
 
 tagList(
   shinyjs::useShinyjs(),
   shinyjs::extendShinyjs(
-    script = file.path("smartres", "js", "shinyjs-funcs.js"),
+    script = file.path("resources", "js", "shinyjs-funcs.js"),
     functions = c("scrollLogger", "disableModule", "enableModule")
   ),
   navbarPage(
