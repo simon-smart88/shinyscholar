@@ -1,5 +1,5 @@
 # SMART (v1.0.0)
-SMART (Shiny Modular Academic Reproducible Template) is a basic application written in R that can be used as a template to create complex applications that are modular and reproducible outside of the application. *SMART* was forked from [`{wallace}`](https://github.com/wallaceEcoMod/wallace), a modular platform for reproducible modeling of species distributions and we are very grateful to the contributors of that package. The features retained from `{wallace}` and the new features added in *SMART* are described in `NEWS`.
+SMART (Shiny Modular Academic Reproducible Template) is a basic application written in R that can be used as a template to create complex applications that are modular and reproducible outside of the application. *SMART* was forked from `{wallace}` ([CRAN](https://cran.r-project.org/package=wallace), [website](https://wallaceecomod.github.io/wallace/index.html)) a modular platform for reproducible modeling of species distributions . we are very grateful to the contributors of that package. The features retained from `{wallace}` and the new features added in *SMART* are described in `NEWS`.
 
 *SMART* contains three components (Select, Plot, Reproduce) each of which contain two modules (`select_query`, `select_user`, `plot_hist`, `plot_scatter`, `rep_markdown` and `rep_refPackages`) and their code is found in the `inst/shiny/modules` directory. Each of the modules in the Select and Plot components calls a function with the same name that is found in the `R` directory. The `select_query` module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used.
 
@@ -57,7 +57,7 @@ include_map = TRUE, include_table = TRUE, include_code = TRUE, common_objects = 
 ```
 
 ### Installation
-`init()` creates the file structure of a package and to install it, run `devtools::install_local(path = "~/Documents/demo", force=TRUE)` (assuming as in the example above the app was initiated in `~/Documents/demo`). You need to repeat this process after making changes to the app. Now you can run the app using `shiny::runApp(system.file('shiny', package='demo'))`.
+`init()` creates the file structure of a package and if `install` is set to `TRUE` it will be installed automatically. If you wish to install manually, run `devtools::install_local(path = "~/Documents/demo", force=TRUE)` (assuming as in the example above the app was initiated in `~/Documents/demo`). You need to repeat this process after making changes to the app, or if using Rstudio, use Ctrl+Shift+B or Command+Shift+B. Now you can run the app using `shiny::runApp(system.file('shiny', package='demo'))` or `demo::run_demo()`.
 
 ### Development
 #### Modules
@@ -102,6 +102,9 @@ Each component has a skeleton guidance document located in `inst/shiny/Rmd` e.g.
 
 #### server.R and ui.R
 These should not require substantial editing unless you wish to change the layout/appearance of the app. One exception is the block of code in `server.R` that creates the table because this is shared between modules. If your app uses `{terra}` objects, they need to be wrapped and unwrapped using `terra::wrap()` and `terra::unwrap()` when they are saved and loaded (see the `server.R` file of this repository for an example).  
+
+#### common.R
+This file contains the data structure that is shared between modules.
 
 ### Notes for Windows users
 
