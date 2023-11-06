@@ -71,6 +71,26 @@ if (include_map == TRUE){
 #convert common_objects to list string
 common_objects <- paste0("list(", paste(sapply(common_objects, function(a) paste0(a, " = NULL")), collapse = ",\n "), ")")
 
+common_params <- c(
+  file = system.file("app_skeleton/common.Rmd", package="SMART"),
+  list(common_objects = common_objects)
+  )
+
+# knit to include custom parameters
+common_rmd <- do.call(knitr::knit_expand, common_params)
+temp <- tempfile()
+writeLines(common_rmd, glue::glue("{temp}.Rmd"))
+
+# purl to only include the R code and the relevant sections requested
+knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{path}/inst/shiny/common.R"))
+
+#tidy up purl mess
+common_lines <- readLines(glue::glue("{path}/inst/shiny/common.R"))
+common_lines <- common_lines[!grepl("^## ----*", common_lines)]
+
+#write final file
+writeLines(common_lines, glue::glue("{path}/inst/shiny/common.R"))
+
 # Subset components ====
 components <- modules[duplicated(modules$component),]
 added_component_list <- components$component
@@ -83,7 +103,6 @@ server_params <- c(
        include_map = include_map,
        include_table = include_table,
        include_code = include_code,
-       common_objects = common_objects,
        added_component_list = printVecAsis(added_component_list)
        )
 )

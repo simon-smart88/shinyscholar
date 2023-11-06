@@ -1,5 +1,7 @@
 library(SMART)
 
+source(system.file("shiny/common.R", package = "SMART"))
+
 function(input, output, session) {
 
   ########################## #
@@ -327,19 +329,6 @@ function(input, output, session) {
   ################################
   ### COMMON LIST FUNCTIONALITY ####
   ################################
-
-  common_class <- R6::R6Class(
-    classname = "common",
-    public = list(
-      ras = NULL,
-      hist = NULL,
-      scat = NULL,
-      meta = NULL,
-      poly = NULL,
-      logger = NULL,
-      state = NULL
-    )
-  )
 
   common <- common_class$new()
   common$logger <- reactiveVal(initLogMsg())

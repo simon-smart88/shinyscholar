@@ -2,6 +2,8 @@
 library({{app_library}})
 library(SMART)
 
+source(system.file("shiny/common.R", package = "{{app_library}}"))
+
 function(input, output, session) {
 
   ########################## #
@@ -321,11 +323,6 @@ function(input, output, session) {
   ################################
   ### COMMON LIST FUNCTIONALITY ####
   ################################
-
-  common_class <- R6::R6Class(
-    classname = "common",
-    public = {{common_objects}}
-  )
 
   common <- common_class$new()
   common$logger <- reactiveVal(initLogMsg())
