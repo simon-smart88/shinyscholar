@@ -19,12 +19,14 @@ test_that("Check init function works as expected", {
   init(path = directory, name = "SMART",
        include_map = TRUE, include_table = TRUE, include_code = TRUE,
        common_objects = common_objects, modules = modules,
-       author = "Simon E. H. Smart")
+       author = "Simon E. H. Smart", install = FALSE)
 
   expect_true(file.exists(paste0(directory,"/SMART/inst/shiny/server.R")))
   expect_true(file.exists(paste0(directory,"/SMART/inst/shiny/ui.R")))
   expect_true(file.exists(paste0(directory,"/SMART/inst/shiny/global.R")))
   expect_true(file.exists(paste0(directory,"/SMART/R/select_user.R")))
+  expect_true(file.exists(paste0(directory,"/SMART/R/run_SMART.R")))
+  expect_true(file.exists(paste0(directory,"/SMART/R/run_module.R")))
   expect_true(file.exists(paste0(directory,"/SMART/inst/shiny/modules/select_user.R")))
   expect_true(file.exists(paste0(directory,"/SMART/inst/shiny/modules/select_user.Rmd")))
   expect_true(file.exists(paste0(directory,"/SMART/inst/shiny/modules/select_user.yml")))

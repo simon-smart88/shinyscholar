@@ -4,24 +4,24 @@
 #'
 #' @examples
 #' if(interactive()) {
-#' test_module("select_query")
+#' run_module("select_query")
 #' }
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 
-test_module <- function(module){
+run_module <- function(module){
 
 #load the module functions
 source(system.file(glue::glue("shiny/modules/{module}.R"), package = "SMART"))
 
 #load js
 resourcePath <- system.file("shiny", "www", package = "SMART")
-shiny::addResourcePath("smartres", resourcePath)
+shiny::addResourcePath("resources", resourcePath)
 
-test_ui <- tagList(
+module_ui <- tagList(
   shinyjs::useShinyjs(),
   shinyjs::extendShinyjs(
-    script = file.path("smartres", "js", "shinyjs-funcs.js"),
+    script = file.path("resources", "js", "shinyjs-funcs.js"),
     functions = c("scrollLogger", "disableModule", "enableModule")
   ),
   fluidPage(
@@ -32,7 +32,7 @@ test_ui <- tagList(
   )
 )
 
-test_server <- function(input, output, session) {
+module_server <- function(input, output, session) {
 
   #initiate gargoyle event
   gargoyle::init(module)
@@ -51,19 +51,6 @@ test_server <- function(input, output, session) {
     shinyjs::html(id = "logHeader", html = common$logger(), add = FALSE)
     shinyjs::js$scrollLogger()
   })
-
-  #create common class and then initiate instance
-  common_class <- R6::R6Class(
-    classname = "common",
-    public = list(
-      ras = NULL,
-      hist = NULL,
-      scat = NULL,
-      meta = NULL,
-      poly = NULL,
-      logger = NULL
-    )
-  )
 
   common <- common_class$new()
   common$logger <- reactiveVal(initLogMsg())
@@ -105,7 +92,7 @@ test_server <- function(input, output, session) {
   do.call(glue::glue("{module}_module_map"), list(map, common))}
 }
 
-shinyApp(test_ui,test_server)
+shinyApp(module_ui, module_server)
 }
 
 

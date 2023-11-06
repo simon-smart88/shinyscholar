@@ -12,6 +12,7 @@
 #' names for the modules. The long_component and long_module columns are used to generate UI and
 #' so should be formatted appropriately.
 #' @param author character. The name of the author(s)
+#' @param install logical. Whether to install the package
 #'
 #' @examples
 #' \dontrun{
@@ -29,12 +30,13 @@
 #' init(path = "~/Documents", name = "demo",
 #' include_map = TRUE, include_table = TRUE, include_code = TRUE,
 #' common_objects = common_objects, modules = modules,
-#' author = "Simon E. H. Smart")
+#' author = "Simon E. H. Smart",
+#' install = TRUE)
 #' }
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 
-init <- function(path, name, include_map, include_table, include_code, common_objects, modules, author){
+init <- function(path, name, include_map, include_table, include_code, common_objects, modules, author, install){
 
 # Check inputs ====
 if (any(modules$map) == TRUE & include_map == FALSE){
@@ -54,7 +56,7 @@ if (dir.exists(file.path(path, name))){
   dir.create(file.path(path, name))
 }
 
-#update path to be the root
+#update path to be the root and create folders
 path <- glue::glue("{path}/{name}")
 dir.create(file.path(path, "R"))
 dir.create(file.path(path, "inst/shiny/modules"), recursive = TRUE)
@@ -278,4 +280,58 @@ description_lines <- readLines(description_template)
 description_lines[1] <- glue::glue("Package: {name}")
 writeLines(description_lines, glue::glue("{path}/DESCRIPTION"))
 
+# Create run_module ====
+
+run_mod_params <- c(
+  file = system.file("app_skeleton/run_module.Rmd", package="SMART"),
+  list(include_map = include_map,
+       app_library = name
+       )
+)
+
+# knit to include custom parameters
+run_mod_rmd <- do.call(knitr::knit_expand, run_mod_params)
+temp <- tempfile()
+writeLines(run_mod_rmd, glue::glue("{temp}.Rmd"))
+
+# purl to only include the R code and the relevant sections requested
+knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{path}/R/run_module.R"))
+
+#tidy up purl mess
+run_mod_lines <- readLines(glue::glue("{path}/R/run_module.R"))
+run_mod_lines <- run_mod_lines[!grepl("^## ----*", run_mod_lines)]
+
+#write final file
+writeLines(run_mod_lines, glue::glue("{path}/R/run_module.R"))
+
+# Create run_app ====
+
+run_app_params <- c(
+  file = system.file("app_skeleton/run_app.Rmd", package="SMART"),
+  list(app_library = name
+  )
+)
+
+# knit to include custom parameters
+run_app_rmd <- do.call(knitr::knit_expand, run_app_params)
+temp <- tempfile()
+writeLines(run_app_rmd, glue::glue("{temp}.Rmd"))
+
+# purl to only include the R code and the relevant sections requested
+knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{path}/R/run_{name}.R"))
+
+#tidy up purl mess
+run_app_lines <- readLines(glue::glue("{path}/R/run_{name}.R"))
+run_app_lines <- run_app_lines[!grepl("^## ----*", run_app_lines)]
+
+#write final file
+writeLines(run_app_lines, glue::glue("{path}/R/run_{name}.R"))
+
+if (install){
+# Install package ====
+devtools::install_local(path = path, force=TRUE)
 }
+
+}
+
+

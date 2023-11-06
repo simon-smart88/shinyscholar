@@ -5,24 +5,23 @@
 #'
 #' @examples
 #' if(interactive()) {
-#' test_module("select_query")
+#' run_module("select_query")
 #' }
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 
-test_module <- function(module){
+run_module <- function(module){
 
 #load the module functions
 source(system.file(glue::glue("shiny/modules/{module}.R"), package = "{{app_library}}"))
 #load common  
-source(system.file("shiny/common.R"), package = "{{app_library}}")
-
+source(system.file("shiny/common.R", package = "{{app_library}}"))
   
 #load js
 resourcePath <- system.file("shiny", "www", package = "{{app_library}}")
 shiny::addResourcePath("resources", resourcePath)
 
-test_ui <- tagList(
+module_ui <- tagList(
   shinyjs::useShinyjs(),
   shinyjs::extendShinyjs(
     script = file.path("resources", "js", "shinyjs-funcs.js"),
@@ -36,7 +35,7 @@ test_ui <- tagList(
   )
 )
 
-test_server <- function(input, output, session) {
+module_server <- function(input, output, session) {
 
   #initiate gargoyle event
   gargoyle::init(module)
@@ -93,7 +92,7 @@ test_server <- function(input, output, session) {
 ```
 ```{r}
 
-shinyApp(test_ui,test_server)
+shinyApp(module_ui,module_server)
 }
 
 

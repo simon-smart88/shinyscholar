@@ -12,7 +12,8 @@ init(
   include_code,
   common_objects,
   modules,
-  author
+  author,
+  install
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ names for the modules. The long_component and long_module columns are used to ge
 so should be formatted appropriately.}
 
 \item{author}{character. The name of the author(s)}
+
+\item{install}{logical. Whether to install the package}
 }
 \description{
 This function creates a skeleton app containing empty modules
@@ -55,7 +58,8 @@ common_objects = c("raster", "histogram", "scatter")
 init(path = "~/Documents", name = "demo",
 include_map = TRUE, include_table = TRUE, include_code = TRUE,
 common_objects = common_objects, modules = modules,
-author = "Simon E. H. Smart")
+author = "Simon E. H. Smart",
+install = TRUE)
 }
 }
 \author{
