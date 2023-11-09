@@ -17,6 +17,7 @@ Depends:
     gargoyle,
     leaflet.extras (>= 1.0.0)
 Imports:
+    devtools,
     dplyr (>= 1.0.2),
     DT (>= 0.5),
     geosphere,
