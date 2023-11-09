@@ -13,3 +13,4 @@ cmip5*    # worldclim files
 ^docs$
 ^pkgdown$
 ^LICENSE.md
+Dockerfile
