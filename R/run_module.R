@@ -13,6 +13,8 @@ run_module <- function(module){
 
 #load the module functions
 source(system.file(glue::glue("shiny/modules/{module}.R"), package = "SMART"))
+#load common_class
+source(system.file("shiny/common.R", package = "SMART"))
 
 #load js
 resourcePath <- system.file("shiny", "www", package = "SMART")
