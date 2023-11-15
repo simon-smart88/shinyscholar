@@ -1,4 +1,23 @@
-#' @title Create a skeleton app
+#' @title tidy_purl
+#' @description Opens a file, removes any lines starting with "## ----" and
+#' returns the other lines
+#' @param params vector. Containing file object linking to file to be knitted
+#' and a list containing any objects to be knitted into the file.
+#' @author Simon E. H. Smart <simon.smart@@cantab.net>
+#' @keywords internal
+#' @export
+
+tidy_purl <- function(params){
+  rmd <- do.call(knitr::knit_expand, params)
+  temp <- tempfile()
+  writeLines(rmd, glue::glue("{temp}.Rmd"))
+  knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{temp}.R"))
+  lines <- readLines(glue::glue("{temp}.R"))
+  lines <- lines[!grepl("^## ----*", lines)]
+  return(lines)
+}
+
+#' @title init
 #' @description This function creates a skeleton app containing empty modules
 #' @param path character. The path to where the app should be created
 #' @param name character. The name of the app which will be used as the package name
@@ -89,17 +108,7 @@ common_params <- c(
   list(common_objects = common_objects)
   )
 
-# knit to include custom parameters
-common_rmd <- do.call(knitr::knit_expand, common_params)
-temp <- tempfile()
-writeLines(common_rmd, glue::glue("{temp}.Rmd"))
-
-# purl to only include the R code and the relevant sections requested
-knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{path}/inst/shiny/common.R"))
-
-#tidy up purl mess
-common_lines <- readLines(glue::glue("{path}/inst/shiny/common.R"))
-common_lines <- common_lines[!grepl("^## ----*", common_lines)]
+common_lines <- tidy_purl(common_params)
 
 #write final file
 writeLines(common_lines, glue::glue("{path}/inst/shiny/common.R"))
@@ -119,18 +128,7 @@ server_params <- c(
        added_component_list = printVecAsis(added_component_list)
        )
 )
-
-# knit to include custom parameters
-server_rmd <- do.call(knitr::knit_expand, server_params)
-temp <- tempfile()
-writeLines(server_rmd, glue::glue("{temp}.Rmd"))
-
-# purl to only include the R code and the relevant sections requested
-knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{path}/inst/shiny/server.R"))
-
-#tidy up purl mess
-server_lines <- readLines(glue::glue("{path}/inst/shiny/server.R"))
-server_lines <- server_lines[!grepl("^## ----*", server_lines)]
+server_lines <- tidy_purl(server_params)
 
 #insert help observers for each module
 help_target <- grep("  # Help Module*", server_lines)
@@ -159,14 +157,7 @@ ui_params <- c(
   )
 )
 
-ui_rmd <- do.call(knitr::knit_expand, ui_params)
-temp <- tempfile()
-writeLines(ui_rmd, glue::glue("{temp}.Rmd"))
-
-knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{path}/inst/shiny/ui.R"))
-
-ui_lines <- readLines(glue::glue("{path}/inst/shiny/ui.R"))
-ui_lines <- ui_lines[!grepl("^## ----*", ui_lines)]
+ui_lines <- tidy_purl(ui_params)
 
 component_tab_target <- grep("*value = 'intro'*", ui_lines)
 for (i in 1:nrow(components)){
@@ -206,14 +197,7 @@ global_params <- c(
   )
 )
 
-global_rmd <- do.call(knitr::knit_expand, global_params)
-temp <- tempfile()
-writeLines(global_rmd, glue::glue("{temp}.Rmd"))
-
-knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{path}/inst/shiny/global.R"))
-
-global_lines <- readLines(glue::glue("{path}/inst/shiny/global.R"))
-global_lines <- global_lines[!grepl("^## ----*", global_lines)]
+global_lines <- tidy_purl(global_params)
 
 global_yaml_target <- grep("*base_module_configs <-*", global_lines)
 for (m in 1:nrow(modules)){
@@ -300,17 +284,7 @@ run_mod_params <- c(
        )
 )
 
-# knit to include custom parameters
-run_mod_rmd <- do.call(knitr::knit_expand, run_mod_params)
-temp <- tempfile()
-writeLines(run_mod_rmd, glue::glue("{temp}.Rmd"))
-
-# purl to only include the R code and the relevant sections requested
-knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{path}/R/run_module.R"))
-
-#tidy up purl mess
-run_mod_lines <- readLines(glue::glue("{path}/R/run_module.R"))
-run_mod_lines <- run_mod_lines[!grepl("^## ----*", run_mod_lines)]
+run_mod_lines <- tidy_purl(run_mod_params)
 
 #write final file
 writeLines(run_mod_lines, glue::glue("{path}/R/run_module.R"))
@@ -323,24 +297,14 @@ run_app_params <- c(
   )
 )
 
-# knit to include custom parameters
-run_app_rmd <- do.call(knitr::knit_expand, run_app_params)
-temp <- tempfile()
-writeLines(run_app_rmd, glue::glue("{temp}.Rmd"))
-
-# purl to only include the R code and the relevant sections requested
-knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{path}/R/run_{name}.R"))
-
-#tidy up purl mess
-run_app_lines <- readLines(glue::glue("{path}/R/run_{name}.R"))
-run_app_lines <- run_app_lines[!grepl("^## ----*", run_app_lines)]
+run_app_lines <- tidy_purl(run_app_params)
 
 #write final file
 writeLines(run_app_lines, glue::glue("{path}/R/run_{name}.R"))
 
-if (install){
 # Install package ====
-devtools::install_local(path = path, force=TRUE)
+if (install){
+devtools::install_local(path = path, force = TRUE)
 }
 
 }
