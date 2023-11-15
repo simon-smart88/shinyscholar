@@ -17,7 +17,7 @@ tidy_purl <- function(params){
   return(lines)
 }
 
-#' @title init
+#' @title create_template
 #' @description This function creates a skeleton app containing empty modules
 #' @param path character. The path to where the app should be created
 #' @param name character. The name of the app which will be used as the package name
@@ -49,7 +49,8 @@ tidy_purl <- function(params){
 #' "rmd" = c(TRUE, TRUE, TRUE, TRUE),
 #' "save" = c(TRUE, TRUE, TRUE, TRUE))
 #' common_objects = c("raster", "histogram", "scatter")
-#' init(path = "~/Documents", name = "demo",
+#'
+#' create_template(path = "~/Documents", name = "demo",
 #' include_map = TRUE, include_table = TRUE, include_code = TRUE,
 #' common_objects = common_objects, modules = modules,
 #' author = "Simon E. H. Smart",
@@ -58,7 +59,7 @@ tidy_purl <- function(params){
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 
-init <- function(path, name, include_map, include_table, include_code, common_objects, modules, author, install){
+create_template <- function(path, name, include_map, include_table, include_code, common_objects, modules, author, install){
 
 # Check inputs ====
 if (any(modules$map) == TRUE & include_map == FALSE){

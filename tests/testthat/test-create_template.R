@@ -16,7 +16,7 @@ test_that("Check init function works as expected", {
   common_objects = c("raster", "histogram", "scatter")
 
   #the name must be SMART so that the calls to package files work
-  init(path = directory, name = "SMART",
+  create_template(path = directory, name = "SMART",
        include_map = TRUE, include_table = TRUE, include_code = TRUE,
        common_objects = common_objects, modules = modules,
        author = "Simon E. H. Smart", install = FALSE)
