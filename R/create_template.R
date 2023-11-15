@@ -110,8 +110,6 @@ common_params <- c(
   )
 
 common_lines <- tidy_purl(common_params)
-
-#write final file
 writeLines(common_lines, glue::glue("{path}/inst/shiny/common.R"))
 
 # Subset components ====
@@ -144,7 +142,6 @@ observer_target <- grep("*switch to the results tab*", server_lines)
 server_lines <- append(server_lines, glue::glue('observeEvent(gargoyle::watch("{results$component[r]}_{results$module[r]}"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)'), observer_target)
 }
 
-#write final file
 writeLines(server_lines, glue::glue("{path}/inst/shiny/server.R"))
 
 # Create UI ====
@@ -244,14 +241,43 @@ for (m in 1:nrow(modules)){
 #copy reproduce modules
 rep_files <- list.files(system.file("shiny/modules", package = "SMART"),
                         pattern = "rep_", full.names = TRUE)
-lapply(rep_files,file.copy,glue::glue("{path}/inst/shiny/modules/"))
+lapply(rep_files, file.copy, glue::glue("{path}/inst/shiny/modules/"))
 
-#copy intro rmds
+# Rmds ====
+#copy existing rmds
 rmd_files <- list.files(system.file("shiny/Rmd", package = "SMART"),
                         pattern = ".Rmd", full.names = TRUE)
-#exclude guidance for existing components
-rmd_files <- rmd_files[!grepl("gtext_plot|gtext_select", rmd_files)]
-lapply(rmd_files,file.copy,glue::glue("{path}/inst/shiny/Rmd/"))
+
+#exclude guidance for existing components and intro tab
+rmd_files <- rmd_files[!grepl("gtext_plot|gtext_select|text_intro_tab", rmd_files)]
+lapply(rmd_files, file.copy, glue::glue("{path}/inst/shiny/Rmd/"))
+
+# Intro tab====
+intro_params <- c(
+  file = system.file("app_skeleton/text_intro_tab.Rmd", package="SMART"),
+  list(app_library = name,
+       n_components = nrow(components)
+  )
+)
+
+intro_rmd <- do.call(knitr::knit_expand, intro_params)
+temp <- tempfile()
+writeLines(intro_rmd, glue::glue("{temp}.Rmd"))
+intro_lines <- readLines(glue::glue("{temp}.Rmd"))
+
+for (c in 1:nrow(components)){
+  intro_lines <- append(intro_lines, glue::glue("**{c}.** *{components$long_component[c]}*"))
+  component_modules <- modules[modules$long_component == components$long_component[c],]
+  for (m in component_modules$long_module){
+    intro_lines <- append(intro_lines, glue::glue("- {m}"))
+  }
+  intro_lines <- append(intro_lines,"")
+}
+intro_lines <- append(intro_lines, glue::glue("**{c+1}.** *Reproduce*"))
+intro_lines <- append(intro_lines, "- Download Session Code")
+intro_lines <- append(intro_lines, "- Download Package References")
+writeLines(intro_lines, glue::glue("{path}/inst/shiny/Rmd/text_intro_tab.Rmd"))
+
 
 #create guidance rmds for components
 guidance_template <- system.file("app_skeleton/gtext.Rmd", package = "SMART")
@@ -286,8 +312,6 @@ run_mod_params <- c(
 )
 
 run_mod_lines <- tidy_purl(run_mod_params)
-
-#write final file
 writeLines(run_mod_lines, glue::glue("{path}/R/run_module.R"))
 
 # Create run_app ====
@@ -299,8 +323,6 @@ run_app_params <- c(
 )
 
 run_app_lines <- tidy_purl(run_app_params)
-
-#write final file
 writeLines(run_app_lines, glue::glue("{path}/R/run_{name}.R"))
 
 # Install package ====
