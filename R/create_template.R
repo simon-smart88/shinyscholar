@@ -1,6 +1,6 @@
 #' @title tidy_purl
-#' @description Opens a file, removes any lines starting with "## ----" and
-#' returns the other lines
+#' @description Knits and purls an Rmd file into a format which can be written
+#' to an R file.
 #' @param params vector. Containing file object linking to file to be knitted
 #' and a list containing any objects to be knitted into the file.
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
