@@ -22,6 +22,7 @@ tagList(
     tabPanel("Select data", value = 'select'),
     tabPanel("Plot data", value = 'plot'),
     tabPanel("Reproduce", value = 'rep'),
+    tabPanel("Template", value = 'template'),
     navbarMenu("Support", icon = icon("life-ring"),
                HTML('<a href="https://github.com/simon-smart88/SMART/issues" target="_blank">GitHub Issues</a>'),
                HTML('<a href="mailto: simon.smart@cantab.net" target="_blank">Send Email</a>')),
@@ -74,6 +75,18 @@ tagList(
             ),
             tags$hr(),
             insert_modules_ui("rep")
+          ),
+          # TEMPLATE
+          conditionalPanel(
+            "input.tabs == 'template'",
+            div("Component: Template", class = "componentName"),
+            radioButtons(
+              "templateSel", "Modules Available:",
+              choices = insert_modules_options("template"),
+              selected = character(0)
+            ),
+            tags$hr(),
+            insert_modules_ui("template")
           )
         )
       ),

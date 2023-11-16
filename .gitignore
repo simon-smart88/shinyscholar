@@ -12,15 +12,10 @@
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
-# worldclim files
-cmip5
-**/wc10
 # r proj files
 .Rproj.user
 .RData
 # .rmd files
-temp*
-#
 KeepNA
 keepInteger
 inst/doc

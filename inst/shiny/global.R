@@ -11,7 +11,7 @@ source("helpers.R")
 
 # The components that have modules. These names must match the values of the
 # tabs of the components in the UI.
-COMPONENTS <- c("select", "plot", "rep")
+COMPONENTS <- c("select", "plot", "rep", "template")
 
 # Information about modules that various parts of the app need access to
 COMPONENT_MODULES <- list()
@@ -23,7 +23,8 @@ base_module_configs <- c(
   "modules/plot_hist.yml",
   "modules/plot_scatter.yml",
   "modules/rep_markdown.yml",
-  "modules/rep_refPackages.yml"
+  "modules/rep_refPackages.yml",
+  "modules/template_create.yml"
 )
 
 # Load user-defined modules
