@@ -22,10 +22,10 @@
     <loc>/reference/create_module.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>/reference/create_template.html</loc>
   </url>
   <url>
-    <loc>/reference/init.html</loc>
+    <loc>/reference/index.html</loc>
   </url>
   <url>
     <loc>/reference/plot_hist.html</loc>
@@ -53,6 +53,9 @@
   </url>
   <url>
     <loc>/reference/spurious.html</loc>
+  </url>
+  <url>
+    <loc>/reference/tidy_purl.html</loc>
   </url>
   <url>
     <loc>/reference/writeLog.html</loc>
