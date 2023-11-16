@@ -58,7 +58,7 @@ spurious <- function(x) {
 #' @description For internal use. Add text to a logger
 #' @param logger The logger to write the text to. Can be NULL or a function
 #' @param ... Messages to write to the logger
-#' @param type One of "default", "error", "warning"
+#' @param type One of "default", "info", "error", "warning"
 #' @keywords internal
 #' @export
 writeLog <- function(logger, ..., type = "default") {

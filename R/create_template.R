@@ -35,6 +35,9 @@ tidy_purl <- function(params){
 #' so should be formatted appropriately.
 #' @param author character. The name of the author(s)
 #' @param install logical. Whether to install the package
+#' @param logger Stores all notification messages to be displayed in the Log
+#'   Window. Insert the logger reactive list here for running in
+#'   shiny, otherwise leave the default NULL
 #'
 #' @examples
 #' \dontrun{
@@ -59,24 +62,26 @@ tidy_purl <- function(params){
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 
-create_template <- function(path, name, include_map, include_table, include_code, common_objects, modules, author, install){
+create_template <- function(path, name, include_map, include_table, include_code, common_objects, modules, author, install, logger = NULL){
 
 # Check inputs ====
 if (any(modules$map) == TRUE & include_map == FALSE){
-  message("Your modules use a map but you had not included it so changing include_map to TRUE")
+  logger %>% writeLog(type = "info", "Your modules use a map but you had not included it so changing include_map to TRUE")
   include_map <- TRUE
 }
 
 if (any(modules$map) == FALSE & include_map == TRUE){
-  stop("You have included a map but none of your modules use it")
+  logger %>% writeLog(type = "error", "You have included a map but none of your modules use it")
+  return()
 }
 
 if (any(common_objects %in% c("meta", "logger", "state", "poly"))){
   conflicts <- common_objects[common_objects %in% c("meta", "logger", "state", "poly")]
   conflicts <- paste(conflicts, collapse=',')
 
-  stop(glue::glue("common_objects contains {conflicts} which are included
-        in common by default. Please choose a different name."))
+  logger %>% writeLog(type = "error", glue::glue("common_objects contains {conflicts} which are included
+                                      in common by default. Please choose a different name."))
+  return()
 }
 
 # Create directories ====

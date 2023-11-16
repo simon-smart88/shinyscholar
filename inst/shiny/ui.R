@@ -82,8 +82,7 @@ tagList(
             div("Component: Template", class = "componentName"),
             radioButtons(
               "templateSel", "Modules Available:",
-              choices = insert_modules_options("template"),
-              selected = character(0)
+              choices = insert_modules_options("template")
             ),
             tags$hr(),
             insert_modules_ui("template")
@@ -112,7 +111,7 @@ tagList(
         ),
         br(),
         conditionalPanel(
-          "input.tabs != 'intro' & input.tabs != 'rep'",
+          "input.tabs != 'intro' & input.tabs != 'rep' & input.tabs != 'template'",
           tabsetPanel(
             id = 'main',
             tabPanel(
@@ -196,6 +195,12 @@ tagList(
           "input.tabs == 'rep' & input.repSel == 'rep_refPackages'",
           column(8,
                  includeMarkdown("modules/rep_refPackages.md")
+          )
+        ),
+        conditionalPanel(
+          "input.tabs == 'template'",
+          column(8,
+                 includeMarkdown("modules/template_create.md")
           )
         ),
         conditionalPanel(

@@ -1,5 +1,5 @@
 component: "template"
-short_name: "create"
+short_name: "Create"
 long_name: "Create a template app"
 authors: "Simon E H Smart"
 package: [zip]

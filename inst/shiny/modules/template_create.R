@@ -1,7 +1,7 @@
 template_create_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    textInput(ns("name"), "App name"),
+    textInput(ns("name"), "Name"),
     textInput(ns("comps"), "Components"),
     textInput(ns("long_comps"), "Long components"),
     uiOutput(ns("mods")),
@@ -17,15 +17,6 @@ template_create_module_ui <- function(id) {
 template_create_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
 
-    output$download <- renderUI({
-      req(input$name)
-      req(input$comps)
-      req(input$long_comps)
-      req(input$common)
-      req(input$author)
-      downloadButton(session$ns('dl'), "Download!")
-    })
-
     output$mods <- renderUI({
       req(input$comps)
       components <- strsplit(input$comps,",")[[1]]
@@ -37,6 +28,24 @@ template_create_module_server <- function(id, common) {
       })
     })
 
+    #Render download button after checking inputs
+    output$download <- renderUI({
+      req(input$name)
+      req(input$comps)
+      req(input$long_comps)
+      req(input$common)
+      req(input$author)
+      validate(need(length(split_and_clean(input$comps)) == length(split_and_clean(input$long_comps)),
+                    "Components and Long components must have the same number of entries"))
+      components <- split_and_clean(input$comps)
+      for (c in 1:length(components)){
+      validate(need(length(split_and_clean(input[[paste0("mod",c)]])) == length(split_and_clean(input[[paste0("long_mod",c)]])),
+                    glue::glue("Modules and Long modules for component {components[c]} are different lengths")))
+      }
+      downloadButton(session$ns("dl"), "Download!")
+    })
+
+    #split strings into vectors and remove whitespace
     split_and_clean <- function(input){
       vect <- strsplit(input, ",")[[1]]
       vect <- trimws(vect, which = "both")
