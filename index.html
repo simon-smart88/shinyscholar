@@ -5,15 +5,15 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shiny Modular Academic Reproducible Template • SMART</title>
+<title>Shiny Modular Academic Reproducible Template • shinyscholar</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Shiny Modular Academic Reproducible Template">
-<meta property="og:description" content="The shiny application SMART is a modular platform for 
-    creating reproducible applications to academic standards. SMART is 
+<meta property="og:description" content="The shiny application shinyscholar is a modular platform for 
+    creating reproducible applications to academic standards. shinyscholar is 
     forked from wallace and provides a template for producing applications 
     that are interactive, reproducible, adaptable and built to high standards.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -35,7 +35,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">SMART</a>
+        <a class="navbar-link" href="index.html">shinyscholar</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
@@ -62,22 +62,22 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="smart-v100">SMART (v1.0.0)<a class="anchor" aria-label="anchor" href="#smart-v100"></a>
+<div class="page-header"><h1 id="shinyscholar-v100">shinyscholar (v1.0.0)<a class="anchor" aria-label="anchor" href="#shinyscholar-v100"></a>
 </h1></div>
-<p>SMART (Shiny Modular Academic Reproducible Template) is a basic application written in R that can be used as a template to create complex applications that are modular and reproducible outside of the application. <em>SMART</em> was forked from <code>{wallace}</code> (<a href="https://cran.r-project.org/package=wallace" class="external-link">CRAN</a>, <a href="https://wallaceecomod.github.io/wallace/index.html" class="external-link">website</a>) a modular platform for reproducible modeling of species distributions . we are very grateful to the contributors of that package. The features retained from <code>{wallace}</code> and the new features added in <em>SMART</em> are described in <code>NEWS</code>.</p>
-<p><em>SMART</em> contains three components (Select, Plot, Reproduce) each of which contain two modules (<code>select_query</code>, <code>select_user</code>, <code>plot_hist</code>, <code>plot_scatter</code>, <code>rep_markdown</code> and <code>rep_refPackages</code>) and their code is found in the <code>inst/shiny/modules</code> directory. Each of the modules in the Select and Plot components calls a function with the same name that is found in the <code>R</code> directory. The <code>select_query</code> module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used.</p>
-<p>Install <em>SMART</em> via Github and run the application with the following R code.</p>
+<p>shinyscholar (Shiny Modular Academic Reproducible Template) is a basic application written in R that can be used as a template to create complex applications that are modular and reproducible outside of the application. <em>shinyscholar</em> was forked from <code>{wallace}</code> (<a href="https://cran.r-project.org/package=wallace" class="external-link">CRAN</a>, <a href="https://wallaceecomod.github.io/wallace/index.html" class="external-link">website</a>) a modular platform for reproducible modeling of species distributions . we are very grateful to the contributors of that package. The features retained from <code>{wallace}</code> and the new features added in <em>shinyscholar</em> are described in <code>NEWS</code>.</p>
+<p><em>shinyscholar</em> contains three components (Select, Plot, Reproduce) each of which contain two modules (<code>select_query</code>, <code>select_user</code>, <code>plot_hist</code>, <code>plot_scatter</code>, <code>rep_markdown</code> and <code>rep_refPackages</code>) and their code is found in the <code>inst/shiny/modules</code> directory. Each of the modules in the Select and Plot components calls a function with the same name that is found in the <code>R</code> directory. The <code>select_query</code> module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used.</p>
+<p>Install <em>shinyscholar</em> via Github and run the application with the following R code.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"simon-smart88/SMART"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">SMART</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/run_smart.html">run_smart</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"simon-smart88/shinyscholar"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">shinyscholar</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/run_shinyscholar.html">run_shinyscholar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>An individual module can be run using <code>module_tester()</code> e.g. <code>module_tester("select_query")</code></p>
 <div class="section level2">
 <h2 id="justification">Justification<a class="anchor" aria-label="anchor" href="#justification"></a>
 </h2>
 <p>Shiny apps are a great way to lower the barrier for entry for users to complete complex analyses, but often apps produced by academics do not follow best practices in software development or open science. If apps become popular, more features are requested and developers move onto new roles, it may become difficult to maintain their codebase. If users cannot reproduce their analyses outside of the application, it prevents them from modifying analyses to suit their particular use-case, makes it harder to understand the analysis and limits their ability to use the results in publications. Additionally, it may not be possible to determine which R packages are being used in the application, making it more onerous to cite the packages in publications. Other packages exist for creating templates of shiny apps, e.g. <a href="https://github.com/ThinkR-open/golem" class="external-link">golem</a> and <a href="https://appsilon.github.io/rhino/" class="external-link">rhino</a> but these are not geared towards use by academics.</p>
-<p><code>{wallace}</code> addressed these shortcomings and the attributes of <em>SMART</em> are built open those of <code>{wallace}</code>. Apps built using <em>SMART</em> should maintain these characteristics:</p>
+<p><code>{wallace}</code> addressed these shortcomings and the attributes of <em>shinyscholar</em> are built open those of <code>{wallace}</code>. Apps built using <em>shinyscholar</em> should maintain these characteristics:</p>
 <ul>
 <li>
 <strong>accessible</strong>: lowers barriers to implementing complex modular <a href="https://shiny.posit.co/" class="external-link">shiny</a> apps for scientific analysis</li>
@@ -101,15 +101,15 @@
 <div class="section level2">
 <h2 id="use-cases">Use cases<a class="anchor" aria-label="anchor" href="#use-cases"></a>
 </h2>
-<p>SMART is aimed towards creating applications for complex analyses that have several steps and where there may be multiple options for each step e.g. where the data is sourced from, which model is used or how the results are plotted. It is probably not suitable for use if you have never developed a shiny app before, but if you have developed a simple app which is growing in complexity, it should be fairly straightforward to migrate your code across.</p>
+<p>shinyscholar is aimed towards creating applications for complex analyses that have several steps and where there may be multiple options for each step e.g. where the data is sourced from, which model is used or how the results are plotted. It is probably not suitable for use if you have never developed a shiny app before, but if you have developed a simple app which is growing in complexity, it should be fairly straightforward to migrate your code across.</p>
 </div>
 <div class="section level2">
-<h2 id="using-smart-as-a-template">Using SMART as a template<a class="anchor" aria-label="anchor" href="#using-smart-as-a-template"></a>
+<h2 id="using-shinyscholar-as-a-template">Using shinyscholar as a template<a class="anchor" aria-label="anchor" href="#using-shinyscholar-as-a-template"></a>
 </h2>
 <div class="section level3">
 <h3 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h3>
-<p>SMART is licensed under the GPLv3 license and consequently any apps made using SMART must be licensed under the same license.</p>
+<p>shinyscholar is licensed under the GPLv3 license and consequently any apps made using shinyscholar must be licensed under the same license.</p>
 </div>
 <div class="section level3">
 <h3 id="initialisation">Initialisation<a class="anchor" aria-label="anchor" href="#initialisation"></a>
@@ -127,7 +127,7 @@
 <span></span>
 <span><span class="va">common_objects</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raster"</span>, <span class="st">"histogram"</span>, <span class="st">"scatter"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">SMART</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/init.html" class="external-link">init</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"~/Documents"</span>, name <span class="op">=</span> <span class="st">"demo"</span>, author <span class="op">=</span> <span class="st">"Simon E. H. Smart"</span>,</span>
+<span><span class="fu">shinyscholar</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/init.html" class="external-link">init</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"~/Documents"</span>, name <span class="op">=</span> <span class="st">"demo"</span>, author <span class="op">=</span> <span class="st">"Simon E. H. Smart"</span>,</span>
 <span>include_map <span class="op">=</span> <span class="cn">TRUE</span>, include_table <span class="op">=</span> <span class="cn">TRUE</span>, include_code <span class="op">=</span> <span class="cn">TRUE</span>, common_objects <span class="op">=</span> <span class="va">common_objects</span>, modules <span class="op">=</span> <span class="va">modules</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level3">
@@ -149,7 +149,7 @@
 <p>The <code>*_module_ui</code> function can be developed just like a normal UI function inside a shiny app, but only contains *Input elements and the input ids need wrapping inside <code>ns()</code> to create ids that are unique to the module. The template contains an <code>actionButton</code> which when clicked runs the code inside the <code>*_module_server</code> function. If the computations performed by the module are simple, then you could choose to remove the <code><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton()</a></code> in the UI and the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> so that the server runs reactively whenever the inputs are changed.</p>
 <p>The <code>*_module_server</code> function contains an <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> which is run when the <code><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton()</a></code> in the UI is clicked. Inside the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> there is a consistent structure to the code:</p>
 <ul>
-<li>In the <em>warning</em> block, examine inputs to check that they are as expected and issue warnings if not using <code>common$logger %&gt;% writeLog()</code> See the documentation of <code><a href="reference/writeLog.html">SMART::writeLog()</a></code> for more details.</li>
+<li>In the <em>warning</em> block, examine inputs to check that they are as expected and issue warnings if not using <code>common$logger %&gt;% writeLog()</code> See the documentation of <code><a href="reference/writeLog.html">shinyscholar::writeLog()</a></code> for more details.</li>
 <li>In the <em>function call</em> block, pass the inputs to the module function.</li>
 <li>In the <em>load into common</em> block, store the result(s) of the function call in the relevant <code>common</code> object.</li>
 <li>In the <em>metadata</em> block, store any relevant input metadata which is required to reproduce the function call in the <code>common$meta</code> object.</li>
@@ -229,7 +229,7 @@
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html#citation">Citing SMART</a></li>
+<li><a href="authors.html#citation">Citing shinyscholar</a></li>
 </ul>
 </div>
 

@@ -16,9 +16,6 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/SMART-package.html</loc>
-  </url>
-  <url>
     <loc>/reference/create_module.html</loc>
   </url>
   <url>
@@ -43,13 +40,16 @@
     <loc>/reference/run_module.html</loc>
   </url>
   <url>
-    <loc>/reference/run_smart.html</loc>
+    <loc>/reference/run_shinyscholar.html</loc>
   </url>
   <url>
     <loc>/reference/select_query.html</loc>
   </url>
   <url>
     <loc>/reference/select_user.html</loc>
+  </url>
+  <url>
+    <loc>/reference/shinyscholar-package.html</loc>
   </url>
   <url>
     <loc>/reference/spurious.html</loc>
