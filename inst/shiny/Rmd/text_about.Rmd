@@ -7,27 +7,20 @@ output: html_document
 
 <img src="logo.png" alt="logo" style="width: 150px; float:right; padding:10px;"/>
 
-Welcome to *shinyscholar* (Shiny Modular Academic Reproducible Template), a template for creating flexible applications to academic standards. The template has very basic core functionality but demonstrates how applications can be created that are modular, reproducible and automatically cite package developers.
+Welcome to *shinyscholar* a template for creating flexible applications to academic standards. The template has very basic core functionality but demonstrates how applications can be created that are modular, reproducible and automatically cite package developers.
 
-The application is written in `R` with the web app development package `shiny` and is based on the *Wallace* application (<a href="https://CRAN.R-project.org/package=wallace" target="_blank">CRAN</a>,<a href="https://wallaceecomod.github.io/" target="_blank">website</a>) developed for modelling species distributions (Kass et. al 2018; Kass et al. 2022).
+The application is written in `R` with the web app development package `{shiny}` and is based on the *Wallace Eco Mod* application (<a href="https://CRAN.R-project.org/package=wallace" target="_blank">CRAN</a>,<a href="https://wallaceecomod.github.io/" target="_blank">website</a>) developed for modelling species distributions (Kass et. al 2018; Kass et al. 2022).
 
 ### **Attributes of _shinyscholar_**
 
-* **accessible**: lowers barriers to implementing complex modular `shiny` apps for scientific analysis
-
-* **open**: the code is free to use and modify (GPL 3.0)
-
+* **accessible**: lowers barriers to implementing complex modular `{shiny}` apps for scientific analysis
+* **open**: the code is free to use and modify (GPL 3.0) and can be viewed from inside the application
 * **expandable**: users can author and contribute modules that enable new methodological options
-
 * **flexible**: options for user uploads and downloads of results
-
-* **interactive**: includes an embedded zoomable `leaflet` map, sortable `DF` data tables, and visualizations of results
-
+* **interactive**: includes an embedded zoomable `{leaflet}` map, sortable `{DF}` data tables, and visualizations of results
 * **instructive**: features guidance text that educates users about theoretical and analytical aspects of each step in the workflow
-
-* **reproducible**: users can download an `rmarkdown` .Rmd file that when run reproduces the analysis, ability to save sessions and load later
-
-* **robust**: modules and their underlying functions are tested using `testthat` and `shinytest2`
+* **reproducible**: users can download an `{rmarkdown}` .Rmd file that when run reproduces the analysis, and also save sessions and load them later
+* **robust**: modules and their underlying functions are tested using `{testthat}` and `{shinytest2}`
 
 ### **Contact us**
 
