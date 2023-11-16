@@ -58,7 +58,7 @@ function(input, output, session) {
   })
 
   # Help Component
-  help_components <- c("select","plot")
+  help_components <- c("select", "plot", "template")
   lapply(help_components, function(component) {
     btn_id <- paste0(component, "Help")
     observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Component Guidance"))
@@ -69,6 +69,7 @@ function(input, output, session) {
   observeEvent(input$select_userHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$plot_histHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$plot_scatterHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  observeEvent(input$template_createHelp, updateTabsetPanel(session, "main", "Module Guidance"))
 
   ######################## #
   ### MAPPING LOGIC ####
@@ -166,7 +167,7 @@ function(input, output, session) {
     req(module())
 
     if (input$code_choice == "Module"){
-      code <- readLines(system.file(glue("shiny/modules/{module()}.R"),package = "SMART"))
+      code <- readLines(system.file(glue("shiny/modules/{module()}.R"), package = "SMART"))
     }
     if (input$code_choice == "Function"){
       #separate call required in case there are multiple functions
@@ -175,9 +176,14 @@ function(input, output, session) {
       code <- code[1:(length(code)-2)]
     }
     if (input$code_choice == "Markdown"){
-      code <- readLines(system.file(glue("shiny/modules/{module()}.Rmd"), package = "SMART"))
+      if (file.exists(glue::glue("shiny/modules/{module()}.Rmd"), package = "SMART")){
+        code <- readLines(system.file(glue::glue("shiny/modules/{module()}.Rmd"), package = "SMART"))
+      } else {
+        code <- "There is no markdown file for this module"
+        }
+
     }
-    cat(code,sep="\n")
+    cat(code, sep = "\n")
   })
 
   ########################################### #
