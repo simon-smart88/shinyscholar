@@ -110,7 +110,7 @@ if (include_map == TRUE){
 common_objects <- paste0("list(", paste(sapply(common_objects, function(a) paste0(a, " = NULL")), collapse = ",\n "), ")")
 
 common_params <- c(
-  file = system.file("app_skeleton/common.Rmd", package="SMART"),
+  file = system.file("app_skeleton/common.Rmd", package="shinyscholar"),
   list(common_objects = common_objects)
   )
 
@@ -124,7 +124,7 @@ added_component_list <- components$component
 # Create Server ====
 
 server_params <- c(
-  file = system.file("app_skeleton/server.Rmd", package="SMART"),
+  file = system.file("app_skeleton/server.Rmd", package="shinyscholar"),
   list(app_library = name,
        include_map = include_map,
        include_table = include_table,
@@ -152,7 +152,7 @@ writeLines(server_lines, glue::glue("{path}/inst/shiny/server.R"))
 # Create UI ====
 
 ui_params <- c(
-  file = system.file("app_skeleton/ui.Rmd", package="SMART"),
+  file = system.file("app_skeleton/ui.Rmd", package="shinyscholar"),
   list(app_library = name,
        include_map = include_map,
        include_table = include_table,
@@ -194,7 +194,7 @@ writeLines(ui_lines, glue::glue("{path}/inst/shiny/ui.R"))
 full_component_list <- c(components$component, "rep")
 
 global_params <- c(
-  file = system.file("app_skeleton/global.Rmd", package="SMART"),
+  file = system.file("app_skeleton/global.Rmd", package="shinyscholar"),
   list(app_library = name,
        component_list = printVecAsis(full_component_list)
   )
@@ -215,7 +215,7 @@ for (m in 1:nrow(modules)){
   module_name <- glue::glue("{modules$component[m]}_{modules$module[m]}")
 
   #create files for each module
-  SMART::create_module(id = module_name,
+  shinyscholar::create_module(id = module_name,
                       dir = glue::glue("{path}/inst/shiny/modules"),
                       map = modules$map[m],
                       result = modules$result[m],
@@ -244,13 +244,13 @@ for (m in 1:nrow(modules)){
 }
 
 #copy reproduce modules
-rep_files <- list.files(system.file("shiny/modules", package = "SMART"),
+rep_files <- list.files(system.file("shiny/modules", package = "shinyscholar"),
                         pattern = "rep_", full.names = TRUE)
 lapply(rep_files, file.copy, glue::glue("{path}/inst/shiny/modules/"))
 
 # Rmds ====
 #copy existing rmds
-rmd_files <- list.files(system.file("shiny/Rmd", package = "SMART"),
+rmd_files <- list.files(system.file("shiny/Rmd", package = "shinyscholar"),
                         pattern = ".Rmd", full.names = TRUE)
 
 #exclude guidance for existing components and intro tab
@@ -259,7 +259,7 @@ lapply(rmd_files, file.copy, glue::glue("{path}/inst/shiny/Rmd/"))
 
 # Intro tab====
 intro_params <- c(
-  file = system.file("app_skeleton/text_intro_tab.Rmd", package="SMART"),
+  file = system.file("app_skeleton/text_intro_tab.Rmd", package="shinyscholar"),
   list(app_library = name,
        n_components = nrow(components)
   )
@@ -285,7 +285,7 @@ writeLines(intro_lines, glue::glue("{path}/inst/shiny/Rmd/text_intro_tab.Rmd"))
 
 
 #create guidance rmds for components
-guidance_template <- system.file("app_skeleton/gtext.Rmd", package = "SMART")
+guidance_template <- system.file("app_skeleton/gtext.Rmd", package = "shinyscholar")
 for (c in 1:nrow(components)){
 guidance_lines <- readLines(guidance_template)
 guidance_lines[2] <- glue::glue("title: {components$component[c]}")
@@ -294,15 +294,15 @@ writeLines(guidance_lines, glue::glue("{path}/inst/shiny/Rmd/gtext_{components$c
 }
 
 #copy www folder
-www_files <- system.file("shiny/www", package = "SMART")
+www_files <- system.file("shiny/www", package = "shinyscholar")
 file.copy(www_files, glue::glue("{path}/inst/shiny/"), recursive = TRUE)
 
 #copy helpers
-helper_file <- system.file("shiny/helpers.R", package = "SMART")
+helper_file <- system.file("shiny/helpers.R", package = "shinyscholar")
 file.copy(helper_file, glue::glue("{path}/inst/shiny/"), recursive = TRUE)
 
 #create package description
-description_template <- system.file("app_skeleton/DESCRIPTION", package = "SMART")
+description_template <- system.file("app_skeleton/DESCRIPTION", package = "shinyscholar")
 description_lines <- readLines(description_template)
 description_lines[1] <- glue::glue("Package: {name}")
 writeLines(description_lines, glue::glue("{path}/DESCRIPTION"))
@@ -310,7 +310,7 @@ writeLines(description_lines, glue::glue("{path}/DESCRIPTION"))
 # Create run_module ====
 
 run_mod_params <- c(
-  file = system.file("app_skeleton/run_module.Rmd", package="SMART"),
+  file = system.file("app_skeleton/run_module.Rmd", package="shinyscholar"),
   list(include_map = include_map,
        app_library = name
        )
@@ -322,7 +322,7 @@ writeLines(run_mod_lines, glue::glue("{path}/R/run_module.R"))
 # Create run_app ====
 
 run_app_params <- c(
-  file = system.file("app_skeleton/run_app.Rmd", package="SMART"),
+  file = system.file("app_skeleton/run_app.Rmd", package="shinyscholar"),
   list(app_library = name
   )
 )

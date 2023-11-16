@@ -2,7 +2,7 @@
 % Please edit documentation in R/run_module.R
 \name{run_module}
 \alias{run_module}
-\title{Run an individual \emph{SMART} module for testing}
+\title{Run an individual \emph{shinyscholar} module for testing}
 \usage{
 run_module(module)
 }
@@ -10,7 +10,7 @@ run_module(module)
 \item{module}{The name of the module to run}
 }
 \description{
-This function runs the selected \emph{SMART} module
+This function runs the selected \emph{shinyscholar} module
 }
 \examples{
 if(interactive()) {

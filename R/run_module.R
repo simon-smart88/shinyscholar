@@ -1,5 +1,5 @@
-#' @title Run an individual \emph{SMART} module for testing
-#' @description This function runs the selected \emph{SMART} module
+#' @title Run an individual \emph{shinyscholar} module for testing
+#' @description This function runs the selected \emph{shinyscholar} module
 #' @param module The name of the module to run
 #'
 #' @examples
@@ -12,12 +12,12 @@
 run_module <- function(module){
 
 #load the module functions
-source(system.file(glue::glue("shiny/modules/{module}.R"), package = "SMART"))
+source(system.file(glue::glue("shiny/modules/{module}.R"), package = "shinyscholar"))
 #load common_class
-source(system.file("shiny/common.R", package = "SMART"))
+source(system.file("shiny/common.R", package = "shinyscholar"))
 
 #load js
-resourcePath <- system.file("shiny", "www", package = "SMART")
+resourcePath <- system.file("shiny", "www", package = "shinyscholar")
 shiny::addResourcePath("resources", resourcePath)
 
 module_ui <- tagList(
@@ -41,7 +41,7 @@ module_server <- function(input, output, session) {
 
   # Variable to keep track of current log message
   initLogMsg <- function() {
-    intro <- "***WELCOME TO SMART***"
+    intro <- "***WELCOME TO shinyscholar***"
     brk <- paste(rep("------", 14), collapse = "")
     expl <- "Please find messages for the user in this log window."
     logInit <- gsub(".{4}$", "", paste(intro, brk, expl, brk, "", sep = "<br>"))
@@ -59,7 +59,7 @@ module_server <- function(input, output, session) {
 
   #load demo raster data if testing a plotting module
   if (grepl("plot", module)){
-    path <- list.files(system.file("extdata/wc", package = "SMART"),
+    path <- list.files(system.file("extdata/wc", package = "shinyscholar"),
                        pattern = ".tif$", full.names = TRUE)
     common$ras <- terra::rast(path)
   }

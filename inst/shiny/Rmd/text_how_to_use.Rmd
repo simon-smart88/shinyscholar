@@ -1,13 +1,13 @@
 ---
-title: "How To Use SMART"
+title: "How To Use shinyscholar"
 output: html_document
 ---
 
-### **Overview of** ***SMART***
-This information is designed to orient the user to the *SMART* interface and the underlying codebase. 
+### **Overview of** ***shinyscholar***
+This information is designed to orient the user to the *shinyscholar* interface and the underlying codebase. 
 
 #### **Components and Modules**
-*SMART* is composed of **Components** – discrete steps in the workflow. Navigate through the components by clicking on the names in the top navigation panel. In this template, components need to be run consecutively, but in more complex use cases, some may not need to be run.
+*shinyscholar* is composed of **Components** – discrete steps in the workflow. Navigate through the components by clicking on the names in the top navigation panel. In this template, components need to be run consecutively, but in more complex use cases, some may not need to be run.
   
 Within each component, there are various major options that can be run. These are the ***modules***. Selecting a module opens the control panel to make decisions and run the module’s functionalities. In this template, the modules are mutually exclusive (e.g., in **Select**, only one choice can be selected), but in other use cases this could not the case and all modules could be run successively. 
   
@@ -21,15 +21,15 @@ Many scientific analyses require the researcher to make decisions and the guidan
 
 As the user proceeds through the workflow, the relevant guidance texts can be found to the right of the Results tab in the Visualization panel.
 
-If more support is needed, the Support tab in the orange navigation bar at the top provides links to the SMART homepage and email.
+If more support is needed, the Support tab in the orange navigation bar at the top provides links to the shinyscholar homepage and email.
 
 #### **Saving and Reproducing Results**
-Users can stop an analysis and restart it later, by saving the workflow progress as an RDS file, found in the Save tab. This file can be loaded into *SMART* later using the Intro component’s Load Prior Session tab, to restart the analysis where the user left off. 
+Users can stop an analysis and restart it later, by saving the workflow progress as an RDS file, found in the Save tab. This file can be loaded into *shinyscholar* later using the Intro component’s Load Prior Session tab, to restart the analysis where the user left off. 
 
-Additionally, *SMART* allows the user to download their results. After each step of analysis (i.e., after running each module), the results for that particular model may be downloaded from the Save tab in the Visualization panel. 
+Additionally, *shinyscholar* allows the user to download their results. After each step of analysis (i.e., after running each module), the results for that particular model may be downloaded from the Save tab in the Visualization panel. 
 
-A great quality of *SMART* is reproducibility. To download the session code or metadata (documenting all of the analyses run to that point in the Wallace session), use the **Reproduce** component. This includes the option of an R Markdown file that can be opened and rerun in R. 
+A great quality of *shinyscholar* is reproducibility. To download the session code or metadata (documenting all of the analyses run to that point in the Wallace session), use the **Reproduce** component. This includes the option of an R Markdown file that can be opened and rerun in R. 
 
-Closing the browser window will terminate the analysis, but R will remain running. To close SMART and stop functions running in R, use the power button in the top right corner in the navigation bar.
+Closing the browser window will terminate the analysis, but R will remain running. To close shinyscholar and stop functions running in R, use the power button in the top right corner in the navigation bar.
   
 

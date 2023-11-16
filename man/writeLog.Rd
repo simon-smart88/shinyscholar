@@ -11,7 +11,7 @@ writeLog(logger, ..., type = "default")
 
 \item{...}{Messages to write to the logger}
 
-\item{type}{One of "default", "error", "warning"}
+\item{type}{One of "default", "info", "error", "warning"}
 }
 \description{
 For internal use. Add text to a logger

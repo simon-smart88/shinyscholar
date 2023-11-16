@@ -1,4 +1,4 @@
-resourcePath <- system.file("shiny", "www", package = "SMART")
+resourcePath <- system.file("shiny", "www", package = "shinyscholar")
 shiny::addResourcePath("resources", resourcePath)
 
 tagList(
@@ -17,14 +17,14 @@ tagList(
     ),
     title = img(src = "logo.png", height = '50', width = '50',
                 style = "margin-top: -15px"),
-    windowTitle = "SMART",
+    windowTitle = "shinyscholar",
     tabPanel("Intro", value = 'intro'),
     tabPanel("Select data", value = 'select'),
     tabPanel("Plot data", value = 'plot'),
     tabPanel("Reproduce", value = 'rep'),
     tabPanel("Template", value = 'template'),
     navbarMenu("Support", icon = icon("life-ring"),
-               HTML('<a href="https://github.com/simon-smart88/SMART/issues" target="_blank">GitHub Issues</a>'),
+               HTML('<a href="https://github.com/simon-smart88/shinyscholar/issues" target="_blank">GitHub Issues</a>'),
                HTML('<a href="mailto: simon.smart@cantab.net" target="_blank">Send Email</a>')),
     tabPanel(NULL, icon = icon("power-off"), value = "_stopapp")
   ),

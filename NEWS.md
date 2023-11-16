@@ -1,4 +1,4 @@
-SMART 1.0.0
+shinyscholar 1.0.0
 =============
 - The template has been created mainly through the removal of functionality from `Wallace` and the addition of basic functionality to demonstrate how modules can be used. 
 - These are the key features which have been retained:

@@ -2,7 +2,7 @@
 % Please edit documentation in R/custom_modules.R
 \name{register_module}
 \alias{register_module}
-\title{Register a SMART module}
+\title{Register a shinyscholar module}
 \usage{
 register_module(config_file)
 }
@@ -11,9 +11,9 @@ register_module(config_file)
 one or more modules.}
 }
 \description{
-Before running the SMART application with \code{run_smart()}, you can
-register your own modules to be used in SMART.
+Before running the shinyscholar application with \code{run_shinyscholar()}, you can
+register your own modules to be used in shinyscholar.
 }
 \seealso{
-\code{\link[SMART]{create_module}}
+\code{\link[shinyscholar]{create_module}}
 }

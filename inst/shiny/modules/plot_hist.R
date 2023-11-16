@@ -43,7 +43,7 @@ plot_hist_module_server <- function(id, common) {
 
   output$dl <- downloadHandler(
     filename = function() {
-      "SMART_histogram.png"
+      "shinyscholar_histogram.png"
     },
     content = function(file) {
       png(file, width = 1000, height = 500)

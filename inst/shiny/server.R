@@ -1,6 +1,6 @@
-library(SMART)
+library(shinyscholar)
 
-source(system.file("shiny/common.R", package = "SMART"))
+source(system.file("shiny/common.R", package = "shinyscholar"))
 
 function(input, output, session) {
 
@@ -10,7 +10,7 @@ function(input, output, session) {
 
   # Variable to keep track of current log message
   initLogMsg <- function() {
-    intro <- "***WELCOME TO SMART***"
+    intro <- "***WELCOME TO shinyscholar***"
     brk <- paste(rep("------", 14), collapse = "")
     expl <- "Please find messages for the user in this log window."
     logInit <- gsub(".{4}$", "", paste(intro, brk, expl, brk, "", sep = "<br>"))
@@ -152,7 +152,7 @@ function(input, output, session) {
   # DOWNLOAD
   output$dl_table <- downloadHandler(
     filename = function() {
-      "SMART_sample_table.csv"
+      "shinyscholar_sample_table.csv"
     },
     content = function(file) {
       write.csv(sample_table(), file, row.names = FALSE)
@@ -167,17 +167,17 @@ function(input, output, session) {
     req(module())
 
     if (input$code_choice == "Module"){
-      code <- readLines(system.file(glue("shiny/modules/{module()}.R"), package = "SMART"))
+      code <- readLines(system.file(glue("shiny/modules/{module()}.R"), package = "shinyscholar"))
     }
     if (input$code_choice == "Function"){
       #separate call required in case there are multiple functions
       ga_call <- getAnywhere(module())
-      code <- capture.output(print(getAnywhere(module())[which(ga_call$where == "package:SMART")]))
+      code <- capture.output(print(getAnywhere(module())[which(ga_call$where == "package:shinyscholar")]))
       code <- code[1:(length(code)-2)]
     }
     if (input$code_choice == "Markdown"){
-      if (file.exists(glue::glue("shiny/modules/{module()}.Rmd"), package = "SMART")){
-        code <- readLines(system.file(glue::glue("shiny/modules/{module()}.Rmd"), package = "SMART"))
+      if (file.exists(glue::glue("shiny/modules/{module()}.Rmd"), package = "shinyscholar")){
+        code <- readLines(system.file(glue::glue("shiny/modules/{module()}.Rmd"), package = "shinyscholar"))
       } else {
         code <- "There is no markdown file for this module"
         }
@@ -212,7 +212,7 @@ function(input, output, session) {
   # handler for R Markdown download
   output$dlRMD <- downloadHandler(
     filename = function() {
-      paste0("SMART-session-", Sys.Date(), filetype_to_ext(input$rmdFileType))
+      paste0("shinyscholar-session-", Sys.Date(), filetype_to_ext(input$rmdFileType))
     },
     content = function(file) {
       md_files <- c()
@@ -304,7 +304,7 @@ function(input, output, session) {
       bib_file <- "Rmd/references.bib"
       temp_bib_file <- tempfile(pattern = "ref_", fileext = ".bib")
       # Package always cited
-      knitcitations::citep(citation("SMART"))
+      knitcitations::citep(citation("shinyscholar"))
       knitcitations::citep(citation("knitcitations"))
       knitcitations::citep(citation("knitr"))
       knitcitations::citep(citation("rmarkdown"))
@@ -393,7 +393,7 @@ function(input, output, session) {
 
   output$save_session <- downloadHandler(
     filename = function() {
-      paste0("SMART-session-", Sys.Date(), ".rds")
+      paste0("shinyscholar-session-", Sys.Date(), ".rds")
     },
     content = function(file) {
       save_session(file)

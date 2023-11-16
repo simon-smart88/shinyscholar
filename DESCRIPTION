@@ -1,9 +1,9 @@
-Package: SMART
+Package: shinyscholar
 Version: 1.0.0
 Date: 2023-08-03
 Title: Shiny Modular Academic Reproducible Template
-Description: The 'shiny' application SMART is a modular platform for 
-    creating reproducible applications to academic standards. 'SMART' is 
+Description: The 'shiny' application shinyscholar is a modular platform for 
+    creating reproducible applications to academic standards. 'shinyscholar' is 
     forked from 'wallace' and provides a template for producing applications 
     that are interactive, reproducible, adaptable and built to high standards.
 Authors@R: 

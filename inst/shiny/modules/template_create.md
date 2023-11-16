@@ -19,4 +19,4 @@ The app checks that the lengths of the components and long components and the le
 
 Once all the fields are filled in and validated, the Download! button will appear below the boxes and clicking it will generate a .zip file. After extracting that file, navigate into the folder, and run `devtools::install_local()` to install the package and then you can run the app using `<name>::run_<name>`.
 
-Information on how to develop the app can be found in the [project's README](https://github.com/simon-smart88/SMART/blob/master/README.md)
+Information on how to develop the app can be found in the [project's README](https://github.com/simon-smart88/shinyscholar/blob/master/README.md)

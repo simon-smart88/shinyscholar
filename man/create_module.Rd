@@ -2,7 +2,7 @@
 % Please edit documentation in R/custom_modules.R
 \name{create_module}
 \alias{create_module}
-\title{Create a SMART module}
+\title{Create a shinyscholar module}
 \usage{
 create_module(
   id,
@@ -33,8 +33,8 @@ user saves the current session.}
 \item{init}{logical. Whether or not the function is being used inside of the init function}
 }
 \description{
-Create the template of a new SMART module.
+Create the template of a new shinyscholar module.
 }
 \seealso{
-\code{\link[SMART]{register_module}}
+\code{\link[shinyscholar]{register_module}}
 }

@@ -1,5 +1,5 @@
-#' @title Run \emph{SMART} Application
-#' @description This function runs the \emph{SMART} application in the user's
+#' @title Run \emph{shinyscholar} Application
+#' @description This function runs the \emph{shinyscholar} application in the user's
 #' default web browser.
 #' @param launch.browser Whether or not to launch a new browser window.
 #' @param port The port for the shiny server to listen on. Defaults to a
@@ -7,14 +7,14 @@
 #'
 #' @examples
 #' if(interactive()) {
-#' run_smart()
+#' run_shinyscholar()
 #' }
 #' @author Jamie Kass <jkass@@gradcenter.cuny.edu>
 #' @author Gonzalo E. Pinilla-Buitrago <gpinillabuitrago@@gradcenter.cuny.edu>
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
-run_smart <- function(launch.browser = TRUE, port = getOption("shiny.port")) {
-  app_path <- system.file("shiny", package = "SMART")
+run_shinyscholar <- function(launch.browser = TRUE, port = getOption("shiny.port")) {
+  app_path <- system.file("shiny", package = "shinyscholar")
   knitcitations::cleanbib()
   options("citation_format" = "pandoc")
   preexisting_objects <- ls(envir = .GlobalEnv)

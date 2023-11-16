@@ -1,4 +1,4 @@
-path <- list.files(system.file("extdata/wc", package = "SMART"),
+path <- list.files(system.file("extdata/wc", package = "shinyscholar"),
                    pattern = ".tif$", full.names = TRUE)
 
 test_that("Check select_user function works as expected", {
@@ -14,7 +14,7 @@ test_that("Check select_user function works as expected", {
 test_that("{shinytest2} recording: e2e_select_user", {
   testthat::skip_on_ci()
 
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_select_user")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_select_user")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
   app$upload_file(`select_user-ras` = path)

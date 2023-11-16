@@ -3,15 +3,15 @@ title: "intro"
 output: html_document
 ---
 
-### **What is *SMART*?**  
+### **What is *shinyscholar*?**  
 
 <img src="logo.png" alt="logo" style="width: 150px; float:right; padding:10px;"/>
 
-Welcome to *SMART* (Shiny Modular Academic Reproducible Template), a template for creating flexible applications to academic standards. The template has very basic core functionality but demonstrates how applications can be created that are modular, reproducible and automatically cite package developers.
+Welcome to *shinyscholar* (Shiny Modular Academic Reproducible Template), a template for creating flexible applications to academic standards. The template has very basic core functionality but demonstrates how applications can be created that are modular, reproducible and automatically cite package developers.
 
 The application is written in `R` with the web app development package `shiny` and is based on the *Wallace* application (<a href="https://CRAN.R-project.org/package=wallace" target="_blank">CRAN</a>,<a href="https://wallaceecomod.github.io/" target="_blank">website</a>) developed for modelling species distributions (Kass et. al 2018; Kass et al. 2022).
 
-### **Attributes of _SMART_**
+### **Attributes of _shinyscholar_**
 
 * **accessible**: lowers barriers to implementing complex modular `shiny` apps for scientific analysis
 
@@ -34,7 +34,7 @@ The application is written in `R` with the web app development package `shiny` a
 Please <a href="mailto:simon.smart@cantab.net" target="_blank">email us</a> with any other questions.
 
 #### **Acknowledgments**
-SMART was developed as part of a project to develop digital tools for modelling infectious diseases <a href=https://wellcome.org/news/digital-tools-climate-sensitive-infectious-disease target="_blank"> funded by Wellcome</a> at the [University of Leicester](https://le.ac.uk/).
+shinyscholar was developed as part of a project to develop digital tools for modelling infectious diseases <a href=https://wellcome.org/news/digital-tools-climate-sensitive-infectious-disease target="_blank"> funded by Wellcome</a> at the [University of Leicester](https://le.ac.uk/).
 
 #### **References**
 

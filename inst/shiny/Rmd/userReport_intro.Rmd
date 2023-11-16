@@ -1,5 +1,5 @@
 ---
-title: SMART Session `r Sys.Date()`
+title: shinyscholar Session `r Sys.Date()`
 ---
 
 ```{r, include=FALSE}
@@ -10,7 +10,7 @@ knit_engines$set(asis = function(options) {
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, eval = FALSE)
 ```
 
-Please find below the R code history from your *SMART* v1.0.0 session. 
+Please find below the R code history from your *shinyscholar* v1.0.0 session. 
 
 You can reproduce your session results by running this R Markdown file in RStudio. 
 
@@ -20,14 +20,14 @@ For more detailed information see <http://rmarkdown.rstudio.com>.
 
 ### Package installation
 
-SMART uses the following R packages that must be installed and loaded before starting.
+shinyscholar uses the following R packages that must be installed and loaded before starting.
 ```{r}
 library(terra)
 library(leaflet)
-library(SMART)
+library(shinyscholar)
 ```
 
-The *SMART* session code .Rmd file is composed of a chain of module functions that are internal to *SMART*. Each of these functions corresponds to a single module that the user ran during the session. To see the internal code for these module functions, click on the links in the .Rmd file. Users are encouraged to write custom code in the .Rmd directly to modify their analysis, and even modify the module function code to further customize. To see the source code for any module function, just type its name into the R console and press Return.
+The *shinyscholar* session code .Rmd file is composed of a chain of module functions that are internal to *shinyscholar*. Each of these functions corresponds to a single module that the user ran during the session. To see the internal code for these module functions, click on the links in the .Rmd file. Users are encouraged to write custom code in the .Rmd directly to modify their analysis, and even modify the module function code to further customize. To see the source code for any module function, just type its name into the R console and press Return.
 
 Your analyses are below.
 

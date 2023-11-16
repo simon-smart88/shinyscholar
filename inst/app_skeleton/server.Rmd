@@ -1,6 +1,6 @@
 ```{r}
 library({{app_library}})
-library(SMART)
+library(shinyscholar)
 
 source(system.file("shiny/common.R", package = "{{app_library}}"))
 
@@ -293,7 +293,7 @@ function(input, output, session) {
       bib_file <- "Rmd/references.bib"
       temp_bib_file <- tempfile(pattern = "ref_", fileext = ".bib")
       # Package always cited
-      knitcitations::citep(citation("SMART"))
+      knitcitations::citep(citation("shinyscholar"))
       knitcitations::citep(citation("{{app_library}}"))
       knitcitations::citep(citation("knitcitations"))
       knitcitations::citep(citation("knitr"))

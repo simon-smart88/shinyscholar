@@ -13,7 +13,8 @@ create_template(
   common_objects,
   modules,
   author,
-  install
+  install,
+  logger = NULL
 )
 }
 \arguments{
@@ -41,6 +42,10 @@ so should be formatted appropriately.}
 \item{author}{character. The name of the author(s)}
 
 \item{install}{logical. Whether to install the package}
+
+\item{logger}{Stores all notification messages to be displayed in the Log
+Window. Insert the logger reactive list here for running in
+shiny, otherwise leave the default NULL}
 }
 \description{
 This function creates a skeleton app containing empty modules

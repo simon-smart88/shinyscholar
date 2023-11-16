@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
   
 # install R packages required 
 RUN R -e "install.packages('devtools')"
-RUN R -e "devtools::install_github('simon-smart88/SMART')"
+RUN R -e "devtools::install_github('simon-smart88/shinyscholar')"
 
 COPY ./inst/shiny/ /srv/shiny-server/smart
 

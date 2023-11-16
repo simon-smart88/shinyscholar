@@ -1,15 +1,15 @@
-# SMART (v1.0.0)
-SMART (Shiny Modular Academic Reproducible Template) is a basic application written in R that can be used as a template to create complex applications that are modular and reproducible outside of the application. *SMART* was forked from `{wallace}` ([CRAN](https://cran.r-project.org/package=wallace), [website](https://wallaceecomod.github.io/wallace/index.html)) a modular platform for reproducible modeling of species distributions . we are very grateful to the contributors of that package. The features retained from `{wallace}` and the new features added in *SMART* are described in `NEWS`.
+# shinyscholar (v1.0.0)
+shinyscholar (Shiny Modular Academic Reproducible Template) is a basic application written in R that can be used as a template to create complex applications that are modular and reproducible outside of the application. *shinyscholar* was forked from `{wallace}` ([CRAN](https://cran.r-project.org/package=wallace), [website](https://wallaceecomod.github.io/wallace/index.html)) a modular platform for reproducible modeling of species distributions . we are very grateful to the contributors of that package. The features retained from `{wallace}` and the new features added in *shinyscholar* are described in `NEWS`.
 
-*SMART* contains three components (Select, Plot, Reproduce) each of which contain two modules (`select_query`, `select_user`, `plot_hist`, `plot_scatter`, `rep_markdown` and `rep_refPackages`) and their code is found in the `inst/shiny/modules` directory. Each of the modules in the Select and Plot components calls a function with the same name that is found in the `R` directory. The `select_query` module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used.
+*shinyscholar* contains three components (Select, Plot, Reproduce) each of which contain two modules (`select_query`, `select_user`, `plot_hist`, `plot_scatter`, `rep_markdown` and `rep_refPackages`) and their code is found in the `inst/shiny/modules` directory. Each of the modules in the Select and Plot components calls a function with the same name that is found in the `R` directory. The `select_query` module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used.
 
-Install *SMART* via Github and run the application with the following R code.
+Install *shinyscholar* via Github and run the application with the following R code.
 
 ```R
 install.packages("devtools")
-devtools::install_github("simon-smart88/SMART")
-library(SMART)
-run_smart()
+devtools::install_github("simon-smart88/shinyscholar")
+library(shinyscholar)
+run_shinyscholar()
 ```
 
 An individual module can be run using `module_tester()` e.g. `module_tester("select_query")`
@@ -17,7 +17,7 @@ An individual module can be run using `module_tester()` e.g. `module_tester("sel
 ## Justification
 Shiny apps are a great way to lower the barrier for entry for users to complete complex analyses, but often apps produced by academics do not follow best practices in software development or open science. If apps become popular, more features are requested and developers move onto new roles, it may become difficult to maintain their codebase. If users cannot reproduce their analyses outside of the application, it prevents them from modifying analyses to suit their particular use-case, makes it harder to understand the analysis and limits their ability to use the results in publications. Additionally, it may not be possible to determine which R packages are being used in the application, making it more onerous to cite the packages in publications. Other packages exist for creating templates of shiny apps, e.g. `{golem}` and `{rhino}` but these are not geared towards use by academics.
 
-`{wallace}` addressed these shortcomings and the attributes of *SMART* are built open those of `{wallace}`. Apps built using *SMART* should maintain these characteristics:
+`{wallace}` addressed these shortcomings and the attributes of *shinyscholar* are built open those of `{wallace}`. Apps built using *shinyscholar* should maintain these characteristics:
 
 * **accessible**: lowers barriers to implementing complex modular `{shiny}` apps for scientific analysis
 * **open**: the code is free to use and modify (GPL 3.0)
@@ -29,12 +29,12 @@ Shiny apps are a great way to lower the barrier for entry for users to complete 
 * **robust**: modules and their underlying functions are tested using `{testthat}` and `{shinytest2}`
 
 ## Use cases
-SMART is aimed towards creating applications for complex analyses that have several steps and where there may be multiple options for each step e.g. where the data is sourced from, which model is used or how the results are plotted. It is probably not suitable for use if you have never developed a shiny app before, but if you have developed a simple app which is growing in complexity, it should be fairly straightforward to migrate your code across. 
+shinyscholar is aimed towards creating applications for complex analyses that have several steps and where there may be multiple options for each step e.g. where the data is sourced from, which model is used or how the results are plotted. It is probably not suitable for use if you have never developed a shiny app before, but if you have developed a simple app which is growing in complexity, it should be fairly straightforward to migrate your code across. 
 
-## Using SMART as a template
+## Using shinyscholar as a template
 
 ### License
-SMART is licensed under the GPLv3 license and consequently any apps made using SMART must be licensed under the same license. 
+shinyscholar is licensed under the GPLv3 license and consequently any apps made using shinyscholar must be licensed under the same license. 
 
 ### Initialisation
 The `init()` function can be used to create the template for a new app. For example, the following call will produce a folder called `demo` in your Documents folder and create an app containing two components (load and plot) each containing two modules. You can choose whether certain features are included in the overall app by setting the `include_*` parameters and also whether each module contains mapping, result, rmarkdown and save functionality by setting the parameters inside the `modules` dataframe. `common_objects` contains a list of the objects which will be shared between modules and will be available inside all of the modules as e.g. `common$raster`.
@@ -52,7 +52,7 @@ modules <- data.frame(
 
 common_objects = c("raster", "histogram", "scatter")
 
-SMART::init(path = "~/Documents", name = "demo", author = "Simon E. H. Smart",
+shinyscholar::init(path = "~/Documents", name = "demo", author = "Simon E. H. Smart",
 include_map = TRUE, include_table = TRUE, include_code = TRUE, common_objects = common_objects, modules = modules)
 ```
 
@@ -71,7 +71,7 @@ The `*_module_ui` function can be developed just like a normal UI function insid
 
 The `*_module_server` function contains an `observeEvent()` which is run when the `actionButton()` in the UI is clicked. Inside the `observeEvent()` there is a consistent structure to the code:
 
-* In the *warning* block, examine inputs to check that they are as expected and issue warnings if not using `common$logger %>% writeLog()` See the documentation of `SMART::writeLog()` for more details.
+* In the *warning* block, examine inputs to check that they are as expected and issue warnings if not using `common$logger %>% writeLog()` See the documentation of `shinyscholar::writeLog()` for more details.
 * In the *function call* block, pass the inputs to the module function.
 * In the *load into common* block, store the result(s) of the function call in the relevant `common` object.
 * In the *metadata* block, store any relevant input metadata which is required to reproduce the function call in the `common$meta` object.

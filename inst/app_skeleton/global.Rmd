@@ -17,7 +17,7 @@ COMPONENTS <- {{component_list}}
 # Information about modules that various parts of the app need access to
 COMPONENT_MODULES <- list()
 
-# Load all SMART base modules
+# Load all shinyscholar base modules
 base_module_configs <- c(
   "modules/rep_markdown.yml",
   "modules/rep_refPackages.yml"

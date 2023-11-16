@@ -1,4 +1,4 @@
-path <- list.files(system.file("extdata/wc", package = "SMART"),
+path <- list.files(system.file("extdata/wc", package = "shinyscholar"),
                    pattern = ".tif$", full.names = TRUE)
 ras <- terra::rast(path)
 sample <- 1000
@@ -20,7 +20,7 @@ test_that("Check plot_scatter function works as expected", {
 test_that("{shinytest2} recording: e2e_plot_scatter", {
   testthat::skip_on_ci()
 
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "SMART"), name = "e2e_plot_scatter")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_plot_scatter")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
   app$upload_file(`select_user-ras` = path)

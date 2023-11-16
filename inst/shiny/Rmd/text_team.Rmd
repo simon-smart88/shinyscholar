@@ -3,7 +3,7 @@ title: "team"
 output: html_document
 ---
 
-#### *SMART* was forked from *Wallace* and we are grateful for the original package developers.
+#### *shinyscholar* was forked from *Wallace* and we are grateful for the original package developers.
 <br>
 
 ## Developers
