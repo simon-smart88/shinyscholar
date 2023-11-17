@@ -4,6 +4,17 @@ source(system.file("shiny/common.R", package = "shinyscholar"))
 
 function(input, output, session) {
 
+  intro_steps <- data.frame(
+    element=c("#selectSel", "#comps", "#long_comps"),
+    intro=c("first thing","then this","more stuff")
+  )
+
+  observeEvent(input$help,{
+               updateTabsetPanel(session, "tabs", selected="select")
+               rintrojs::introjs(session, options = list(steps=intro_steps, "showBullets"="false", "showProgress"="true",
+                                                         "showStepNumbers"="false","nextLabel"="Next","prevLabel"="Prev","skipLabel"="Skip"), events = list(onbeforechange = rintrojs::readCallback("switchTabs")))
+  })
+
   ########################## #
   # REACTIVE VALUES LISTS ####
   ########################## #

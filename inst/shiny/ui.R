@@ -2,6 +2,7 @@ resourcePath <- system.file("shiny", "www", package = "shinyscholar")
 shiny::addResourcePath("resources", resourcePath)
 
 tagList(
+  rintrojs::introjsUI(),
   shinyjs::useShinyjs(),
   shinyjs::extendShinyjs(
     script = file.path("resources", "js", "shinyjs-funcs.js"),
@@ -209,7 +210,8 @@ tagList(
             id = 'introTabs',
             tabPanel(
               'About',
-              includeMarkdown("Rmd/text_about.Rmd")
+              includeMarkdown("Rmd/text_about.Rmd"),
+              actionButton("help","HELP!!")
             ),
             tabPanel(
               'Team',
