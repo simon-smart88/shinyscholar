@@ -92,3 +92,32 @@ writeLog <- function(logger, ..., type = "default") {
   }
   invisible()
 }
+
+
+####################### #
+# LOADING MODAL #
+####################### #
+
+#' @title show_loading_modal
+#' @description For internal use. Show a modal when something is loading
+#' @param type One of "data", "fitting"
+#' @keywords internal
+#' @export
+
+show_loading_modal <- function(message){
+  shinybusy::show_modal_spinner(
+    spin = "self-building-square",
+    color = "#446e9b",
+    text = message
+  )
+}
+#' @title close_loading_modal
+#' @description For internal use. Close the modal once loading is complete
+#' @param session The session object passed to function given to shinyServer.
+#' @keywords internal
+#' @export
+
+close_loading_modal <- function (session = getDefaultReactiveDomain())
+{
+  session$sendModal("remove", NULL)
+}
