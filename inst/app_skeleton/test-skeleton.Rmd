@@ -1,0 +1,15 @@
+```{r}
+test_that("Check {{module}} function works as expected", {
+  result <- {{module}}()
+  expect_true(is.null(result))
+})
+
+test_that("{shinytest2} recording: e2e_{{module}}", {
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "{{app_library}}"), name = "e2e_{{module}}")
+  app$set_inputs(tabs = "{{component}}")
+  app$set_inputs({{component}}Sel = "{{module}}")
+  app$click("{{module}}-run")
+  common <- app$get_value(export = "common")
+  expect_true(is.null(common${{common_object}}))
+})
+```
