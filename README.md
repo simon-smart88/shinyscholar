@@ -115,6 +115,8 @@ This file contains the data structure that is shared between modules and you can
 This function is designed to make it easier to develop modules by being able to run a single module in isolation. If your module requires objects from previous steps in an analysis, you can modify this function to modify the state of `common` so that the objects a module is dependent on are available immediately. For example, in the demonstration app, the function loads a raster image from a file when the module being run is from the plot component.
 
 #### Testing
+An example test file is created by `create_template()` and placed in `tests/testthat/`. It contains one unit test for the function which checks that it returns `NULL` and one end-to-end test which runs the app runs and that one of the objects in `common` remains set as `NULL`. 
+
 ##### Unit tests
 Unit tests should be added for each function called by each module to ensure that it produces the intended output. These tests are run in the conventional manner by `{testthat}`. 
 
