@@ -299,7 +299,10 @@ file.copy(www_files, glue::glue("{path}/inst/shiny/"), recursive = TRUE)
 
 #copy helpers
 helper_file <- system.file("shiny/helpers.R", package = "shinyscholar")
-file.copy(helper_file, glue::glue("{path}/inst/shiny/"), recursive = TRUE)
+file.copy(helper_file, glue::glue("{path}/inst/shiny/"))
+
+helper_function_file <- system.file("shiny/app_skeleton/helper_functions.R", package = "shinyscholar")
+file.copy(helper_function_file, glue::glue("{path}/R/"))
 
 #create package description
 description_template <- system.file("app_skeleton/DESCRIPTION", package = "shinyscholar")
