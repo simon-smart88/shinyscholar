@@ -80,18 +80,16 @@ module_server <- function(input, output, session) {
     gargoyle::trigger("change_poly")
   }) %>% bindEvent(input$map_draw_new_feature)
 
-  #main server function
-  do.call(get(glue::glue("{module}_module_server")), args = list(id = module, common = common))
-
   #load map function if it exists
   if (exists(glue::glue("{module}_module_map"))){
   map <- leafletProxy("map")
   do.call(glue::glue("{module}_module_map"), list(map, common))}
-}
-
+  
 ```
 ```{r}
-
+  #main server function
+  do.call(get(glue::glue("{module}_module_server")), args = list(id = module, common = common))
+}
 shinyApp(module_ui,module_server)
 }
 
