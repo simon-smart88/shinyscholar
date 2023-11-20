@@ -100,7 +100,7 @@ writeLog <- function(logger, ..., type = "default") {
 
 #' @title show_loading_modal
 #' @description For internal use. Show a modal when something is loading
-#' @param type One of "data", "fitting"
+#' @param message The message to be displayed to the user
 #' @keywords internal
 #' @export
 
