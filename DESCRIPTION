@@ -15,7 +15,8 @@ Depends:
     terra,
     R6,
     gargoyle,
-    leaflet.extras (>= 1.0.0)
+    leaflet.extras (>= 1.0.0),
+    shinybusy
 Imports:
     devtools,
     dplyr (>= 1.0.2),

@@ -98,20 +98,21 @@ dir.create(file.path(path, "R"))
 dir.create(file.path(path, "inst/shiny/modules"), recursive = TRUE)
 dir.create(file.path(path, "inst/shiny/Rmd"))
 dir.create(file.path(path, "inst/shiny/www"))
+dir.create(file.path(path, "tests/testthat"), recursive = TRUE)
 
 # Create common list ====
 #add always present objects to common
-common_objects <- c(common_objects, c("meta", "logger", "state"))
+common_objects_internal <- c(common_objects, c("meta", "logger", "state"))
 if (include_map == TRUE){
-  common_objects <- c(common_objects, c("poly"))
+  common_objects_internal <- c(common_objects_internal, c("poly"))
 }
 
 #convert common_objects to list string
-common_objects <- paste0("list(", paste(sapply(common_objects, function(a) paste0(a, " = NULL")), collapse = ",\n "), ")")
+common_objects_list <- paste0("list(", paste(sapply(common_objects_internal, function(a) paste0(a, " = NULL")), collapse = ",\n "), ")")
 
 common_params <- c(
   file = system.file("app_skeleton/common.Rmd", package="shinyscholar"),
-  list(common_objects = common_objects)
+  list(common_objects = common_objects_list)
   )
 
 common_lines <- tidy_purl(common_params)
@@ -224,7 +225,8 @@ for (m in 1:nrow(modules)){
                       init = TRUE)
 
   #create function for each module
-  writeLines(glue::glue("{module_name} <- function(){}"),  glue::glue("{path}/R/{module_name}.R"))
+  empty_function <- paste0(module_name," <- function(x){return(NULL)}")
+  writeLines(empty_function,  glue::glue("{path}/R/{module_name}.R"))
 
   #edit yaml configs
   yml_lines <- rep(NA,5)
@@ -299,7 +301,10 @@ file.copy(www_files, glue::glue("{path}/inst/shiny/"), recursive = TRUE)
 
 #copy helpers
 helper_file <- system.file("shiny/helpers.R", package = "shinyscholar")
-file.copy(helper_file, glue::glue("{path}/inst/shiny/"), recursive = TRUE)
+file.copy(helper_file, glue::glue("{path}/inst/shiny/"))
+
+helper_function_file <- system.file("shiny/app_skeleton/helper_functions.R", package = "shinyscholar")
+file.copy(helper_function_file, glue::glue("{path}/R/"))
 
 #create package description
 description_template <- system.file("app_skeleton/DESCRIPTION", package = "shinyscholar")
@@ -329,6 +334,20 @@ run_app_params <- c(
 
 run_app_lines <- tidy_purl(run_app_params)
 writeLines(run_app_lines, glue::glue("{path}/R/run_{name}.R"))
+
+# Create test ====
+test_module <- paste0(modules$component[1],"_",modules$module[1])
+
+test_params <- c(
+  file = system.file("app_skeleton/test-skeleton.Rmd", package="shinyscholar"),
+  list(app_library = name,
+       component = modules$component[1],
+       module = test_module,
+       common_object = common_objects[1])
+)
+
+test_lines <- tidy_purl(test_params)
+writeLines(test_lines, glue::glue("{path}/tests/testthat/test-{test_module}.R"))
 
 # Install package ====
 if (install){
