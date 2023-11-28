@@ -135,12 +135,6 @@ server_params <- c(
 )
 server_lines <- tidy_purl(server_params)
 
-#insert help observers for each module
-help_target <- grep("  # Help Module*", server_lines)
-for (m in 1:nrow(modules)){
-server_lines <- append(server_lines, glue::glue('observeEvent(input${modules$component[m]}_{modules$module[m]}Help, updateTabsetPanel(session, "main", "Module Guidance"))'), help_target)
-}
-
 #create plot observers
 results <- modules[modules$result == TRUE,]
 for (r in 1:nrow(results)){

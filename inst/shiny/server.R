@@ -65,11 +65,11 @@ function(input, output, session) {
   })
 
   # Help Module
-  observeEvent(input$select_queryHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$select_userHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$plot_histHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$plot_scatterHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$template_createHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  lapply(help_components, function(component) {
+    lapply(COMPONENT_MODULES[[component]], function(module) {
+      btn_id <- paste0(module$id, "Help")
+      observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Module Guidance"))
+    })})
 
   ######################## #
   ### MAPPING LOGIC ####
