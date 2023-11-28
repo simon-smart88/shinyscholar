@@ -197,11 +197,6 @@ global_params <- c(
 
 global_lines <- tidy_purl(global_params)
 
-global_yaml_target <- grep("*base_module_configs <-*", global_lines)
-for (m in 1:nrow(modules)){
-  global_lines <- append(global_lines, glue::glue('"modules/{modules$component[m]}_{modules$module[m]}.yml",'), global_yaml_target)
-}
-
 writeLines(global_lines, glue::glue("{path}/inst/shiny/global.R"))
 
 # Create modules ====
