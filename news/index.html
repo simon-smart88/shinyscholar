@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shinyscholar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
@@ -52,13 +52,14 @@
 </ol><ul><li>These changes have been made:</li>
 </ul><ol style="list-style-type: decimal"><li>
 <code>common</code> - the data structure passed between modules - has been changed from a <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> containing <code>spp &lt;- reactiveValues()</code> to an <code><a href="https://r6.r-lib.org/reference/R6Class.html" class="external-link">R6::R6Class()</a></code>.</li>
-<li>Due to objects inside <code>common</code> not being inherently reactive, event triggers have been added using <code>gargoyle</code>
+<li>Due to objects inside <code>common</code> not being inherently reactive, event triggers have been added using <code>{gargoyle}</code>
 </li>
 <li>A Code tab has been added to the Visualization panel to allow the code for each module and the function that each module calls to be viewed.</li>
-<li>Unit tests for each module have been created using <code>shinytest2</code> in addition to unit tests for the function that the module calls.</li>
-<li>Added a new function <code>module_tester()</code> which can be used to run a single module.</li>
-<li>Added a new function <code><a href="https://rdrr.io/pkg/terra/man/init.html" class="external-link">init()</a></code> which can be used to create a skeleton app.</li>
+<li>Unit tests for each module have been created using <a href="https://rstudio.github.io/shinytest2/" class="external-link">shinytest2</a> in addition to unit tests for the function that the module calls.</li>
+<li>Added a new function <code><a href="../reference/run_module.html">run_module()</a></code> which can be used to run a single module.</li>
+<li>Added a new function <code><a href="../reference/create_template.html">create_template()</a></code> which can be used to create a skeleton app.</li>
 <li>Added a Dockerfile which can be used to run the app on a shiny-server.</li>
+<li>Added <code>show_loading_modal()</code> which uses <a href="https://github.com/dreamRs/shinybusy" class="external-link">shinybusy</a> to display a modal whilst slow functions are running.</li>
 </ol></div>
   </div>
 
