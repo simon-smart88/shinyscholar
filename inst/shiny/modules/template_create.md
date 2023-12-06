@@ -1,5 +1,8 @@
 ### **Module: Create template app**
 
+#### License
+Shinyscholar is licensed under the GPLv3 license and consequently any apps made using the template must be licensed under the same license. 
+
 **INSTRUCTIONS**
 
 This module allows you to create and download a template for your own application using the `create_template` function. Note that in the implementation here, the options for choosing whether individual modules contain mapping, rmarkdown and load/save functionality are unavailable and included by default, except in the case of the map, which will be completely excluded if the *Include map tab?* is unselected.

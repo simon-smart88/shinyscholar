@@ -7,27 +7,29 @@ output: html_document
 
 <img src="logo.png" alt="logo" style="width: 150px; float:right; padding:10px;"/>
 
-Welcome to *shinyscholar* a template for creating flexible applications to academic standards. The template has very basic core functionality but demonstrates how applications can be created that are modular, reproducible and automatically cite package developers.
+Welcome to *shinyscholar* an application written in R that can be used to create a template for complex applications that are modular, meet academic standards of attribution and are reproducible outside of the application. By using *shinyscholar*, to create a template application, developers will be encouraged to produce applications that are maintainable and run reliably without having to learn software development best-practices from scratch. *shinyscholar* was [forked](https://github.com/wallaceEcoMod/wallace/tree/51a3ebe10ffd797fc36ad2d2cf8245b014d11b41) from `{wallace}` v2.0.5 ([CRAN](https://cran.r-project.org/package=wallace), [website](https://wallaceecomod.github.io/wallace/index.html)) a modular platform for reproducible modelling of species distributions (Kass et. al 2018; Kass et al. 2022). Specifically, it harnesses the higher-level structure and core attributes of Wallace but removes its discipline-specific features, yielding a generic template for developers to make their own applications. 
 
-The application is written in `R` with the web app development package `{shiny}` and is based on the *Wallace Eco Mod* application (<a href="https://CRAN.R-project.org/package=wallace" target="_blank">CRAN</a>,<a href="https://wallaceecomod.github.io/" target="_blank">website</a>) developed for modelling species distributions (Kass et. al 2018; Kass et al. 2022).
+*Shinyscholar* contains four components (Select, Plot, Reproduce, Template) each of which contain one or two modules (`select_query`, `select_user`, `plot_hist`, `plot_scatter`, `rep_markdown` and `rep_refPackages`, `template_create`). Each of the modules in the Select and Plot components calls a function with the same name. The `select_query` module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used. The Reproduce component is used to generate an rmarkdown document that reproduces the analysis conducted in the application. The Template component can be used to produce and download a template version of an app with the same features.
 
 ### **Attributes of _shinyscholar_**
 
-* **accessible**: lowers barriers to implementing complex modular `{shiny}` apps for scientific analysis
+Many of these attributes derive from `{wallace}`, but others are new to *shinyscholar* as described in [NEWS](https://github.com/simon-smart88/shinyscholar/blob/master/NEWS.md). Apps built using *shinyscholar* should maintain these attributes:
+
+* **accessible**: lowers barriers to implementing complex modular `{shiny}` apps for scientific analysis by providing an intuitive graphical user interface
 * **open**: the code is free to use and modify (GPL 3.0) and can be viewed from inside the application
 * **expandable**: users can author and contribute modules that enable new methodological options
 * **flexible**: options for user uploads and downloads of results
 * **interactive**: includes an embedded zoomable `{leaflet}` map, sortable `{DF}` data tables, and visualizations of results
 * **instructive**: features guidance text that educates users about theoretical and analytical aspects of each step in the workflow
 * **reproducible**: users can download an `{rmarkdown}` .Rmd file that when run reproduces the analysis, and also save sessions and load them later
-* **robust**: modules and their underlying functions are tested using `{testthat}` and `{shinytest2}`
+* **reliable**: modules and their underlying functions are tested using `{testthat}` and `{shinytest2}`
 
 ### **Contact us**
 
 Please <a href="mailto:simon.smart@cantab.net" target="_blank">email us</a> with any other questions.
 
 #### **Acknowledgments**
-shinyscholar was developed as part of a project to develop digital tools for modelling infectious diseases <a href=https://wellcome.org/news/digital-tools-climate-sensitive-infectious-disease target="_blank"> funded by Wellcome</a> at the [University of Leicester](https://le.ac.uk/).
+shinyscholar was developed as part of a project to develop digital tools for modelling infectious diseases [funded by Wellcome](https://wellcome.org/news/digital-tools-climate-sensitive-infectious-disease) at the [University of Leicester](https://le.ac.uk/). The version of Wallace that shinyscholar was derived from was funded by the [Global Biodiversity Information Facility](https://www.gbif.org/), [National Science Foundation](https://www.nsf.gov/) and [NASA](https://www.nasa.gov/).
 
 #### **References**
 

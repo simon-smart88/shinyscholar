@@ -1,5 +1,5 @@
-# shinyscholar (v1.0.0)
-Shinyscholar is a basic application written in R that can be used as a template to create complex applications that are modular, meet academic standards of attribution and are reproducible outside of the application. *shinyscholar* was [forked](https://github.com/wallaceEcoMod/wallace/tree/51a3ebe10ffd797fc36ad2d2cf8245b014d11b41) from `{wallace}` v2.0.5 ([CRAN](https://cran.r-project.org/package=wallace), [website](https://wallaceecomod.github.io/wallace/index.html)) a modular platform for reproducible modeling of species distributions. Specifically, it harnesses the higher-level structure and core attributes of Wallace but removes its discipline-specific features, yielding a generic template for developers to make their own applications. We are very grateful to the contributors to `{wallace}`  and the features retained from and the new features added in *shinyscholar* are described in `NEWS`.
+# shinyscholar (v0.1.0)
+Shinyscholar is a basic application written in R that can be used as a template to create complex applications that are modular, meet academic standards of attribution and are reproducible outside of the application. By using *shinyscholar*, to create a template application, developers will be encouraged to produce applications that are maintainable and run reliably without having to learn software development best-practices from scratch. *shinyscholar* was [forked](https://github.com/wallaceEcoMod/wallace/tree/51a3ebe10ffd797fc36ad2d2cf8245b014d11b41) from `{wallace}` v2.0.5 ([CRAN](https://cran.r-project.org/package=wallace), [website](https://wallaceecomod.github.io/wallace/index.html)) a modular platform for reproducible modelling of species distributions. Specifically, it harnesses the higher-level structure and core attributes of Wallace but removes its discipline-specific features, yielding a generic template for developers to make their own applications. We are very grateful to the contributors to `{wallace}` and the features retained from it and the new features added in *shinyscholar* are described in `NEWS`. 
 
 *Shinyscholar* contains four components (Select, Plot, Reproduce, Template) each of which contain one or two modules (`select_query`, `select_user`, `plot_hist`, `plot_scatter`, `rep_markdown` and `rep_refPackages`, `template_create`) and their code is found in the `inst/shiny/modules` directory. Each of the modules in the Select and Plot components calls a function with the same name that is found in the `R` directory. The `select_query` module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used. The Reproduce component is used to generate an rmarkdown document that reproduces the analysis conducted in the application. The Template component can be used to produce and download a template version of an app with the same features.
 
@@ -19,14 +19,14 @@ Shiny apps are a great way to lower the barrier for entry for users to complete 
 
 `{wallace}` addressed these shortcomings and the attributes of *shinyscholar* are built upon those of `{wallace}`. Apps built using *shinyscholar* should maintain these characteristics:
 
-* **accessible**: lowers barriers to implementing complex modular `{shiny}` apps for scientific analysis
+* **accessible**: lowers barriers to implementing complex modular `{shiny}` apps for scientific analysis by providing an intuitive graphical user interface
 * **open**: the code is free to use and modify (GPL 3.0) and can be viewed from inside the application
 * **expandable**: users can author and contribute modules that enable new methodological options
 * **flexible**: options for user uploads and downloads of results
 * **interactive**: includes an embedded zoomable `{leaflet}` map, sortable `{DF}` data tables, and visualizations of results
 * **instructive**: features guidance text that educates users about theoretical and analytical aspects of each step in the workflow
 * **reproducible**: users can download an `{rmarkdown}` .Rmd file that when run reproduces the analysis, and also save sessions and load them later
-* **robust**: modules and their underlying functions are tested using `{testthat}` and `{shinytest2}`
+* **reliable**: modules and their underlying functions are tested using `{testthat}` and `{shinytest2}`
 
 ## Use cases
 Shinyscholar is aimed towards creating applications for complex analyses that have several steps and where there may be multiple options for each step e.g. where the data is sourced from, which model is used or how the results are plotted. It is probably not suitable for use if you have never developed a shiny app before, but if you have developed a simple app which is growing in complexity, it should be fairly straightforward to migrate your code across. 
@@ -105,10 +105,10 @@ Each component has a skeleton guidance document located in `inst/shiny/Rmd` e.g.
 These should not require substantial editing unless you wish to change the layout or appearance of the app. One exception is the block of code in `server.R` that creates the table because this is shared between modules. If your app uses `{terra}` objects, they need to be wrapped and unwrapped using `terra::wrap()` and `terra::unwrap()` when they are saved and loaded (see the `server.R` file of this repository for an example).
 
 #### Theme
-The colour of elements in the app are controlled by the theme present in the `bslib::bs_theme()` function inside `ui.R`. The default theme used is spacelab, but you can choose your own from https://bootswatch.com/.
+The colour of elements in the app are controlled by the theme present in the `bslib::bs_theme()` function inside `ui.R`. The default theme used is `spacelab`, but you can choose your own from https://bootswatch.com/.
 
 #### common.R
-This file contains the data structure that is shared between modules and you can add extra objects as you wish. `common` is an R6 class object. By default, all the objects in `common` are created as `NULL` but you may wish to Objects in `common` can be functions, for example in the demonstration app, `common$add_map_layer()` is used to add a layer to `common$map_layers`.
+This file contains the data structure that is shared between modules and you can add extra objects as you wish. `common` is an R6 class object. By default, all the objects in `common` are created as `NULL` but you may wish to change these load a default value. Objects inside `common` are not reactive by default, but you can make them `reactiveVal` or `reactiveValues`, for example like `common$logger`. Objects in `common` can also be functions, for example in the demonstration app, `common$add_map_layer()` is used to add a layer to `common$map_layers`.
 
 #### R/run_module.R
 This function is designed to make it easier to develop modules by being able to run a single module in isolation. If your module requires objects from previous steps in an analysis, you can modify this function to modify the state of `common` so that the objects a module is dependent on are available immediately. For example, in the demonstration app, the function loads a raster image from a file when the module being run is from the plot component.
@@ -120,15 +120,18 @@ One test file for each module is created by `create_template()` and placed in `t
 Unit tests should be added for each function called by each module to ensure that it produces the intended output and returns errors appropriately. These tests are run in the conventional manner by `{testthat}`. 
 
 ##### End-to-end testing
-End-to-end testing is used to validate that the app itself is functions and uses {shinytest2}. Tests can be recorded using `shinytest2::record_test()` but the snapshot functionality of the package does not work well with the architecture of this package. Recording tests is still a useful way to record the input names required to navigate through the app. `common` is made available for use inside tests by using `common <- app$get_value(export = "common")` so you can check that objects are in the expected state after running a module.
+End-to-end testing is used to validate that the app itself is functions and uses `{shinytest2}`. Tests can be recorded using `shinytest2::record_test()` but the snapshot functionality of the package does not work well with the architecture of this package. Recording tests is still a useful way to record the input names required to navigate through the app. `common` is made available for use inside tests by using `common <- app$get_value(export = "common")` so you can check that objects are in the expected state after running a module.
 
-### Notes for Windows users
+## Acknowledgments
+shinyscholar was developed as part of a project to develop digital tools for modelling infectious diseases [funded by Wellcome](https://wellcome.org/news/digital-tools-climate-sensitive-infectious-disease) at the [University of Leicester](https://le.ac.uk/). The version of Wallace that shinyscholar was derived from was funded by the [Global Biodiversity Information Facility](https://www.gbif.org/), [National Science Foundation](https://www.nsf.gov/) and [NASA](https://www.nasa.gov/).
 
-#### PDF download of session code
+## Notes for Windows users
+
+### PDF download of session code
 If PDF downloading of session code is not working for you, please follow the following instructions, taken from <a href="https://github.com/rstudio/shiny-examples/issues/34" target="_blank">here</a>:
      - Step 1: Download and Install MiKTeX from http://miktex.org/2.9/setup
      - Step 2: Run `Sys.getenv("PATH")` in R studio. This command returns the path where Rstudio is trying to find pdflatex.exe. In Windows (64-bit), it should return "C:\Program Files\MiKTeX 2.9\miktex\bin\x64\pdflatex.exe". If pdflatex.exe is not located in this location Rstudio gives this error code 41.
      - Step 3: To set this path variable run: `Sys.setenv(PATH=paste(Sys.getenv("PATH"),"C:/Program Files/MiKTeX 2.9/miktex/bin/x64/",sep=";"))`.
 
-#### Only for Github installation
+### Only for Github installation
 If you are using Windows, please download and install <a href="https://cran.r-project.org/bin/windows/Rtools/" target="_blank">RTools</a> before installing the `devtools` package. After you install RTools, please make sure you add "C:\Rtools\bin" to your PATH variable (instructions <a href="https://stackoverflow.com/questions/29129681/create-zip-file-error-running-command-had-status-127/29480538#29480538" target="_blank">here</a>). Additionally, when using `devtools` on Windows machines, there is a known <a href="https://github.com/r-lib/devtools/issues/1298" target="_blank">bug</a> that sometimes results in the inability to download all package dependencies. If this happens to you, please install the packages and their dependencies directly from CRAN.

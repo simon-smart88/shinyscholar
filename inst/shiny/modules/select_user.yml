@@ -1,5 +1,5 @@
 component: "select"
 short_name: "Upload data"
-long_name: "Upload your own data"
+long_name: "Upload your own raster data"
 authors: "Simon E H Smart"
 package: [terra]

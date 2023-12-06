@@ -1,5 +1,5 @@
 component: "select"
 short_name: "Query API"
-long_name: "Load data from an API"
+long_name: "Obtain vegetation cover data through an API"
 authors: "Simon E. H. Smart"
 package: [terra]

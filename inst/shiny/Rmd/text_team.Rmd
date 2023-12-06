@@ -3,12 +3,11 @@ title: "team"
 output: html_document
 ---
 
-#### *shinyscholar* was forked from *Wallace* and we are grateful for the original package developers.
-<br>
+#### *shinyscholar* was forked from *Wallace* and we are grateful for the original application developers listed on [their website](https://wallaceecomod.github.io/)
 
 ## Developers
 
-<a href=" https://simon-smart88.github.io/" target="_blank">Simon Smart</a> received his PhD in Plant Sciences from the University of Cambridge and is currently a software developer in the Department of Population Health Sciences at the University of Leicester.
+[Simon Smart](https://github.com/simon-smart88) received his PhD in Plant Sciences from the University of Cambridge and is currently a Software Developer in the Department of Population Health Sciences at the University of Leicester where he is developing [disagapp](https://github.com/simon-smart88/disagapp).
 
 
 
