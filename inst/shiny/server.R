@@ -176,7 +176,7 @@ function(input, output, session) {
       code <- code[1:(length(code)-2)]
     }
     if (input$code_choice == "Markdown"){
-      if (file.exists(glue::glue("shiny/modules/{module()}.Rmd"), package = "shinyscholar")){
+      if (file.exists(system.file(glue::glue("shiny/modules/{module()}.Rmd"), package = "shinyscholar"))){
         code <- readLines(system.file(glue::glue("shiny/modules/{module()}.Rmd"), package = "shinyscholar"))
       } else {
         code <- "There is no markdown file for this module"
