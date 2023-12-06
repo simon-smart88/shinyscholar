@@ -5,7 +5,6 @@ output: html_document
 
 #### WORKFLOW
 
-```{r}
-"*{{app_library}}* (v1.0.0) includes {{n_components}} components, or steps of a possible workflow. Each component includes one or more modules, which are possible analyses for that step."
-```
+
+
 **Components:**  

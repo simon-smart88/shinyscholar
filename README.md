@@ -101,7 +101,6 @@ This function performs the computation of the module. Creating this function sep
 
 #### Components
 Each component has a skeleton guidance document located in `inst/shiny/Rmd` e.g. `gtext_plot.Rmd` which you should use to describe the functionality of the component in general and also include any relevant references. 
-
 #### server.R and ui.R
 These should not require substantial editing unless you wish to change the layout or appearance of the app. One exception is the block of code in `server.R` that creates the table because this is shared between modules. If your app uses `{terra}` objects, they need to be wrapped and unwrapped using `terra::wrap()` and `terra::unwrap()` when they are saved and loaded (see the `server.R` file of this repository for an example).
 
@@ -115,10 +114,10 @@ This file contains the data structure that is shared between modules and you can
 This function is designed to make it easier to develop modules by being able to run a single module in isolation. If your module requires objects from previous steps in an analysis, you can modify this function to modify the state of `common` so that the objects a module is dependent on are available immediately. For example, in the demonstration app, the function loads a raster image from a file when the module being run is from the plot component.
 
 #### Testing
-An example test file is created by `create_template()` and placed in `tests/testthat/`. It contains one unit test for the function which checks that it returns `NULL` and one end-to-end test which runs the app runs and that one of the objects in `common` remains set as `NULL`. 
+One test file for each module is created by `create_template()` and placed in `tests/testthat/`. It contains one unit test for the function which checks that it returns `NULL` and one end-to-end test which runs the app runs and that one of the objects in `common` remains set as `NULL`. During development of the modules, you should add tests to check the function runs as expected, returns errors when it cannot run and that the function runs when called from the app.
 
 ##### Unit tests
-Unit tests should be added for each function called by each module to ensure that it produces the intended output. These tests are run in the conventional manner by `{testthat}`. 
+Unit tests should be added for each function called by each module to ensure that it produces the intended output and returns errors appropriately. These tests are run in the conventional manner by `{testthat}`. 
 
 ##### End-to-end testing
 End-to-end testing is used to validate that the app itself is functions and uses {shinytest2}. Tests can be recorded using `shinytest2::record_test()` but the snapshot functionality of the package does not work well with the architecture of this package. Recording tests is still a useful way to record the input names required to navigate through the app. `common` is made available for use inside tests by using `common <- app$get_value(export = "common")` so you can check that objects are in the expected state after running a module.

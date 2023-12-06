@@ -249,17 +249,15 @@ rmd_files <- rmd_files[!grepl("gtext_plot|gtext_select|text_intro_tab", rmd_file
 lapply(rmd_files, file.copy, glue::glue("{path}/inst/shiny/Rmd/"))
 
 # Intro tab====
-intro_params <- c(
-  file = system.file("app_skeleton/text_intro_tab.Rmd", package="shinyscholar"),
-  list(app_library = name,
-       n_components = nrow(components)
-  )
-)
+number_word <- c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
+if (nrow(components) <= 10){
+  n_components <- number_word[nrow(components)]
+} else {
+  n_components <- nrow(components)
+}
 
-intro_rmd <- do.call(knitr::knit_expand, intro_params)
-temp <- tempfile()
-writeLines(intro_rmd, glue::glue("{temp}.Rmd"))
-intro_lines <- readLines(glue::glue("{temp}.Rmd"))
+intro_lines <- readLines(system.file("app_skeleton/text_intro_tab.Rmd", package="shinyscholar"))
+intro_lines[8] <- glue::glue("*{name}* (v1.0.0) includes {n_components} components, or steps of a possible workflow. Each component includes one or more modules, which are possible analyses for that step.")
 
 for (c in 1:nrow(components)){
   intro_lines <- append(intro_lines, glue::glue("**{c}.** *{components$long_component[c]}*"))
@@ -273,7 +271,6 @@ intro_lines <- append(intro_lines, glue::glue("**{c+1}.** *Reproduce*"))
 intro_lines <- append(intro_lines, "- Download Session Code")
 intro_lines <- append(intro_lines, "- Download Package References")
 writeLines(intro_lines, glue::glue("{path}/inst/shiny/Rmd/text_intro_tab.Rmd"))
-
 
 #create guidance rmds for components
 guidance_template <- system.file("app_skeleton/gtext.Rmd", package = "shinyscholar")
@@ -324,19 +321,21 @@ run_app_params <- c(
 run_app_lines <- tidy_purl(run_app_params)
 writeLines(run_app_lines, glue::glue("{path}/R/run_{name}.R"))
 
-# Create test ====
-test_module <- paste0(modules$component[1],"_",modules$module[1])
+# Create tests ====
+for (m in 1:nrow(modules)){
+  module_name <- glue::glue("{modules$component[m]}_{modules$module[m]}")
 
 test_params <- c(
-  file = system.file("app_skeleton/test-skeleton.Rmd", package="shinyscholar"),
+  file = system.file("app_skeleton/test.Rmd", package="shinyscholar"),
   list(app_library = name,
-       component = modules$component[1],
-       module = test_module,
+       component = modules$component[m],
+       module = module_name,
        common_object = common_objects[1])
 )
 
 test_lines <- tidy_purl(test_params)
-writeLines(test_lines, glue::glue("{path}/tests/testthat/test-{test_module}.R"))
+writeLines(test_lines, glue::glue("{path}/tests/testthat/test-{module_name}.R"))
+}
 
 # Install package ====
 if (install){
