@@ -7,21 +7,28 @@ function(input, output, session) {
   intro_steps <- data.frame(
     element=c("div[class=\"well\"]",
               "a[data-value=\"How To Use\"]",
-              "li:nth-of-type(2)",
+              "a[data-value=\"select\"]",
               "#selectHelp",
               "#selectSel",
               "#select_queryHelp",
               "div[class=\"form-group shiny-input-container\"]",
-              "#select_query-run"),
+              "#select_query-run",
+              "a[data-value=\"Map\"]",
+              "a[data-value=\"Table\"]",
+              "a[data-value=\"Results\"]"
+              ),
     
     intro=c("This panel shows all of the possible steps in the analysis",
             "Detailed instructions can be found in the How To Use tab",
-            "Click on the items here to move between components",
+            "Click on a tab to move between components",
             "Click on the question mark to view instructions for the component",
             "Select a module to load the options",
             "Click on the question mark to view instructions for the component",
             "Choose from the list of options",
-            "Click the button to run the module")
+            "Click the button to run the module",
+            "Data will be loaded onto the Map...",
+            "and into the Table ...",
+            "or the Results tab depending on the module")
   )
 
   observeEvent(input$help,{
@@ -62,8 +69,19 @@ function(input, output, session) {
                                                              $('a[data-value=\"Module Guidance\"]').removeClass('active');
                                                              $('a[data-value=\"Map\"]').trigger('click');
                                                              $('a[data-value=\"Map\"]').addClass('active');
-                                                            }
+                                                           }
                                                             
+                                                           if (this._currentStep == 9 ) {
+                                                             $('a[data-value=\"Map\"]').removeClass('active');
+                                                             $('a[data-value=\"Table\"]').trigger('click');
+                                                             $('a[data-value=\"Table\"]').addClass('active');
+                                                           }
+                                                           
+                                                            if (this._currentStep == 10 ) {
+                                                             $('a[data-value=\"Table\"]').removeClass('active');
+                                                             $('a[data-value=\"Results\"]').trigger('click');
+                                                             $('a[data-value=\"Results\"]').addClass('active');
+                                                            }    
                                                             "
                                                             ))
                                  )
