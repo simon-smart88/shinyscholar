@@ -4,36 +4,68 @@ source(system.file("shiny/common.R", package = "shinyscholar"))
 
 function(input, output, session) {
 
-  
-
   intro_steps <- data.frame(
-    element=c("#workflow",
+    element=c("div[class=\"well\"]",
               "a[data-value=\"How To Use\"]",
               "li:nth-of-type(2)",
-              "#selectSel",
               "#selectHelp",
-              "#comps"),
+              "#selectSel",
+              "#select_queryHelp",
+              "div[class=\"form-group shiny-input-container\"]",
+              "#select_query-run"),
+    
     intro=c("This panel shows all of the possible steps in the analysis",
             "Detailed instructions can be found in the How To Use tab",
             "Click on the items here to move between components",
-            "Choose from the list of modules",
-            "Clicking on the question mark brings up the help page for the component",
-            "safas")
+            "Click on the question mark to view instructions for the component",
+            "Select a module to load the options",
+            "Click on the question mark to view instructions for the component",
+            "Choose from the list of options",
+            "Click the button to run the module")
   )
 
   observeEvent(input$help,{
-    #session$onFlushed(function() {
-    #introjs(session, events = list(onbeforechange = readCallback("switchTabs")))
-               #updateTabsetPanel(session, "tabs", selected="select")
                rintrojs::introjs(session, options = list(steps=intro_steps, "showBullets"="false", "showProgress"="true",
                                                          "showStepNumbers"="false","nextLabel"="Next","prevLabel"="Prev","skipLabel"="Skip"),
-                                 # events = list(onbeforechange = rintrojs::readCallback("switchTabs")))
-                                 events = list(onchange = I("if (this._currentStep == 2 ) {
+                                 events = list(onchange = I("if (this._currentStep == 1 ) {
                                                              $('a[data-value=\"intro\"]').removeClass('active');
+                                                             $('a[data-value=\"How To Use\"]').trigger('click');
+                                                             $('a[data-value=\"How To Use\"]').addClass('active');
+                                                            }
+                                                            
+                                                            if (this._currentStep == 2 ) {
+                                                             $('a[data-value=\"How To Use\"]').removeClass('active');
                                                              $('a[data-value=\"select\"]').trigger('click');
                                                              $('a[data-value=\"select\"]').addClass('active');
-                                                             
-                                 }"))
+                                                            }
+                                                            
+                                                            if (this._currentStep == 3 ) {
+                                                             $('a[data-value=\"select\"]').removeClass('active');
+                                                             $('a[data-value=\"Component Guidance\"]').trigger('click');
+                                                             $('a[data-value=\"Component Guidance\"]').addClass('active');
+                                                            }
+                                                            
+                                                            if (this._currentStep == 4 ) {
+                                                             $('a[data-value=\"Component Guidance\"]').removeClass('active');
+                                                             $('a[data-value=\"Map\"]').trigger('click');
+                                                             $('a[data-value=\"Map\"]').addClass('active');
+                                                             $('input[value=\"select_query\"]').trigger('click');
+                                                            }
+                                                            
+                                                            if (this._currentStep == 5 ) {
+                                                             $('a[data-value=\"Map\"]').removeClass('active');
+                                                             $('a[data-value=\"Module Guidance\"]').trigger('click');
+                                                             $('a[data-value=\"Module Guidance\"]').addClass('active');
+                                                            }
+                                                            
+                                                           if (this._currentStep == 6 ) {
+                                                             $('a[data-value=\"Module Guidance\"]').removeClass('active');
+                                                             $('a[data-value=\"Map\"]').trigger('click');
+                                                             $('a[data-value=\"Map\"]').addClass('active');
+                                                            }
+                                                            
+                                                            "
+                                                            ))
                                  )
     })
   #})
