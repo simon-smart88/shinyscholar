@@ -5,27 +5,38 @@ source(system.file("shiny/common.R", package = "shinyscholar"))
 function(input, output, session) {
 
   
-  output$tab_id <- renderText({
-    htmltools::tagQuery(top_panel)$
-      find("li")#$ # div element with tab-pane class
-      #filter(function(x, i) htmltools::tagGetAttribute(x, "h-ref"))
-      })
-  
+
   intro_steps <- data.frame(
-    element=c("#workflow","#selectSel", "#comps"),
-    intro=c("first thing","then this","more stuff")
+    element=c("#workflow",
+              "a[data-value=\"How To Use\"]",
+              "li:nth-of-type(2)",
+              "#selectSel",
+              "#selectHelp",
+              "#comps"),
+    intro=c("This panel shows all of the possible steps in the analysis",
+            "Detailed instructions can be found in the How To Use tab",
+            "Click on the items here to move between components",
+            "Choose from the list of modules",
+            "Clicking on the question mark brings up the help page for the component",
+            "safas")
   )
 
   observeEvent(input$help,{
-    introjs(session, events = list(onbeforechange = readCallback("switchTabs")))
-           #     #updateTabsetPanel(session, "tabs", selected="select")
-           #     rintrojs::introjs(session, options = list(steps=intro_steps, "showBullets"="false", "showProgress"="true",
-           #                                               "showStepNumbers"="false","nextLabel"="Next","prevLabel"="Prev","skipLabel"="Skip"), 
-           #                       events = list(onbeforechange = rintrojs::readCallback("switchTabs"),
-           #                                     onchange = I(  'if (this._currentStep == 2 ) {
-           #   $("#select").click();
-           # }')))
-  })
+    #session$onFlushed(function() {
+    #introjs(session, events = list(onbeforechange = readCallback("switchTabs")))
+               #updateTabsetPanel(session, "tabs", selected="select")
+               rintrojs::introjs(session, options = list(steps=intro_steps, "showBullets"="false", "showProgress"="true",
+                                                         "showStepNumbers"="false","nextLabel"="Next","prevLabel"="Prev","skipLabel"="Skip"),
+                                 # events = list(onbeforechange = rintrojs::readCallback("switchTabs")))
+                                 events = list(onchange = I("if (this._currentStep == 2 ) {
+                                                             $('a[data-value=\"intro\"]').removeClass('active');
+                                                             $('a[data-value=\"select\"]').trigger('click');
+                                                             $('a[data-value=\"select\"]').addClass('active');
+                                                             
+                                 }"))
+                                 )
+    })
+  #})
 
 
 
