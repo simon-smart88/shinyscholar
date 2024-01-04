@@ -15,7 +15,12 @@ function(input, output, session) {
               "#select_query-run",
               "a[data-value=\"Map\"]",
               "a[data-value=\"Table\"]",
-              "a[data-value=\"Results\"]"
+              "a[data-value=\"Results\"]",
+              "div[id=\"messageLog\"]",
+              "a[data-value=\"Code\"]",
+              "a[data-value=\"template\"]",
+              "a[data-value=\"Save\"]",
+              "a[data-value=\"Load Prior Session\"]"
               ),
     
     intro=c("This panel shows all of the possible steps in the analysis",
@@ -23,12 +28,36 @@ function(input, output, session) {
             "Click on a tab to move between components",
             "Click on the question mark to view instructions for the component",
             "Select a module to load the options",
-            "Click on the question mark to view instructions for the component",
+            "Click on the question mark to view instructions for the module",
             "Choose from the list of options",
             "Click the button to run the module",
-            "Data will be loaded onto the Map...",
-            "and into the Table ...",
-            "or the Results tab depending on the module")
+            "Outputs will be loaded onto the Map...",
+            "or the Table ...",
+            "or the Results tabs depending on the module",
+            "Messages will appear in the log window",
+            "You can view the source code for the module",
+            "You can download code to reproduce your analysis in the Session Code module",
+            "At any point you can download a file which saves the state of the app...",
+            "Allowing you to restore it at a later date"
+            ),
+    
+    position=c("bottom",
+               "bottom",
+               "bottom",
+               "bottom",
+               "bottom",
+               "bottom",
+               "bottom",
+               "bottom",
+               "bottom",
+               "bottom",
+               "bottom",
+               "bottom",
+               "left",
+               "bottom",
+               "left",
+               "left"
+               )
   )
 
   observeEvent(input$help,{
@@ -82,8 +111,38 @@ function(input, output, session) {
                                                              $('a[data-value=\"Results\"]').trigger('click');
                                                              $('a[data-value=\"Results\"]').addClass('active');
                                                             }    
-                                                            "
-                                                            ))
+                                                            
+                                                            if (this._currentStep == 12 ) {
+                                                             $('a[data-value=\"Results\"]').removeClass('active');
+                                                             $('a[data-value=\"Code\"]').trigger('click');
+                                                             $('a[data-value=\"Code\"]').addClass('active');
+                                                            }
+                                                            
+                                                            if (this._currentStep == 13 ) {
+                                                             $('a[data-value=\"Code\"]').removeClass('active');
+                                                             $('a[data-value=\"rep\"]').trigger('click');
+                                                             $('a[data-value=\"rep\"]').addClass('active');
+                                                             $('input[value=\"rep_markdown\"]').trigger('click');
+                                                            }
+                                                            
+                                                           "),
+                                               onbeforechange = I(" if (this._currentStep == 14 ) {
+                                                 $('a[data-value=\"rep\"]').removeClass('active');
+                                                 $('a[data-value=\"select\"]').trigger('click');
+                                                 $('a[data-value=\"select\"]').addClass('active');
+                                                 $('a[data-value=\"Save\"]').trigger('click');
+                                                 $('a[data-value=\"Save\"]').addClass('active');
+                                               }
+                                               
+                                               if (this._currentStep == 15 ) {
+                                                 $('a[data-value=\"select\"]').removeClass('active');
+                                                 $('a[data-value=\"intro\"]').trigger('click');
+                                                 $('a[data-value=\"intro\"]').addClass('active');
+                                                 $('a[data-value=\"Load Prior Session\"]').trigger('click');
+                                                 $('a[data-value=\"Load Prior Session\"]').addClass('active');
+                                               }")
+
+                                               )
                                  )
     })
   #})
