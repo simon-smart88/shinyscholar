@@ -74,7 +74,6 @@ function(input, output, session) {
   
   intro_cookie_value <- reactive({
     cookie_value <- cookies::get_cookie(cookie_name = "intro")
-    print(cookie_value)
     return(cookie_value)
   })
   
