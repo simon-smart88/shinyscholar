@@ -55,7 +55,9 @@ function(input, output, session) {
                                                                                                                      $('a[data-value=\"intro\"]').trigger('click');
                                                                                                                      $('a[data-value=\"intro\"]').addClass('active');"),
                       c("a[data-value=\"Load Prior Session\"]", "you can upload the file to restore the app", "left","$('a[data-value=\"Load Prior Session\"]').trigger('click');
-                                                                                                                     $('a[data-value=\"Load Prior Session\"]').addClass('active');")
+                                                                                                                     $('a[data-value=\"Load Prior Session\"]').addClass('active');"),
+                      c(NA, "You are ready to go!", NA, "$('a[data-value=\"About\"]').trigger('click');
+                                                         $('a[data-value=\"About\"]').addClass('active');")
   )
   #transpose and add columns names
   steps <- as.data.frame(t(steps))
@@ -72,25 +74,23 @@ function(input, output, session) {
   
   intro_cookie_value <- reactive({
     cookie_value <- cookies::get_cookie(cookie_name = "intro")
+    print(cookie_value)
     return(cookie_value)
   })
   
   #launch intro if the intro cookie is empty
   #prevent running in test mode as the popup blocks other interactions
-  if (isFALSE(getOption("shiny.testmode"))) {
   observeEvent(
     once = TRUE,
     intro_cookie_value,
     {
-      if (is.null(intro_cookie_value())) {
+      if (is.null(intro_cookie_value()) & (isTRUE(getOption("shiny.testmode")) == FALSE)) {
         rintrojs::introjs(session, options = list(steps = steps, "showBullets" = "true", "showProgress" = "true",
                                                   "showStepNumbers" = "false", "nextLabel" = "Next", "prevLabel" = "Prev", "skipLabel" = "Skip"),
                           events = list(onbeforechange = I(intro_js)))
         cookies::set_cookie(cookie_name = "intro",  cookie_value = TRUE, expiration = 365)
         }
-      
     })
-  }
   
   #launch intro if the button is clicked
   observeEvent(input$intro,{
