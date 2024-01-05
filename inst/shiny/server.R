@@ -4,11 +4,12 @@ source(system.file("shiny/common.R", package = "shinyscholar"))
 
 function(input, output, session) {
 
-  steps <- data.frame(c("div[class=\"well\"]", "This panel shows all of the possible steps in the analysis", "bottom", NA),
+  steps <- data.frame(c(NA, "Welcome to Shinyscholar! This tour will show you various features of the application to help get you started", NA, NA),
+                      c("div[class=\"well\"]", "This panel shows all of the possible steps in the analysis", "bottom", NA),
                       c("a[data-value=\"How To Use\"]", "Detailed instructions can be found in the How To Use tab", "bottom","$('a[data-value=\"intro\"]').removeClass('active');
                                                                                                                             $('a[data-value=\"How To Use\"]').trigger('click');
                                                                                                                             $('a[data-value=\"How To Use\"]').addClass('active');"),
-                      c("a[data-value=\"select\"]", "Click on a tab to move between components", "bottom", "$('a[data-value=\"How To Use\"]').removeClass('active');
+                      c("a[data-value=\"select\"]", "Click on the tabs to move between components", "bottom", "$('a[data-value=\"How To Use\"]').removeClass('active');
                                                                                                           $('a[data-value=\"select\"]').trigger('click');
                                                                                                           $('a[data-value=\"select\"]').addClass('active');"),
                       c("#selectHelp", "Click on the question mark to view instructions for the component", "bottom", "$('a[data-value=\"select\"]').removeClass('active');
@@ -26,7 +27,7 @@ function(input, output, session) {
                                                                                                                        $('a[data-value=\"Map\"]').addClass('active');"),
                       c("#select_query-run", "Click the button to run the module", "bottom", NA),
                       c("a[data-value=\"Map\"]", "Outputs will be loaded onto the Map...", "bottom", NA),
-                      c("a[data-value=\"Table\"]", "or the Table ...", "bottom", "$('a[data-value=\"Map\"]').removeClass('active');
+                      c("a[data-value=\"Table\"]", "or the Table...", "bottom", "$('a[data-value=\"Map\"]').removeClass('active');
                                                                                $('a[data-value=\"Table\"]').trigger('click');
                                                                                $('a[data-value=\"Table\"]').addClass('active');"),
                       c("a[data-value=\"Results\"]", "or the Results tabs depending on the module", "bottom", "$('a[data-value=\"Table\"]').removeClass('active');
@@ -40,21 +41,19 @@ function(input, output, session) {
                                                                                                                                              $('a[data-value=\"rep\"]').trigger('click');
                                                                                                                                              $('a[data-value=\"rep\"]').addClass('active');
                                                                                                                                              $('input[value=\"rep_markdown\"]').trigger('click');"),
-                      c("a[data-value=\"Save\"]", "At any point you can download a file which saves the state of the app...", "left","$('a[data-value=\"rep\"]').removeClass('active');
-                                                                                                                                     $('a[data-value=\"select\"]').trigger('click');
-                                                                                                                                     $('a[data-value=\"select\"]').addClass('active');
-                                                                                                                                     $('a[data-value=\"Save\"]').trigger('click');
-                                                                                                                                     $('a[data-value=\"Save\"]').addClass('active');"),
-                      c("a[data-value=\"Load Prior Session\"]", "Allowing you to restore it at a later date", "left", "$('a[data-value=\"select\"]').removeClass('active');
+                      c("a[data-value=\"select\"]", "When you are inside an analysis component...","bottom", "$('a[data-value=\"rep\"]').removeClass('active');
+                                                                                                             $('a[data-value=\"select\"]').trigger('click');
+                                                                                                             $('a[data-value=\"select\"]').addClass('active');"),
+                      c("a[data-value=\"Save\"]", "you can download a file which saves the state of the app", "left", "$('a[data-value=\"Save\"]').trigger('click');
+                                                                                                                              $('a[data-value=\"Save\"]').addClass('active');"),
+                      c("a[data-value=\"intro\"]", "Next time you visit...", "bottom", "$('a[data-value=\"select\"]').removeClass('active');
                                                                                                                      $('a[data-value=\"intro\"]').trigger('click');
-                                                                                                                     $('a[data-value=\"intro\"]').addClass('active');
-                                                                                                                     $('a[data-value=\"Load Prior Session\"]').trigger('click');
+                                                                                                                     $('a[data-value=\"intro\"]').addClass('active');"),
+                      c("a[data-value=\"Load Prior Session\"]", "you can upload the file to restore the app", "left","$('a[data-value=\"Load Prior Session\"]').trigger('click');
                                                                                                                      $('a[data-value=\"Load Prior Session\"]').addClass('active');")
   )
   steps <- as.data.frame(t(steps))
-  
-  colnames(steps) <- c("element","intro","position","javascript")
-  rownames(steps) <- 1:nrow(steps)
+  colnames(steps) <- c("element", "intro", "position", "javascript")
   
   js <- ""
   for (r in 1:nrow(steps)){
@@ -64,8 +63,8 @@ function(input, output, session) {
   }
   js <- gsub("[\r\n]", "", js)
   
-  observeEvent(input$help,{
-               rintrojs::introjs(session, options = list(steps = steps, "showBullets" = "false", "showProgress" = "true",
+  observeEvent(input$intro,{
+               rintrojs::introjs(session, options = list(steps = steps, "showBullets" = "true", "showProgress" = "true",
                                                          "showStepNumbers" = "false", "nextLabel" = "Next", "prevLabel" = "Prev", "skipLabel" = "Skip"),
                                  events = list(onbeforechange = I(js))
                )})
