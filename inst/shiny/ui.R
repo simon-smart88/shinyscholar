@@ -210,8 +210,8 @@ tagList(
             id = 'introTabs',
             tabPanel(
               'About',
-              includeMarkdown("Rmd/text_about.Rmd"),
-              actionButton("help","HELP!!")
+              br(),actionButton("intro", "Start tour"),
+              includeMarkdown("Rmd/text_about.Rmd")
             ),
             tabPanel(
               'Team',
