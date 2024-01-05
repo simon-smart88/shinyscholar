@@ -4,6 +4,11 @@ source(system.file("shiny/common.R", package = "shinyscholar"))
 
 function(input, output, session) {
 
+  ########################## #
+  # INTRODUCTION ####
+  ########################## #
+  
+  #Steps in the introduction - the element to tag, the message to display, position of the tooltip, any javascript needed to move between tabs / click buttons
   steps <- data.frame(c(NA, "Welcome to Shinyscholar! This tour will show you various features of the application to help get you started", NA, NA),
                       c("div[class=\"well\"]", "This panel shows all of the possible steps in the analysis", "bottom", NA),
                       c("a[data-value=\"How To Use\"]", "Detailed instructions can be found in the How To Use tab", "bottom","$('a[data-value=\"intro\"]').removeClass('active');
@@ -52,23 +57,25 @@ function(input, output, session) {
                       c("a[data-value=\"Load Prior Session\"]", "you can upload the file to restore the app", "left","$('a[data-value=\"Load Prior Session\"]').trigger('click');
                                                                                                                      $('a[data-value=\"Load Prior Session\"]').addClass('active');")
   )
+  #transpose and add columns names
   steps <- as.data.frame(t(steps))
   colnames(steps) <- c("element", "intro", "position", "javascript")
   
-  js <- ""
+  #extract the javascript into one string
+  intro_js <- ""
   for (r in 1:nrow(steps)){
     if (!is.na(steps$javascript[r])){
-      js <- paste(js, glue::glue("if (this._currentStep == {r-1} ) {{ {steps$javascript[r]} }}"))
+      intro_js <- paste(intro_js, glue::glue("if (this._currentStep == {r-1} ) {{ {steps$javascript[r]} }}"))
     }
   }
-  js <- gsub("[\r\n]", "", js)
-  
+  intro_js <- gsub("[\r\n]", "", intro_js)
   
   intro_cookie_value <- reactive({
     cookie_value <- cookies::get_cookie(cookie_name = "intro")
     return(cookie_value)
   })
   
+  #launch intro if the intro cookie is empty
   #prevent running in test mode as the popup blocks other interactions
   if (isFALSE(getOption("shiny.testmode"))) {
   observeEvent(
@@ -78,17 +85,18 @@ function(input, output, session) {
       if (is.null(intro_cookie_value())) {
         rintrojs::introjs(session, options = list(steps = steps, "showBullets" = "true", "showProgress" = "true",
                                                   "showStepNumbers" = "false", "nextLabel" = "Next", "prevLabel" = "Prev", "skipLabel" = "Skip"),
-                          events = list(onbeforechange = I(js)))
+                          events = list(onbeforechange = I(intro_js)))
         cookies::set_cookie(cookie_name = "intro",  cookie_value = TRUE, expiration = 365)
         }
       
     })
   }
   
+  #launch intro if the button is clicked
   observeEvent(input$intro,{
     rintrojs::introjs(session, options = list(steps = steps, "showBullets" = "true", "showProgress" = "true",
                                               "showStepNumbers" = "false", "nextLabel" = "Next", "prevLabel" = "Prev", "skipLabel" = "Skip"),
-                      events = list(onbeforechange = I(js))
+                      events = list(onbeforechange = I(intro_js))
                )})
   
   
