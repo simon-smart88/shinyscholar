@@ -37,7 +37,7 @@ function(input, output, session) {
                       c("a[data-value=\"Code\"]", "You can view the source code for the module", "left","$('a[data-value=\"Results\"]').removeClass('active');
                                                                                                        $('a[data-value=\"Code\"]').trigger('click');
                                                                                                        $('a[data-value=\"Code\"]').addClass('active');"),
-                      c("a[data-value=\"template\"]", "You can download code to reproduce your analysis in the Session Code module", "bottom","$('a[data-value=\"Code\"]').removeClass('active');
+                      c("a[data-value=\"rep\"]", "You can download code to reproduce your analysis in the Session Code module", "bottom","$('a[data-value=\"Code\"]').removeClass('active');
                                                                                                                                              $('a[data-value=\"rep\"]').trigger('click');
                                                                                                                                              $('a[data-value=\"rep\"]').addClass('active');
                                                                                                                                              $('input[value=\"rep_markdown\"]').trigger('click');"),
@@ -63,10 +63,32 @@ function(input, output, session) {
   }
   js <- gsub("[\r\n]", "", js)
   
+  
+  intro_cookie_value <- reactive({
+    cookie_value <- cookies::get_cookie(cookie_name = "intro")
+    return(cookie_value)
+  })
+  
+  #prevent running in test mode as the popup blocks other interactions
+  if (isFALSE(getOption("shiny.testmode"))) {
+  observeEvent(
+    once = TRUE,
+    intro_cookie_value,
+    {
+      if (is.null(intro_cookie_value())) {
+        rintrojs::introjs(session, options = list(steps = steps, "showBullets" = "true", "showProgress" = "true",
+                                                  "showStepNumbers" = "false", "nextLabel" = "Next", "prevLabel" = "Prev", "skipLabel" = "Skip"),
+                          events = list(onbeforechange = I(js)))
+        cookies::set_cookie(cookie_name = "intro",  cookie_value = TRUE, expiration = 365)
+        }
+      
+    })
+  }
+  
   observeEvent(input$intro,{
-               rintrojs::introjs(session, options = list(steps = steps, "showBullets" = "true", "showProgress" = "true",
-                                                         "showStepNumbers" = "false", "nextLabel" = "Next", "prevLabel" = "Prev", "skipLabel" = "Skip"),
-                                 events = list(onbeforechange = I(js))
+    rintrojs::introjs(session, options = list(steps = steps, "showBullets" = "true", "showProgress" = "true",
+                                              "showStepNumbers" = "false", "nextLabel" = "Next", "prevLabel" = "Prev", "skipLabel" = "Skip"),
+                      events = list(onbeforechange = I(js))
                )})
   
   
