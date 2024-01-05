@@ -4,151 +4,73 @@ source(system.file("shiny/common.R", package = "shinyscholar"))
 
 function(input, output, session) {
 
-  intro_steps <- data.frame(
-    element=c("div[class=\"well\"]",
-              "a[data-value=\"How To Use\"]",
-              "a[data-value=\"select\"]",
-              "#selectHelp",
-              "#selectSel",
-              "#select_queryHelp",
-              "div[class=\"form-group shiny-input-container\"]",
-              "#select_query-run",
-              "a[data-value=\"Map\"]",
-              "a[data-value=\"Table\"]",
-              "a[data-value=\"Results\"]",
-              "div[id=\"messageLog\"]",
-              "a[data-value=\"Code\"]",
-              "a[data-value=\"template\"]",
-              "a[data-value=\"Save\"]",
-              "a[data-value=\"Load Prior Session\"]"
-              ),
-    
-    intro=c("This panel shows all of the possible steps in the analysis",
-            "Detailed instructions can be found in the How To Use tab",
-            "Click on a tab to move between components",
-            "Click on the question mark to view instructions for the component",
-            "Select a module to load the options",
-            "Click on the question mark to view instructions for the module",
-            "Choose from the list of options",
-            "Click the button to run the module",
-            "Outputs will be loaded onto the Map...",
-            "or the Table ...",
-            "or the Results tabs depending on the module",
-            "Messages will appear in the log window",
-            "You can view the source code for the module",
-            "You can download code to reproduce your analysis in the Session Code module",
-            "At any point you can download a file which saves the state of the app...",
-            "Allowing you to restore it at a later date"
-            ),
-    
-    position=c("bottom",
-               "bottom",
-               "bottom",
-               "bottom",
-               "bottom",
-               "bottom",
-               "bottom",
-               "bottom",
-               "bottom",
-               "bottom",
-               "bottom",
-               "bottom",
-               "left",
-               "bottom",
-               "left",
-               "left"
-               )
+  steps <- data.frame(c("div[class=\"well\"]", "This panel shows all of the possible steps in the analysis", "bottom", NA),
+                      c("a[data-value=\"How To Use\"]", "Detailed instructions can be found in the How To Use tab", "bottom","$('a[data-value=\"intro\"]').removeClass('active');
+                                                                                                                            $('a[data-value=\"How To Use\"]').trigger('click');
+                                                                                                                            $('a[data-value=\"How To Use\"]').addClass('active');"),
+                      c("a[data-value=\"select\"]", "Click on a tab to move between components", "bottom", "$('a[data-value=\"How To Use\"]').removeClass('active');
+                                                                                                          $('a[data-value=\"select\"]').trigger('click');
+                                                                                                          $('a[data-value=\"select\"]').addClass('active');"),
+                      c("#selectHelp", "Click on the question mark to view instructions for the component", "bottom", "$('a[data-value=\"select\"]').removeClass('active');
+                                                                                                                     $('a[data-value=\"Component Guidance\"]').trigger('click');
+                                                                                                                     $('a[data-value=\"Component Guidance\"]').addClass('active');"),
+                      c("#selectSel", "Select a module to load the options", "bottom", "$('a[data-value=\"Component Guidance\"]').removeClass('active');
+                                                                                      $('a[data-value=\"Map\"]').trigger('click');
+                                                                                      $('a[data-value=\"Map\"]').addClass('active');
+                                                                                      $('input[value=\"select_query\"]').trigger('click');"),
+                      c("#select_queryHelp", "Click on the question mark to view instructions for the module", "bottom", "$('a[data-value=\"Map\"]').removeClass('active');
+                                                                                                                        $('a[data-value=\"Module Guidance\"]').trigger('click');
+                                                                                                                        $('a[data-value=\"Module Guidance\"]').addClass('active');"),
+                      c("div[class=\"form-group shiny-input-container\"]", "Choose from the list of options", "bottom", "$('a[data-value=\"Module Guidance\"]').removeClass('active');
+                                                                                                                       $('a[data-value=\"Map\"]').trigger('click');
+                                                                                                                       $('a[data-value=\"Map\"]').addClass('active');"),
+                      c("#select_query-run", "Click the button to run the module", "bottom", NA),
+                      c("a[data-value=\"Map\"]", "Outputs will be loaded onto the Map...", "bottom", NA),
+                      c("a[data-value=\"Table\"]", "or the Table ...", "bottom", "$('a[data-value=\"Map\"]').removeClass('active');
+                                                                               $('a[data-value=\"Table\"]').trigger('click');
+                                                                               $('a[data-value=\"Table\"]').addClass('active');"),
+                      c("a[data-value=\"Results\"]", "or the Results tabs depending on the module", "bottom", "$('a[data-value=\"Table\"]').removeClass('active');
+                                                                                                             $('a[data-value=\"Results\"]').trigger('click');
+                                                                                                             $('a[data-value=\"Results\"]').addClass('active');"),
+                      c("div[id=\"messageLog\"]", "Messages will appear in the log window", "bottom", NA),
+                      c("a[data-value=\"Code\"]", "You can view the source code for the module", "left","$('a[data-value=\"Results\"]').removeClass('active');
+                                                                                                       $('a[data-value=\"Code\"]').trigger('click');
+                                                                                                       $('a[data-value=\"Code\"]').addClass('active');"),
+                      c("a[data-value=\"template\"]", "You can download code to reproduce your analysis in the Session Code module", "bottom","$('a[data-value=\"Code\"]').removeClass('active');
+                                                                                                                                             $('a[data-value=\"rep\"]').trigger('click');
+                                                                                                                                             $('a[data-value=\"rep\"]').addClass('active');
+                                                                                                                                             $('input[value=\"rep_markdown\"]').trigger('click');"),
+                      c("a[data-value=\"Save\"]", "At any point you can download a file which saves the state of the app...", "left","$('a[data-value=\"rep\"]').removeClass('active');
+                                                                                                                                     $('a[data-value=\"select\"]').trigger('click');
+                                                                                                                                     $('a[data-value=\"select\"]').addClass('active');
+                                                                                                                                     $('a[data-value=\"Save\"]').trigger('click');
+                                                                                                                                     $('a[data-value=\"Save\"]').addClass('active');"),
+                      c("a[data-value=\"Load Prior Session\"]", "Allowing you to restore it at a later date", "left", "$('a[data-value=\"select\"]').removeClass('active');
+                                                                                                                     $('a[data-value=\"intro\"]').trigger('click');
+                                                                                                                     $('a[data-value=\"intro\"]').addClass('active');
+                                                                                                                     $('a[data-value=\"Load Prior Session\"]').trigger('click');
+                                                                                                                     $('a[data-value=\"Load Prior Session\"]').addClass('active');")
   )
-
+  steps <- as.data.frame(t(steps))
+  
+  colnames(steps) <- c("element","intro","position","javascript")
+  rownames(steps) <- 1:nrow(steps)
+  
+  js <- ""
+  for (r in 1:nrow(steps)){
+    if (!is.na(steps$javascript[r])){
+      js <- paste(js, glue::glue("if (this._currentStep == {r-1} ) {{ {steps$javascript[r]} }}"))
+    }
+  }
+  js <- gsub("[\r\n]", "", js)
+  
   observeEvent(input$help,{
-               rintrojs::introjs(session, options = list(steps=intro_steps, "showBullets"="false", "showProgress"="true",
-                                                         "showStepNumbers"="false","nextLabel"="Next","prevLabel"="Prev","skipLabel"="Skip"),
-                                 events = list(onchange = I("if (this._currentStep == 1 ) {
-                                                             $('a[data-value=\"intro\"]').removeClass('active');
-                                                             $('a[data-value=\"How To Use\"]').trigger('click');
-                                                             $('a[data-value=\"How To Use\"]').addClass('active');
-                                                            }
-                                                            
-                                                            if (this._currentStep == 2 ) {
-                                                             $('a[data-value=\"How To Use\"]').removeClass('active');
-                                                             $('a[data-value=\"select\"]').trigger('click');
-                                                             $('a[data-value=\"select\"]').addClass('active');
-                                                            }
-                                                            
-                                                            if (this._currentStep == 3 ) {
-                                                             $('a[data-value=\"select\"]').removeClass('active');
-                                                             $('a[data-value=\"Component Guidance\"]').trigger('click');
-                                                             $('a[data-value=\"Component Guidance\"]').addClass('active');
-                                                            }
-                                                            
-                                                            if (this._currentStep == 4 ) {
-                                                             $('a[data-value=\"Component Guidance\"]').removeClass('active');
-                                                             $('a[data-value=\"Map\"]').trigger('click');
-                                                             $('a[data-value=\"Map\"]').addClass('active');
-                                                             $('input[value=\"select_query\"]').trigger('click');
-                                                            }
-                                                            
-                                                            if (this._currentStep == 5 ) {
-                                                             $('a[data-value=\"Map\"]').removeClass('active');
-                                                             $('a[data-value=\"Module Guidance\"]').trigger('click');
-                                                             $('a[data-value=\"Module Guidance\"]').addClass('active');
-                                                            }
-                                                            
-                                                           if (this._currentStep == 6 ) {
-                                                             $('a[data-value=\"Module Guidance\"]').removeClass('active');
-                                                             $('a[data-value=\"Map\"]').trigger('click');
-                                                             $('a[data-value=\"Map\"]').addClass('active');
-                                                           }
-                                                            
-                                                           if (this._currentStep == 9 ) {
-                                                             $('a[data-value=\"Map\"]').removeClass('active');
-                                                             $('a[data-value=\"Table\"]').trigger('click');
-                                                             $('a[data-value=\"Table\"]').addClass('active');
-                                                           }
-                                                           
-                                                            if (this._currentStep == 10 ) {
-                                                             $('a[data-value=\"Table\"]').removeClass('active');
-                                                             $('a[data-value=\"Results\"]').trigger('click');
-                                                             $('a[data-value=\"Results\"]').addClass('active');
-                                                            }    
-                                                            
-                                                            if (this._currentStep == 12 ) {
-                                                             $('a[data-value=\"Results\"]').removeClass('active');
-                                                             $('a[data-value=\"Code\"]').trigger('click');
-                                                             $('a[data-value=\"Code\"]').addClass('active');
-                                                            }
-                                                            
-                                                            if (this._currentStep == 13 ) {
-                                                             $('a[data-value=\"Code\"]').removeClass('active');
-                                                             $('a[data-value=\"rep\"]').trigger('click');
-                                                             $('a[data-value=\"rep\"]').addClass('active');
-                                                             $('input[value=\"rep_markdown\"]').trigger('click');
-                                                            }
-                                                            
-                                                           "),
-                                               onbeforechange = I(" if (this._currentStep == 14 ) {
-                                                 $('a[data-value=\"rep\"]').removeClass('active');
-                                                 $('a[data-value=\"select\"]').trigger('click');
-                                                 $('a[data-value=\"select\"]').addClass('active');
-                                                 $('a[data-value=\"Save\"]').trigger('click');
-                                                 $('a[data-value=\"Save\"]').addClass('active');
-                                               }
-                                               
-                                               if (this._currentStep == 15 ) {
-                                                 $('a[data-value=\"select\"]').removeClass('active');
-                                                 $('a[data-value=\"intro\"]').trigger('click');
-                                                 $('a[data-value=\"intro\"]').addClass('active');
-                                                 $('a[data-value=\"Load Prior Session\"]').trigger('click');
-                                                 $('a[data-value=\"Load Prior Session\"]').addClass('active');
-                                               }")
-
-                                               )
-                                 )
-    })
-  #})
-
-
-
+               rintrojs::introjs(session, options = list(steps = steps, "showBullets" = "false", "showProgress" = "true",
+                                                         "showStepNumbers" = "false", "nextLabel" = "Next", "prevLabel" = "Prev", "skipLabel" = "Skip"),
+                                 events = list(onbeforechange = I(js))
+               )})
+  
+  
   ########################## #
   # REACTIVE VALUES LISTS ####
   ########################## #
