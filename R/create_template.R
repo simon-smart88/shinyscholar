@@ -129,6 +129,8 @@ server_params <- c(
        include_map = include_map,
        include_table = include_table,
        include_code = include_code,
+       first_component = components$component[1],
+       first_module = glue::glue("{modules$component[1]}_{modules$module[1]}"),
        added_component_list = printVecAsis(added_component_list)
        )
 )

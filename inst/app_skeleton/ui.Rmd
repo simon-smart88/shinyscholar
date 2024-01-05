@@ -2,7 +2,8 @@
 resourcePath <- system.file("shiny", "www", package = "{{app_library}}")
 shiny::addResourcePath("resources", resourcePath)
 
-tagList(
+add_cookie_handlers(tagList(
+  rintrojs::introjsUI(),
   shinyjs::useShinyjs(),
   shinyjs::extendShinyjs(
     script = file.path("resources", "js", "shinyjs-funcs.js"),
@@ -20,6 +21,7 @@ tagList(
                 style = "margin-top: -15px"),
     windowTitle = "{{app_library}}",
     tabPanel("Intro", value = 'intro'),
+    tabPanel("Reproduce", value = 'rep'),
     navbarMenu("Support", icon = icon("life-ring"),
                HTML('<a href="https://github.com/simon-smart88/shinyscholar/issues" target="_blank">GitHub Issues</a>'),
                HTML('<a href="mailto: simon.smart@cantab.net" target="_blank">Send Email</a>')),
@@ -173,6 +175,7 @@ tagList(
             id = 'introTabs',
             tabPanel(
               'About',
+              br(),actionButton("intro", "Start tour"),
               includeMarkdown("Rmd/text_about.Rmd")
             ),
             tabPanel(
@@ -198,7 +201,7 @@ tagList(
       )
     )
   )
-)
+))
 
 ```
 
