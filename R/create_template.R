@@ -75,6 +75,11 @@ if (any(modules$map) == FALSE & include_map == TRUE){
   return()
 }
 
+if (any(modules$result) == FALSE){
+    logger %>% writeLog(type = "error", "At least one module must return results")
+    return()
+  }
+
 if (any(common_objects %in% c("meta", "logger", "state", "poly"))){
   conflicts <- common_objects[common_objects %in% c("meta", "logger", "state", "poly")]
   conflicts <- paste(conflicts, collapse=',')
