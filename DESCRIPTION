@@ -16,7 +16,9 @@ Depends:
     R6,
     gargoyle,
     leaflet.extras (>= 1.0.0),
-    shinybusy
+    shinybusy,
+    cookies,
+    rintrojs
 Imports:
     devtools,
     dplyr (>= 1.0.2),

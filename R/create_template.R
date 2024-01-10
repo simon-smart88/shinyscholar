@@ -75,6 +75,11 @@ if (any(modules$map) == FALSE & include_map == TRUE){
   return()
 }
 
+if (any(modules$result) == FALSE){
+    logger %>% writeLog(type = "error", "At least one module must return results")
+    return()
+  }
+
 if (any(common_objects %in% c("meta", "logger", "state", "poly"))){
   conflicts <- common_objects[common_objects %in% c("meta", "logger", "state", "poly")]
   conflicts <- paste(conflicts, collapse=',')
@@ -130,6 +135,8 @@ server_params <- c(
        include_map = include_map,
        include_table = include_table,
        include_code = include_code,
+       first_component = components$component[1],
+       first_module = glue::glue("{modules$component[1]}_{modules$module[1]}"),
        added_component_list = printVecAsis(added_component_list)
        )
 )

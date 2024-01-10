@@ -84,7 +84,6 @@ module_server <- function(input, output, session) {
   if (exists(glue::glue("{module}_module_map"))){
   map <- leafletProxy("map")
   do.call(glue::glue("{module}_module_map"), list(map, common))}
-  
 ```
 ```{r}
   #main server function
