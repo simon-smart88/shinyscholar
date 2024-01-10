@@ -1,7 +1,7 @@
 resourcePath <- system.file("shiny", "www", package = "shinyscholar")
 shiny::addResourcePath("resources", resourcePath)
 
-add_cookie_handlers(tagList(
+cookies::add_cookie_handlers(tagList(
   rintrojs::introjsUI(),
   shinyjs::useShinyjs(),
   shinyjs::extendShinyjs(
