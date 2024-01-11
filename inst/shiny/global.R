@@ -17,7 +17,15 @@ COMPONENTS <- c("select", "plot", "rep", "template")
 COMPONENT_MODULES <- list()
 
 # Load base modules
-base_module_configs <- paste0("modules/",list.files(system.file("shiny/modules", package="shinyscholar"), pattern=".yml"))
+base_module_configs <- c(
+  "modules/select_query.yml",
+  "modules/select_user.yml",
+  "modules/plot_hist.yml",
+  "modules/plot_scatter.yml",
+  "modules/rep_markdown.yml",
+  "modules/rep_refPackages.yml",
+  "modules/template_create.yml"
+)
 
 # Load user-defined modules
 user_module_configs <- getOption("user_module_configs")
