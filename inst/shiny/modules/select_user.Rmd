@@ -3,7 +3,7 @@ Uploads the user-specified raster image. If the raster is not in the current wor
 ```
 
 ```{r, echo = {{select_user_knit}}, include = {{select_user_knit}}}
-raster_directory <- ''
+raster_directory <- ""
 ras <- select_user(file.path(raster_directory, "{{user_path}}"))
 raster_name <- "{{user_name}}"
 

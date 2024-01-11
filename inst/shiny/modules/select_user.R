@@ -26,7 +26,7 @@ select_user_module_server <- function(id, common) {
     }
     # FUNCTION CALL ####
     ras <- select_user(input$ras$datapath)
-    # LOAD INTO SPP ####
+    # LOAD INTO COMMON ####
     common$ras <- ras
     # METADATA ####
     common$meta$ras$name <- input$name
@@ -47,16 +47,9 @@ select_user_module_server <- function(id, common) {
 })
 }
 
-select_user_module_result <- function(id) {
-  ns <- NS(id)
-
-  # Result UI
-  verbatimTextOutput(ns("result"))
-}
-
 select_user_module_map <- function(map, common) {
-  observeEvent(gargoyle::watch("select_user"), {
-    req(common$meta$user$used == TRUE)
+  gargoyle::on("select_user", {
+    req(common$ras)
     ex <- as.vector(terra::ext(common$ras))
     pal <- colorBin("YlOrRd", domain = values(common$ras), bins = 9, na.color = "#00000000")
     raster_name <- common$meta$ras$name
@@ -64,7 +57,7 @@ select_user_module_map <- function(map, common) {
       clearGroup(raster_name) %>%
       addRasterImage(raster::raster(common$ras), colors = pal, group = raster_name) %>%
       fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-      addLegend(position = "bottomright", pal = pal, values = values(common$ras),
+      addLegend(position = "bottomright", pal = pal, values = terra::values(common$ras),
                 group = raster_name, title = raster_name) %>%
       addLayersControl(overlayGroups = raster_name, options = layersControlOptions(collapsed = FALSE))
   })
