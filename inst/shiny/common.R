@@ -6,6 +6,7 @@ common_class <- R6::R6Class(
     hist = NULL,
     scat = NULL,
     meta = NULL,
+    state = NULL,
     poly = NULL,
     logger = NULL
   )
