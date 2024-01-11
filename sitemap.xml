@@ -16,6 +16,9 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
+    <loc>/reference/close_loading_modal.html</loc>
+  </url>
+  <url>
     <loc>/reference/create_module.html</loc>
   </url>
   <url>
@@ -50,6 +53,9 @@
   </url>
   <url>
     <loc>/reference/shinyscholar-package.html</loc>
+  </url>
+  <url>
+    <loc>/reference/show_loading_modal.html</loc>
   </url>
   <url>
     <loc>/reference/spurious.html</loc>
