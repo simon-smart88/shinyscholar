@@ -1,6 +1,6 @@
-# shinyscholar (v0.1.0)
+# shinyscholar (v0.1.1)
 
-<img src="https://github.com/simon-smart88/shinyscholar/blob/master/inst/shiny/www/logo.png" width="259" height="300" align="right" >
+<img src="images/logo.png" width="259" height="300" align="right" >
 
 Shinyscholar is a basic application written in R that can be used as a template to create complex applications that are modular, meet academic standards of attribution and are reproducible outside of the application. By using *shinyscholar*, to create a template application, developers will be encouraged to produce applications that are maintainable and run reliably without having to learn software development best-practices from scratch. *shinyscholar* was [forked](https://github.com/wallaceEcoMod/wallace/tree/51a3ebe10ffd797fc36ad2d2cf8245b014d11b41) from `{wallace}` v2.0.5 ([CRAN](https://cran.r-project.org/package=wallace), [website](https://wallaceecomod.github.io/wallace/index.html)) a modular platform for reproducible modelling of species distributions. Specifically, it harnesses the higher-level structure and core attributes of Wallace but removes its discipline-specific features, yielding a generic template for developers to make their own applications. We are very grateful to the contributors to `{wallace}` and the features retained from it and the new features added in *shinyscholar* are described in `NEWS`. 
 
@@ -82,7 +82,7 @@ The `*_module_server` function contains an `observeEvent()` which is run when th
 * In the *metadata* block, store any relevant input metadata which is required to reproduce the function call in the `common$meta` object.
 * In the *trigger* block, `gargoyle::trigger()` is called which can be used to trigger actions elsewhere in the module or app using `gargoyle::watch()`. This should not need editing.
 * In the *result* block, use the relevant `input` values or `common` objects to produce `render*` objects which will be passed to the `_module_result` function.
-* In the *return* block, the current `input` values can be stored as a `list` inside the `save` function e.g. `select_date = input$date` when the app is saved and then retrieved when the app is loaded using various `updateInput` functions inside the `load` function e.g. `updateSelectInput(session, "date", selected = state$select_date`).
+* In the *return* block, the current `input` values can be stored as a `list` inside the `save` function e.g. `select_date = input$date` when the app is saved and then retrieved when the app is loaded using various `updateInput` functions inside the `load` function e.g. `updateSelectInput(session, "date", selected = state$select_date`). This can be done automatically by calling `save_and_load()` either for all the modules or a single module.
 
 The `*_module_result` function contains the `*Output()` functions which would normally be included in the UI function. As in the `*_module_ui` function, the object ids need wrapping inside `ns()`.
 

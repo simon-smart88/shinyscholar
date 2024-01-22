@@ -18,9 +18,9 @@ create_template(
 )
 }
 \arguments{
-\item{path}{character. The path to where the app should be created}
+\item{path}{character. Path to where the app should be created}
 
-\item{name}{character. The name of the app which will be used as the package name}
+\item{name}{character. Name of the app which will be used as the package name}
 
 \item{include_map}{logical. Whether to include a leaflet map}
 
@@ -39,7 +39,7 @@ markdown and result functionality. The component and module columns are used to 
 names for the modules. The long_component and long_module columns are used to generate UI and
 so should be formatted appropriately.}
 
-\item{author}{character. The name of the author(s)}
+\item{author}{character. Name of the author(s)}
 
 \item{install}{logical. Whether to install the package}
 
@@ -48,7 +48,7 @@ Window. Insert the logger reactive list here for running in
 shiny, otherwise leave the default NULL}
 }
 \description{
-This function creates a skeleton app containing empty modules
+Creates a skeleton app containing empty modules
 }
 \examples{
 \dontrun{

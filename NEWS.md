@@ -1,4 +1,4 @@
-shinyscholar 1.0.0
+shinyscholar 0.1.0
 =============
 - The template has been created mainly through the removal of functionality from `Wallace` and the addition of basic functionality to demonstrate how modules can be used. 
 - These are the key features which have been retained:
@@ -16,3 +16,8 @@ shinyscholar 1.0.0
 6. Added a new function `create_template()` which can be used to create a skeleton app.
 7. Added a Dockerfile which can be used to run the app on a shiny-server.
 8. Added `show_loading_modal()` which uses `{shinybusy}` to display a modal whilst slow functions are running.
+
+shinyscholar 0.1.1
+=============
+- Added `save_and_load()` to automate adding the lines to modules which facilitate saving and loading of input values.
+- Added an introduction using `{rintrojs}` which is only shown to users on their first visit.
