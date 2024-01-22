@@ -18,9 +18,9 @@ tidy_purl <- function(params){
 }
 
 #' @title create_template
-#' @description This function creates a skeleton app containing empty modules
-#' @param path character. The path to where the app should be created
-#' @param name character. The name of the app which will be used as the package name
+#' @description Creates a skeleton app containing empty modules
+#' @param path character. Path to where the app should be created
+#' @param name character. Name of the app which will be used as the package name
 #' @param include_map logical. Whether to include a leaflet map
 #' @param include_table logical. Whether to include a table tab
 #' @param include_code logical. Whether to include a tab for viewing module code
@@ -33,7 +33,7 @@ tidy_purl <- function(params){
 #' markdown and result functionality. The component and module columns are used to generate file
 #' names for the modules. The long_component and long_module columns are used to generate UI and
 #' so should be formatted appropriately.
-#' @param author character. The name of the author(s)
+#' @param author character. Name of the author(s)
 #' @param install logical. Whether to install the package
 #' @param logger Stores all notification messages to be displayed in the Log
 #'   Window. Insert the logger reactive list here for running in
