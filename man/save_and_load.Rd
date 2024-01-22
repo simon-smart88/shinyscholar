@@ -7,9 +7,9 @@
 save_and_load(folder_path, module = NULL)
 }
 \arguments{
-\item{folder_path}{Path to the parent directory containing the application}
+\item{folder_path}{character. Path to the parent directory containing the application}
 
-\item{module}{Character. (optional) The name of a single module to edit.}
+\item{module}{character. (optional) Name of a single module to edit}
 }
 \description{
 Adds lines to modules to save and load input values. By default

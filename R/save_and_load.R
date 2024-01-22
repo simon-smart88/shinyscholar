@@ -1,8 +1,8 @@
 #' @title save_and_load
 #' @description Adds lines to modules to save and load input values. By default
 #' all the modules in the application are edited.
-#' @param folder_path Path to the parent directory containing the application
-#' @param module Character. (optional) The name of a single module to edit.
+#' @param folder_path character. Path to the parent directory containing the application
+#' @param module character. (optional) Name of a single module to edit
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 
@@ -53,8 +53,7 @@ if ((nrow(objects) >= 1) & (length(check_for_save) == 1)){
   for (row in 1:nrow(objects)){
     split_string <- strsplit(objects[row,1], objects[row,2])[[1]]
     input_id <- strsplit(split_string[2], "\"")[[1]][2]
-    state_object <- glue::glue("{module_name}_{input_id}")
-    save_line <- glue::glue("{state_object} = input${input_id}")
+    save_line <- glue::glue("{input_id} = input${input_id}")
     input_type <- firstup(trimws(split_string[1]))
 
     if (objects[row,2] == "Input"){
@@ -72,28 +71,41 @@ if ((nrow(objects) >= 1) & (length(check_for_save) == 1)){
       update_parameter <- "selected"
     }
 
-    load_line <- glue::glue("{update_function}(session, \"{input_id}\", {update_parameter} = common$state${state_object})")
+    load_line <- glue::glue("{update_function}(session, \"{input_id}\", {update_parameter} = state${input_id})")
 
     to_load <- append(to_load, load_line)
     to_save <- append(to_save, save_line)
 
   }
 
-  #search for insertion lines and add lines
+  #search for insertion and closing lines, delete existing lines.
+  #remove duplicated new lines, put all new lines in one object and add new lines
   insert_save_line <- grep("*save = function()*", lines)
+  curly_lines <- grep("*},", lines)
+  end_save_line <- min(curly_lines[curly_lines > insert_save_line])
+  existing_save_lines <- seq(insert_save_line + 1, end_save_line - 1, 1)
+  lines <- lines[-existing_save_lines]
   save_lines <- paste(unique(to_save), collapse = ", \n")
   save_lines <- paste0(c("list(",save_lines,")"), collapse = "")
   lines <- append(lines, save_lines, insert_save_line)
 
   insert_load_line <- grep("*load = function(state)*", lines)
+  curly_lines <- grep("*}", lines)
+  end_load_line <- min(curly_lines[curly_lines > insert_load_line])
+  existing_load_lines <- seq(insert_load_line + 1, end_load_line - 1, 1)
+  lines <- lines[-existing_load_lines]
   load_lines <- paste(unique(to_load), collapse = " \n")
   lines <- append(lines, load_lines, insert_load_line)
 
   #tidy up and template comments
   load_comment <- grep("*# Load*", lines)
-  lines <- lines[-load_comment]
+  if ((length(load_comment)) != 0){
+    lines <- lines[-load_comment]
+  }
   save_comment <- grep("*# Save any values*", lines)
-  lines <- lines[-save_comment]
+  if ((length(save_comment)) != 0){
+    lines <- lines[-save_comment]
+  }
 
   writeLines(lines, file.path(module_path, target))
 }
