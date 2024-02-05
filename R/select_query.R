@@ -60,7 +60,7 @@ select_query <- function(poly, date, logger = NULL) {
                                                "This could be due to cloud coverage or because the area is not over land."))
     return()
   }
-  logger %>% writeLog(glue::glue("{missing_values} pixels were removed due to cloud coverage."))
+  logger %>% writeLog(glue::glue("{missing_values} pixels were removed due to cloud or water coverage."))
 
   #remove missing values and rescale data to 0 - 100 %
   raster_image <- terra::clamp(raster_image, upper = 250, value = FALSE) / 2.5

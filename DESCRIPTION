@@ -25,6 +25,7 @@ Imports:
     DT (>= 0.5),
     geosphere,
     glue,
+    httr2,
     knitcitations,
     knitr,
     leafem,
@@ -39,6 +40,7 @@ Imports:
     shinytest2,
     shinyWidgets (>= 0.6.0),
     tools,
+    xml2,
     zip
 Suggests: 
     testthat

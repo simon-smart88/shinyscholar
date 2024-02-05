@@ -7,7 +7,7 @@ function(input, output, session) {
   ########################## #
   # INTRODUCTION ####
   ########################## #
-  
+
   #Steps in the introduction - the element to tag, the message to display, position of the tooltip, any javascript needed to move between tabs / click buttons
   steps <- data.frame(c(NA, "Welcome to Shinyscholar! This tour will show you various features of the application to help get you started", NA, NA),
                       c("div[class=\"well\"]", "This panel shows all of the possible steps in the analysis", "bottom", NA),
@@ -62,7 +62,7 @@ function(input, output, session) {
   #transpose and add columns names
   steps <- as.data.frame(t(steps))
   colnames(steps) <- c("element", "intro", "position", "javascript")
-  
+
   #extract the javascript into one string
   intro_js <- ""
   for (r in 1:nrow(steps)){
@@ -71,12 +71,12 @@ function(input, output, session) {
     }
   }
   intro_js <- gsub("[\r\n]", "", intro_js)
-  
+
   intro_cookie_value <- reactive({
     cookie_value <- cookies::get_cookie(cookie_name = "intro")
     return(cookie_value)
   })
-  
+
   #launch intro if the intro cookie is empty
   #prevent running in test mode as the popup blocks other interactions
   observeEvent(
@@ -90,15 +90,15 @@ function(input, output, session) {
         cookies::set_cookie(cookie_name = "intro",  cookie_value = TRUE, expiration = 365)
         }
     })
-  
+
   #launch intro if the button is clicked
   observeEvent(input$intro,{
     rintrojs::introjs(session, options = list(steps = steps, "showBullets" = "true", "showProgress" = "true",
                                               "showStepNumbers" = "false", "nextLabel" = "Next", "prevLabel" = "Prev", "skipLabel" = "Skip"),
                       events = list(onbeforechange = I(intro_js))
                )})
-  
-  
+
+
   ########################## #
   # REACTIVE VALUES LISTS ####
   ########################## #

@@ -4,12 +4,20 @@ select_query_module_ui <- function(id) {
   tagList(
     selectInput(ns("date"), "Select date",
                 choices = c("2023-06-20", "2023-06-30", "2023-07-10", "2023-07-20")),
+    actionButton(ns("random"), "Pick a random location"),
+    br(),br(),
     actionButton(ns("run"), "Load imagery")
   )
 }
 
 select_query_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
+
+  #Required to pass the event to the mapping function
+  gargoyle::init("select_query_random")
+  observeEvent(input$random, {
+  gargoyle::trigger("select_query_random")
+  })
 
   observeEvent(input$run, {
 
@@ -65,6 +73,18 @@ select_query_module_result <- function(id) {
 }
 
 select_query_module_map <- function(map, common) {
+
+  #pick a random location over land, but fail safely in case the API is broken
+  gargoyle::on("select_query_random", {
+    random_land <- httr2::request("https://api.3geonames.org/?randomland=yes") |> httr2::req_perform()
+    if (random_land$status_code == 200){
+      random_land <- httr2::resp_body_xml(random_land) |> xml2::as_list()
+      map %>% setView(random_land$geodata$nearest$longt, random_land$geodata$nearest$latt, zoom = 9)
+    } else {
+      common$logger %>% writeLog(type = "error", "Something went wrong requesting a random location")
+    }
+  })
+
   observeEvent(gargoyle::watch("select_query"), {
     req(common$meta$query$used == TRUE)
     req(common$ras)
