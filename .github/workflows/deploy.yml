@@ -1,0 +1,51 @@
+name: Deploy to shinyapps.io
+on:
+
+  # run on any tagged push 
+  release:
+    types: [published]
+
+  # run on request (via button in actions menu)
+  workflow_dispatch:
+      
+jobs:
+  deploy:
+    name: Deploy to shinyapps
+    runs-on: ubuntu-22.04
+    steps:
+      # Checkout the repo
+      - uses: actions/checkout@v4
+      # Setup R (4.3.0)
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.3.0'
+      # Deploy using rsconnect
+      - name: Deploy
+        run: |
+          #install the package
+          install.packages("devtools")
+          devtools::install_github("simon-smart88/shinyscholar")
+          # Install rsconnect
+          install.packages("rsconnect")
+          # Set up account
+          cat("Checking account info...")
+          rsconnect::setAccountInfo(
+            Sys.getenv("accountName"),
+            Sys.getenv("accountToken"),
+            Sys.getenv("accountSecret")
+          )
+          cat(" [OK]\n")
+          cat(paste0("Deploying ", Sys.getenv("appName"), "\n"))
+          # Deploy application
+          rsconnect::deployApp(
+            appName = Sys.getenv("appName"),
+            account = Sys.getenv("accountName"),
+            forceUpdate = TRUE
+          )
+        shell: Rscript {0}
+        env:
+          appName: shinyscholar
+          accountName: simonsmart
+          # token and secret obtained from https://www.shinyapps.io/admin/#/tokens
+          accountToken: ${{ secrets.SHINYAPPS_TOKEN }}
+          accountSecret: ${{ secrets.SHINYAPPS_SECRET }}
