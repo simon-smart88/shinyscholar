@@ -16,7 +16,12 @@ jobs:
         with:
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-renv@v2
+      - name: Install dependencies
+        run: |
+         remotes::install_deps(dependencies = TRUE)
+         remotes::install_cran("rcmdcheck")
+         remotes::install_cran("devtools")
+         devtools::install()
 
       - name: Install rsconnect
         run: install.packages("rsconnect")
