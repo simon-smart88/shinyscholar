@@ -210,7 +210,8 @@ cookies::add_cookie_handlers(tagList(
             id = 'introTabs',
             tabPanel(
               'About',
-              br(),actionButton("intro", "Start tour"),
+              br(),
+              core_intro_module_ui("core_intro"),
               includeMarkdown("Rmd/text_about.Rmd")
             ),
             tabPanel(
