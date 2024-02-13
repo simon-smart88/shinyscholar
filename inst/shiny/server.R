@@ -166,7 +166,6 @@ function(input, output, session) {
       } else {
         code <- "There is no markdown file for this module"
         }
-
     }
     cat(code, sep = "\n")
   })
@@ -190,9 +189,9 @@ function(input, output, session) {
       # Initialize event triggers for each module
       gargoyle::init(module$id)
       if (module$id == "rep_markdown"){
-        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, COMPONENT_MODULES))
+        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, COMPONENT_MODULES))
       } else {
-        return <- do.call(get(module$server_function), args = list(id = module$id, common = common))
+        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session))
       }
       if (is.list(return) &&
           "save" %in% names(return) && is.function(return$save) &&

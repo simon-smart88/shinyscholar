@@ -10,7 +10,7 @@ rep_refPackages_module_ui <- function(id) {
   )
 }
 
-rep_refPackages_module_server <- function(id, common) {
+rep_refPackages_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
     output$dlrefPackages <- downloadHandler(

@@ -9,7 +9,7 @@ plot_hist_module_ui <- function(id) {
   )
 }
 
-plot_hist_module_server <- function(id, common) {
+plot_hist_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {

@@ -5,7 +5,7 @@ core_intro_module_ui <- function(id) {
   )
 }
 
-core_intro_module_server <- function(id, common) {
+core_intro_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
     #Steps in the introduction - the element to tag, the message to display, position of the tooltip, any javascript needed to move between tabs / click buttons
     steps <- data.frame(c(NA, "Welcome to Shinyscholar! This tour will show you various features of the application to help get you started", NA, NA),
