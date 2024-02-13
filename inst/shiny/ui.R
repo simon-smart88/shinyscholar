@@ -117,18 +117,7 @@ cookies::add_cookie_handlers(tagList(
             id = 'main',
             tabPanel(
               'Map',
-              leaflet::leafletOutput("map", height = 700),
-              absolutePanel(
-                top = 160, right = 20, width = 150, draggable = TRUE,
-                selectInput("bmap", "",
-                            choices = c('ESRI Topo' = "Esri.WorldTopoMap",
-                                        'Stamen Terrain' = "Stamen.Terrain",
-                                        'Open Topo' = "OpenTopoMap",
-                                        'ESRI Imagery' = "Esri.WorldImagery",
-                                        'ESRI Nat Geo' = 'Esri.NatGeoWorldMap'),
-                            selected = "Esri.WorldTopoMap"
-                )
-              )
+              core_mapping_module_ui("core_mapping")
             ),
             tabPanel(
               'Table', br(),

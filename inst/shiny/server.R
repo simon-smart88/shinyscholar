@@ -44,6 +44,13 @@ function(input, output, session) {
     else input[[glue("{component()}Sel")]]
   })
 
+  ################################
+  ### COMMON LIST FUNCTIONALITY ####
+  ################################
+
+  common <- common_class$new()
+  common$logger <- reactiveVal(initLogMsg())
+
   ######################## #
   ### GUIDANCE TEXT ####
   ######################## #
@@ -81,22 +88,7 @@ function(input, output, session) {
   ### MAPPING LOGIC ####
   ######################## #
 
-  # create map
-  output$map <- renderLeaflet(
-    leaflet() %>%
-      setView(0, 0, zoom = 2) %>%
-      addProviderTiles("Esri.WorldTopoMap") %>%
-      addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
-                     markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE)
-  )
-
-  # create map proxy to make further changes to existing map
-  map <- leafletProxy("map")
-
-  # change provider tile option
-  observe({
-    map %>% addProviderTiles(input$bmap)
-  })
+  map <- core_mapping_module_server("core_mapping", common)
 
   # Call the module-specific map function for the current module
   observe({
@@ -106,19 +98,6 @@ function(input, output, session) {
       do.call(map_fx, list(map, common = common))
     }
   })
-
-  # Capture coordinates of polygons
-  observe({
-    coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
-    xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
-    colnames(xy) <- c("longitude", "latitude")
-    #convert any longitudes drawn outside of the original map
-    xy[,1] <- ((xy[,1] + 180) %% 360) - 180
-    common$poly <- xy
-    gargoyle::trigger("change_poly")
-  }) %>% bindEvent(input$map_draw_new_feature)
-
-  gargoyle::init("change_poly")
 
   ######################## #
   ### BUTTONS LOGIC ####
@@ -199,14 +178,6 @@ function(input, output, session) {
   #switch to the results tab so that the plot is shown when run
   observeEvent(gargoyle::watch("plot_hist"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
   observeEvent(gargoyle::watch("plot_scatter"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
-
-
-  ################################
-  ### COMMON LIST FUNCTIONALITY ####
-  ################################
-
-  common <- common_class$new()
-  common$logger <- reactiveVal(initLogMsg())
 
   ####################
   ### INITIALISATION ####
