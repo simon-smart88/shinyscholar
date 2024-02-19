@@ -48,10 +48,10 @@ select_query_module_server <- function(id, common, parent_session) {
     # LOAD INTO COMMON ####
     common$ras <- ras
     # METADATA ####
-    common$meta$query$date <- input$date
-    common$meta$query$poly <- common$poly
-    common$meta$ras$name <- "FCover"
-    common$meta$query$used <- TRUE
+    common$meta$select_query$date <- input$date
+    common$meta$select_query$poly <- common$poly
+    common$meta$select_query$name <- "FCover"
+    common$meta$select_query$used <- TRUE
     # TRIGGER ####
     gargoyle::trigger("select_query")
 
@@ -90,7 +90,7 @@ select_query_module_map <- function(map, common) {
     }
   })
 
-    req(common$meta$query$used == TRUE)
+    req(common$meta$select_query$used == TRUE)
     req(common$ras)
     ex <- as.vector(terra::ext(common$ras))
     pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9, na.color = "pink")
@@ -110,10 +110,10 @@ select_query_module_map <- function(map, common) {
 select_query_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    select_query_knit = !is.null(common$meta$query$used),
-    select_date = common$meta$query$date,
-    select_poly = printVecAsis(common$meta$query$poly),
-    select_name = common$meta$ras$name
+    select_query_knit = !is.null(common$meta$select_query$used),
+    select_date = common$meta$select_query$date,
+    select_poly = printVecAsis(common$meta$select_query$poly),
+    select_name = common$meta$select_query$name
 
   )
 }

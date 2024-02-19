@@ -29,9 +29,9 @@ select_user_module_server <- function(id, common, parent_session) {
     # LOAD INTO COMMON ####
     common$ras <- ras
     # METADATA ####
-    common$meta$ras$name <- input$name
-    common$meta$user$path <- input$ras$name
-    common$meta$user$used <- TRUE
+    common$meta$select_user$name <- input$name
+    common$meta$select_user$path <- input$ras$name
+    common$meta$select_user$used <- TRUE
     # TRIGGER ####
     gargoyle::trigger("select_user")
   })
@@ -64,8 +64,8 @@ select_user_module_map <- function(map, common) {
 select_user_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    select_user_knit = !is.null(common$meta$user$used),
-    user_path = common$meta$user$path,
-    user_name = common$meta$ras$name
+    select_user_knit = !is.null(common$meta$select_user$used),
+    user_path = common$meta$select_user$path,
+    user_name = common$meta$select_user$name
   )
 }

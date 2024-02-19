@@ -185,8 +185,8 @@ function(input, output, session) {
   ### SAVE / LOAD FUNCTIONALITY ####
   ################################
 
-  core_save_module_server("core_save", common, COMPONENTS)
-  core_save_module_server("core_load", common)
+  core_save_module_server("core_save", common, modules, COMPONENTS, input)
+  core_load_module_server("core_load", common, modules, map, COMPONENT_MODULES, parent_session = session)
 
   ################################
   ### EXPORT TEST VALUES ####

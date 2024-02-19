@@ -21,7 +21,7 @@ core_save_module_ui <- function(id) {
   )
 }
 
-core_save_module_server <- function(id, common, COMPONENTS) {
+core_save_module_server <- function(id, common, modules, COMPONENTS, main_input) {
   moduleServer(id, function(input, output, session) {
 
     observe({
@@ -35,7 +35,7 @@ core_save_module_server <- function(id, common, COMPONENTS) {
       },
       content = function(file) {
         common$state$main <- list(
-          selected_module = sapply(COMPONENTS, function(x) input[[glue("{x}Sel")]], simplify = FALSE)
+          selected_module = sapply(COMPONENTS, function(x) main_input[[glue("{x}Sel")]], simplify = FALSE)
         )
 
         # Ask each module to save whatever data it wants

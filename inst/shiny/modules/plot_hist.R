@@ -23,9 +23,9 @@ plot_hist_module_server <- function(id, common, parent_session) {
     # LOAD INTO COMMON ####
     common$hist <- hist
     # METADATA ####
-    common$meta$hist$bins <- as.numeric(input$bins)
-    common$meta$hist$pal <- input$pal
-    common$meta$hist$name <- common$meta$ras$name
+    common$meta$plot_hist$bins <- as.numeric(input$bins)
+    common$meta$plot_hist$pal <- input$pal
+    common$meta$plot_hist$name <- c(common$meta$select_query$name,common$meta$select_user$name)
     # TRIGGER ####
     gargoyle::trigger("plot_hist")
     updateTabsetPanel(parent_session, "main", selected = "Results")
@@ -34,12 +34,12 @@ plot_hist_module_server <- function(id, common, parent_session) {
   output$hist <- renderPlot({
     gargoyle::watch("plot_hist")
     req(common$hist)
-    pal <- RColorBrewer::brewer.pal(9, common$meta$hist$pal)
+    pal <- RColorBrewer::brewer.pal(9, common$meta$plot_hist$pal)
     pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
-    bins <- common$meta$hist$bins
+    bins <- common$meta$plot_hist$bins
     cols <- pal_ramp(bins)
 
-    plot(common$hist, freq = FALSE, main = "", xlab = common$meta$hist$name, ylab = "Frequency (%)", col = cols)
+    plot(common$hist, freq = FALSE, main = "", xlab = common$meta$plot_hist$name, ylab = "Frequency (%)", col = cols)
   })
 
   output$dl <- downloadHandler(
@@ -48,11 +48,11 @@ plot_hist_module_server <- function(id, common, parent_session) {
     },
     content = function(file) {
       png(file, width = 1000, height = 500)
-      pal <- RColorBrewer::brewer.pal(9, common$meta$hist$pal)
+      pal <- RColorBrewer::brewer.pal(9, common$meta$plot_hist$pal)
       pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
-      bins <- common$meta$hist$bins
+      bins <- common$meta$plot_hist$bins
       cols <- pal_ramp(bins)
-      plot(common$hist, freq = FALSE, main = "", xlab = common$meta$hist$name, ylab = "Frequency (%)", col = cols)
+      plot(common$hist, freq = FALSE, main = "", xlab = common$meta$plot_hist$name, ylab = "Frequency (%)", col = cols)
       dev.off()
     })
 
@@ -83,8 +83,8 @@ plot_hist_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     plot_hist_knit = !is.null(common$hist),
-    hist_bins = common$meta$hist$bins,
-    hist_pal = common$meta$hist$pal,
-    hist_name = common$meta$hist$name
+    hist_bins = common$meta$plot_hist$bins,
+    hist_pal = common$meta$plot_hist$pal,
+    hist_name = common$meta$plot_hist$name
   )
 }

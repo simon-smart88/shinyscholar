@@ -24,10 +24,10 @@ plot_scatter_module_server <- function(id, common, parent_session) {
     # LOAD INTO SPP ####
     common$scat <- scat
     # METADATA ####
-    common$meta$scat$axis_short <- axis
-    common$meta$scat$axis_long <- input$axis
-    common$meta$scat$sample <- input$sample
-    common$meta$scat$name <- common$meta$ras$name
+    common$meta$plot_scatter$axis_short <- axis
+    common$meta$plot_scatter$axis_long <- input$axis
+    common$meta$plot_scatter$sample <- input$sample
+    common$meta$plot_scatter$name <- common$meta$ras$name
     # TRIGGER ####
     gargoyle::trigger("plot_scatter")
     updateTabsetPanel(parent_session, "main", selected = "Results")
@@ -36,7 +36,7 @@ plot_scatter_module_server <- function(id, common, parent_session) {
   output$result <- renderPlot({
     gargoyle::watch("plot_scatter")
     req(common$scat)
-    plot(common$scat[[1]], common$scat[[2]], xlab = common$meta$scat$axis_long, ylab = common$meta$scat$name)
+    plot(common$scat[[1]], common$scat[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
   })
 
   output$dl <- downloadHandler(
@@ -45,7 +45,7 @@ plot_scatter_module_server <- function(id, common, parent_session) {
     },
     content = function(file) {
       png(file, width = 1000, height = 500)
-      plot(common$scat[[1]], common$scat[[2]], xlab = common$meta$scat$axis_long, ylab = common$meta$scat$name)
+      plot(common$scat[[1]], common$scat[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
       dev.off()
     })
 
@@ -74,8 +74,8 @@ plot_scatter_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
       plot_scatter_knit = !is.null(common$scat),
-      scat_axis_short = common$meta$scat$axis_short,
-      scat_axis_long = common$meta$scat$axis_long,
-      scat_sample = common$meta$scat$sample,
-      scat_name = common$meta$scat$name)
+      scat_axis_short = common$meta$plot_scatter$axis_short,
+      scat_axis_long = common$meta$plot_scatter$axis_long,
+      scat_sample = common$meta$plot_scatter$sample,
+      scat_name = common$meta$plot_scatter$name)
 }
