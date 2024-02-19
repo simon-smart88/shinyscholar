@@ -16,7 +16,13 @@ jobs:
         with:
           use-public-rspm: true
 
-      - name: Install dependencies
+      - name: Install system dependencies
+        run: |
+          sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
+          sudo apt-get update
+          sudo apt-get install -y libgdal-dev libproj-dev
+      
+      - name: Install R dependencies
         run: |
          install.packages("remotes", repos='https://cran.rstudio.com/')
          remotes::install_local()
@@ -32,7 +38,11 @@ jobs:
           APPNAME: shinyscholar
           ACCOUNT: simonsmart
           SERVER: shinyapps.io # server to deploy
+          SHINY_TOKEN: ${{secrets.SHINYAPPS_TOKEN}}
+          SHINY_SECRET: ${{secrets.SHINYAPPS_SECRET}}
         run: |
-          rsconnect::setAccountInfo("simonsmart", "${{ secrets.SHINYAPPS_TOKEN }}", "${{ secrets.SHINYAPPS_SECRET }}")
+          rsconnect::setAccountInfo("simonsmart", "${{env.SHINY_TOKEN }}", "${{env.SHINY_SECRET }}")
           rsconnect::deployApp(appName = "${{ env.APPNAME }}", account = "${{ env.ACCOUNT }}", server = "${{ env.SERVER }}")
         shell: Rscript {0}
+  
+          
