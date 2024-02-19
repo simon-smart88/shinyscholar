@@ -143,29 +143,12 @@ cookies::add_cookie_handlers(tagList(
             ),
             tabPanel(
               'Code',
-              radioButtons("code_choice","Choose file", choices=c('Module','Function','Markdown'),selected='Module'),
-              verbatimTextOutput('code_module')
+              core_code_module_ui("core_code")
             ),
             tabPanel(
               'Save', icon = icon("floppy-disk", class = "save_icon"),
-              br(),
-              h5(em("Note: To save your session code or metadata, use the Reproduce component")),
-              wellPanel(
-                h4(strong("Save Session")),
-                p(paste0("By saving your session into an RDS file, you can resume ",
-                       "working on it at a later time or you can share the file",
-                       " with a collaborator.")),
-                shinyjs::hidden(p(
-                  id = "save_warning",
-                  icon("triangle-exclamation"),
-                  paste0("The current session data is large, which means the ",
-                         "downloaded file may be large and the download might",
-                         " take a long time.")
-                  )),
-                downloadButton("save_session", "Save Session"),
-                br()
+              core_save_module_ui("core_save")
               )
-            )
           )
         ),
         ## save module data END ##
@@ -216,10 +199,7 @@ cookies::add_cookie_handlers(tagList(
             ),
             tabPanel(
               'Load Prior Session',
-              h4("Load session"),
-              includeMarkdown("Rmd/text_loadsesh.Rmd"),
-              fileInput("load_session", "", accept = ".rds"),
-              actionButton('goLoad_session', 'Load RDS')
+              core_load_module_ui("core_load")
             )
           )
         )

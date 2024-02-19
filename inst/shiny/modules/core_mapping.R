@@ -16,7 +16,7 @@ core_mapping_module_ui <- function(id) {
   )
 }
 
-core_mapping_module_server <- function(id, common, parent_session, module) {
+core_mapping_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
     # create map
     output$map <- renderLeaflet(

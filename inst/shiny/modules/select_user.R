@@ -48,7 +48,6 @@ select_user_module_server <- function(id, common, parent_session) {
 }
 
 select_user_module_map <- function(map, common) {
-  gargoyle::on("select_user", {
     req(common$ras)
     ex <- as.vector(terra::ext(common$ras))
     pal <- colorBin("YlOrRd", domain = values(common$ras), bins = 9, na.color = "#00000000")
@@ -60,7 +59,6 @@ select_user_module_map <- function(map, common) {
       addLegend(position = "bottomright", pal = pal, values = terra::values(common$ras),
                 group = raster_name, title = raster_name) %>%
       addLayersControl(overlayGroups = raster_name, options = layersControlOptions(collapsed = FALSE))
-  })
 }
 
 select_user_module_rmd <- function(common) {

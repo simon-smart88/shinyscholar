@@ -16,7 +16,12 @@ select_query_module_server <- function(id, common, parent_session) {
   #Required to pass the event to the mapping function
   gargoyle::init("select_query_random")
   observeEvent(input$random, {
+  gargoyle::trigger("select_query")
   gargoyle::trigger("select_query_random")
+  #trigger this again on the first run
+  if (input$random == 1){
+    shinyjs::click("random")
+  }
   })
 
   observeEvent(input$run, {
@@ -85,7 +90,6 @@ select_query_module_map <- function(map, common) {
     }
   })
 
-  observeEvent(gargoyle::watch("select_query"), {
     req(common$meta$query$used == TRUE)
     req(common$ras)
     ex <- as.vector(terra::ext(common$ras))
@@ -101,7 +105,6 @@ select_query_module_map <- function(map, common) {
       addLegend(position = "bottomright", pal = pal, values = terra::values(common$ras),
                 group = common$meta$ras$name, title = common$meta$ras$name) %>%
       addLayersControl(overlayGroups = common$meta$ras$name, options = layersControlOptions(collapsed = FALSE))
-  })
 }
 
 select_query_module_rmd <- function(common) {
