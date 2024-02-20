@@ -14,7 +14,7 @@ template_create_module_ui <- function(id) {
   )
 }
 
-template_create_module_server <- function(id, common) {
+template_create_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
     output$mods <- renderUI({
