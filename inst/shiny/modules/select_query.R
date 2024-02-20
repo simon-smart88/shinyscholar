@@ -90,12 +90,13 @@ select_query_module_map <- function(map, common) {
     }
   })
 
+  req(common$ras)
   ex <- as.vector(terra::ext(common$ras))
   pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9, na.color = "pink")
   map %>%
-    #removeDrawToolbar(clearFeatures = TRUE) %>%
-    # addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE, markerOptions = FALSE,
-    #                circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE) %>%
+    removeDrawToolbar(clearFeatures = TRUE) %>%
+    addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE, markerOptions = FALSE,
+                   circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE) %>%
     clearGroup(common$meta$select_query$name) %>%
     addRasterImage(common$ras, colors = pal, group = common$meta$select_query$name) %>%
     addTiles(urlTemplate = "", attribution = "Copernicus Sentinel data 2023") %>%
