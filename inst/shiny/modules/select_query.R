@@ -90,21 +90,19 @@ select_query_module_map <- function(map, common) {
     }
   })
 
-    req(common$meta$select_query$used == TRUE)
-    req(common$ras)
-    ex <- as.vector(terra::ext(common$ras))
-    pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9, na.color = "pink")
-    map %>%
-      removeDrawToolbar(clearFeatures = TRUE) %>%
-      addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE, markerOptions = FALSE,
-                     circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE) %>%
-      clearGroup(common$meta$ras$name) %>%
-      addRasterImage(raster::raster(common$ras), colors = pal, group = common$meta$ras$name) %>%
-      addTiles(urlTemplate = "", attribution = "Copernicus Sentinel data 2023") %>%
-      fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-      addLegend(position = "bottomright", pal = pal, values = terra::values(common$ras),
-                group = common$meta$ras$name, title = common$meta$ras$name) %>%
-      addLayersControl(overlayGroups = common$meta$ras$name, options = layersControlOptions(collapsed = FALSE))
+  ex <- as.vector(terra::ext(common$ras))
+  pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9, na.color = "pink")
+  map %>%
+    #removeDrawToolbar(clearFeatures = TRUE) %>%
+    # addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE, markerOptions = FALSE,
+    #                circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE) %>%
+    clearGroup(common$meta$select_query$name) %>%
+    addRasterImage(common$ras, colors = pal, group = common$meta$select_query$name) %>%
+    addTiles(urlTemplate = "", attribution = "Copernicus Sentinel data 2023") %>%
+    fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
+    addLegend(position = "bottomright", pal = pal, values = terra::values(common$ras),
+              group = common$meta$select_query$name, title = common$meta$select_query$name) %>%
+    addLayersControl(overlayGroups = common$meta$select_query$name, options = layersControlOptions(collapsed = FALSE))
 }
 
 select_query_module_rmd <- function(common) {

@@ -31,7 +31,6 @@ Imports:
     leafem,
     magrittr,
     markdown,
-    raster,
     RColorBrewer,
     rlang,
     rmarkdown,

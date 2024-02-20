@@ -44,7 +44,6 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
         gargoyle::trigger(used_module) # to replot results
         component <- strsplit(used_module, "_")[[1]][1]
         map_fx <- COMPONENT_MODULES[[component]][[used_module]]$map_function
-        print(map_fx)
         if (!is.null(map_fx)) {
           do.call(map_fx, list(map, common = common))
         }
