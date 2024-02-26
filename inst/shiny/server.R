@@ -102,17 +102,6 @@ function(input, output, session) {
     })
   })
 
-  ######################## #
-  ### BUTTONS LOGIC ####
-  ######################## #
-
-  # Enable/disable buttons
-  observe({
-    shinyjs::toggleState("goLoad_session", !is.null(input$load_session$datapath))
-    req(common$ras)
-    #shinyjs::toggleState("dl_table", !is.null(common$ras))
-  })
-
   ############################################# #
   ### TABLE TAB ####
   ############################################# #
