@@ -61,6 +61,15 @@
     <loc>/reference/show_loading_modal.html</loc>
   </url>
   <url>
+    <loc>/reference/show_map.html</loc>
+  </url>
+  <url>
+    <loc>/reference/show_results.html</loc>
+  </url>
+  <url>
+    <loc>/reference/show_table.html</loc>
+  </url>
+  <url>
     <loc>/reference/spurious.html</loc>
   </url>
   <url>
