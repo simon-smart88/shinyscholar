@@ -121,3 +121,34 @@ close_loading_modal <- function (session = getDefaultReactiveDomain())
 {
   session$sendModal("remove", NULL)
 }
+
+####################### #
+# CHANGING TABS #
+####################### #
+
+#' @title show_map
+#' @description For internal use. Switches the view to the Map tab
+#' @param parent_session Session object of the main server function
+#' @keywords internal
+#' @export
+show_map <- function(parent_session){
+  updateTabsetPanel(parent_session, "main", selected = "Map")
+}
+
+#' @title show_results
+#' @description For internal use. Switches the view to the Results tab
+#' @param parent_session Session object of the main server function
+#' @keywords internal
+#' @export
+show_results <- function(parent_session){
+  updateTabsetPanel(parent_session, "main", selected = "Results")
+}
+
+#' @title show_table
+#' @description For internal use. Switches the view to the Table panel
+#' @param parent_session Session object of the main server function
+#' @keywords internal
+#' @export
+show_table <- function(parent_session){
+  updateTabsetPanel(parent_session, "main", selected = "Table")
+}

@@ -28,7 +28,7 @@ plot_hist_module_server <- function(id, common, parent_session) {
     common$meta$plot_hist$name <- c(common$meta$select_query$name,common$meta$select_user$name)
     # TRIGGER ####
     gargoyle::trigger("plot_hist")
-    updateTabsetPanel(parent_session, "main", selected = "Results")
+    show_results(parent_session)
   })
 
   output$hist <- renderPlot({

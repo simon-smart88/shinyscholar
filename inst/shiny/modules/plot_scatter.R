@@ -30,7 +30,7 @@ plot_scatter_module_server <- function(id, common, parent_session) {
     common$meta$plot_scatter$name <- common$meta$ras$name
     # TRIGGER ####
     gargoyle::trigger("plot_scatter")
-    updateTabsetPanel(parent_session, "main", selected = "Results")
+    show_results(parent_session)
   })
 
   output$result <- renderPlot({

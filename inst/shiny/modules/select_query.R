@@ -54,7 +54,7 @@ select_query_module_server <- function(id, common, parent_session) {
     common$meta$select_query$used <- TRUE
     # TRIGGER ####
     gargoyle::trigger("select_query")
-
+    show_map(parent_session)
   })
 
   return(list(

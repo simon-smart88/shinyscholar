@@ -34,6 +34,7 @@ select_user_module_server <- function(id, common, parent_session) {
     common$meta$select_user$used <- TRUE
     # TRIGGER ####
     gargoyle::trigger("select_user")
+    show_map(parent_session)
   })
 
   return(list(

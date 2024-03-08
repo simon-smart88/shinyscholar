@@ -16,3 +16,14 @@
    for scientific papers and reports. The application is run via the
    function \code{\link{run_shinyscholar}}.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://simon-smart88.github.io/shinyscholar/}
+}
+
+}
+\author{
+\strong{Maintainer}: Simon E. H. Smart \email{simon.smart@cantab.net}
+
+}
