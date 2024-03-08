@@ -55,5 +55,5 @@ test_that("{shinytest2} recording: e2e_select_query", {
   common <- app$get_value(export = "common")
   expect_equal(is.null(common$poly), FALSE)
   expect_is(common$ras, 'SpatRaster')
-  expect_equal(common$meta$ras$name, "FCover")
+  expect_equal(common$meta$select_query$name, "FCover")
 })
