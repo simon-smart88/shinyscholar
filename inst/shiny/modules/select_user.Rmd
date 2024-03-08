@@ -12,7 +12,7 @@ map_pal <- colorBin("YlOrRd", domain = values(ras), bins = 9, na.color = "#00000
 
 leaflet() %>%
   addProviderTiles('Esri.WorldTopoMap') %>%
-  addRasterImage(raster::raster(ras), colors = map_pal) %>%
+  addRasterImage(ras, colors = map_pal) %>%
   fitBounds(lng1 = raster_extent[[1]], lng2 = raster_extent[[2]], lat1 = raster_extent[[3]], lat2 = raster_extent[[4]]) %>%
   addLegend(position = "bottomright", pal = map_pal, values = values(ras),
             title = raster_name) 
