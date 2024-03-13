@@ -1,4 +1,4 @@
-```{r}
+```{r renv.ignore = TRUE}
 library(glue)
 
 MB <- 1024^2

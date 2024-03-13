@@ -29,3 +29,4 @@ inst/shiny/debug*
 inst/shiny/install*
 .lintr
 paper/
+renv.lock

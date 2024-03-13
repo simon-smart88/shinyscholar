@@ -1,5 +1,5 @@
 
-```{r}
+```{r renv.ignore = TRUE}
 #' @title Run \emph{"{{app_library}}"} Application
 #' @description This function runs the \emph{"{{app_library}}"} application in the user's
 #' default web browser.

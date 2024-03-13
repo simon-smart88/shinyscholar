@@ -1,4 +1,4 @@
-```{r}
+```{r renv.ignore = TRUE}
 #' @title Run an individual \emph{"{{app_library}}"} module for testing
 #' @description This function runs the selected \emph{"{{app_library}}"} module
 #' @param module The name of the module to run
@@ -58,7 +58,7 @@ module_server <- function(input, output, session) {
   common <- common_class$new()
   common$logger <- reactiveVal(initLogMsg())
 ```
-```{r, purl = {{include_map}}}  
+```{r, renv.ignore = TRUE, purl = {{include_map}}}  
   # create map
   output$map <- renderLeaflet({
     leaflet() %>%
@@ -85,7 +85,7 @@ module_server <- function(input, output, session) {
   map <- leafletProxy("map")
   do.call(glue::glue("{module}_module_map"), list(map, common))}
 ```
-```{r}
+```{r renv.ignore = TRUE}
   #main server function
   do.call(get(glue::glue("{module}_module_server")), args = list(id = module, common = common))
 }

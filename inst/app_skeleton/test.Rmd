@@ -1,4 +1,4 @@
-```{r}
+```{r renv.ignore = TRUE}
 test_that("Check {{module}} function works as expected", {
   result <- {{module}}()
   expect_true(is.null(result))

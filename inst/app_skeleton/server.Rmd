@@ -1,4 +1,4 @@
-```{r}
+```{r renv.ignore = TRUE}
 library({{app_library}})
 library(shinyscholar)
 
@@ -29,7 +29,7 @@ function(input, output, session) {
                                                                                                                         $('a[data-value=\"Module Guidance\"]').trigger('click');
                                                                                                                         $('a[data-value=\"Module Guidance\"]').addClass('active');"),
 ```
-```{r, purl = {{all(include_table, include_map)}}} 
+```{r, renv.ignore = TRUE, purl = {{all(include_table, include_map)}}} 
                       c("div[class=\"form-group shiny-input-container\"]", "Choose from the list of options", "bottom", "$('a[data-value=\"Module Guidance\"]').removeClass('active');
                                                                                                                        $('a[data-value=\"Map\"]').trigger('click');
                                                                                                                        $('a[data-value=\"Map\"]').addClass('active');"),
@@ -42,7 +42,7 @@ function(input, output, session) {
                                                                                                              $('a[data-value=\"Results\"]').trigger('click');
                                                                                                              $('a[data-value=\"Results\"]').addClass('active');"),
 ```
-```{r, purl = {{all(include_table, !include_map)}}} 
+```{r, renv.ignore = TRUE, purl = {{all(include_table, !include_map)}}} 
                       c("div[class=\"form-group shiny-input-container\"]", "Choose from the list of options", "bottom", "$('a[data-value=\"Module Guidance\"]').removeClass('active');
                                                                                                                        $('a[data-value=\"Table\"]').trigger('click');
                                                                                                                        $('a[data-value=\"Table\"]').addClass('active');"),
@@ -52,7 +52,7 @@ function(input, output, session) {
                                                                                                              $('a[data-value=\"Results\"]').trigger('click');
                                                                                                              $('a[data-value=\"Results\"]').addClass('active');"),
 ```
-```{r, purl = {{all(!include_table, include_map)}}} 
+```{r, renv.ignore = TRUE, purl = {{all(!include_table, include_map)}}} 
                       c("div[class=\"form-group shiny-input-container\"]", "Choose from the list of options", "bottom", "$('a[data-value=\"Module Guidance\"]').removeClass('active');
                                                                                                                        $('a[data-value=\"Map\"]').trigger('click');
                                                                                                                        $('a[data-value=\"Map\"]').addClass('active');"),
@@ -62,17 +62,17 @@ function(input, output, session) {
                                                                                                              $('a[data-value=\"Results\"]').trigger('click');
                                                                                                              $('a[data-value=\"Results\"]').addClass('active');"),
 ```
-```{r, purl = {{all(!include_table, !include_map)}}} 
+```{r, renv.ignore = TRUE,  purl = {{all(!include_table, !include_map)}}} 
                       c("div[class=\"form-group shiny-input-container\"]", "Choose from the list of options", "bottom", "$('a[data-value=\"Module Guidance\"]').removeClass('active');
                                                                                                                        $('a[data-value=\"Results\"]').trigger('click');
                                                                                                                        $('a[data-value=\"Results\"]').addClass('active');"),
                       c("#{{first_module}}-run", "Click the button to run the module", "bottom", NA),
                       c("a[data-value=\"Results\"]", "Outputs will be loaded onto the Results tab", "bottom", NA),
 ```
-```{r}
+```{r renv.ignore = TRUE}
                       c("div[id=\"messageLog\"]", "Messages will appear in the log window", "bottom", NA),
 ```
-```{r, purl = {{include_code}}}
+```{r, renv.ignore = TRUE, purl = {{include_code}}}
                       c("a[data-value=\"Code\"]", "You can view the source code for the module", "left","$('a[data-value=\"Results\"]').removeClass('active');
                                                                                                        $('a[data-value=\"Code\"]').trigger('click');
                                                                                                        $('a[data-value=\"Code\"]').addClass('active');"),
@@ -81,13 +81,13 @@ function(input, output, session) {
                                                                                                                                              $('a[data-value=\"rep\"]').addClass('active');
                                                                                                                                              $('input[value=\"rep_markdown\"]').trigger('click');"),
 ```
-```{r, purl = {{!include_code}}}
+```{r, renv.ignore = TRUE, purl = {{!include_code}}}
                       c("a[data-value=\"rep\"]", "You can download code to reproduce your analysis in the Session Code module", "bottom","$('a[data-value=\"Results\"]').removeClass('active');
                                                                                                                                              $('a[data-value=\"rep\"]').trigger('click');
                                                                                                                                              $('a[data-value=\"rep\"]').addClass('active');
                                                                                                                                              $('input[value=\"rep_markdown\"]').trigger('click');"),
 ```
-```{r}
+```{r renv.ignore = TRUE}
                       c("a[data-value=\"{{first_component}}\"]", "When you are inside an analysis component...","bottom", "$('a[data-value=\"rep\"]').removeClass('active');
                                                                                                              $('a[data-value=\"{{first_component}}\"]').trigger('click');
                                                                                                              $('a[data-value=\"{{first_component}}\"]').addClass('active');"),
@@ -209,7 +209,7 @@ function(input, output, session) {
       })})
 ```
 
-```{r, purl = {{include_map}}}  
+```{r renv.ignore = TRUE, purl = {{include_map}}}  
   ######################## #
   ### MAPPING LOGIC ####
   ######################## #
@@ -254,7 +254,7 @@ function(input, output, session) {
   gargoyle::init("change_poly")
 ```
 
-```{r}
+```{r renv.ignore = TRUE}
   ######################## #
   ### BUTTONS LOGIC ####
   ######################## #
@@ -265,7 +265,7 @@ function(input, output, session) {
   })
 ```
 
-```{r purl = {{include_table}}}
+```{r, renv.ignore = TRUE, purl = {{include_table}}}
   ############################################# #
   ### TABLE TAB ####
   ############################################# #
@@ -291,7 +291,7 @@ function(input, output, session) {
     }
   )
 ```
-```{r purl = {{include_code}}}
+```{r, renv.ignore = TRUE, purl = {{include_code}}}
   ############################################# #
   ### CODE TAB ####
   ############################################# #
@@ -318,7 +318,7 @@ function(input, output, session) {
     cat(code,sep="\n")
   })
 ```
-```{r}
+```{r renv.ignore = TRUE}
   ########################################### #
   ### PLOT OBSERVERS ####
   ########################################### #

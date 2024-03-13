@@ -1,4 +1,4 @@
-```{r}
+```{r renv.ignore = TRUE}
 resourcePath <- system.file("shiny", "www", package = "{{app_library}}")
 shiny::addResourcePath("resources", resourcePath)
 
@@ -77,7 +77,7 @@ cookies::add_cookie_handlers(tagList(
           tabsetPanel(
             id = 'main',
 ```            
-```{r, purl = {{include_map}}}
+```{r, renv.ignore = TRUE, purl = {{include_map}}}
             tabPanel(
               'Map',
               leaflet::leafletOutput("map", height = 700),
@@ -94,14 +94,14 @@ cookies::add_cookie_handlers(tagList(
               )
             ),
 ```
-```{r, purl = {{include_table}}}
+```{r, renv.ignore = TRUE, purl = {{include_table}}}
             tabPanel(
               'Table', br(),
               DT::dataTableOutput('table'),
               downloadButton('dl_table', "CSV file")
             ),
 ```
-```{r}
+```{r renv.ignore = TRUE}
             tabPanel(
               'Results',
               lapply(COMPONENTS, function(component) {
@@ -120,14 +120,14 @@ cookies::add_cookie_handlers(tagList(
               uiOutput('gtext_module')
             ),
 ```
-```{r, purl = {{include_code}}}
+```{r, renv.ignore = TRUE, purl = {{include_code}}}
             tabPanel(
               'Code',
               radioButtons("code_choice","Choose file", choices=c('Module','Function','Markdown'),selected='Module'),
               verbatimTextOutput('code_module')
             ),
 ```
-```{r}
+```{r renv.ignore = TRUE}
             tabPanel(
               'Save', icon = icon("floppy-disk", class = "save_icon"),
               br(),
