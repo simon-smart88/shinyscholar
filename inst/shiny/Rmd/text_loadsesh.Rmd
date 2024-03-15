@@ -4,6 +4,6 @@ output: html_document
 ---
 
 Users have the option to stop and save their work, so that they can resume at a later time.
-Each component (Select Query, Plot Histogram, etc.) has a Save Session feature within the ‘Save’ tab, allowing users to save their progress up to that point as an RDS file (.rds). 
+Each module (Select Query, Plot Histogram, etc.) has a Save Session feature within the ‘Save’ tab, allowing users to save their progress up to that point as an RDS file (.rds). 
 
 This file can be uploaded here, in the Load Session tab, allowing the user to continue the workflow where they left off. 

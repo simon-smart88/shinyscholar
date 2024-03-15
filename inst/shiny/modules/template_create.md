@@ -8,9 +8,9 @@ Shinyscholar is licensed under the GPLv3 license and consequently any apps made 
 This module allows you to create and download a template for your own application using the `create_template` function. 
 
 * Name - this is the name of the application and of the package. It should only contain letters and be careful that you don't choose a name for a package that you have already installed.
-* Components - these are the tabs at the top of the application. They should be single words separated by commas. The Intro and Reproduce tabs will be added automatically.
-* Long components - these are longer descriptions of the components that are used to generate some of the user interface. 
-* Modules for each component - these appear once you have completed the components. These are the options available inside each component. Enter a list of modules for each component, separated by commas.
+* Components - these are names of the tabs at the top of the application. They should be single words separated by commas. The Intro and Reproduce tabs will be added automatically.
+* Long components - these are longer descriptive names of the components used to generate some of the user interface. 
+* Modules for each component - these boxes appear once you have completed the components. These are the options available inside each component. Enter a list of modules for each component, separated by commas.
 * Long modules for each component - As for the long components, these are longer descriptions of the modules and used to generate the user interface.
 * Include map tab? - Whether to include the map tab in the results panel.
 * Include table tab? - Whether to include the table tab in the results panel.

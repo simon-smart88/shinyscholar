@@ -9,7 +9,7 @@ This information is designed to orient users and developers to the *shinyscholar
 #### **Components and Modules**
 *shinyscholar* is composed of **Components** – discrete steps in the workflow. Navigate through the components by clicking on the names in the top navigation panel. In this demonstration application, components need to be run consecutively, but in more complex use cases, some may not need to be run. For example in `{wallace}` the Environmental Space component is optional.
   
-Within each component, there are various major options that can be run. These are the ***modules***. Selecting a module opens the control panel to make decisions and run the module’s functionalities. In this demonstration application, the modules are mutually exclusive (e.g., in **Select**, only one choice can be selected), but in other use cases this could not the case and all modules could be run successively. For example in `{disagapp}` all of the Covariate modules can be run to add different covariates.
+Within each component, there are various major options that can be run. These are the ***modules***. Selecting a module opens the control panel to make decisions and run the module’s functionalities. In this demonstration application, the modules are mutually exclusive (e.g., in **Select**, only one choice can be selected), but in other use cases this might not be the case and all modules could be run successively. For example in `{disagapp}` all of the Covariate modules can be run to add different covariates.
   
 #### **Log Window and Visualization Panel**
 Analyses performed will be detailed in the log window. This is also where error messages appear.
@@ -17,7 +17,7 @@ Analyses performed will be detailed in the log window. This is also where error 
 After running the functionalities of a *module*, outputs appear in the Visualization panel, which includes relevant elements such as an interactive map, table and the Results tab where plots are displayed. The Visualization panel also includes guidance texts, the Save tab (see below) and the Code tab to view the `shiny` code for the current module as well as the function that each module calls and the .Rmd file used to reproduce the analysis.
 
 #### **Guidance Texts**
-Many scientific analyses require the researcher to make decisions and the guidance text provides information about the user with information about what the modules do and how to use them. We suggest that guidance texts include references to a few particularly helpful papers from the scientific literature, focused on the issues of that component or module.
+Many scientific analyses require the researcher to make decisions and the guidance text provides information for the user about what the modules do and how to use them. We suggest that guidance texts include references to a few particularly helpful papers from the scientific literature, focused on the issues of that component or module.
 
 As the user proceeds through the workflow, the relevant guidance texts can be found to the right of the Results tab in the Visualization panel.
 
@@ -26,10 +26,11 @@ If more support is needed, the Support tab in the orange navigation bar at the t
 #### **Saving and Reproducing Results**
 Users can stop an analysis and restart it later, by saving the workflow progress as an RDS file, found in the Save tab. This file can be loaded into *shinyscholar* later using the Intro component’s Load Prior Session tab, to restart the analysis where the user left off. 
 
-Additionally, *shinyscholar* allows the user to download their results. After each step of analysis (i.e. after running each module), the results for that particular model may be downloaded from the Save tab in the Visualization panel. 
+Additionally, *shinyscholar* allows the user to download their results. After each step of analysis (i.e. after running each module), the results for that particular step may be downloaded from the control panel of the module.
 
-A great quality of *shinyscholar* is reproducibility. To download the session code or metadata (documenting all of the analyses run to that point in the Wallace session), use the **Reproduce** component. This includes the option of an R Markdown file that can be opened and rerun in R. 
+A great quality of *shinyscholar* and apps made with it is reproducibility. To download the session code use the **Reproduce** component. This includes the option of an R Markdown file that can be opened and rerun in R. 
 
+#### **Stopping when running locally** 
 Closing the browser window will terminate the analysis, but R will remain running. To close shinyscholar and stop functions running in R, use the power button in the top right corner in the navigation bar.
   
 

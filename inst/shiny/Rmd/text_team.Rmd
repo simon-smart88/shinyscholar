@@ -9,5 +9,8 @@ output: html_document
 
 [Simon Smart](https://github.com/simon-smart88) received his PhD in Plant Sciences from the University of Cambridge and is currently a Software Developer in the Department of Population Health Sciences at the University of Leicester where he is developing [disagapp](https://github.com/simon-smart88/disagapp).
 
+[Tim Lucas](https://timcdlucas.github.io/) is a lecturer in the Department of Population Health Sciences at the University of Leicester and saw the potential to reuse features from Wallace to create new applications.
 
+[Robert P. Anderson](https://www.andersonlab.ccny.cuny.edu/) is a Professor of Biology at City College of New York, CUNY. He managed development of Wallace and provided feedback during the development of Shinyscholar.
 
+[Dean Attali](https://deanattali.com/) is an R-Shiny developed who acted as a consultant during the development of Wallace, creating  the modular architecture which is reused in shinyscholar.

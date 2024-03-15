@@ -2,7 +2,7 @@
 
 **BACKGROUND**
 
-Scientific practice increasingly emphasizes documentation and reproducibility. *shinyscholar* promotes documentation by allowing users to download information that includes sources of input data, methodological decisions, and results. One option for the documentation (see Module: *Download Session Code*) is a file that can be re-run in R to reproduce the analyses (if re-run on exactly the same versions of R and dependent packages). Many intermediate and advanced users of R likely will find this file useful as a template for modification. Additionally, *shinyscholar* provides citations of the particular R packages (and their versions) used in a given analysis (Module: *Reference Packages*).
+*shinyscholar* (or apps created using it) provide citations of the particular R packages (and their versions) used in a given analysis (Module: *Reference Packages*). The citation of all packages used both promotes documentation and gives credit to the developers of the packages with which the app is built. Dovetailing with the modular nature of shinyscholar, such citation should increase the incentive for researchers to formalize their code into R packages on CRAN and join the app’s community to integrate them into future releases of the software. 
 
 **IMPLEMENTATION**
 
