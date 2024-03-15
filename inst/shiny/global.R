@@ -121,7 +121,7 @@ for (module_config_file in all_module_configs) {
 
 }
 
-core_modules <- paste0("modules/",list.files(system.file("shiny/modules", package="shinyscholar"), pattern="core_*"))
+core_modules <- file.path("modules",list.files(system.file("shiny/modules", package="shinyscholar"), pattern="core_*"))
 for (module in core_modules){
   source(module, local = TRUE)
 }
