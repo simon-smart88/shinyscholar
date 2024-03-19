@@ -1,9 +1,6 @@
 ### **Module:** ***Session Code***
 
 **BACKGROUND**
-
-Scientific practice increasingly emphasizes documentation and reproducibility. *shinyscholar* promotes documentation by allowing users to download  information that includes sources of input data, methodological decisions, and results. One option for the documentation (see Module: *Download Session Code*) is a file that can be re-run in R to reproduce the analyses (if re-run on exactly the same versions of R and dependent packages). Many intermediate and advanced users of R likely will find this file useful as a template for modification. Additionally, *shinyscholar* provides citations of the particular R packages (and their versions) used in a given analysis (Module: *Reference Packages*).
-
 Via the *Session Code* module, the user can download files that document the analyses run in a given *shinyscholar* session (including executable code that can reproduce them).  This functionality supports reproducible science.
 
 **IMPLEMENTATION**

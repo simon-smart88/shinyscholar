@@ -152,11 +152,16 @@ cookies::add_cookie_handlers(tagList(
               )
           )
         ),
-        ## save module data END ##
         conditionalPanel(
           "input.tabs == 'rep' & input.repSel == null",
           column(8,
                  includeMarkdown("Rmd/gtext_rep.Rmd")
+          )
+        ),
+        conditionalPanel(
+          "input.tabs == 'rep' & input.repSel == 'rep_renv'",
+          column(8,
+                 includeMarkdown("modules/rep_renv.md")
           )
         ),
         conditionalPanel(

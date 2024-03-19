@@ -1,0 +1,9 @@
+```{asis, echo = {{rep_renv_knit}}, eval = {{rep_renv_knit}}, include = {{rep_renv_knit}}}
+Restore the environment used to run the analysis using {renv}. This block will install the renv package if it is not already installed.
+```
+
+```{r, echo = {{rep_renv_knit}}, include = {{rep_renv_knit}}}
+if (!require("renv")) install.packages("renv")
+renv::init(bare = TRUE)
+renv::restore("shinyscholar-dependencies.lock")
+```

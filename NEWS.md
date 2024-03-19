@@ -21,3 +21,9 @@ shinyscholar 0.1.1
 =============
 - Added `save_and_load()` to automate adding the lines to modules which facilitate saving and loading of input values.
 - Added an introduction using `{rintrojs}` which is only shown to users on their first visit.
+
+shinyscholar 0.1.2
+=============
+- Moved mapping, introduction, code, save and load functionality out of server into `core_` modules.
+- Passed `parent_session` to the modules enabling switching to the results, map and table tab from within modules and added `show_table()`, `show_results()` and `show_table()` to simplify code.
+- Added `rep_renv` module to enable capturing dependencies.

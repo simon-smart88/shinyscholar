@@ -263,6 +263,11 @@ rep_files <- list.files(system.file("shiny/modules", package = "shinyscholar"),
                         pattern = "rep_", full.names = TRUE)
 lapply(rep_files, file.copy, glue::glue("{path}/inst/shiny/modules/"))
 
+#fix rep_renv
+renv_lines <- readLines(glue::glue("{path}/inst/shiny/modules/rep_renv.R"))
+renv_lines <- gsub("shinyscholar", name, renv_lines)
+writeLines(renv_lines, glue::glue("{path}/inst/shiny/modules/rep_renv.R"))
+
 # Rmds ====
 #copy existing rmds
 rmd_files <- list.files(system.file("shiny/Rmd", package = "shinyscholar"),

@@ -18,11 +18,13 @@ COMPONENT_MODULES <- list()
 
 # Load base modules
 base_module_configs <- c(
+
   "modules/select_query.yml",
   "modules/select_user.yml",
   "modules/plot_hist.yml",
   "modules/plot_scatter.yml",
   "modules/rep_markdown.yml",
+  "modules/rep_renv.yml",
   "modules/rep_refPackages.yml",
   "modules/template_create.yml"
 )
