@@ -32,7 +32,7 @@ rep_refPackages_module_server <- function(id, common, parent_session) {
         knitcitations::write.bibtex(file = temp_bib_file)
         # Replace NOTE fields with VERSION when R package
         bib_ref <- readLines(temp_bib_file)
-        bib_ref  <- gsub(pattern = "note = \\{R package version", replace = "version = \\{R package", x = bib_ref)
+        bib_ref <- gsub(pattern = "note = \\{R package version", replace = "version = \\{R package", x = bib_ref)
         writeLines(bib_ref, con = temp_bib_file)
         file.rename(temp_bib_file, bib_file)
         # Render reference file

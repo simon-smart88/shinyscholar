@@ -1,7 +1,5 @@
 library(shinyscholar)
 
-source(system.file("shiny/common.R", package = "shinyscholar"))
-
 function(input, output, session) {
 
   ########################## #
@@ -11,10 +9,9 @@ function(input, output, session) {
   core_intro_module_server("core_intro")
 
   ########################## #
-  # REACTIVE VALUES LISTS ####
+  # LOGGING ####
   ########################## #
 
-  # Variable to keep track of current log message
   initLogMsg <- function() {
     intro <- "***WELCOME TO shinyscholar***"
     brk <- paste(rep("------", 14), collapse = "")
@@ -22,12 +19,17 @@ function(input, output, session) {
     logInit <- gsub(".{4}$", "", paste(intro, brk, expl, brk, "", sep = "<br>"))
     logInit
   }
+  common$logger <- reactiveVal(initLogMsg())
 
   # Write out logs to the log Window
   observeEvent(common$logger(), {
     shinyjs::html(id = "logHeader", html = common$logger(), add = FALSE)
     shinyjs::js$scrollLogger()
   })
+
+  ########################## #
+  # REACTIVE VALUES LISTS ####
+  ########################## #
 
   # tab and module-level reactives
   component <- reactive({
@@ -43,13 +45,6 @@ function(input, output, session) {
     if (component() == "intro") "intro"
     else input[[glue("{component()}Sel")]]
   })
-
-  ################################
-  ### COMMON LIST FUNCTIONALITY ####
-  ################################
-
-  common <- common_class$new()
-  common$logger <- reactiveVal(initLogMsg())
 
   ######################## #
   ### GUIDANCE TEXT ####
@@ -71,7 +66,7 @@ function(input, output, session) {
   })
 
   # Help Component
-  help_components <- c("select", "plot", "template")
+  help_components <- COMPONENTS[!COMPONENTS == "rep"]
   lapply(help_components, function(component) {
     btn_id <- paste0(component, "Help")
     observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Component Guidance"))
@@ -85,22 +80,10 @@ function(input, output, session) {
     })})
 
   ######################## #
-  ### MAPPING LOGIC ####
+  ### MAP TAB ####
   ######################## #
 
-  map <- core_mapping_module_server("core_mapping", common)
-
-  # Call the module-specific map function for the current module
-  observe({
-    req(module())
-    current_mod <- module()
-    gargoyle::on(current_mod, {
-      map_fx <- COMPONENT_MODULES[[component()]][[module()]]$map_function
-      if (!is.null(map_fx)) {
-        do.call(map_fx, list(map, common = common))
-      }
-    })
-  })
+  map <- core_mapping_module_server("core_mapping", common, input, COMPONENT_MODULES)
 
   ############################################# #
   ### TABLE TAB ####

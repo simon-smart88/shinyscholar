@@ -121,8 +121,14 @@ for (module_config_file in all_module_configs) {
 
 }
 
-core_modules <- file.path("modules",list.files(system.file("shiny/modules", package="shinyscholar"), pattern="core_*"))
+# source core modules
+core_modules <- file.path("modules", list.files(system.file("shiny/modules", package="shinyscholar"), pattern="core_*"))
 for (module in core_modules){
   source(module, local = TRUE)
 }
+
+#load common object
+source(system.file("shiny/common.R", package = "shinyscholar"))
+common <- common_class$new()
+
 
