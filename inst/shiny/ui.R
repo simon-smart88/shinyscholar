@@ -11,19 +11,20 @@ cookies::add_cookie_handlers(tagList(
   navbarPage(
     theme = bslib::bs_theme(version = 3,
                             bootswatch = "spacelab"),
-    id = 'tabs',
+    id = "tabs",
     collapsible = TRUE,
     header = tagList(
       tags$head(tags$link(href = "css/styles.css", rel = "stylesheet"))
     ),
-    title = img(src = "logo.png", height = '50', width = '50',
+    title = img(src = "logo.png", height = "50", width = "50",
                 style = "margin-top: -15px"),
     windowTitle = "shinyscholar",
-    tabPanel("Intro", value = 'intro'),
-    tabPanel("Select data", value = 'select'),
-    tabPanel("Plot data", value = 'plot'),
-    tabPanel("Reproduce", value = 'rep'),
-    tabPanel("Template", value = 'template'),
+
+    tabPanel("Intro", value = "intro"),
+    tabPanel("Select data", value = "select"),
+    tabPanel("Plot data", value = "plot"),
+    tabPanel("Reproduce", value = "rep"),
+    tabPanel("Template", value = "template"),
     navbarMenu("Support", icon = icon("life-ring"),
                HTML('<a href="https://github.com/simon-smart88/shinyscholar/issues" target="_blank">GitHub Issues</a>'),
                HTML('<a href="mailto: simon.smart@cantab.net" target="_blank">Send Email</a>')),

@@ -125,7 +125,6 @@ writeLines(common_lines, glue::glue("{path}/inst/shiny/common.R"))
 
 # Subset components ====
 components <- modules[duplicated(modules$component),]
-added_component_list <- components$component
 
 # Create Server ====
 
@@ -134,20 +133,10 @@ server_params <- c(
   list(app_library = name,
        include_map = include_map,
        include_table = include_table,
-       include_code = include_code,
-       first_component = components$component[1],
-       first_module = glue::glue("{modules$component[1]}_{modules$module[1]}"),
-       added_component_list = printVecAsis(added_component_list)
+       include_code = include_code
        )
 )
 server_lines <- tidy_purl(server_params)
-
-#create plot observers
-results <- modules[modules$result == TRUE,]
-for (r in 1:nrow(results)){
-observer_target <- grep("*switch to the results tab*", server_lines)
-server_lines <- append(server_lines, glue::glue('observeEvent(gargoyle::watch("{results$component[r]}_{results$module[r]}"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)'), observer_target)
-}
 
 writeLines(server_lines, glue::glue("{path}/inst/shiny/server.R"))
 
@@ -164,7 +153,7 @@ ui_params <- c(
 
 ui_lines <- tidy_purl(ui_params)
 
-component_tab_target <- grep("*value = 'intro'*", ui_lines)
+component_tab_target <- grep("*value = \"intro\"*", ui_lines)
 for (i in 1:nrow(components)){
   ui_lines <- append(ui_lines, glue::glue('tabPanel("{components$long_component[i]}", value = "{components$component[i]}"),'), component_tab_target)
   #increment target as order matters in UI
@@ -210,6 +199,29 @@ for (m in 1:nrow(modules)){
 }
 
 writeLines(global_lines, glue::glue("{path}/inst/shiny/global.R"))
+
+# Core modules ====
+
+core_params <- c(
+  file = NULL,
+  list(app_library = name,
+       include_map = include_map,
+       include_table = include_table,
+       include_code = include_code,
+       first_component = components$component[1],
+       first_module = glue::glue("{modules$component[1]}_{modules$module[1]}")
+  )
+)
+
+core_modules <- c("intro", "save", "load")
+if (include_map) core_modules <- c(core_modules, "mapping")
+if (include_code) core_modules <- c(core_modules, "code")
+
+for (c in core_modules){
+  core_params$file <- system.file(glue::glue("app_skeleton/{c}.Rmd"), package = "shinyscholar")
+  core_lines <- tidy_purl(core_params)
+  writeLines(core_lines, glue::glue("{path}/inst/shiny/modules/core_{c}.R"))
+}
 
 # Create modules ====
 
@@ -269,7 +281,7 @@ if (nrow(components) <= 10){
 }
 
 intro_lines <- readLines(system.file("app_skeleton/text_intro_tab.Rmd", package="shinyscholar"))
-intro_lines[8] <- glue::glue("*{name}* (v1.0.0) includes {n_components} components, or steps of a possible workflow. Each component includes one or more modules, which are possible analyses for that step.")
+intro_lines[8] <- glue::glue("*{name}* (v0.0.1) includes {n_components} components, or steps of a possible workflow. Each component includes one or more modules, which are possible analyses for that step.")
 
 for (c in 1:nrow(components)){
   intro_lines <- append(intro_lines, glue::glue("**{c}.** *{components$long_component[c]}*"))

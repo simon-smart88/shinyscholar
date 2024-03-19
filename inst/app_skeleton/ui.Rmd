@@ -12,16 +12,16 @@ cookies::add_cookie_handlers(tagList(
   navbarPage(
     theme = bslib::bs_theme(version = 3,
                             bootswatch = "spacelab"),
-    id = 'tabs',
+    id = "tabs",
     collapsible = TRUE,
     header = tagList(
       tags$head(tags$link(href = "css/styles.css", rel = "stylesheet"))
     ),
-    title = img(src = "logo.png", height = '50', width = '50',
+    title = img(src = "logo.png", height = "50", width = "50",
                 style = "margin-top: -15px"),
     windowTitle = "{{app_library}}",
-    tabPanel("Intro", value = 'intro'),
-    tabPanel("Reproduce", value = 'rep'),
+    tabPanel("Intro", value = "intro"),
+    tabPanel("Reproduce", value = "rep"),
     navbarMenu("Support", icon = icon("life-ring"),
                HTML('<a href="https://github.com/simon-smart88/shinyscholar/issues" target="_blank">GitHub Issues</a>'),
                HTML('<a href="mailto: simon.smart@cantab.net" target="_blank">Send Email</a>')),
@@ -80,18 +80,7 @@ cookies::add_cookie_handlers(tagList(
 ```{r, renv.ignore = TRUE, purl = {{include_map}}}
             tabPanel(
               'Map',
-              leaflet::leafletOutput("map", height = 700),
-              absolutePanel(
-                top = 160, right = 20, width = 150, draggable = TRUE,
-                selectInput("bmap", "",
-                            choices = c('ESRI Topo' = "Esri.WorldTopoMap",
-                                        'Stamen Terrain' = "Stamen.Terrain",
-                                        'Open Topo' = "OpenTopoMap",
-                                        'ESRI Imagery' = "Esri.WorldImagery",
-                                        'ESRI Nat Geo' = 'Esri.NatGeoWorldMap'),
-                            selected = "Esri.WorldTopoMap"
-                )
-              )
+              core_mapping_module_ui("core_mapping")
             ),
 ```
 ```{r, renv.ignore = TRUE, purl = {{include_table}}}
@@ -123,30 +112,13 @@ cookies::add_cookie_handlers(tagList(
 ```{r, renv.ignore = TRUE, purl = {{include_code}}}
             tabPanel(
               'Code',
-              radioButtons("code_choice","Choose file", choices=c('Module','Function','Markdown'),selected='Module'),
-              verbatimTextOutput('code_module')
+              core_code_module_ui("core_code")
             ),
 ```
 ```{r renv.ignore = TRUE}
             tabPanel(
               'Save', icon = icon("floppy-disk", class = "save_icon"),
-              br(),
-              h5(em("Note: To save your session code or metadata, use the Reproduce component")),
-              wellPanel(
-                h4(strong("Save Session")),
-                p(paste0("By saving your session into an RDS file, you can resume ",
-                       "working on it at a later time or you can share the file",
-                       " with a collaborator.")),
-                shinyjs::hidden(p(
-                  id = "save_warning",
-                  icon("triangle-exclamation"),
-                  paste0("The current session data is large, which means the ",
-                         "downloaded file may be large and the download might",
-                         " take a long time.")
-                  )),
-                downloadButton("save_session", "Save Session"),
-                br()
-              )
+              core_save_module_ui("core_save")
             )
           )
         ),
@@ -175,7 +147,8 @@ cookies::add_cookie_handlers(tagList(
             id = 'introTabs',
             tabPanel(
               'About',
-              br(),actionButton("intro", "Start tour"),
+              br(),
+              core_intro_module_ui("core_intro"),
               includeMarkdown("Rmd/text_about.Rmd")
             ),
             tabPanel(
@@ -191,10 +164,7 @@ cookies::add_cookie_handlers(tagList(
             ),
             tabPanel(
               'Load Prior Session',
-              h4("Load session"),
-              includeMarkdown("Rmd/text_loadsesh.Rmd"),
-              fileInput("load_session", "", accept = ".rds"),
-              actionButton('goLoad_session', 'Load RDS')
+              core_load_module_ui("core_load")
             )
           )
         )

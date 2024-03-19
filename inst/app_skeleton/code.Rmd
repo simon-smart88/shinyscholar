@@ -1,7 +1,8 @@
+```{r}
 core_code_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    radioButtons(ns("code_choice"),"Choose file",
+    radioButtons(ns("code_choice"), "Choose file", 
                  choices = c("Module", "Function", "Markdown"), selected = "Module"),
     verbatimTextOutput(ns("code_module"))
   )
@@ -10,25 +11,29 @@ core_code_module_ui <- function(id) {
 core_code_module_server <- function(id, common, module) {
   moduleServer(id, function(input, output, session) {
     output$code_module <- renderPrint({
-      req(module != "")
-      req(module != "intro")
+      req(module())
+  
       if (input$code_choice == "Module"){
-        code <- readLines(system.file(glue("shiny/modules/{module}.R"), package = "shinyscholar"))
+        code <- readLines(system.file(glue("shiny/modules/{module()}.R"),package = "{{app_library}}"))
       }
       if (input$code_choice == "Function"){
         #separate call required in case there are multiple functions
-        ga_call <- getAnywhere(module)
-        code <- capture.output(print(getAnywhere(module)[which(ga_call$where == "package:shinyscholar")]))
+        ga_call <- getAnywhere(module())
+        code <- capture.output(print(getAnywhere(module())[which(ga_call$where == "{{app_library}}")]))
         code <- code[1:(length(code)-2)]
       }
       if (input$code_choice == "Markdown"){
-        if (file.exists(system.file(glue::glue("shiny/modules/{module}.Rmd"), package = "shinyscholar"))){
-          code <- readLines(system.file(glue::glue("shiny/modules/{module}.Rmd"), package = "shinyscholar"))
+        if (file.exists(system.file(glue::glue("shiny/modules/{module()}.Rmd"), package = "{{app_library}}"))){
+          code <- readLines(system.file(glue::glue("shiny/modules/{module()}.Rmd"), package = "{{app_library}}"))
         } else {
           code <- "There is no markdown file for this module"
-        }
+          }
       }
-      cat(code, sep = "\n")
+      cat(code,sep="\n")
     })
   })
 }
+```
+
+
+

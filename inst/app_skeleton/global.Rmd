@@ -116,5 +116,17 @@ for (module_config_file in all_module_configs) {
   source(module_config$file, local = TRUE)
 
 }
+
+# source core modules
+core_modules <- file.path("modules", list.files(system.file("shiny/modules", package="{{app_library}}"), pattern="core_*"))
+for (module in core_modules){
+  source(module, local = TRUE)
+}
+
+#load common object
+source(system.file("shiny/common.R", package = "{{app_library}}"))
+common <- common_class$new()
+
+
 ```
 

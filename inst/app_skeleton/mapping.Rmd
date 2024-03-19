@@ -1,3 +1,4 @@
+```{r}
 core_mapping_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
@@ -69,3 +70,6 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     return(map)
 })
 }
+
+```
+
