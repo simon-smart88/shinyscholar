@@ -117,7 +117,7 @@ template_create_module_server <- function(id, common, parent_session) {
         tmpdir <- tempdir()
 
         module_df <- cbind(modules(), module_options())
-        browser()
+
         create_template(path = tmpdir,
                         name = input$name,
                         include_map = input$include_map,
