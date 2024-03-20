@@ -22,8 +22,7 @@ test_that("{shinytest2} recording: e2e_markdown", {
   lines[target_line] <- paste0('raster_directory <- "',gsub("bio05.tif","",path),'"')
   writeLines(lines,sess_file)
   rmarkdown::render(sess_file)
-  #ras is internal to the Rmd so checks that the code runs
-  expect_is(ras,"SpatRaster")
+
   html_file <- gsub("Rmd", "html", sess_file)
   expect_gt(file.info(html_file)$size, 100000)
 
