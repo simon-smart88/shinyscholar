@@ -20,7 +20,8 @@ tidy_purl <- function(params){
 #' @title create_template
 #' @description Creates a skeleton app containing empty modules
 #' @param path character. Path to where the app should be created
-#' @param name character. Name of the app which will be used as the package name
+#' @param name character. Name of the app which will be used as the package name.
+#' Must be only characters and numbers and not start with a number.
 #' @param include_map logical. Whether to include a leaflet map
 #' @param include_table logical. Whether to include a table tab
 #' @param include_code logical. Whether to include a tab for viewing module code
@@ -65,6 +66,22 @@ tidy_purl <- function(params){
 create_template <- function(path, name, include_map, include_table, include_code, common_objects, modules, author, install, logger = NULL){
 
 # Check inputs ====
+
+if (grepl("^[A-Za-z0-9]+$", name, perl = TRUE) == FALSE){
+  logger %>% writeLog(type = "error", "Package names can only contain letters and numbers")
+  return()
+}
+
+if (grepl("^[0-9]+$", substr(name, 1, 1), perl = TRUE) == TRUE){
+  logger %>% writeLog(type = "error", "Package names cannot start with numbers")
+  return()
+}
+
+if (name %in% tools::CRAN_package_db()[, c("Package")]) {
+  logger %>% writeLog(type = "error", "A package on CRAN already uses that name")
+  return()
+}
+
 if (any(modules$map) == TRUE & include_map == FALSE){
   logger %>% writeLog(type = "info", "Your modules use a map but you had not included it so changing include_map to TRUE")
   include_map <- TRUE
