@@ -1,4 +1,4 @@
-FROM rocker/shiny:4.1.0
+FROM rocker/shiny:4.3.0
 
 # system libraries of general use
 RUN apt-get update && apt-get install -y \
@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
 RUN R -e "install.packages('devtools')"
 RUN R -e "devtools::install_github('simon-smart88/shinyscholar')"
 
-COPY ./inst/shiny/ /srv/shiny-server/smart
+COPY ./inst/shiny/ /srv/shiny-server/shinyscholar
 
 # select port
 EXPOSE 3838
