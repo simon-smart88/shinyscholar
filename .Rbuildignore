@@ -7,7 +7,7 @@
 ^NEWS\.md$          # A news file written in Markdown
 \.DS_Store$	    # for macs
 cmip5*    # worldclim files
-^SMART.Rproj
+^shinyscholar.Rproj
 ^\.github$
 ^wc10
 ^vignettes$
@@ -16,3 +16,6 @@ cmip5*    # worldclim files
 ^pkgdown$
 ^LICENSE.md
 Dockerfile
+runtime.txt
+apt.txt
+install.R

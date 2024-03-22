@@ -1,12 +1,1 @@
-pandoc
-pandoc-citeproc
-libcurl4-gnutls-dev
-libcairo2-dev
-libxt-dev
-libssl-dev
-libssh2-1-dev 
-texlive-latex-base
-texlive-fonts-recommended 
-texlive-fonts-extra 
-texlive-latex-extra 
-libgdal-dev
+r-4.3-2024-03-01
