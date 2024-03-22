@@ -1,21 +1,34 @@
-FROM rocker/binder:4.3.0
+FROM rocker/shiny:4.3.0
 
-## Declares build arguments
-ARG NB_USER
-ARG NB_UID
+# system libraries of general use
+RUN apt-get update && apt-get install -y \
+    sudo \
+    pandoc \
+    pandoc-citeproc \
+    libcurl4-gnutls-dev \
+    libcairo2-dev \
+    libxt-dev \
+    libssl-dev \
+    libssh2-1-dev \
+    texlive-latex-base \
+    texlive-fonts-recommended \
+    texlive-fonts-extra \
+    texlive-latex-extra \
+    libgdal-dev
 
-COPY --chown=${NB_USER} . ${HOME}
+# install R packages required
+RUN R -e "install.packages('devtools')"
+RUN R -e "devtools::install_github('simon-smart88/shinyscholar')"
 
-ENV DEBIAN_FRONTEND=noninteractive
-USER root
-RUN echo "Checking for 'apt.txt'..." \
-        ; if test -f "apt.txt" ; then \
-        apt-get update --fix-missing > /dev/null\
-        && xargs -a apt.txt apt-get install --yes \
-        && apt-get clean > /dev/null \
-        && rm -rf /var/lib/apt/lists/* \
-        ; fi
-USER ${NB_USER}
+COPY ./inst/shiny/ /srv/shiny-server/shinyscholar
 
-## Run an install.R script, if it exists.
-RUN if [ -f install.R ]; then R --quiet -f install.R; fi
+# select port
+EXPOSE 3838
+
+# allow permission
+RUN sudo chown -R shiny:shiny /srv/shiny-server
+
+USER shiny
+
+# run app
+CMD ["/usr/bin/shiny-server"]
