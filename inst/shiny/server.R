@@ -160,6 +160,17 @@ function(input, output, session) {
   core_save_module_server("core_save", common, modules, COMPONENTS, input)
   core_load_module_server("core_load", common, modules, map, COMPONENT_MODULES, parent_session = session)
 
+  onRestored(function(common, COMPONENT_MODULES) {
+    #restore map for used modules
+    for (used_module in names(common$meta)){
+      component <- strsplit(used_module, "_")[[1]][1]
+      map_fx <- COMPONENT_MODULES[[component]][[used_module]]$map_function
+      if (!is.null(map_fx)) {
+        do.call(map_fx, list(map, common = common))
+      }
+    }
+  })
+
   ################################
   ### EXPORT TEST VALUES ####
   ################################
