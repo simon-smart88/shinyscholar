@@ -77,7 +77,7 @@ if ((nrow(objects) >= 1) & (length(check_for_save) == 1)){
     }
 
     if (objects[row,2] == "materialSwitch"){
-      update_function <- "updateMaterialSwitch"
+      update_function <- "shinyWidgets::updateMaterialSwitch"
       update_parameter <- "value"
     }
 
