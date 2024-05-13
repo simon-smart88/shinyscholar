@@ -30,16 +30,21 @@ lines <- readLines(paste0(module_path, target))
 #extract lines creating input$ values
 input_objects <- lines[c(grep("*Input*", lines))]
 radio_objects <- lines[c(grep("*radioButtons*", lines))]
+switch_objects <- lines[c(grep("*materialSwitch*", lines))]
+
 #exclude any updateinput and fileInput lines
 input_objects <- input_objects[c(grep("^(?!.*update).*$", input_objects, perl = TRUE))]
 input_objects <- input_objects[c(grep("^(?!.*fileInput).*$", input_objects, perl = TRUE))]
 radio_objects <- radio_objects[c(grep("^(?!.*update).*$", radio_objects, perl = TRUE))]
+switch_objects <- switch_objects[c(grep("^(?!.*update).*$", switch_objects, perl = TRUE))]
 
 #assemble all objects and add their type to use to split the line in the next step
 objects <- matrix(c(input_objects,
                     radio_objects,
+                    switch_objects,
                     rep("Input", length(input_objects)),
-                    rep("radioButtons", length(radio_objects))),
+                    rep("radioButtons", length(radio_objects)),
+                    rep("materialSwitch", length(switch_objects))),
                   ncol = 2)
 
 check_for_save <- grep("*save = function()*", lines)
@@ -69,6 +74,11 @@ if ((nrow(objects) >= 1) & (length(check_for_save) == 1)){
     if (objects[row,2] == "radioButtons"){
       update_function <- "updateRadioButtons"
       update_parameter <- "selected"
+    }
+
+    if (objects[row,2] == "materialSwitch"){
+      update_function <- "updateMaterialSwitch"
+      update_parameter <- "value"
     }
 
     load_line <- glue::glue("{update_function}(session, \"{input_id}\", {update_parameter} = state${input_id})")
