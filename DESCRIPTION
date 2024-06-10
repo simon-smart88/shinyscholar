@@ -20,6 +20,7 @@ Depends:
     cookies,
     rintrojs
 Imports:
+    curl,
     devtools,
     dplyr (>= 1.0.2),
     DT (>= 0.5),

@@ -77,9 +77,16 @@ if (grepl("^[0-9]+$", substr(name, 1, 1), perl = TRUE) == TRUE){
   return()
 }
 
-if (name %in% tools::CRAN_package_db()[, c("Package")]) {
-  logger %>% writeLog(type = "error", "A package on CRAN already uses that name")
-  return()
+online <- curl::has_internet()
+
+if (online) {
+  if (name %in% tools::CRAN_package_db()[, c("Package")]) {
+    logger %>% writeLog(type = "error", "A package on CRAN already uses that name")
+    return()
+  }
+} else {
+  logger %>% writeLog(type="warning", "You are not online so your package name could
+                      not be checked against existing CRAN packages")
 }
 
 if (any(modules$map) == TRUE & include_map == FALSE){
