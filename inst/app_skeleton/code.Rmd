@@ -11,20 +11,24 @@ core_code_module_ui <- function(id) {
 core_code_module_server <- function(id, common, module) {
   moduleServer(id, function(input, output, session) {
     output$code_module <- renderPrint({
-      req(module())
-  
+      req(module != "")
+      req(module != "intro")
       if (input$code_choice == "Module"){
-        code <- readLines(system.file(glue("shiny/modules/{module()}.R"),package = "{{app_library}}"))
+        code <- readLines(system.file(glue("shiny/modules/{module}.R"),package = "{{app_library}}"))
       }
       if (input$code_choice == "Function"){
         #separate call required in case there are multiple functions
-        ga_call <- getAnywhere(module())
-        code <- capture.output(print(getAnywhere(module())[which(ga_call$where == "{{app_library}}")]))
+        ga_call <- getAnywhere(module)
+        code <- capture.output(print(getAnywhere(module)[which(ga_call$where == "{{app_library}}")]))
+        if (length(code) > 1){
         code <- code[1:(length(code)-2)]
+        } else {
+          code <- "There is no function for this module"
+        }
       }
       if (input$code_choice == "Markdown"){
-        if (file.exists(system.file(glue::glue("shiny/modules/{module()}.Rmd"), package = "{{app_library}}"))){
-          code <- readLines(system.file(glue::glue("shiny/modules/{module()}.Rmd"), package = "{{app_library}}"))
+        if (file.exists(system.file(glue::glue("shiny/modules/{module}.Rmd"), package = "{{app_library}}"))){
+          code <- readLines(system.file(glue::glue("shiny/modules/{module}.Rmd"), package = "{{app_library}}"))
         } else {
           code <- "There is no markdown file for this module"
           }

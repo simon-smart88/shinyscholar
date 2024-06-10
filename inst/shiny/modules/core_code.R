@@ -19,7 +19,12 @@ core_code_module_server <- function(id, common, module) {
         #separate call required in case there are multiple functions
         ga_call <- getAnywhere(module)
         code <- capture.output(print(getAnywhere(module)[which(ga_call$where == "package:shinyscholar")]))
-        code <- code[1:(length(code)-2)]
+        if (length(code) > 1){
+          code <- code[1:(length(code)-2)]
+        } else {
+          code <- "There is no function for this module"
+        }
+
       }
       if (input$code_choice == "Markdown"){
         if (file.exists(system.file(glue::glue("shiny/modules/{module}.Rmd"), package = "shinyscholar"))){
