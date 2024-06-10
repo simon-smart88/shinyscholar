@@ -23,6 +23,7 @@
   })
 
   output$result <- renderText({
+    gargoyle::watch("{{id}}")
     # Result
   })
 
