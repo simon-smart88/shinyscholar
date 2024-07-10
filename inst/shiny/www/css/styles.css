@@ -15,6 +15,27 @@
   overflow:auto;
   border:1px solid grey;
 }
+
+.log_start{
+  color:cyan;
+}
+
+.log_end{
+  color:green;
+}
+
+.log_info{
+  color:blue;
+}
+
+.log_warn{
+  color:orange;
+}
+
+.log_error{
+  color:red;
+}
+
 hr {
     border: none;
     height: 5px;

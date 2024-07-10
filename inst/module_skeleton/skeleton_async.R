@@ -21,7 +21,7 @@
       # WARNING ####
 
       # FUNCTION CALL ####
-      common$logger %>% writeLog("Starting to run {{id}}")
+      common$logger %>% writeLog(type = "starting", "Starting to run {{id}}")
       # invoke the async task
       common$tasks${{id}}$invoke()
       # reactive the results observer if it has already been used
@@ -43,7 +43,7 @@
       # check the class of the result is the class when the function runs successfully
       if (class(result) == "list"){
 
-        common$logger %>% writeLog("{{id}} has completed")
+        common$logger %>% writeLog(type = "complete", "{{id}} has completed")
 
         # TRIGGER
         gargoyle::trigger("{{id}}")

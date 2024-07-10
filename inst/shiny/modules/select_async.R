@@ -46,7 +46,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
     }
 
     # FUNCTION CALL ####
-    common$logger %>% writeLog("Starting to download Fcover data")
+    common$logger %>% writeLog(type = "starting", "Starting to download Fcover data")
     # invoke the async task
     common$tasks$select_async$invoke(common$poly, input$date, TRUE)
     # reactive the results observer if it has already been used
@@ -73,7 +73,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
       raster <- terra::unwrap(result$raster)
       common$ras <- raster
 
-      common$logger %>% writeLog("Fcover data has been downloaded")
+      common$logger %>% writeLog(type = "complete", "Fcover data has been downloaded")
       common$logger %>% writeLog(result$message)
 
       # TRIGGER
