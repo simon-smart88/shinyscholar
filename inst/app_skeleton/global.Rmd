@@ -2,7 +2,7 @@
 library(glue)
 ```
 
-```{r renv.ignore = TRUE, perl = {{async}}}
+```{r renv.ignore = TRUE, purl = {{async}}}
 future::plan(future::multisession)
 ```
 
