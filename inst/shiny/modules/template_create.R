@@ -88,9 +88,9 @@ template_create_module_server <- function(id, common, parent_session, map) {
     output$module_options <- renderUI({
 
       if (input$include_map){
-        choices <- c("Map", "Results", "Rmd", "Save")
+        choices <- c("Map", "Results", "Rmd", "Save", "Async")
       } else {
-        choices <- c("Results", "Rmd", "Save")
+        choices <- c("Results", "Rmd", "Save", "Async")
       }
 
       lapply(module_list(), function(id){shinyWidgets::checkboxGroupButtons(
@@ -101,8 +101,8 @@ template_create_module_server <- function(id, common, parent_session, map) {
 
       module_options <- reactive({
         df <- t(as.data.frame(lapply(module_list(), function(x){
-          c("Map", "Results", "Rmd", "Save") %in% input[[x]]})))
-        colnames(df) <- c("map", "results", "rmd", "save")
+          c("Map", "Results", "Rmd", "Save", "Async") %in% input[[x]]})))
+        colnames(df) <- c("map", "results", "rmd", "save", "async")
         df
       })
 

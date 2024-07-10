@@ -2,7 +2,7 @@
   ns <- shiny::NS(id)
   tagList(
     # UI
-    actionButton(ns("run"), "Run module {{id}}")
+    bslib::input_task_button(ns("run"), "Run module {{id}}")
   )
 }
 

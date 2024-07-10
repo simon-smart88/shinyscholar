@@ -29,11 +29,17 @@ tidy_purl <- function(params){
 #' between modules. The objects meta, logger and state are included by default
 #' and if include_map is TRUE, the object poly is included to store polygons
 #' drawn on the map.
-#' @param modules A dataframe containing long and short names of components (tabs) and modules
-#' in the order to be included and whether they should include mapping, save,
-#' markdown and result functionality. The component and module columns are used to generate file
-#' names for the modules. The long_component and long_module columns are used to generate UI and
-#' so should be formatted appropriately.
+#' @param modules dataframe. Containing one row for each module in the order
+#' to be included and with the following column names:
+#'  \item{component}{character. Single word descriptor for the component used to name files}
+#'  \item{long_component}{character. Full component name displayed to the user and formatted appropriately}
+#'  \item{module}{character. Single word descriptor for the module used to name files}
+#'  \item{long_module}{character. Full module name displayed to the user and formatted appropriately}
+#'  \item{map}{logical. Whether or not the module interacts with the map}
+#'  \item{result}{logical. Whether or not the module produces results}
+#'  \item{rmd}{logical. Whether or not the module is included in the markdown}
+#'  \item{save}{logical. Whether or not the input values of the model should be saved}
+#'  \item{async}{logical. Whether or not the module will run asynchronously}
 #' @param author character. Name of the author(s)
 #' @param install logical. Whether to install the package
 #' @param logger Stores all notification messages to be displayed in the Log
@@ -51,7 +57,8 @@ tidy_purl <- function(params){
 #' "map" = c(TRUE, TRUE, FALSE, FALSE),
 #' "result" = c(FALSE, FALSE, TRUE, TRUE),
 #' "rmd" = c(TRUE, TRUE, TRUE, TRUE),
-#' "save" = c(TRUE, TRUE, TRUE, TRUE))
+#' "save" = c(TRUE, TRUE, TRUE, TRUE),
+#' "async = c("TRUE, FALSE, FALSE, FALSE))
 #' common_objects = c("raster", "histogram", "scatter")
 #'
 #' create_template(path = "~/Documents", name = "demo",
@@ -85,8 +92,30 @@ if (online) {
     return()
   }
 } else {
-  logger %>% writeLog(type="warning", "You are not online so your package name could
+  logger %>% writeLog(type = "warning", "You are not online so your package name could
                       not be checked against existing CRAN packages")
+}
+
+module_columns <- c("component", "long_component", "module", "long_module", "map", "result", "rmd", "save", "async")
+
+if (!all(module_columns %in% colnames(modules))){
+  missing_column <- module_columns[!(module_columns %in% colnames(modules))]
+  missing_column <- paste(missing_column, collapse = ",")
+  if (missing_column == "async"){
+    logger %>% writeLog(type = "warning", glue::glue("As of v0.2.0 the modules dataframe should also contain an async column"))
+    modules <- cbind(modules, data.frame("async" = rep(FALSE, nrow(modules))))
+  } else {
+    logger %>% writeLog(type = "error", glue::glue("The modules dataframe must contain the column(s): {missing_column}"))
+    return()
+  }
+
+}
+
+if (!all(colnames(modules) %in% module_columns)){
+  invalid_column <- colnames(modules)[colnames(modules) %in% module_columns]
+  invalid_column <- paste(invalid_column, collapse = ",")
+  logger %>% writeLog(type = "error", glue::glue("The modules dataframe contains {invalid_column} which is/are not valid column names"))
+  return()
 }
 
 if (any(modules$map) == TRUE & include_map == FALSE){
@@ -106,11 +135,15 @@ if (any(modules$result) == FALSE){
 
 if (any(common_objects %in% c("meta", "logger", "state", "poly"))){
   conflicts <- common_objects[common_objects %in% c("meta", "logger", "state", "poly")]
-  conflicts <- paste(conflicts, collapse=',')
+  conflicts <- paste(conflicts, collapse = ",")
 
   logger %>% writeLog(type = "error", glue::glue("common_objects contains {conflicts} which are included
                                       in common by default. Please choose a different name."))
   return()
+}
+
+if (any(modules$async)){
+  async = TRUE
 }
 
 # Create directories ====
@@ -136,6 +169,10 @@ if (include_map == TRUE){
   common_objects_internal <- c(common_objects_internal, c("poly"))
 }
 
+if (async == TRUE){
+  common_objects_internal <- c(common_objects_internal, c("tasks"))
+}
+
 #convert common_objects to list string
 common_objects_list <- paste0("list(", paste(sapply(common_objects_internal, function(a) paste0(a, " = NULL")), collapse = ",\n "), ")")
 
@@ -157,7 +194,8 @@ server_params <- c(
   list(app_library = name,
        include_map = include_map,
        include_table = include_table,
-       include_code = include_code
+       include_code = include_code,
+       async = async
        )
 )
 server_lines <- tidy_purl(server_params)
@@ -211,7 +249,8 @@ full_component_list <- c(components$component, "rep")
 global_params <- c(
   file = system.file("app_skeleton/global.Rmd", package="shinyscholar"),
   list(app_library = name,
-       component_list = printVecAsis(full_component_list)
+       component_list = printVecAsis(full_component_list),
+       async = async
   )
 )
 
@@ -259,7 +298,16 @@ for (m in 1:nrow(modules)){
                       result = modules$result[m],
                       rmd = modules$rmd[m],
                       save = modules$save[m],
+                      async = modules$async[m],
                       init = TRUE)
+
+  #add map parameter if any module is async, but the individual module is not
+  if ((async) && (!modules$async[m])){
+    module_file <- glue::glue("{path}/inst/shiny/modules/{module_name}.R")
+    module_lines <- readLines(module_file)
+    module_lines <- gsub("id, common, parent_session", "id, common, parent_session, map", module_lines)
+    writeLines(module_lines, module_file)
+  }
 
   #create function for each module
   empty_function <- paste0(module_name," <- function(x){return(NULL)}")
@@ -349,6 +397,12 @@ file.copy(helper_function_file, glue::glue("{path}/R/"))
 description_template <- system.file("app_skeleton/DESCRIPTION", package = "shinyscholar")
 description_lines <- readLines(description_template)
 description_lines[1] <- glue::glue("Package: {name}")
+if (async){
+  description_lines <- append(description_lines, "bslib,", 12)
+  description_lines <- append(description_lines, "future,", 14)
+  description_lines <- append(description_lines, "promises,", 19)
+}
+
 writeLines(description_lines, glue::glue("{path}/DESCRIPTION"))
 
 # Create run_module ====
