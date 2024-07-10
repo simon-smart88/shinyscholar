@@ -13,16 +13,16 @@ select_query_module_ui <- function(id) {
 select_query_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
-  #Required to pass the event to the mapping function
-  gargoyle::init("select_query_random")
+  #pick a random location over land, but fail safely in case the API is broken
   observeEvent(input$random, {
-  gargoyle::trigger("select_query")
-  gargoyle::trigger("select_query_random")
-  #trigger this again on the first run
-  if (input$random == 1){
-    shinyjs::click("random")
-  }
-  })
+      random_land <- httr2::request("https://api.3geonames.org/?randomland=yes") |> httr2::req_perform()
+      if (random_land$status_code == 200){
+        random_land <- httr2::resp_body_xml(random_land) |> xml2::as_list()
+        map %>% setView(random_land$geodata$nearest$longt, random_land$geodata$nearest$latt, zoom = 9)
+      } else {
+        common$logger %>% writeLog(type = "error", "Something went wrong requesting a random location")
+      }
+    })
 
   observeEvent(input$run, {
 
@@ -45,16 +45,18 @@ select_query_module_server <- function(id, common, parent_session, map) {
     ras <- select_query(common$poly, input$date, common$logger)
     #close if the function returns null
     close_loading_modal()
-    # LOAD INTO COMMON ####
-    common$ras <- ras
-    # METADATA ####
-    common$meta$select_query$date <- input$date
-    common$meta$select_query$poly <- common$poly
-    common$meta$select_query$name <- "FCover"
-    common$meta$select_query$used <- TRUE
-    # TRIGGER ####
-    gargoyle::trigger("select_query")
-    show_map(parent_session)
+    if (!is.null(ras)){
+      # LOAD INTO COMMON ####
+      common$ras <- ras
+      # METADATA ####
+      common$meta$select_query$date <- input$date
+      common$meta$select_query$poly <- common$poly
+      common$meta$select_query$name <- "FCover"
+      common$meta$select_query$used <- TRUE
+      # TRIGGER ####
+      gargoyle::trigger("select_query")
+      show_map(parent_session)
+    }
   })
 
   return(list(
@@ -79,18 +81,6 @@ select_query_module_result <- function(id) {
 
 select_query_module_map <- function(map, common) {
 
-  #pick a random location over land, but fail safely in case the API is broken
-  gargoyle::on("select_query_random", {
-    random_land <- httr2::request("https://api.3geonames.org/?randomland=yes") |> httr2::req_perform()
-    if (random_land$status_code == 200){
-      random_land <- httr2::resp_body_xml(random_land) |> xml2::as_list()
-      map %>% setView(random_land$geodata$nearest$longt, random_land$geodata$nearest$latt, zoom = 9)
-    } else {
-      common$logger %>% writeLog(type = "error", "Something went wrong requesting a random location")
-    }
-  })
-
-  req(common$ras)
   ex <- as.vector(terra::ext(common$ras))
   pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9, na.color = "pink")
   map %>%
