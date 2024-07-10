@@ -17,6 +17,7 @@
     # LOAD INTO COMMON ####
 
     # METADATA ####
+    common$meta${{id}}$setting1 <- input
 
     # TRIGGER
     gargoyle::trigger("{{id}}")
@@ -53,8 +54,8 @@
   # Variables used in the module's Rmd code
   list(
     {{id}}_knit = !is.null(common$some_object),
-    var1 = common$meta$setting1,
-    var2 = common$meta$setting2
+    var1 = common$meta${{id}}$setting1,
+    var2 = common$meta${{id}}$setting2
   )
 }
 
