@@ -10,7 +10,7 @@ select_query_module_ui <- function(id) {
   )
 }
 
-select_query_module_server <- function(id, common, parent_session) {
+select_query_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   #Required to pass the event to the mapping function

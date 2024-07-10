@@ -141,9 +141,9 @@ function(input, output, session) {
       # Initialize event triggers for each module
       gargoyle::init(module$id)
       if (module$id == "rep_markdown"){
-        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, COMPONENT_MODULES))
+        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, map = map, COMPONENT_MODULES))
       } else {
-        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session))
+        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, map = map))
       }
       if (is.list(return) &&
           "save" %in% names(return) && is.function(return$save) &&

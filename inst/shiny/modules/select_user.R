@@ -11,7 +11,7 @@ select_user_module_ui <- function(id) {
   )
 }
 
-select_user_module_server <- function(id, common, parent_session) {
+select_user_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {

@@ -9,7 +9,7 @@ plot_scatter_module_ui <- function(id) {
 }
 
 
-plot_scatter_module_server <- function(id, common, parent_session) {
+plot_scatter_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {
