@@ -10,7 +10,7 @@ Authors@R:
     c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut","cre")))
 Depends:
     R (>= 3.5.0),
-    shiny (>= 1.6.0),
+    shiny (>= 1.8.1),
     leaflet (>= 2.0.2),
     terra,
     R6,
@@ -20,10 +20,12 @@ Depends:
     cookies,
     rintrojs
 Imports:
+    bslib,
     curl,
     devtools,
     dplyr (>= 1.0.2),
     DT (>= 0.5),
+    future,
     geosphere,
     glue,
     httr2,
@@ -32,6 +34,7 @@ Imports:
     leafem,
     magrittr,
     markdown,
+    promises,
     RColorBrewer,
     renv,
     rlang,
@@ -49,3 +52,4 @@ License: GPL-3
 URL: https://simon-smart88.github.io/shinyscholar/
 Encoding: UTF-8
 RoxygenNote: 7.3.1
+Roxygen: list(markdown = TRUE)

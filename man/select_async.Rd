@@ -11,16 +11,16 @@ select_async(poly, date, async = FALSE)
 
 \item{date}{character. Date of image to load}
 
-\item{async}{logical. Whether the function is being run asychronously}
+\item{async}{logical. Whether the function is being run asynchronously}
 }
 \value{
 A list containing:
- \item{raster}{a SpatRaster object when `async` is `FALSE` or a PackedSpatRaster when
-`async` is `TRUE`}
- \item{message}{Information on the number of missing pixels}
+\item{raster}{a SpatRaster object when \code{async} is \code{FALSE} or a PackedSpatRaster when
+\code{async} is \code{TRUE}}
+\item{message}{Information on the number of missing pixels}
 }
 \description{
-This function is identical to select_query but can be run asychronously
+This function is identical to select_query but can be run asynchronously
 }
 \examples{
 \dontrun{
@@ -31,5 +31,5 @@ This function is identical to select_query but can be run asychronously
  }
 }
 \author{
-Simon Smart <simon.smart@cantab.net>
+Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }

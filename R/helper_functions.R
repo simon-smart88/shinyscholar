@@ -39,10 +39,13 @@ printVecAsis <- function(x, asChar = FALSE) {
 #' @keywords internal
 #' @export
 spurious <- function(x) {
+  bslib::accordion(x)
   DT::renderDataTable(x)
-  RColorBrewer::brewer.pal(x)
+  future::as.cluster(x)
   leafem::addMouseCoordinates(x)
   leaflet.extras::removeDrawToolbar(x)
+  promises::as.promise(x)
+  RColorBrewer::brewer.pal(x)
   rmarkdown::github_document(x)
   shinyWidgets::pickerInput(x)
   shinyjs::disable(x)

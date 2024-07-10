@@ -31,15 +31,17 @@ tidy_purl <- function(params){
 #' drawn on the map.
 #' @param modules dataframe. Containing one row for each module in the order
 #' to be included and with the following column names:
-#'  \item{component}{character. Single word descriptor for the component used to name files}
-#'  \item{long_component}{character. Full component name displayed to the user and formatted appropriately}
-#'  \item{module}{character. Single word descriptor for the module used to name files}
-#'  \item{long_module}{character. Full module name displayed to the user and formatted appropriately}
-#'  \item{map}{logical. Whether or not the module interacts with the map}
-#'  \item{result}{logical. Whether or not the module produces results}
-#'  \item{rmd}{logical. Whether or not the module is included in the markdown}
-#'  \item{save}{logical. Whether or not the input values of the model should be saved}
-#'  \item{async}{logical. Whether or not the module will run asynchronously}
+#' \itemize{
+#'  \item `component` character. Single word descriptor for the component used to name files
+#'  \item `long_component` character. Full component name displayed to the user, formatted appropriately
+#'  \item `module` character. Single word descriptor for the module used to name files
+#'  \item `long_module` character. Full module name displayed to the user, formatted appropriately
+#'  \item `map` logical. Whether or not the module interacts with the map
+#'  \item `result` logical. Whether or not the module produces results
+#'  \item `rmd` logical. Whether or not the module is included in the markdown
+#'  \item `save` logical. Whether or not the input values of the model should be saved
+#'  \item `async` logical. Whether or not the module will run asynchronously
+#' }
 #' @param author character. Name of the author(s)
 #' @param install logical. Whether to install the package
 #' @param logger Stores all notification messages to be displayed in the Log

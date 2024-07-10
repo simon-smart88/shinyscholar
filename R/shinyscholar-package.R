@@ -1,7 +1,7 @@
+"_PACKAGE"
 #' @name shinyscholar-package
 #' @aliases shinyscholar
 #' @aliases shinyscholar-package
-#' @docType package
 #' @title \emph{shinyscholar}: A modular platform for creating reproducible applications
 #' @description \emph{shinyscholar} is a \code{shiny} app template for creating
 #'   reproducible applications to academic standards. shinyscholar is forked from 'wallace'
