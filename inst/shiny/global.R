@@ -20,6 +20,7 @@ COMPONENT_MODULES <- list()
 base_module_configs <- c(
 
   "modules/select_query.yml",
+  "modules/select_async.yml",
   "modules/select_user.yml",
   "modules/plot_hist.yml",
   "modules/plot_scatter.yml",

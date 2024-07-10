@@ -1,0 +1,20 @@
+```{asis, echo = {{select_query_knit}}, eval = {{select_query_knit}}, include = {{select_query_knit}}}
+Loads the raster image for the area selected on the map
+```
+
+```{r, echo = {{select_query_knit}}, include = {{select_query_knit}}}
+poly <- matrix({{select_poly}}, ncol = 2, byrow = FALSE)
+ras <- select_query(poly, "{{select_date}}")
+raster_name <- "{{select_name}}"
+
+raster_extent <- as.vector(terra::ext(ras))
+map_pal <- colorBin("Greens", domain = values(ras), bins = 9, na.color = "#00000000")
+
+leaflet() %>%
+  addProviderTiles('Esri.WorldTopoMap') %>%
+  addRasterImage(ras, colors = map_pal) %>%
+  addTiles(urlTemplate = "", attribution = "Copernicus Sentinel data 2023") %>%
+  fitBounds(lng1 = raster_extent[[1]], lng2 = raster_extent[[2]], lat1 = raster_extent[[3]], lat2 = raster_extent[[4]]) %>%
+  addLegend(position = "bottomright", pal = map_pal, values = values(ras),
+            title = raster_name) 
+```
