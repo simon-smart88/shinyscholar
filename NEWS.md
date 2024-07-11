@@ -32,4 +32,5 @@ shinyscholar 0.2.0
 =============
 - Added ability to run functions asynchronously using `shiny::ExtendedTask()`
 - Modules that do not produce results now have a placeholder informing the user
-- Updated `writeLog` to use icons for different events
+- Updated `writeLog()` to use icons for different events
+- Updated `save_and_load()` to ignore manually added lines and fix indenting.
