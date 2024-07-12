@@ -1,6 +1,6 @@
 Package: shinyscholar
-Version: 0.1.2
-Date: 2024-03-19
+Version: 0.2.0
+Date: 2024-07-12
 Title: A template for creating modular reproducible shiny applications
 Description: The 'shiny' application shinyscholar is a modular platform for 
     creating reproducible applications to academic standards. 'shinyscholar' is 
