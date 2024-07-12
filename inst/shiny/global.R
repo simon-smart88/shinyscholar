@@ -1,7 +1,8 @@
 library(glue)
 
-MB <- 1024^2
+future::plan(future::multisession)
 
+MB <- 1024^2
 UPLOAD_SIZE_MB <- 5000
 options(shiny.maxRequestSize = UPLOAD_SIZE_MB*MB)
 
@@ -18,8 +19,8 @@ COMPONENT_MODULES <- list()
 
 # Load base modules
 base_module_configs <- c(
-
   "modules/select_query.yml",
+  "modules/select_async.yml",
   "modules/select_user.yml",
   "modules/plot_hist.yml",
   "modules/plot_scatter.yml",

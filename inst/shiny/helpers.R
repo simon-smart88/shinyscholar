@@ -103,11 +103,16 @@ insert_modules_ui <- function(component) {
 # Add the results section UI of all modules in a component
 insert_modules_results <- function(component) {
   lapply(COMPONENT_MODULES[[component]], function(module) {
-    if (is.null(module$result_function)) return()
-    conditionalPanel(
-      glue("input.{component}Sel == '{module$id}'"),
-      do.call(module$result_function, list(module$id))
-    )
+    if (is.null(module$result_function)){
+      conditionalPanel(
+        glue("input.{component}Sel == '{module$id}'"),
+        tagList(tags$br(), tags$h3(glue("{module$short_name} does not produce results"))))
+    } else {
+      conditionalPanel(
+        glue("input.{component}Sel == '{module$id}'"),
+        do.call(module$result_function, list(module$id))
+      )
+    }
   })
 }
 

@@ -4,10 +4,11 @@ modules <- data.frame(
   "module" = c("user", "query", "hist", "scatter"),
   "long_module" = c("Upload your own data", "Query a database to obtain data",
                     "Plot the data as a histogram", "Plot the data as a scatterplot"),
-  "map" = c(FALSE, FALSE, FALSE, FALSE),
-  "result" = c(FALSE, FALSE, FALSE, FALSE),
+  "map" = c(TRUE, FALSE, FALSE, FALSE),
+  "result" = c(TRUE, FALSE, FALSE, FALSE),
   "rmd" = c(TRUE, TRUE, TRUE, TRUE),
-  "save" = c(TRUE, TRUE, TRUE, TRUE))
+  "save" = c(TRUE, TRUE, TRUE, TRUE),
+  "async" = c(TRUE, FALSE, FALSE, FALSE))
 
 common_objects = c("raster", "histogram", "scatter")
 
@@ -30,6 +31,39 @@ test_that("Check create template returns expected errors", {
                author = "Simon E. H. Smart", install = FALSE, logger = NULL),
                "A package on CRAN already uses that name")
 
+  expect_warning(create_template(path = tempdir(), name = "shinydemo",
+               include_map = TRUE, include_table = TRUE, include_code = TRUE,
+               common_objects = common_objects, modules = within(modules, rm("async")),
+               author = "Simon E. H. Smart", install = FALSE, logger = NULL),
+               "As of v0.2.0 the modules dataframe should also contain an async column")
+
+  expect_error(create_template(path = "~", name = "shinydemo",
+               include_map = TRUE, include_table = TRUE, include_code = TRUE,
+               common_objects = common_objects, modules = within(modules, rm("long_module")),
+               author = "Simon E. H. Smart", install = FALSE, logger = NULL),
+                 "The modules dataframe must contain the column\\(s\\): long_module")
+
+  expect_error(create_template(path = "~", name = "shinydemo",
+               include_map = TRUE, include_table = TRUE, include_code = TRUE,
+               common_objects = common_objects, modules = within(modules, rm("long_module", "map")),
+               author = "Simon E. H. Smart", install = FALSE, logger = NULL),
+                 "The modules dataframe must contain the column\\(s\\): long_module,map")
+
+  expect_error(create_template(path = "~", name = "shinydemo",
+               include_map = TRUE, include_table = TRUE, include_code = TRUE,
+               common_objects = common_objects,
+               modules = cbind(modules, data.frame("banana" = rep(FALSE, 4))),
+               author = "Simon E. H. Smart", install = FALSE, logger = NULL),
+               "The modules dataframe contains banana which is/are not valid column names")
+
+  expect_error(create_template(path = "~", name = "shinydemo",
+               include_map = TRUE, include_table = TRUE, include_code = TRUE,
+               common_objects = common_objects,
+               modules = cbind(modules, data.frame("banana" = rep(FALSE, 4), "apple" = rep(1,4))),
+               author = "Simon E. H. Smart", install = FALSE, logger = NULL),
+               "The modules dataframe contains banana,apple which is/are not valid column names")
+
+  modules$map <- c(FALSE, FALSE, FALSE, FALSE)
   expect_error(create_template(path = "~", name = "shinydemo",
                include_map = TRUE, include_table = TRUE, include_code = TRUE,
                common_objects = common_objects, modules = modules,
@@ -37,7 +71,7 @@ test_that("Check create template returns expected errors", {
                "You have included a map but none of your modules use it")
 
   modules$map <- c(TRUE, TRUE, FALSE, FALSE)
-
+  modules$result <- c(FALSE, FALSE, FALSE, FALSE)
   expect_error(create_template(path = "~", name = "shinydemo",
                include_map = TRUE, include_table = TRUE, include_code = TRUE,
                common_objects = common_objects, modules = modules,
@@ -45,7 +79,6 @@ test_that("Check create template returns expected errors", {
                "At least one module must return results")
 
   modules$result <- c(FALSE, FALSE, TRUE, TRUE)
-
   expect_error(create_template(path = "~", name = "shinydemo",
                                include_map = TRUE, include_table = TRUE, include_code = TRUE,
                                common_objects = c("logger", common_objects), modules = modules,
@@ -56,7 +89,7 @@ test_that("Check create template returns expected errors", {
 
 test_that("Check create template function works as expected", {
 
-
+  modules$map <- c(TRUE, TRUE, FALSE, FALSE)
 
   directory <- tempdir()
   #the name must be shinyscholar so that the calls to package files work
@@ -90,6 +123,7 @@ test_that("Check create template function works with false settings", {
   modules$result <- c(TRUE, FALSE, FALSE, FALSE)
   modules$rmd = c(FALSE, FALSE, FALSE, FALSE)
   modules$save = c(FALSE, FALSE, FALSE, FALSE)
+  modules$async = c(FALSE, FALSE, FALSE, FALSE)
 
   directory <- tempdir()
   directory <- paste0(directory,"2")

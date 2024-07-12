@@ -11,6 +11,7 @@ create_module(
   result = FALSE,
   rmd = FALSE,
   save = FALSE,
+  async = FALSE,
   init = FALSE
 )
 }
@@ -29,6 +30,8 @@ download.}
 
 \item{save}{logical. Whether or not the module has some custom data to save when the
 user saves the current session.}
+
+\item{async}{logical. Whether or not the module will operate asynchronously.}
 
 \item{init}{logical. Whether or not the function is being used inside of the init function}
 }

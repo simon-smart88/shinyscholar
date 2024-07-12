@@ -9,7 +9,7 @@ cookies::add_cookie_handlers(tagList(
     functions = c("scrollLogger", "disableModule", "enableModule")
   ),
   navbarPage(
-    theme = bslib::bs_theme(version = 3,
+    theme = bslib::bs_theme(version = 5,
                             bootswatch = "spacelab"),
     id = "tabs",
     collapsible = TRUE,
@@ -108,6 +108,15 @@ cookies::add_cookie_handlers(tagList(
                 id = "messageLog",
                 div(id = "logHeader", div(id = "logContent"))
               )
+            )
+          )
+          ,
+          fixedRow(
+            column(
+              10,
+              offset = 1,
+              br(),
+              textOutput("running_tasks")
             )
           )
         ),

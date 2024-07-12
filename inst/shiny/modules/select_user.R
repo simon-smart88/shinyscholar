@@ -11,7 +11,7 @@ select_user_module_ui <- function(id) {
   )
 }
 
-select_user_module_server <- function(id, common, parent_session) {
+select_user_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {
@@ -51,7 +51,7 @@ select_user_module_server <- function(id, common, parent_session) {
 select_user_module_map <- function(map, common) {
     req(common$ras)
     ex <- as.vector(terra::ext(common$ras))
-    pal <- colorBin("YlOrRd", domain = values(common$ras), bins = 9, na.color = "#00000000")
+    pal <- colorBin("YlOrRd", domain = terra::values(common$ras), bins = 9, na.color = "#00000000")
     raster_name <- common$meta$select_user$name
     map %>%
       clearGroup(raster_name) %>%

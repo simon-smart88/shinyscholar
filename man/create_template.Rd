@@ -20,7 +20,8 @@ create_template(
 \arguments{
 \item{path}{character. Path to where the app should be created}
 
-\item{name}{character. Name of the app which will be used as the package name}
+\item{name}{character. Name of the app which will be used as the package name.
+Must be only characters and numbers and not start with a number.}
 
 \item{include_map}{logical. Whether to include a leaflet map}
 
@@ -33,11 +34,19 @@ between modules. The objects meta, logger and state are included by default
 and if include_map is TRUE, the object poly is included to store polygons
 drawn on the map.}
 
-\item{modules}{A dataframe containing long and short names of components (tabs) and modules
-in the order to be included and whether they should include mapping, save,
-markdown and result functionality. The component and module columns are used to generate file
-names for the modules. The long_component and long_module columns are used to generate UI and
-so should be formatted appropriately.}
+\item{modules}{dataframe. Containing one row for each module in the order
+to be included and with the following column names:
+\itemize{
+\item \code{component} character. Single word descriptor for the component used to name files
+\item \code{long_component} character. Full component name displayed to the user, formatted appropriately
+\item \code{module} character. Single word descriptor for the module used to name files
+\item \code{long_module} character. Full module name displayed to the user, formatted appropriately
+\item \code{map} logical. Whether or not the module interacts with the map
+\item \code{result} logical. Whether or not the module produces results
+\item \code{rmd} logical. Whether or not the module is included in the markdown
+\item \code{save} logical. Whether or not the input values of the model should be saved
+\item \code{async} logical. Whether or not the module will run asynchronously
+}}
 
 \item{author}{character. Name of the author(s)}
 
@@ -61,7 +70,8 @@ modules <- data.frame(
 "map" = c(TRUE, TRUE, FALSE, FALSE),
 "result" = c(FALSE, FALSE, TRUE, TRUE),
 "rmd" = c(TRUE, TRUE, TRUE, TRUE),
-"save" = c(TRUE, TRUE, TRUE, TRUE))
+"save" = c(TRUE, TRUE, TRUE, TRUE),
+"async = c("TRUE, FALSE, FALSE, FALSE))
 common_objects = c("raster", "histogram", "scatter")
 
 create_template(path = "~/Documents", name = "demo",
@@ -72,5 +82,5 @@ install = TRUE)
 }
 }
 \author{
-Simon E. H. Smart <simon.smart@cantab.net>
+Simon E. H. Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }

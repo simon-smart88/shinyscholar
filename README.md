@@ -1,4 +1,4 @@
-# shinyscholar (v0.1.2)
+# shinyscholar (v0.2.0)
 
 <img src="https://raw.githubusercontent.com/simon-smart88/shinyscholar/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;">
 
@@ -124,10 +124,44 @@ One test file for each module is created by `create_template()` and placed in `t
 Unit tests should be added for each function called by each module to ensure that it produces the intended output and returns errors appropriately. These tests are run in the conventional manner by `{testthat}`. 
 
 ##### End-to-end testing
-End-to-end testing is used to validate that the app itself functions and uses `{shinytest2}`. Tests can be recorded using `shinytest2::record_test()` but the snapshot functionality of the package does not work well with the architecture of this package. Recording tests is still a useful way to record the input names required to navigate through the app though. `common` is made available for use inside tests by using `common <- app$get_value(export = "common")` so you can check that objects are in the expected state after running a module.
+End-to-end testing is used to validate that the app itself functions and uses `{shinytest2}`. Tests can be recorded using `shinytest2::record_test()` but the snapshot functionality of the package does not work well with the architecture of this package. Recording tests is still a useful way to record the input names required to navigate through the app though. `common` is made available for use inside tests by using `common <- app$get_value(export = "common")` so you can check that objects are in the expected state after running a module. This method is quite flaky however and if it does not work, alternatively `common` can be accessed by using the save functionality:
+
+```
+app$set_inputs(main = "Save")
+save_file <- app$get_download("core_save-save_session", filename = save_path)
+common <- readRDS(save_file)
+```
 
 #### Adding extra modules
 Further modules can be added using `create_module()` which creates the four files for the module. The module configuration file then needs to be added to `base_module_configs` in `global.R` and should be placed in the relevant position for the analysis since this vector controls the order of chunks within the Rmarkdown output. Any extra data objects that the modules creates must be added to `common.R`. This does not currently create the testing files or function file so these must be added manually.
+
+#### Asynchronous modules
+Support for asynchronous operations was added in v0.2.0 using the new `ExtendedTask` feature added in `{shiny}` v1.8.1. This has the advantage of allowing long-running operations to run in the background whilst the app remains responsive to the user and any other users connected to the same instance. Running modules asynchronously increases complexity however and requires several changes to structure of modules and the app itself. The `select_async` module contains an implementation that is functionally identical to `select_query` but runs asynchronously. 
+
+##### Running tasks
+`common$tasks` is a list that stores details of all the asynchronous tasks. Each task is added to the list above the `observeEvent()` in the `<identifier>_module_server` function as `common$tasks$<identifier>`. The task contains the module's function wrapped by `promises::future_promise()` and bound to a `bslib::bind_task_button()` which disables the button when the task is running:
+
+```
+common$tasks$<identifier> <- ExtendedTask$new(function(...) {
+    promises::future_promise({
+      <identifer>(...)
+    })
+  }) |> bslib::bind_task_button("run")
+```
+
+The task is invoked inside the `observeEvent()` by calling `common$tasks$<identifier>$invoke()` with the arguments of the module's function. As in the default implementation, metadata should be stored at this point when the function is called.
+
+##### Logging
+Because the asynchronous tasks are run in a different R session, `common$logger` is no longer accessible from inside the module's function and therefore cannot be used to send messages to the logger directly. Instead, an `async` parameter needs to be added to the function and error messages are returned by the function when `async` is `TRUE` or transferred to `stop` or `warning` if `async` is `FALSE` e.g. when being used in the .Rmd.
+
+##### Receiving results
+A separate `observe()` named `results` is required to listen for the result of the task available at `common$tasks$<identifier>$result()` but to prevent endless loops, we must stop the observer from functioning once the results are calculated by calling `results$suspend()` and reactivate it prior to the task being invoked using `results$resume()`. Inside `results`, the class of the object returned by the function should be checked and either passed to `common$logger` if it is an error message or stored in `common` as in the default implementation. 
+
+##### Mapping
+In the default implementation, only the mapping function of the currently selected module can be called, which prevents the result of an asynchronous task being added to the map. Instead `map` is passed as an argument to the module server function and then called once the result has been produced using `do.call("<identifier>_module_map", list(map, common))`.
+
+##### End-to-end testing
+The task needs to started using `app$click(selector = "#<identifier>-run")`. `{shinytest2}` cannot detect that an asynchronous task is running and so the `timeout` parameter must be set to allow sufficient time for the function to run. An `input` value should be set inside `results` using `shinyjs::runjs("Shiny.setInputValue('<identifier>-complete', 'complete');")` which can then be detected inside the test using `app$wait_for_value(input = "<identifier>-complete")` to indicate that the task has completed.
 
 ## Acknowledgments
 shinyscholar was developed as part of a project to develop digital tools for modelling infectious diseases [funded by Wellcome](https://wellcome.org/news/digital-tools-climate-sensitive-infectious-disease) at the [University of Leicester](https://le.ac.uk/). The version of Wallace that shinyscholar was derived from was funded by the [Global Biodiversity Information Facility](https://www.gbif.org/), [National Science Foundation](https://www.nsf.gov/) and [NASA](https://www.nasa.gov/).

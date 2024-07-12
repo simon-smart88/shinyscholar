@@ -2,9 +2,9 @@ core_mapping_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     leaflet::leafletOutput(ns("map"), height = 700),
-    absolutePanel(
-      top = 160, right = 20, width = 150, draggable = TRUE,
-      selectInput(ns("bmap"), "",
+    tags$div(
+      style = "display: flex; gap: 10px;",
+      selectInput(ns("bmap"), "Background map:",
                   choices = c("ESRI Topo" = "Esri.WorldTopoMap",
                               "Open Topo" = "OpenTopoMap",
                               "ESRI Imagery" = "Esri.WorldImagery",
@@ -22,7 +22,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
       leaflet() %>%
         setView(0, 0, zoom = 2) %>%
         addProviderTiles("Esri.WorldTopoMap") %>%
-        addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
+        leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                        markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE)
     )
 

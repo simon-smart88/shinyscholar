@@ -27,6 +27,21 @@ function(input, output, session) {
     shinyjs::js$scrollLogger()
   })
 
+  output$running_tasks <- renderText({
+    status <- unlist(lapply(common$tasks, function(x){x$status()}))
+    running <- length(status[status == "running"])
+    if (running == 0){
+      message <- "There are currently no tasks running"
+    }
+    if (running == 1){
+      message <- "There is currently 1 task running"
+    }
+    if (running > 1){
+      message <- glue::glue("There are currently {running} tasks running")
+    }
+    message
+  })
+
   ########################## #
   # REACTIVE VALUES LISTS ####
   ########################## #
@@ -141,9 +156,9 @@ function(input, output, session) {
       # Initialize event triggers for each module
       gargoyle::init(module$id)
       if (module$id == "rep_markdown"){
-        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, COMPONENT_MODULES))
+        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, map = map, COMPONENT_MODULES))
       } else {
-        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session))
+        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, map = map))
       }
       if (is.list(return) &&
           "save" %in% names(return) && is.function(return$save) &&

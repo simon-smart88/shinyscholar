@@ -22,9 +22,9 @@ run_shinyscholar()
 }
 }
 \author{
-Jamie Kass <jkass@gradcenter.cuny.edu>
+Jamie Kass \href{mailto:jkass@gradcenter.cuny.edu}{jkass@gradcenter.cuny.edu}
 
-Gonzalo E. Pinilla-Buitrago <gpinillabuitrago@gradcenter.cuny.edu>
+Gonzalo E. Pinilla-Buitrago \href{mailto:gpinillabuitrago@gradcenter.cuny.edu}{gpinillabuitrago@gradcenter.cuny.edu}
 
-Simon E. H. Smart <simon.smart@cantab.net>
+Simon E. H. Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }
