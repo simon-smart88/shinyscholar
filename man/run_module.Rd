@@ -18,5 +18,5 @@ run_module("select_query")
 }
 }
 \author{
-Simon E. H. Smart <simon.smart@cantab.net>
+Simon E. H. Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }

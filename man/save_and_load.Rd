@@ -13,8 +13,9 @@ save_and_load(folder_path, module = NULL)
 }
 \description{
 Adds lines to modules to save and load input values. By default
-all the modules in the application are edited.
+all the modules in the application are edited. Currently only input
+functions from \code{{shiny}} and \code{shinyWidgets::materialSwitch} are included.
 }
 \author{
-Simon E. H. Smart <simon.smart@cantab.net>
+Simon E. H. Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }

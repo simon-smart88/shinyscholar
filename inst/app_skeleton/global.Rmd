@@ -1,8 +1,13 @@
 ```{r renv.ignore = TRUE}
 library(glue)
+```
 
+```{r renv.ignore = TRUE, purl = {{async}}}
+future::plan(future::multisession)
+```
+
+```{r renv.ignore = TRUE}
 MB <- 1024^2
-
 UPLOAD_SIZE_MB <- 5000
 options(shiny.maxRequestSize = UPLOAD_SIZE_MB*MB)
 

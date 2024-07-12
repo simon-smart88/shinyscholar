@@ -16,8 +16,8 @@ a vector of values extracted from the raster
 }
 \description{
 This function is called by the plot_hist module and extracts
- values from a raster image.
+values from a raster image.
 }
 \author{
-Simon Smart <simon.smart@cantab.net>
+Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }

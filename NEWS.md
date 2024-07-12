@@ -27,3 +27,10 @@ shinyscholar 0.1.2
 - Moved mapping, introduction, code, save and load functionality out of server into `core_` modules.
 - Passed `parent_session` to the modules enabling switching to the results, map and table tab from within modules and added `show_table()`, `show_results()` and `show_table()` to simplify code.
 - Added `rep_renv` module to enable capturing dependencies.
+
+shinyscholar 0.2.0
+=============
+- Added ability to run functions asynchronously using `shiny::ExtendedTask()`
+- Modules that do not produce results now have a placeholder informing the user
+- Updated `writeLog()` to use icons for different events
+- Updated `save_and_load()` to ignore manually added lines and fix indenting.

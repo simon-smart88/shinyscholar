@@ -39,13 +39,27 @@ printVecAsis <- function(x, asChar = FALSE) {
 #' @keywords internal
 #' @export
 spurious <- function(x) {
+  bslib::accordion(x)
+  cookies::get_cookie(x)
   DT::renderDataTable(x)
-  RColorBrewer::brewer.pal(x)
+  dplyr::add_count(x)
+  future::as.cluster(x)
+  httr2::curl_help(x)
   leafem::addMouseCoordinates(x)
   leaflet.extras::removeDrawToolbar(x)
+  markdown::html_format(x)
+  promises::as.promise(x)
+  R6::R6Class(x)
+  RColorBrewer::brewer.pal(x)
+  rintrojs::introjs(x)
+  renv::activate(x)
+  rlang::abort(x)
   rmarkdown::github_document(x)
+  shinybusy::add_busy_bar(x)
   shinyWidgets::pickerInput(x)
   shinyjs::disable(x)
+  terra::rast(x)
+  xml2::as_list(x)
   zip::zipr(x)
   return()
 }
@@ -73,17 +87,37 @@ writeLog <- function(logger, ..., type = "default") {
   } else if (is.function(logger)) {
     if (type == "default") {
       pre <- "> "
+    } else if (type == "starting") {
+      pre <- paste0(icon("clock", class = "log_start"), " ")
+    } else if (type == "complete") {
+      pre <- paste0(icon("check", class = "log_end"), " ")
     } else if (type == "info") {
-      shinyalert::shinyalert(..., type = "info")
-      pre <- '> <font color="blue"><b>INFO</b></font> : '
+      if (nchar(...) < 80){
+        shinyalert::shinyalert(..., type = "info")
+      } else {
+        shinyalert::shinyalert("Please, check Log window for more information ",
+                               type = "info")
+      }
+      pre <- paste0(icon("info", class = "log_info"), " ")
     } else if (type == "error") {
-      shinyalert::shinyalert("Please, check Log window for more information ",
-                             type = "error")
-      pre <- '> <font color="red"><b>! ERROR</b></font> : '
+      if (nchar(...) < 80){
+        shinyalert::shinyalert(...,
+                               type = "error")
+      } else {
+        shinyalert::shinyalert("Please, check Log window for more information ",
+                               type = "error")
+      }
+      pre <- paste0(icon("xmark", class = "log_error"), " ")
     } else if (type == "warning") {
-      shinyalert::shinyalert("Please, check Log window for more information ",
-                             type = "warning")
-      pre <- '> <font color="orange"><b>! WARNING</b></font> : '
+      if (nchar(...) < 80){
+        shinyalert::shinyalert(...,
+                               type = "warning")
+      } else {
+        shinyalert::shinyalert("Please, check Log window for more information ",
+                               type = "warning")
+
+        pre <- paste0(icon("triangle-exclamation", class = "log_warn"), " ")
+      }
     }
     newEntries <- paste0("<br>", pre, ..., collapse = "")
     logger(paste0(logger(), newEntries))

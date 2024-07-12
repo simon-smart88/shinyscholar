@@ -10,7 +10,7 @@ cookies::add_cookie_handlers(tagList(
     functions = c("scrollLogger", "disableModule", "enableModule")
   ),
   navbarPage(
-    theme = bslib::bs_theme(version = 3,
+    theme = bslib::bs_theme(version = 5,
                             bootswatch = "spacelab"),
     id = "tabs",
     collapsible = TRUE,
@@ -70,13 +70,27 @@ cookies::add_cookie_handlers(tagList(
               )
             )
           )
-        ),
+```
+
+```{r renv.ignore = TRUE, purl = {{async}}
+          , fixedRow(
+            column(
+              10,
+              offset = 1,
+              br(),
+              textOutput("running_tasks")
+            )
+          )
+```
+
+```{r renv.ignore = TRUE}
+),
         br(),
         conditionalPanel(
           "input.tabs != 'intro' & input.tabs != 'rep'",
           tabsetPanel(
             id = 'main',
-```            
+```
 ```{r, renv.ignore = TRUE, purl = {{include_map}}}
             tabPanel(
               'Map',

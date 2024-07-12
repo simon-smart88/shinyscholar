@@ -1,6 +1,6 @@
 Package: shinyscholar
-Version: 0.1.2
-Date: 2024-03-19
+Version: 0.2.0
+Date: 2024-07-12
 Title: A template for creating modular reproducible shiny applications
 Description: The 'shiny' application shinyscholar is a modular platform for 
     creating reproducible applications to academic standards. 'shinyscholar' is 
@@ -10,42 +10,46 @@ Authors@R:
     c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut","cre")))
 Depends:
     R (>= 3.5.0),
-    shiny (>= 1.6.0),
+    shiny (>= 1.8.1),
     leaflet (>= 2.0.2),
-    terra,
-    R6,
-    gargoyle,
-    leaflet.extras (>= 1.0.0),
-    shinybusy,
-    cookies,
-    rintrojs
+    gargoyle
 Imports:
+    bslib,
+    cookies,
     curl,
     devtools,
     dplyr (>= 1.0.2),
     DT (>= 0.5),
+    future,
     geosphere,
     glue,
     httr2,
     knitcitations,
     knitr,
     leafem,
+    leaflet.extras (>= 1.0.0),
     magrittr,
     markdown,
+    promises,
+    R6,
     RColorBrewer,
     renv,
+    rintrojs,
     rlang,
     rmarkdown,
     shinyalert,
+    shinybusy,
     shinyjs,
-    shinytest2,
     shinyWidgets (>= 0.6.0),
+    terra,
     tools,
     xml2,
     zip
 Suggests: 
+    shinytest2,
     testthat
 License: GPL-3
 URL: https://simon-smart88.github.io/shinyscholar/
 Encoding: UTF-8
 RoxygenNote: 7.3.1
+Roxygen: list(markdown = TRUE)

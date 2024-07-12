@@ -37,10 +37,11 @@ register_module <- function(config_file) {
 #' download.
 #' @param save logical. Whether or not the module has some custom data to save when the
 #' user saves the current session.
+#' @param async logical. Whether or not the module will operate asynchronously.
 #' @param init logical. Whether or not the function is being used inside of the init function
 #' @seealso \code{\link[shinyscholar]{register_module}}
 #' @export
-create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, save = FALSE, init = FALSE) {
+create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, save = FALSE, async = FALSE, init = FALSE) {
   if (!grepl("^[A-Za-z0-9_]+$", id)) {
     stop("The id can only contain English characters, digits, and underscores",
          call. = FALSE)
@@ -72,7 +73,12 @@ create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, sav
 
   # Copy the R code file, use the correct ID in all functions, and remove any
   # functions that the user doesn't want to use in this module
-  r_file <- readLines(system.file("module_skeleton", "skeleton.R", package = "shinyscholar"))
+  if (!async){
+    r_file <- readLines(system.file("module_skeleton", "skeleton.R", package = "shinyscholar"))
+  } else {
+    r_file <- readLines(system.file("module_skeleton", "skeleton_async.R", package = "shinyscholar"))
+  }
+
   r_file <- paste(r_file, collapse = "\n")
   if (!map) {
     r_file <- gsub("\n\\{\\{id}}_module_map <- function.*?}\n", "", r_file)

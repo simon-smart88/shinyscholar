@@ -6,7 +6,7 @@ rep_renv_module_ui <- function(id) {
   )
 }
 
-rep_renv_module_server <- function(id, common, parent_session) {
+rep_renv_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
     output$run <- downloadHandler(

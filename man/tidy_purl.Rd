@@ -15,6 +15,6 @@ Knits and purls an Rmd file into a format which can be written
 to an R file.
 }
 \author{
-Simon E. H. Smart <simon.smart@cantab.net>
+Simon E. H. Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }
 \keyword{internal}
