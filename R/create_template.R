@@ -212,7 +212,8 @@ ui_params <- c(
   list(app_library = name,
        include_map = include_map,
        include_table = include_table,
-       include_code = include_code
+       include_code = include_code,
+       async = async
   )
 )
 
