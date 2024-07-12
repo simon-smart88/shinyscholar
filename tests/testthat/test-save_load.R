@@ -1,36 +1,31 @@
 path <- list.files(system.file("extdata/wc", package = "shinyscholar"),
                    pattern = ".tif$", full.names = TRUE)
 
-save_path <- list.files(system.file("extdata", package = "shinyscholar"),
-                   pattern = ".rds$", full.names = TRUE)
-
 #this works
 test_that("{shinytest2} recording: e2e_empty_save", {
-  testthat::skip_on_ci()
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_empty_save")
   app$set_inputs(tabs = "select")
   app$set_inputs(main = "Save")
-  save_file <- app$get_download("core_save-save_session")
+  save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)
   expect_true(is.null(common$ras))
 })
 
 #this works
 test_that("{shinytest2} recording: e2e_save_scat", {
-  testthat::skip_on_ci()
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_save_scat")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
-  app$upload_file(`select_user-ras` = path)
-  app$set_inputs(`select_user-name` = "bio")
+  app$upload_file("select_user-ras" = path)
+  app$set_inputs("select_user-name" = "bio")
   app$click("select_user-run")
   app$set_inputs(tabs = "plot")
   app$set_inputs(plotSel = "plot_scatter")
   app$click("plot_scatter-run")
   app$set_inputs(main = "Save")
-  save_file <- app$get_download("core_save-save_session")
+  save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)
   common$ras <- terra::unwrap(common$ras)
   expect_is(common$ras, "SpatRaster")
@@ -39,19 +34,18 @@ test_that("{shinytest2} recording: e2e_save_scat", {
 
 #this may be temperamental
 test_that("{shinytest2} recording: e2e_save_hist", {
-  testthat::skip_on_ci()
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_save_hist")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
-  app$upload_file(`select_user-ras` = path)
-  app$set_inputs(`select_user-name` = "bio")
+  app$upload_file("select_user-ras" = path)
+  app$set_inputs("select_user-name" = "bio")
   app$click("select_user-run")
   app$set_inputs(tabs = "plot")
   app$set_inputs(plotSel = "plot_hist")
   app$click("plot_hist-run")
   app$set_inputs(main = "Save")
-  save_file <- app$get_download("core_save-save_session")
+  save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)
   common$ras <- terra::unwrap(common$ras)
   expect_is(common$ras, "SpatRaster")
@@ -59,7 +53,6 @@ test_that("{shinytest2} recording: e2e_save_hist", {
 })
 
 test_that("{shinytest2} recording: e2e_load", {
-  testthat::skip_on_ci()
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_load")
   app$set_inputs(introTabs = "Load Prior Session")
