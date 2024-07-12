@@ -1,81 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/close_loading_modal.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_module.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_template.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_hist.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_scatter.html</loc>
-  </url>
-  <url>
-    <loc>/reference/printVecAsis.html</loc>
-  </url>
-  <url>
-    <loc>/reference/register_module.html</loc>
-  </url>
-  <url>
-    <loc>/reference/run_module.html</loc>
-  </url>
-  <url>
-    <loc>/reference/run_shinyscholar.html</loc>
-  </url>
-  <url>
-    <loc>/reference/save_and_load.html</loc>
-  </url>
-  <url>
-    <loc>/reference/select_query.html</loc>
-  </url>
-  <url>
-    <loc>/reference/select_user.html</loc>
-  </url>
-  <url>
-    <loc>/reference/shinyscholar-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/show_loading_modal.html</loc>
-  </url>
-  <url>
-    <loc>/reference/show_map.html</loc>
-  </url>
-  <url>
-    <loc>/reference/show_results.html</loc>
-  </url>
-  <url>
-    <loc>/reference/show_table.html</loc>
-  </url>
-  <url>
-    <loc>/reference/spurious.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidy_purl.html</loc>
-  </url>
-  <url>
-    <loc>/reference/writeLog.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/close_loading_modal.html</loc></url>
+<url><loc>/reference/create_module.html</loc></url>
+<url><loc>/reference/create_template.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/plot_hist.html</loc></url>
+<url><loc>/reference/plot_scatter.html</loc></url>
+<url><loc>/reference/printVecAsis.html</loc></url>
+<url><loc>/reference/register_module.html</loc></url>
+<url><loc>/reference/run_module.html</loc></url>
+<url><loc>/reference/run_shinyscholar.html</loc></url>
+<url><loc>/reference/save_and_load.html</loc></url>
+<url><loc>/reference/select_async.html</loc></url>
+<url><loc>/reference/select_query.html</loc></url>
+<url><loc>/reference/select_user.html</loc></url>
+<url><loc>/reference/shinyscholar-package.html</loc></url>
+<url><loc>/reference/show_loading_modal.html</loc></url>
+<url><loc>/reference/show_map.html</loc></url>
+<url><loc>/reference/show_results.html</loc></url>
+<url><loc>/reference/show_table.html</loc></url>
+<url><loc>/reference/spurious.html</loc></url>
+<url><loc>/reference/tidy_purl.html</loc></url>
+<url><loc>/reference/writeLog.html</loc></url>
 </urlset>
+

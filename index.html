@@ -19,7 +19,7 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">shinyscholar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
@@ -54,12 +54,12 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="shinyscholar-v012">shinyscholar (v0.1.2)<a class="anchor" aria-label="anchor" href="#shinyscholar-v012"></a>
+<div class="page-header"><h1 id="shinyscholar-v020">shinyscholar (v0.2.0)<a class="anchor" aria-label="anchor" href="#shinyscholar-v020"></a>
 </h1></div>
 <p><img src="https://raw.githubusercontent.com/simon-smart88/shinyscholar/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;"></p>
 <p>Shinyscholar is a basic application written in R that can be used as a template to create complex applications that are modular, meet academic standards of attribution and are reproducible outside of the application. By using <em>shinyscholar</em>, to create a template application, developers will be encouraged to produce applications that are maintainable and run reliably without having to learn software development best-practices from scratch. <em>shinyscholar</em> was <a href="https://github.com/wallaceEcoMod/wallace/tree/51a3ebe10ffd797fc36ad2d2cf8245b014d11b41" class="external-link">forked</a> from <a href="http://wallaceecomod.github.io/wallace/" class="external-link">wallace</a> v2.0.5 (<a href="https://cran.r-project.org/package=wallace" class="external-link">CRAN</a>, <a href="https://wallaceecomod.github.io/wallace/index.html" class="external-link">website</a>) a modular platform for reproducible modelling of species distributions. Specifically, it harnesses the higher-level structure and core attributes of Wallace but removes its discipline-specific features, yielding a generic template for developers to make their own applications. We are very grateful to the contributors to <a href="http://wallaceecomod.github.io/wallace/" class="external-link">wallace</a> and the features retained from it and the new features added in <em>shinyscholar</em> are described in <code>NEWS</code>.</p>
@@ -218,13 +218,52 @@
 <div class="section level5">
 <h5 id="end-to-end-testing">End-to-end testing<a class="anchor" aria-label="anchor" href="#end-to-end-testing"></a>
 </h5>
-<p>End-to-end testing is used to validate that the app itself functions and uses <a href="https://rstudio.github.io/shinytest2/" class="external-link">shinytest2</a>. Tests can be recorded using <code><a href="https://rstudio.github.io/shinytest2/reference/record_test.html" class="external-link">shinytest2::record_test()</a></code> but the snapshot functionality of the package does not work well with the architecture of this package. Recording tests is still a useful way to record the input names required to navigate through the app though. <code>common</code> is made available for use inside tests by using <code>common &lt;- app$get_value(export = "common")</code> so you can check that objects are in the expected state after running a module.</p>
+<p>End-to-end testing is used to validate that the app itself functions and uses <a href="https://rstudio.github.io/shinytest2/" class="external-link">shinytest2</a>. Tests can be recorded using <code><a href="https://rstudio.github.io/shinytest2/reference/record_test.html" class="external-link">shinytest2::record_test()</a></code> but the snapshot functionality of the package does not work well with the architecture of this package. Recording tests is still a useful way to record the input names required to navigate through the app though. <code>common</code> is made available for use inside tests by using <code>common &lt;- app$get_value(export = "common")</code> so you can check that objects are in the expected state after running a module. This method is quite flaky however and if it does not work, alternatively <code>common</code> can be accessed by using the save functionality:</p>
+<pre><code><span><span class="va">app</span><span class="op">$</span><span class="fu">set_inputs</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Save"</span><span class="op">)</span></span>
+<span><span class="va">save_file</span> <span class="op">&lt;-</span> <span class="va">app</span><span class="op">$</span><span class="fu">get_download</span><span class="op">(</span><span class="st">"core_save-save_session"</span>, filename <span class="op">=</span> <span class="va">save_path</span><span class="op">)</span></span>
+<span><span class="va">common</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">save_file</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 <div class="section level4">
 <h4 id="adding-extra-modules">Adding extra modules<a class="anchor" aria-label="anchor" href="#adding-extra-modules"></a>
 </h4>
 <p>Further modules can be added using <code><a href="reference/create_module.html">create_module()</a></code> which creates the four files for the module. The module configuration file then needs to be added to <code>base_module_configs</code> in <code>global.R</code> and should be placed in the relevant position for the analysis since this vector controls the order of chunks within the Rmarkdown output. Any extra data objects that the modules creates must be added to <code>common.R</code>. This does not currently create the testing files or function file so these must be added manually.</p>
+</div>
+<div class="section level4">
+<h4 id="asynchronous-modules">Asynchronous modules<a class="anchor" aria-label="anchor" href="#asynchronous-modules"></a>
+</h4>
+<p>Support for asynchronous operations was added in v0.2.0 using the new <code>ExtendedTask</code> feature added in <a href="https://shiny.posit.co/" class="external-link">shiny</a> v1.8.1. This has the advantage of allowing long-running operations to run in the background whilst the app remains responsive to the user and any other users connected to the same instance. Running modules asynchronously increases complexity however and requires several changes to structure of modules and the app itself. The <code>select_async</code> module contains an implementation that is functionally identical to <code>select_query</code> but runs asynchronously.</p>
+<div class="section level5">
+<h5 id="running-tasks">Running tasks<a class="anchor" aria-label="anchor" href="#running-tasks"></a>
+</h5>
+<p><code>common$tasks</code> is a list that stores details of all the asynchronous tasks. Each task is added to the list above the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> in the <code>&lt;identifier&gt;_module_server</code> function as <code>common$tasks$&lt;identifier&gt;</code>. The task contains the module’s function wrapped by <code><a href="https://rstudio.github.io/promises/reference/future_promise.html" class="external-link">promises::future_promise()</a></code> and bound to a <code><a href="https://rdrr.io/pkg/bslib/man/bind_task_button.html" class="external-link">bslib::bind_task_button()</a></code> which disables the button when the task is running:</p>
+<pre><code>common$tasks$&lt;identifier&gt; &lt;- ExtendedTask$new(function(...) {
+    promises::future_promise({
+      &lt;identifer&gt;(...)
+    })
+  }) |&gt; bslib::bind_task_button("run")</code></pre>
+<p>The task is invoked inside the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> by calling <code>common$tasks$&lt;identifier&gt;$invoke()</code> with the arguments of the module’s function. As in the default implementation, metadata should be stored at this point when the function is called.</p>
+</div>
+<div class="section level5">
+<h5 id="logging">Logging<a class="anchor" aria-label="anchor" href="#logging"></a>
+</h5>
+<p>Because the asynchronous tasks are run in a different R session, <code>common$logger</code> is no longer accessible from inside the module’s function and therefore cannot be used to send messages to the logger directly. Instead, an <code>async</code> parameter needs to be added to the function and error messages are returned by the function when <code>async</code> is <code>TRUE</code> or transferred to <code>stop</code> or <code>warning</code> if <code>async</code> is <code>FALSE</code> e.g. when being used in the .Rmd.</p>
+</div>
+<div class="section level5">
+<h5 id="receiving-results">Receiving results<a class="anchor" aria-label="anchor" href="#receiving-results"></a>
+</h5>
+<p>A separate <code><a href="https://rdrr.io/pkg/shiny/man/observe.html" class="external-link">observe()</a></code> named <code>results</code> is required to listen for the result of the task available at <code>common$tasks$&lt;identifier&gt;$result()</code> but to prevent endless loops, we must stop the observer from functioning once the results are calculated by calling <code>results$suspend()</code> and reactivate it prior to the task being invoked using <code>results$resume()</code>. Inside <code>results</code>, the class of the object returned by the function should be checked and either passed to <code>common$logger</code> if it is an error message or stored in <code>common</code> as in the default implementation.</p>
+</div>
+<div class="section level5">
+<h5 id="mapping">Mapping<a class="anchor" aria-label="anchor" href="#mapping"></a>
+</h5>
+<p>In the default implementation, only the mapping function of the currently selected module can be called, which prevents the result of an asynchronous task being added to the map. Instead <code>map</code> is passed as an argument to the module server function and then called once the result has been produced using <code>do.call("&lt;identifier&gt;_module_map", list(map, common))</code>.</p>
+</div>
+<div class="section level5">
+<h5 id="end-to-end-testing-1">End-to-end testing<a class="anchor" aria-label="anchor" href="#end-to-end-testing-1"></a>
+</h5>
+<p>The task needs to started using <code>app$click(selector = "#&lt;identifier&gt;-run")</code>. <a href="https://rstudio.github.io/shinytest2/" class="external-link">shinytest2</a> cannot detect that an asynchronous task is running and so the <code>timeout</code> parameter must be set to allow sufficient time for the function to run. An <code>input</code> value should be set inside <code>results</code> using <code>shinyjs::runjs("Shiny.setInputValue('&lt;identifier&gt;-complete', 'complete');")</code> which can then be detected inside the test using <code>app$wait_for_value(input = "&lt;identifier&gt;-complete")</code> to indicate that the task has completed.</p>
+</div>
 </div>
 </div>
 </div>
@@ -287,16 +326,16 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>
