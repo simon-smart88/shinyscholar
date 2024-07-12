@@ -53,10 +53,10 @@ select_async_module_server <- function(id, common, parent_session, map) {
     results$resume()
 
     # METADATA ####
-    common$meta$select_query$date <- input$date
-    common$meta$select_query$poly <- common$poly
-    common$meta$select_query$name <- "FCover"
-    common$meta$select_query$used <- TRUE
+    common$meta$select_async$date <- input$date
+    common$meta$select_async$poly <- common$poly
+    common$meta$select_async$name <- "FCover"
+    common$meta$select_async$used <- TRUE
 
   })
 
@@ -77,7 +77,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
       common$logger %>% writeLog(result$message)
 
       # TRIGGER
-      gargoyle::trigger("select_query")
+      gargoyle::trigger("select_async")
 
       # explicitly call the mapping function
       do.call("select_async_module_map", list(map, common))
@@ -114,10 +114,10 @@ select_async_module_result <- function(id) {
 select_async_module_map <- function(map, common) {
   ex <- as.vector(terra::ext(common$ras))
   pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9, na.color = "pink")
-  name <- common$meta$select_query$name
+  name <- common$meta$select_async$name
   map %>%
-    removeDrawToolbar(clearFeatures = TRUE) %>%
-    addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE, markerOptions = FALSE,
+    leaflet.extras::removeDrawToolbar(clearFeatures = TRUE) %>%
+    leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE, markerOptions = FALSE,
                    circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE) %>%
     clearGroup(name) %>%
     removeControl(name) %>%
@@ -129,13 +129,13 @@ select_async_module_map <- function(map, common) {
     addLayersControl(overlayGroups = name, options = layersControlOptions(collapsed = FALSE))
 }
 
-select_query_module_rmd <- function(common) {
+select_async_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    select_query_knit = !is.null(common$meta$select_query$used),
-    select_date = common$meta$select_query$date,
-    select_poly = printVecAsis(common$meta$select_query$poly),
-    select_name = common$meta$select_query$name
+    select_async_knit = !is.null(common$meta$select_async$used),
+    select_date = common$meta$select_async$date,
+    select_poly = printVecAsis(common$meta$select_async$poly),
+    select_name = common$meta$select_async$name
 
   )
 }

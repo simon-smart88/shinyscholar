@@ -75,6 +75,11 @@ select_async <- function(poly, date, async = FALSE) {
   #remove missing values and rescale data to 0 - 100 %
   raster_image <- terra::clamp(raster_image, upper = 250, value = FALSE) / 2.5
 
+  #wrap the raster for transfer if running async
+  if (async){
+    raster_image <- terra::wrap(raster_image)
+  }
+
   return(list(raster = raster_image,
               message = message))
 }

@@ -85,8 +85,8 @@ select_query_module_map <- function(map, common) {
   pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9, na.color = "pink")
   name <- common$meta$select_query$name
   map %>%
-    removeDrawToolbar(clearFeatures = TRUE) %>%
-    addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE, markerOptions = FALSE,
+    leaflet.extras::removeDrawToolbar(clearFeatures = TRUE) %>%
+    leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE, markerOptions = FALSE,
                    circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE) %>%
     clearGroup(name) %>%
     removeControl(name) %>%

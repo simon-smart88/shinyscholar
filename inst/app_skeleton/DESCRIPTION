@@ -8,7 +8,9 @@ Authors@R:
 Depends:
     R (>= 3.5.0),
     shiny (>= 1.6.0),
-    R6
+    leaflet (>= 2.0.2),
+    R6, 
+    gargoyle
 Imports:
     DT (>= 0.5),
     glue,

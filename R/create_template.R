@@ -110,11 +110,10 @@ if (!all(module_columns %in% colnames(modules))){
     logger %>% writeLog(type = "error", glue::glue("The modules dataframe must contain the column(s): {missing_column}"))
     return()
   }
-
 }
 
 if (!all(colnames(modules) %in% module_columns)){
-  invalid_column <- colnames(modules)[colnames(modules) %in% module_columns]
+  invalid_column <- colnames(modules)[!colnames(modules) %in% module_columns]
   invalid_column <- paste(invalid_column, collapse = ",")
   logger %>% writeLog(type = "error", glue::glue("The modules dataframe contains {invalid_column} which is/are not valid column names"))
   return()
@@ -146,6 +145,8 @@ if (any(common_objects %in% c("meta", "logger", "state", "poly"))){
 
 if (any(modules$async)){
   async = TRUE
+} else {
+  async = FALSE
 }
 
 # Create directories ====

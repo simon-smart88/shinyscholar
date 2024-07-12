@@ -12,15 +12,10 @@ Depends:
     R (>= 3.5.0),
     shiny (>= 1.8.1),
     leaflet (>= 2.0.2),
-    terra,
-    R6,
-    gargoyle,
-    leaflet.extras (>= 1.0.0),
-    shinybusy,
-    cookies,
-    rintrojs
+    gargoyle
 Imports:
     bslib,
+    cookies,
     curl,
     devtools,
     dplyr (>= 1.0.2),
@@ -32,21 +27,26 @@ Imports:
     knitcitations,
     knitr,
     leafem,
+    leaflet.extras (>= 1.0.0),
     magrittr,
     markdown,
     promises,
+    R6,
     RColorBrewer,
     renv,
+    rintrojs,
     rlang,
     rmarkdown,
     shinyalert,
+    shinybusy,
     shinyjs,
-    shinytest2,
     shinyWidgets (>= 0.6.0),
+    terra,
     tools,
     xml2,
     zip
 Suggests: 
+    shinytest2,
     testthat
 License: GPL-3
 URL: https://simon-smart88.github.io/shinyscholar/
