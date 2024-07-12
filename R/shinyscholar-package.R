@@ -13,6 +13,6 @@
 #'    for scientific papers and reports. The application is run via the
 #'    function \code{\link{run_shinyscholar}}.
 #'
-#' @import leaflet shiny
+#' @import leaflet shiny gargoyle
 #' @importFrom magrittr "%>%"
 NULL
