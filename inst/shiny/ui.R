@@ -110,6 +110,15 @@ cookies::add_cookie_handlers(tagList(
               )
             )
           )
+          ,
+          fixedRow(
+            column(
+              10,
+              offset = 1,
+              br(),
+              textOutput("running_tasks")
+            )
+          )
         ),
         br(),
         conditionalPanel(

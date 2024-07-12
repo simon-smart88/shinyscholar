@@ -27,6 +27,21 @@ function(input, output, session) {
     shinyjs::js$scrollLogger()
   })
 
+  output$running_tasks <- renderText({
+    status <- unlist(lapply(common$tasks, function(x){x$status()}))
+    running <- length(status[status == "running"])
+    if (running == 0){
+      message <- "There are currently no tasks running"
+    }
+    if (running == 1){
+      message <- "There is currently 1 task running"
+    }
+    if (running > 1){
+      message <- glue::glue("There are currently {running} tasks running")
+    }
+    message
+  })
+
   ########################## #
   # REACTIVE VALUES LISTS ####
   ########################## #
