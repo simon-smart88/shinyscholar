@@ -1,0 +1,6 @@
+```{asis, echo = {{test_test_knit}}, eval = {{test_test_knit}}, include = {{test_test_knit}}}
+```
+
+```{r, echo = {{test_test_knit}}, include = {{test_test_knit}}}
+
+```
