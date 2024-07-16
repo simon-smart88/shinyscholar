@@ -53,6 +53,9 @@ for (target in targets){
     for (row in 1:nrow(objects)){
       split_string <- strsplit(objects[row,1], objects[row,2])[[1]]
       input_id <- strsplit(split_string[2], "\"")[[1]][2]
+      if (is.na(input_id)){
+        input_id <- strsplit(split_string[2], "'")[[1]][2]
+      }
       save_line <- glue::glue("{input_id} = input${input_id}")
       input_type <- firstup(trimws(split_string[1]))
 
