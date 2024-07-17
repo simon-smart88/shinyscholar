@@ -56,6 +56,10 @@ for (target in targets){
       if (is.na(input_id)){
         input_id <- strsplit(split_string[2], "'")[[1]][2]
       }
+      if (is.na(input_id)){
+        warning(glue::glue("No inputId could could be found for {objects[row,1]} in {target}"))
+        next
+      }
       save_line <- glue::glue("{input_id} = input${input_id}")
       input_type <- firstup(trimws(split_string[1]))
 
@@ -64,9 +68,12 @@ for (target in targets){
           update_function <- glue::glue("update{input_type}Input")
           update_parameter <- "value"
         }
-        else if (input_type %in% c("Select", "Selectize")){
+        else if (input_type %in% c("CheckboxGroup", "Select", "Selectize")){
           update_function <- glue::glue("update{input_type}Input")
           update_parameter <- "selected"
+        }
+        else if (input_type %in% c("DateRange")){
+          # handle this later on
         }
         else {
           warning(glue::glue("{input_type}Input in {target} is not currently supported - please add this manually"))
@@ -82,7 +89,11 @@ for (target in targets){
         update_parameter <- "value"
       }
 
-      load_line <- glue::glue("{update_function}(session, \"{input_id}\", {update_parameter} = state${input_id})")
+      if ((objects[row,2] == "Input") & (input_type == "DateRange")){
+        load_line <- glue::glue("updateDateRangeInput(session, \"{input_id}\", start = state${input_id}[1], end = state${input_id}[2])")
+      } else {
+        load_line <- glue::glue("{update_function}(session, \"{input_id}\", {update_parameter} = state${input_id})")
+      }
 
       to_load <- append(to_load, load_line)
       to_save <- append(to_save, save_line)
@@ -109,11 +120,13 @@ for (target in targets){
     #search for insertion and closing lines, delete existing lines.
     #remove duplicated new lines, put all new lines in one object and add new lines
     insert_save_line <- grep("*save = function()*", lines)
+    lines[insert_save_line] <- "    save = function() {list("
     curly_lines <- grep("*},", lines)
     end_save_line <- min(curly_lines[curly_lines > insert_save_line])
-    existing_save_lines <- seq(insert_save_line + 1, end_save_line - 1, 1)
-    lines[insert_save_line] <- "    save = function() {list("
-    lines <- lines[-existing_save_lines]
+    if ((end_save_line - insert_save_line) > 1){
+      existing_save_lines <- seq(insert_save_line + 1, end_save_line - 1, 1)
+      lines <- lines[-existing_save_lines]
+    }
     save_lines <- paste(unique(to_save), collapse = ", \n      ")
     manual_save_lines <- paste(manual_save_lines, collapse = "\n")
     save_lines <- paste0(c(manual_save_lines, "\n      ", save_lines,")"), collapse = "")
@@ -122,8 +135,10 @@ for (target in targets){
     insert_load_line <- grep("*load = function(state)*", lines)
     curly_lines <- grep("*}", lines)
     end_load_line <- min(curly_lines[curly_lines > insert_load_line])
-    existing_load_lines <- seq(insert_load_line + 1, end_load_line - 1, 1)
-    lines <- lines[-existing_load_lines]
+    if ((end_load_line - insert_load_line) > 1){
+      existing_load_lines <- seq(insert_load_line + 1, end_load_line - 1, 1)
+      lines <- lines[-existing_load_lines]
+    }
     load_lines <- paste(unique(to_load), collapse = " \n      ")
     manual_load_lines <- paste(manual_load_lines, collapse = "\n")
     load_lines <- paste0(c(manual_load_lines, "\n      ", load_lines), collapse = "")
