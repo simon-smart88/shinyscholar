@@ -29,6 +29,10 @@ metadata <- function(folder_path, module = NULL){
   module_path <- file.path(folder_path, "inst/shiny/modules/")
   if (is.null(module)){
     targets <- list.files(module_path, pattern=".R$")
+    # exclude core and rep modules
+    if (length(grep("(core_|rep_)", targets) > 0)){
+      targets <- targets[-grep("(core_|rep_)", targets)]
+    }
   } else {
     targets <- glue::glue("{module}.R")
   }
@@ -79,7 +83,7 @@ metadata <- function(folder_path, module = NULL){
       to_rmd_file <- list()
 
       to_server <- append(to_server, glue::glue("      common$meta${module_name}$used <- TRUE"))
-      to_rmd_func <- append(to_rmd_func, glue::glue("      {module_name}_knit = !is.null(common$meta${module_name}$used)"))
+      to_rmd_func <- append(to_rmd_func, glue::glue("  {module_name}_knit = !is.null(common$meta${module_name}$used)"))
 
       # loop through the objects and create lines in the module server, rmd function and rmd file for each
       for (row in 1:nrow(objects)){
