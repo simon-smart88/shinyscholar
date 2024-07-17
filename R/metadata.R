@@ -54,18 +54,24 @@ metadata <- function(folder_path, module = NULL){
 
     meta_start <- grep("*# METADATA ####*", lines)
     rmd_func_start <- grep("*module_rmd <- function(common)*", lines)
-
-    check_for_existing <- grep("*common$meta*", lines)
-
-    if ((length(check_for_existing) > 0) & (length(meta_start > 0))){
-      warning(glue::glue("metadata lines are already present in {module_name}"))
-      next
-    }
+    check_for_existing <- grep("*common\\$meta*", lines)
 
     if (length(rmd_func_start) == 0){
       warning(glue::glue("The {module_name}_module_rmd function could not be located"))
       next
     }
+
+    if (length(meta_start) == 0){
+      warning(glue::glue("No # METADATA #### line could be located in {module_name}"))
+      next
+    }
+
+    if ((length(check_for_existing) > 0) & (length(meta_start) > 0)){
+      warning(glue::glue("metadata lines are already present in {module_name}"))
+      next
+    }
+
+
 
     if ((nrow(objects) >= 1) & (length(meta_start == 1)) & (length(rmd_func_start == 1)) & (length(check_for_existing) == 0)){
       to_server <- list()
@@ -81,6 +87,10 @@ metadata <- function(folder_path, module = NULL){
         input_id <- strsplit(split_string[2], "\"")[[1]][2]
         if (is.na(input_id)){
           input_id <- strsplit(split_string[2], "'")[[1]][2]
+        }
+        if (is.na(input_id)){
+          warning(glue::glue("No inputId could could be found for {objects[row,1]} in {module_name}"))
+          next
         }
         input_type <- trimws(split_string[1])
 
