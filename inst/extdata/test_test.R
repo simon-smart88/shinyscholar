@@ -1,6 +1,7 @@
 test_test_module_ui <- function(id){
   ns <- shiny::NS(id)
   tagList(
+    actionButton(ns("run"), "Run"),
     checkboxInput(ns("checkbox"), "Checkbox", value = TRUE),
     checkboxGroupInput(ns("checkboxgroup"), "Checkbox", choices = c("A", "B", "C")),
     dateInput(ns("date"), "Date"),
@@ -20,7 +21,10 @@ test_test_module_ui <- function(id){
 test_test_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
-    # METADATA ####
+    observeEvent(input$run, {
+      # METADATA ####
+    })
+
 
 
 
