@@ -34,3 +34,4 @@ shinyscholar 0.2.0
 - Modules that do not produce results now have a placeholder informing the user
 - Updated `writeLog()` to use icons for different events
 - Updated `save_and_load()` to ignore manually added lines and fix indenting.
+- Added `metadata()` to semi-automate adding code for reproducibility
