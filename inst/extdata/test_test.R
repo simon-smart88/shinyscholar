@@ -11,7 +11,9 @@ test_test_module_ui <- function(id){
     selectInput(ns("select"), "Select", choices = c("A", "B", "C")),
     sliderInput(ns("slider"), "Slider", min = 1, max = 10, value = 5),
     textInput(ns("text"), "Text"),
-    textInput(ns('single_quote'), 'Text')
+    textInput(ns('single_quote'), 'Text'),
+    shinyWidgets::materialSwitch(ns("switch"), "Switch", TRUE),
+    textInput(inputId = ns("inputid"), "InputId")
   )
 }
 
@@ -20,7 +22,7 @@ test_test_module_server <- function(id, common, parent_session, map) {
 
     # METADATA ####
 
-  })
+
 
   return(list(
     save = function() {
@@ -28,6 +30,7 @@ test_test_module_server <- function(id, common, parent_session, map) {
     load = function(state) {
     }
   ))
+})
 }
 
 test_test_module_rmd <- function(common) {
