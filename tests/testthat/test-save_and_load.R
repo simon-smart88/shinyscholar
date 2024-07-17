@@ -84,18 +84,6 @@ test_that("Check metadata function keeps manually added lines", {
   expect_true(grepl('*manual_load = TRUE,*', r_out[load_start_line + 1]))
 })
 
-test_that("Check metadata function adds line as expected", {
-
-  test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
-  td <- tempdir()
-  dir.create(file.path(td, "inst/shiny/modules/"), recursive = TRUE)
-  file.copy(test_files, file.path(td, "inst/shiny/modules/"))
-
-  shinyscholar::save_and_load(td)
-
-  temp_file <- file.path(td, "inst/shiny/modules/test_test.R")
-})
-
 test_that("Check that lines added by save_and_load are functional", {
 
   modules <- data.frame(
