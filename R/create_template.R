@@ -339,6 +339,15 @@ rep_files <- list.files(system.file("shiny/modules", package = "shinyscholar"),
                         pattern = "rep_", full.names = TRUE)
 lapply(rep_files, file.copy, glue::glue("{path}/inst/shiny/modules/"))
 
+#remove map from function calls if not async
+if (!async){
+ for (rep_mod in c("markdown", "refPackages", "renv")){
+   rep_lines <- readLines(glue::glue("{path}/inst/shiny/modules/rep_{rep_mod}.R"))
+   rep_lines <- gsub("id, common, parent_session, map", "id, common, parent_session", rep_lines)
+   writeLines(rep_lines, glue::glue("{path}/inst/shiny/modules/rep_{rep_mod}.R"))
+ }
+}
+
 #fix rep_renv
 renv_lines <- readLines(glue::glue("{path}/inst/shiny/modules/rep_renv.R"))
 renv_lines <- gsub("shinyscholar", name, renv_lines)
