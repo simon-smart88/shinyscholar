@@ -188,7 +188,7 @@ common_lines <- tidy_purl(common_params)
 writeLines(common_lines, glue::glue("{path}/inst/shiny/common.R"))
 
 # Subset components ====
-components <- modules[duplicated(modules$component),]
+components <- modules[!duplicated(modules$component),]
 
 # Create Server ====
 
