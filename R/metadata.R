@@ -103,13 +103,13 @@ metadata <- function(folder_path, module = NULL){
           server_line <- glue::glue("common$meta${module_name}${input_id} <- input${input_id}")
         }
 
-        rmd_func_line <- glue::glue("{input_id} = common$meta${module_name}${input_id}")
+        rmd_func_line <- glue::glue("{module_name}_{input_id} = common$meta${module_name}${input_id}")
 
         # wrap strings in quotes
         if ((objects[row,2] == "Input") & (input_type %in% c("text", "select", "selectize", "file"))){
-          rmd_file_line <- glue::glue("\"{{{{{input_id}}}}}\"")
+          rmd_file_line <- glue::glue("\"{{{{{module_name}_{input_id}}}}}\"")
         } else {
-          rmd_file_line <- glue::glue("{{{{{input_id}}}}}")
+          rmd_file_line <- glue::glue("{{{{{module_name}_{input_id}}}}}")
         }
 
         to_server <- append(to_server, server_line)
@@ -120,7 +120,7 @@ metadata <- function(folder_path, module = NULL){
     }
 
     server_lines <- paste(unique(to_server), collapse = " \n      ")
-    rmd_func_lines <- paste(unique(to_rmd_func), collapse = ", \n      ")
+    rmd_func_lines <- paste(unique(to_rmd_func), collapse = ", \n  ")
     rmd_func_lines  <- paste0(c(rmd_func_lines,")"), collapse = "")
     rmd_file_lines <- paste(unique(to_rmd_file), collapse = "\n")
 
