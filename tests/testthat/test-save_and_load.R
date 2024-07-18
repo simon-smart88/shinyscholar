@@ -1,7 +1,8 @@
 test_that("Check metadata function adds line as expected", {
 
   test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
-  td <- tempdir()
+  td <- tempfile()
+  dir.create(td, recursive = TRUE)
   dir.create(file.path(td, "inst/shiny/modules/"), recursive = TRUE)
   file.copy(test_files, file.path(td, "inst/shiny/modules/"))
 
@@ -56,7 +57,8 @@ test_that("Check metadata function adds line as expected", {
 test_that("Check metadata function keeps manually added lines", {
 
   test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
-  td <- tempdir()
+  td <- tempfile()
+  dir.create(td, recursive = TRUE)
   dir.create(file.path(td, "inst/shiny/modules/"), recursive = TRUE)
   file.copy(test_files, file.path(td, "inst/shiny/modules/"))
 
@@ -97,7 +99,8 @@ test_that("Check that lines added by save_and_load are functional", {
     "save" = c(TRUE),
     "async" = c(FALSE))
 
-  td <- tempdir()
+  td <- tempfile()
+  dir.create(td, recursive = TRUE)
   #the name must be shinyscholar so that the calls to package files work
   create_template(path = td, name = "shinyscholar",
                   include_map = FALSE, include_table = FALSE, include_code = FALSE,

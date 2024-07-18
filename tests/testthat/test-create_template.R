@@ -13,6 +13,10 @@ modules <- data.frame(
 common_objects = c("raster", "histogram", "scatter")
 
 test_that("Check create template returns expected errors", {
+
+  directory <- tempfile()
+  dir.create(directory, recursive = TRUE)
+
   expect_error(create_template(path = "~", name = "shiny_scholar",
               include_map = TRUE, include_table = TRUE, include_code = TRUE,
               common_objects = common_objects, modules = modules,
@@ -31,7 +35,7 @@ test_that("Check create template returns expected errors", {
                author = "Simon E. H. Smart", install = FALSE, logger = NULL),
                "A package on CRAN already uses that name")
 
-  expect_warning(create_template(path = tempdir(), name = "shinydemo",
+  expect_warning(create_template(path = directory, name = "shinydemo",
                include_map = TRUE, include_table = TRUE, include_code = TRUE,
                common_objects = common_objects, modules = within(modules, rm("async")),
                author = "Simon E. H. Smart", install = FALSE, logger = NULL),
@@ -91,7 +95,8 @@ test_that("Check create template function works as expected", {
 
   modules$map <- c(TRUE, TRUE, FALSE, FALSE)
 
-  directory <- tempdir()
+  directory <- tempfile()
+  dir.create(directory, recursive = TRUE)
   #the name must be shinyscholar so that the calls to package files work
   create_template(path = directory, name = "shinyscholar",
        include_map = TRUE, include_table = TRUE, include_code = TRUE,
@@ -115,6 +120,7 @@ test_that("Check create template function works as expected", {
     common <- app$get_value(export = "common")
     expect_true(is.null(common$raster))
   })
+
 })
 
 test_that("Check create template function works with false settings", {
@@ -125,8 +131,7 @@ test_that("Check create template function works with false settings", {
   modules$save = c(FALSE, FALSE, FALSE, FALSE)
   modules$async = c(FALSE, FALSE, FALSE, FALSE)
 
-  directory <- tempdir()
-  directory <- paste0(directory,"2")
+  directory <- tempfile()
   dir.create(directory, recursive = TRUE)
   #the name must be shinyscholar so that the calls to package files work
   create_template(path = directory, name = "shinyscholar",
