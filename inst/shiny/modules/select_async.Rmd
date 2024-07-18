@@ -4,7 +4,7 @@ Loads the raster image for the area selected on the map
 
 ```{r, echo = {{select_async_knit}}, include = {{select_async_knit}}}
 poly <- matrix({{select_poly}}, ncol = 2, byrow = FALSE)
-ras <- select_async(poly, "{{select_date}}")
+ras <- select_async(poly, "{{select_date}}")$raster
 raster_name <- "{{select_name}}"
 
 raster_extent <- as.vector(terra::ext(ras))
