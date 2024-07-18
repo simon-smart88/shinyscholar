@@ -315,7 +315,7 @@ for (m in 1:nrow(modules)){
 
   #create function for each module
   empty_function <- paste0(module_name," <- function(x){return(NULL)}")
-  writeLines(empty_function,  glue::glue("{path}/R/{module_name}.R"))
+  writeLines(empty_function,  glue::glue("{path}/R/{module_name}_f.R"))
 
   #edit yaml configs
   yml_lines <- rep(NA,5)

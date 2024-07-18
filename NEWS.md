@@ -30,8 +30,9 @@ shinyscholar 0.1.2
 
 shinyscholar 0.2.0
 =============
-- Added ability to run functions asynchronously using `shiny::ExtendedTask()`
-- Modules that do not produce results now have a placeholder informing the user
-- Updated `writeLog()` to use icons for different events
+- Added ability to run functions asynchronously using `shiny::ExtendedTask()`.
+- Modules that do not produce results now have a placeholder informing the user.
+- Updated `writeLog()` to use icons for different events.
 - Updated `save_and_load()` to ignore manually added lines and fix indenting.
-- Added `metadata()` to semi-automate adding code for reproducibility
+- Added `metadata()` to semi-automate adding code for reproducibility.
+- Module function file names now take the form of `<identifier>_f.R` to prevent confusion between the function and module file.
