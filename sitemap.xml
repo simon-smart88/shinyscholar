@@ -4,10 +4,12 @@
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/news/index.html</loc></url>
+<url><loc>/reference/check_url.html</loc></url>
 <url><loc>/reference/close_loading_modal.html</loc></url>
 <url><loc>/reference/create_module.html</loc></url>
 <url><loc>/reference/create_template.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/metadata.html</loc></url>
 <url><loc>/reference/plot_hist.html</loc></url>
 <url><loc>/reference/plot_scatter.html</loc></url>
 <url><loc>/reference/printVecAsis.html</loc></url>
