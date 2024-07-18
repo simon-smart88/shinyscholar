@@ -33,6 +33,27 @@ printVecAsis <- function(x, asChar = FALSE) {
   }
 }
 
+#' @title check_url
+#' @description For internal use. Checks whether a URL is live
+#' @param url character. The URL to check
+#' @return An httr2 response if the URL is live or NULL if it is not
+#' @keywords internal
+#' @export
+check_url <- function(url){
+  req <- httr2::request(url)
+  resp <- tryCatch(
+    req |> httr2::req_perform(),
+    httr2_http_404 = function(cnd){NULL},
+    httr2_failure = function(cnd){NULL},
+    httr2_error = function(cnd){NULL}
+  )
+  if (is.null(resp)){
+    warning(paste0(url, " is offline"))
+  }
+  return(resp)
+}
+
+
 #' @title Spurious package call to avoid note of functions outside R folder
 #' @description For internal use.
 #' @param x x
