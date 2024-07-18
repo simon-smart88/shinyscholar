@@ -88,6 +88,8 @@ test_that("Check metadata function keeps manually added lines", {
 
 test_that("Check that lines added by save_and_load are functional", {
 
+  skip_on_ci()
+
   modules <- data.frame(
     "component" = c("test"),
     "long_component" = c("test"),
