@@ -48,10 +48,16 @@ select_query <- function(poly, date, logger = NULL) {
   width <- as.numeric(round(width / 333, 0))
 
   #add date, width, height and bbox to the url
-  url <- glue::glue("/vsicurl/https://viewer.globalland.vgt.vito.be/geoserver/wms?SERVICE=WMS&SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/geotiff&LAYERS=CGLS:fcover300_v1_333m&TILED=true&TIME={date}T00:00:00.000Z&WIDTH={width}&HEIGHT={height}&CRS=EPSG:4326&BBOX={bbox}")
+  url <- glue::glue("https://viewer.globalland.vgt.vito.be/geoserver/wms?SERVICE=WMS&SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/geotiff&LAYERS=CGLS:fcover300_v1_333m&TILED=true&TIME={date}T00:00:00.000Z&WIDTH={width}&HEIGHT={height}&CRS=EPSG:4326&BBOX={bbox}")
 
-  #request the data
-  raster_image <- terra::rast(url)
+  check <- check_url(url)
+
+  if (!is.null(check)){
+    raster_image <- terra::rast(url)
+  } else {
+    logger %>% writeLog(type = "error", "The FCover API is currently offline")
+    return()
+  }
 
   #count missing values and log accordingly
   missing_values <- length(terra::values(raster_image)[terra::values(raster_image) == 254])
