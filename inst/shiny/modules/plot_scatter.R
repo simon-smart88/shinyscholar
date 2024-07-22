@@ -27,7 +27,7 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
     common$meta$plot_scatter$axis_short <- axis
     common$meta$plot_scatter$axis_long <- input$axis
     common$meta$plot_scatter$sample <- input$sample
-    common$meta$plot_scatter$name <- common$meta$ras$name
+    common$meta$plot_scatter$name <-  c(common$meta$select_query$name, common$meta$select_user$name)
     # TRIGGER ####
     gargoyle::trigger("plot_scatter")
     show_results(parent_session)

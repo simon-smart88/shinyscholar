@@ -4,14 +4,14 @@ Uploads the user-specified raster image. If the raster is not in the current wor
 
 ```{r, echo = {{select_user_knit}}, include = {{select_user_knit}}}
 raster_directory <- ""
-ras <- select_user(file.path(raster_directory, "{{user_path}}"))
-raster_name <- "{{user_name}}"
+ras <- select_user(file.path(raster_directory, {{user_path}}))
+raster_name <- {{user_name}}
 
 raster_extent <- as.vector(terra::ext(ras))
 map_pal <- colorBin("YlOrRd", domain = values(ras), bins = 9, na.color = "#00000000")
 
 leaflet() %>%
-  addProviderTiles('Esri.WorldTopoMap') %>%
+  addProviderTiles("Esri.WorldTopoMap") %>%
   addRasterImage(ras, colors = map_pal) %>%
   fitBounds(lng1 = raster_extent[[1]], lng2 = raster_extent[[2]], lat1 = raster_extent[[3]], lat2 = raster_extent[[4]]) %>%
   addLegend(position = "bottomright", pal = map_pal, values = values(ras),

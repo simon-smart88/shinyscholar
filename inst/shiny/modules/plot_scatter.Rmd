@@ -4,8 +4,8 @@ Plots the data on a scatter plot
 
 ```{r, echo = {{plot_scatter_knit}}, include = {{plot_scatter_knit}}}
 
-scat <- plot_scatter(ras,{{scat_sample}},"{{scat_axis_short}}")
+scat <- plot_scatter(ras, {{scat_sample}}, {{scat_axis_short}})
 
-plot(scat[[1]],scat[[2]],xlab="{{scat_axis_short}}",ylab="{{scat_name}}")
+plot(scat[[1]], scat[[2]], xlab = {{scat_axis_long}}, ylab = {{scat_name}})
 
 ```

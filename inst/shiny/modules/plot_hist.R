@@ -25,7 +25,7 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
     # METADATA ####
     common$meta$plot_hist$bins <- as.numeric(input$bins)
     common$meta$plot_hist$pal <- input$pal
-    common$meta$plot_hist$name <- c(common$meta$select_query$name,common$meta$select_user$name)
+    common$meta$plot_hist$name <- c(common$meta$select_query$name, common$meta$select_user$name)
     # TRIGGER ####
     gargoyle::trigger("plot_hist")
     show_results(parent_session)

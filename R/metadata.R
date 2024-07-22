@@ -7,12 +7,9 @@
 #' complete the following steps:
 #' \itemize{
 #'  \item Check that any inputs created by packages other than `{shiny}` are included
-#'  \item Add any inputs created dynamically i.e. inside a loop in a `renderUI`
-#'  \item If the value of an input is a vector, wrap the `common$meta` object
-#'  in the `_module_rmd` function in `printVecAsis()` so that the values can be
-#'  transferred when the `.Rmd` document is knitted.
-#'  \item If the value of input is a string, wrap the `{{input_id}}` object in the
-#'  `.Rmd` file with `""`
+#'  \item Add any inputs created dynamically i.e. those without an explicit
+#'  line of code to generate them, for example those created inside a loop in a
+#'  `renderUI` or from a `{leaflet}` or `{DT}` object.
 #'  \item Use the objects in each `.Rmd` file to call the module's function.
 #'  }
 #' @param folder_path character. Path to the parent directory containing the application
@@ -109,12 +106,7 @@ metadata <- function(folder_path, module = NULL){
 
         rmd_func_line <- glue::glue("{module_name}_{input_id} = common$meta${module_name}${input_id}")
 
-        # wrap strings in quotes
-        if ((objects[row,2] == "Input") & (input_type %in% c("text", "select", "selectize", "file"))){
-          rmd_file_line <- glue::glue("\"{{{{{module_name}_{input_id}}}}}\"")
-        } else {
-          rmd_file_line <- glue::glue("{{{{{module_name}_{input_id}}}}}")
-        }
+        rmd_file_line <- glue::glue("{{{{{module_name}_{input_id}}}}}")
 
         to_server <- append(to_server, server_line)
         to_rmd_func <- append(to_rmd_func, rmd_func_line)

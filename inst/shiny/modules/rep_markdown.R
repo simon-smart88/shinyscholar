@@ -44,7 +44,7 @@ rep_markdown_module_server <- function(id, common, parent_session, map, COMPONEN
             }
             knit_params <- c(
               file = rmd_file,
-              rmd_vars
+              lapply(rmd_vars, printVecAsis)
             )
             module_rmd <- do.call(knitr::knit_expand, knit_params)
 
