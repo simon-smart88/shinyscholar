@@ -386,7 +386,7 @@ intro_lines <- append(intro_lines, "- Download Session Code")
 intro_lines <- append(intro_lines, "- Download Package References")
 writeLines(intro_lines, glue::glue("{path}/inst/shiny/Rmd/text_intro_tab.Rmd"))
 
-#create guidance rmds for components
+# guidance rmds for components ====
 guidance_template <- system.file("app_skeleton/gtext.Rmd", package = "shinyscholar")
 for (c in 1:nrow(components)){
 guidance_lines <- readLines(guidance_template)
@@ -395,25 +395,31 @@ guidance_lines[6] <- glue::glue("### **Component: {components$long_component[c]}
 writeLines(guidance_lines, glue::glue("{path}/inst/shiny/Rmd/gtext_{components$component[c]}.Rmd"))
 }
 
-#copy www folder
+# copy www folder ====
 www_files <- system.file("shiny/www", package = "shinyscholar")
 file.copy(www_files, glue::glue("{path}/inst/shiny/"), recursive = TRUE)
 
-#copy helpers
+# copy helpers ====
 helper_file <- system.file("shiny/helpers.R", package = "shinyscholar")
 file.copy(helper_file, glue::glue("{path}/inst/shiny/"))
 
 helper_function_file <- system.file("shiny/app_skeleton/helper_functions.R", package = "shinyscholar")
 file.copy(helper_function_file, glue::glue("{path}/R/"))
 
-#create package description
+# package DESCRIPTION ====
 description_template <- system.file("app_skeleton/DESCRIPTION", package = "shinyscholar")
 description_lines <- readLines(description_template)
 description_lines[1] <- glue::glue("Package: {name}")
+description_lines[3] <- Sys.Date()
 if (async){
-  description_lines <- append(description_lines, "bslib,", 12)
-  description_lines <- append(description_lines, "future,", 14)
-  description_lines <- append(description_lines, "promises,", 19)
+  description_lines <- append(description_lines, "    bslib,", 12)
+  description_lines <- append(description_lines, "    future,", 14)
+  description_lines <- append(description_lines, "    promises,", 19)
+}
+
+if (include_code){
+  shinyalert_line <- grep("*shinyalert*", description_lines)
+  description_lines <- append(description_lines, "    shinyAce,", shinyalert_line - 1)
 }
 
 writeLines(description_lines, glue::glue("{path}/DESCRIPTION"))
