@@ -36,3 +36,5 @@ shinyscholar 0.2.0
 - Updated `save_and_load()` to ignore manually added lines and fix indenting.
 - Added `metadata()` to semi-automate adding code for reproducibility.
 - Module function file names now take the form of `<identifier>_f.R` to prevent confusion between the function and module file.
+- Objects are all passed to `printVecAsis()` when generating the Rmarkdown, removing the need to manually wrap strings in the `.Rmd` files.
+- Use `{shinyAce}` to display formatted code in `core_code` module.
