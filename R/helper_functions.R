@@ -20,6 +20,12 @@ printVecAsis <- function(x, asChar = FALSE) {
                                  collapse = ", "), ")"))
       }
     }
+  } else if (class(x) == "Date"){
+    if (length(x) == 1) {
+      return(paste0("as.Date(\"", x ,"\")"))
+    } else {
+      return(paste0("c(", paste(paste0("as.Date(\"", x ,"\")"), collapse = ", "), ")"))
+    }
   } else {
     if (length(x) == 1) {
       return(x)
