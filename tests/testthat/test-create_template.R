@@ -142,7 +142,7 @@ test_that("Check create template function works with false settings", {
 
   global <- readLines(file.path(directory, "shinyscholar", "inst", "shiny", "global.R"))
   core_target <- grep("core_modules <-", global)
-  global[core_target] <- 'core_modules <- c(file.path("modules", "core_intro.R"), file.path("modules", "core_load.R"), file.path("modules", "core_mapping.R"), file.path("modules", "core_save.R"))'
+  global[core_target] <- 'core_modules <- c(file.path("modules", "core_intro.R"), file.path("modules", "core_load.R"), file.path("modules", "core_save.R"))'
   writeLines(global, file.path(directory, "shinyscholar", "inst", "shiny", "global.R"))
 
   expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "server.R")))
