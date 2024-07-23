@@ -16,7 +16,7 @@ firstup <- function(x) {
 }
 
 #locate modules to run on
-module_path <- file.path(folder_path, "inst/shiny/modules/")
+module_path <- file.path(folder_path, "inst", "shiny", "modules")
 if (is.null(module)){
   targets <- list.files(module_path, pattern=".R$")
 } else {
@@ -26,7 +26,7 @@ if (is.null(module)){
 for (target in targets){
 
   module_name <- gsub(".R","",target)
-  lines <- readLines(paste0(module_path, target))
+  lines <- readLines(file.path(module_path, target))
 
   ##extract lines creating input$ values while excluding any updateinput, fileInput or setInputValue lines
   input_objects <- lines[c(grep("^(?!.*(update|fileInput|setInputValue)).*Input", lines, perl = TRUE))]

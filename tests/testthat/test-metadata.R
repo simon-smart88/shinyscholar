@@ -3,23 +3,14 @@ test_that("Check metadata function adds lines as expected", {
   test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
   td <- tempfile()
   dir.create(td, recursive = TRUE)
-  dir.create(file.path(td, "inst/shiny/modules/"), recursive = TRUE, showWarnings = FALSE)
-  file.copy(test_files, file.path(td, "inst/shiny/modules/"), overwrite = TRUE)
-
-
-  # locate modules to run on
-  module_path <- file.path(td, "inst/shiny/modules/")
-    targets <- list.files(module_path, pattern=".R$")
-    # exclude core and rep modules
-    targets <- targets[-grep("(core_|rep_)", targets)]
-    print(targets)
-
-    grep("(core_|rep_)", targets)
+  module_path <- file.path(td, "inst", "shiny", "modules")
+  dir.create(module_path, recursive = TRUE, showWarnings = FALSE)
+  file.copy(test_files, module_path, overwrite = TRUE)
 
   shinyscholar::metadata(td)
 
-  r_out <- readLines(file.path(td, "inst/shiny/modules/test_test.R"))
-  rmd_out <- readLines(file.path(td, "inst/shiny/modules/test_test.Rmd"))
+  r_out <- readLines(file.path(module_path, "test_test.R"))
+  rmd_out <- readLines(file.path(module_path, "test_test.Rmd"))
 
   expect_true(any(grepl("*common\\$meta\\$test_test\\$used <- TRUE*", r_out)))
   expect_true(any(grepl("*common\\$meta\\$test_test\\$checkbox <- input\\$checkbox*", r_out)))
@@ -68,33 +59,34 @@ test_that("Check metadata function returns errors as expected", {
   test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
   td <- tempfile()
   dir.create(td, recursive = TRUE)
-  dir.create(file.path(td, "inst/shiny/modules/"), recursive = TRUE)
-  file.copy(test_files, file.path(td, "inst/shiny/modules/"), overwrite = TRUE)
+  module_path <- file.path(td, "inst", "shiny", "modules")
+  dir.create(module_path, recursive = TRUE)
+  file.copy(test_files, module_path, overwrite = TRUE)
 
-  lines <- readLines(file.path(td, "inst/shiny/modules", "test_test.R"))
+  lines <- readLines(file.path(module_path, "test_test.R"))
   rmd_func_line <- grep("*module_rmd <- function(common)*", lines)
   lines <- lines[-rmd_func_line]
-  writeLines(lines, file.path(td, "inst/shiny/modules", "test_test.R"))
+  writeLines(lines, file.path(module_path, "test_test.R"))
   expect_warning(shinyscholar::metadata(td), "The test_test_module_rmd function could not be located")
 
-  file.copy(test_files, file.path(td, "inst/shiny/modules/"), overwrite = TRUE)
-  lines <- readLines(file.path(td, "inst/shiny/modules", "test_test.R"))
+  file.copy(test_files, module_path, overwrite = TRUE)
+  lines <- readLines(file.path(module_path, "test_test.R"))
   metadata_line <- grep("*# METADATA ####*", lines)
   lines <- lines[-metadata_line]
-  writeLines(lines, file.path(td, "inst/shiny/modules", "test_test.R"))
+  writeLines(lines, file.path(module_path, "test_test.R"))
   expect_warning(shinyscholar::metadata(td), "No # METADATA #### line could be located in test_test")
 
-  file.copy(test_files, file.path(td, "inst/shiny/modules/"), overwrite = TRUE)
-  lines <- readLines(file.path(td, "inst/shiny/modules", "test_test.R"))
+  file.copy(test_files, module_path, overwrite = TRUE)
+  lines <- readLines(file.path(module_path, "test_test.R"))
   metadata_line <- grep("*# METADATA ####*", lines)
   lines <- append(lines, "common$meta$test <- input$test", metadata_line)
-  writeLines(lines, file.path(td, "inst/shiny/modules", "test_test.R"))
+  writeLines(lines, file.path(module_path, "test_test.R"))
   expect_warning(shinyscholar::metadata(td), "metadata lines are already present in test_test")
 })
 
 test_that("Check that lines added by metadata are functional", {
 
-  upload_path <- list.files(system.file("extdata/wc", package = "shinyscholar"),
+  upload_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),
                      pattern = ".tif$", full.names = TRUE)
 
   modules <- data.frame(
@@ -117,17 +109,18 @@ test_that("Check that lines added by metadata are functional", {
                   author = "Simon E. H. Smart", install = FALSE)
 
   test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
-  file.copy(test_files, file.path(td, "shinyscholar/inst/shiny/modules/"), overwrite = TRUE)
+  shiny_path <- file.path(td, "shinyscholar", "inst", "shiny")
+  file.copy(test_files, file.path(shiny_path, "modules"), overwrite = TRUE)
 
   shinyscholar::metadata(file.path(td, "shinyscholar"))
 
   # edit to use newly created core_modules
-  global_lines <- readLines(file.path(td, "shinyscholar/inst/shiny/global.R"))
-  core_line <- grep("*core_modules <-*", global_lines)
-  global_lines[core_line] <- glue::glue('core_modules <- file.path("modules", list.files(file.path("{td}", "shinyscholar/inst/shiny/modules"), pattern="core_*"))')
-  writeLines(global_lines, file.path(td, "shinyscholar/inst/shiny/global.R"))
+  global_lines <- readLines(file.path(shiny_path, "global.R"))
+  core_target <- grep("*core_modules <-*", global_lines)
+  global_lines[core_target] <- glue::glue('core_modules <- file.path("modules", list.files(file.path("{td}","shinyscholar", "inst", "shiny", "modules"), pattern="core_*"))')
+  writeLines(global_lines, file.path(shiny_path, "global.R"))
 
-  app <- shinytest2::AppDriver$new(app_dir = file.path(td, "shinyscholar/inst/shiny/"), name = "save_and_load_test")
+  app <- shinytest2::AppDriver$new(app_dir = shiny_path, name = "e2e_metadata_test")
   app$set_inputs(tabs = "test")
   app$set_inputs(testSel = "test_test")
   app$set_inputs("test_test-checkbox" = TRUE)

@@ -23,9 +23,9 @@ metadata <- function(folder_path, module = NULL){
             for information on manual steps you need to complete.")
 
   # locate modules to run on
-  module_path <- file.path(folder_path, "inst/shiny/modules/")
+  module_path <- file.path(folder_path, "inst", "shiny", "modules")
   if (is.null(module)){
-    targets <- list.files(module_path, pattern=".R$")
+    targets <- list.files(module_path, pattern = ".R$")
     # exclude core and rep modules
     if (length(grep("(core_|rep_)", targets) > 0)){
       targets <- targets[-grep("(core_|rep_)", targets)]
@@ -37,7 +37,7 @@ metadata <- function(folder_path, module = NULL){
   for (target in targets){
 
     module_name <- gsub(".R","",target)
-    lines <- readLines(paste0(module_path, target))
+    lines <- readLines(file.path(module_path, target))
 
     # extract lines creating input$ values while excluding any updateinput or setInputValue lines
     input_objects <- lines[c(grep("^(?!.*(update|setInputValue)).*Input", lines, perl = TRUE))]

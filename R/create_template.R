@@ -63,7 +63,7 @@ tidy_purl <- function(params){
 #' "async = c("TRUE, FALSE, FALSE, FALSE))
 #' common_objects = c("raster", "histogram", "scatter")
 #'
-#' create_template(path = "~/Documents", name = "demo",
+#' create_template(path = file.path("~", "Documents"), name = "demo",
 #' include_map = TRUE, include_table = TRUE, include_code = TRUE,
 #' common_objects = common_objects, modules = modules,
 #' author = "Simon E. H. Smart",
@@ -158,7 +158,7 @@ if (dir.exists(file.path(path, name))){
 }
 
 #update path to be the root and create folders
-path <- glue::glue("{path}/{name}")
+path <- file.path(path, name)
 dir.create(file.path(path, "R"))
 dir.create(file.path(path, "inst", "shiny", "modules"), recursive = TRUE)
 dir.create(file.path(path, "inst", "shiny", "Rmd"))
@@ -400,7 +400,7 @@ writeLines(guidance_lines, file.path(path, "inst", "shiny", "Rmd", paste0("gtext
 
 # copy www folder ====
 www_files <- system.file("shiny", "www", package = "shinyscholar")
-file.copy(www_files, glue::glue("{path}/inst/shiny/"), recursive = TRUE)
+file.copy(www_files, file.path(path, "inst", "shiny"), recursive = TRUE)
 
 # copy helpers ====
 helper_file <- system.file("shiny", "helpers.R", package = "shinyscholar")
