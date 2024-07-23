@@ -117,7 +117,7 @@ test_that("Check that lines added by metadata are functional", {
   # edit to use newly created core_modules
   global_lines <- readLines(file.path(shiny_path, "global.R"))
   core_target <- grep("*core_modules <-*", global_lines)
-  global_lines[core_target] <- glue::glue('core_modules <- file.path("modules", list.files(file.path("{td}","shinyscholar", "inst", "shiny", "modules"), pattern="core_*"))')
+  global_lines[core_target] <- 'core_modules <- c(file.path("modules", "core_intro.R"), file.path("modules", "core_load.R"), file.path("modules", "core_mapping.R"), file.path("modules", "core_save.R"))'
   writeLines(global_lines, file.path(shiny_path, "global.R"))
 
   app <- shinytest2::AppDriver$new(app_dir = shiny_path, name = "e2e_metadata_test")
