@@ -178,7 +178,7 @@
 <div class="section level5">
 <h5 id="r-function">.R function<a class="anchor" aria-label="anchor" href="#r-function"></a>
 </h5>
-<p>This function performs the computation of the module. Creating this function separately to the shiny functionality is advantageous because it is easier to test, separates reactivity from computation, is easier to document, and because it can be called from inside the .Rmd file. Messages can be posted to the log from inside these functions if it is passed <code>common$logger</code> but this should set to <code>NULL</code> by default so that message are printed to the console when the function is used outside of the application. See <code>/R/select_query.R</code> for an example.</p>
+<p>This function performs the computation of the module. Creating this function separately to the shiny functionality is advantageous because it is easier to test, separates reactivity from computation, is easier to document, and because it can be called from inside the .Rmd file. Messages can be posted to the log from inside these functions if it is passed <code>common$logger</code> but this should set to <code>NULL</code> by default so that message are printed to the console when the function is used outside of the application. See <code>/R/select_query_f.R</code> for an example.</p>
 </div>
 </div>
 <div class="section level4">
