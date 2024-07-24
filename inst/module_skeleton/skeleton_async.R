@@ -28,7 +28,6 @@
       results$resume()
 
       # METADATA ####
-      common$meta${{id}}$setting1 <- input
     })
 
 
@@ -88,10 +87,5 @@
 
 {{id}}_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
-  list(
-    {{id}}_knit = !is.null(common$some_object),
-    var1 = common$meta${{id}}$setting1,
-    var2 = common$meta${{id}}$setting2
-  )
 }
 

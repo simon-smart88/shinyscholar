@@ -10,15 +10,21 @@
 printVecAsis <- function(x, asChar = FALSE) {
   if (is.character(x)) {
     if (length(x) == 1) {
-      return(paste0("\'", x, "\'"))
+      return(paste0("\"", x, "\""))
     } else {
       if (asChar == FALSE) {
-        return(paste0("c(", paste(sapply(x, function(a) paste0("\'", a, "\'")),
+        return(paste0("c(", paste(sapply(x, function(a) paste0("\"", a, "\"")),
                                   collapse = ", "), ")"))
       } else {
-        return(paste0("(", paste(sapply(x, function(a) paste0("\'", a, "\'")),
+        return(paste0("(", paste(sapply(x, function(a) paste0("\"", a, "\"")),
                                  collapse = ", "), ")"))
       }
+    }
+  } else if (class(x) == "Date"){
+    if (length(x) == 1) {
+      return(paste0("as.Date(\"", x ,"\")"))
+    } else {
+      return(paste0("c(", paste(paste0("as.Date(\"", x ,"\")"), collapse = ", "), ")"))
     }
   } else {
     if (length(x) == 1) {

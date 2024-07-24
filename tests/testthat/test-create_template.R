@@ -103,20 +103,20 @@ test_that("Check create template function works as expected", {
        common_objects = common_objects, modules = modules,
        author = "Simon E. H. Smart", install = FALSE)
 
-  expect_true(file.exists(paste0(directory,"/shinyscholar/inst/shiny/server.R")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/inst/shiny/ui.R")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/inst/shiny/global.R")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/R/select_user_f.R")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/R/run_shinyscholar.R")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/R/run_module.R")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/inst/shiny/modules/select_user.R")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/inst/shiny/modules/select_user.Rmd")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/inst/shiny/modules/select_user.yml")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/inst/shiny/modules/select_user.md")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "server.R")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "ui.R")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "global.R")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "R", "select_user_f.R")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "R", "run_shinyscholar.R")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "R", "run_module.R")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.R")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.Rmd")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.yml")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.md")))
 
   #there is not much to test when running the app, but this confirms that it runs
   test_that("{shinytest2} recording: testing_create_template", {
-    app <- shinytest2::AppDriver$new(app_dir = paste0(directory,"/shinyscholar/inst/shiny/"), name = "create_test")
+    app <- shinytest2::AppDriver$new(app_dir = file.path(directory, "shinyscholar", "inst", "shiny"), name = "create_test")
     common <- app$get_value(export = "common")
     expect_true(is.null(common$raster))
   })
@@ -140,25 +140,25 @@ test_that("Check create template function works with false settings", {
                   author = "Simon E. H. Smart", install = FALSE)
 
 
-  global <- readLines(file.path(directory,"shinyscholar/inst/shiny/global.R"))
+  global <- readLines(file.path(directory, "shinyscholar", "inst", "shiny", "global.R"))
   core_target <- grep("core_modules <-", global)
-  global[core_target] <- glue::glue('core_modules <- file.path("modules", list.files(paste0("{directory}","/shinyscholar/inst/shiny/modules/"), pattern="core_*"))')
-  writeLines(global, file.path(directory,"shinyscholar/inst/shiny/global.R"))
+  global[core_target] <- 'core_modules <- c(file.path("modules", "core_intro.R"), file.path("modules", "core_load.R"), file.path("modules", "core_save.R"))'
+  writeLines(global, file.path(directory, "shinyscholar", "inst", "shiny", "global.R"))
 
-  expect_true(file.exists(paste0(directory,"/shinyscholar/inst/shiny/server.R")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/inst/shiny/ui.R")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/inst/shiny/global.R")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/R/select_user_f.R")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/R/run_shinyscholar.R")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/R/run_module.R")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/inst/shiny/modules/select_user.R")))
-  expect_false(file.exists(paste0(directory,"/shinyscholar/inst/shiny/modules/select_user.Rmd")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/inst/shiny/modules/select_user.yml")))
-  expect_true(file.exists(paste0(directory,"/shinyscholar/inst/shiny/modules/select_user.md")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "server.R")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "ui.R")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "global.R")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "R", "select_user_f.R")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "R", "run_shinyscholar.R")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "R", "run_module.R")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.R")))
+  expect_false(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.Rmd")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.yml")))
+  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.md")))
 
   #there is not much to test when running the app, but this confirms that it runs
   test_that("{shinytest2} recording: testing_create_template", {
-    app <- shinytest2::AppDriver$new(app_dir = paste0(directory,"/shinyscholar/inst/shiny/"), name = "create_test")
+    app <- shinytest2::AppDriver$new(app_dir = file.path(directory, "shinyscholar", "inst", "shiny"), name = "create_test")
     common <- app$get_value(export = "common")
     expect_true(is.null(common$raster))
   })

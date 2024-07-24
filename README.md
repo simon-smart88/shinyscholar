@@ -57,7 +57,7 @@ modules <- data.frame(
 
 common_objects = c("raster", "histogram", "scatter")
 
-shinyscholar::create_template(path = "~/Documents", name = "demo", author = "Simon E. H. Smart",
+shinyscholar::create_template(path = file.path("~", "Documents"), name = "demo", author = "Simon E. H. Smart",
 include_map = TRUE, include_table = TRUE, include_code = TRUE, common_objects = common_objects, modules = modules, install = TRUE)
 ```
 
@@ -88,7 +88,7 @@ The `<identifier>_module_result` function contains the `*Output()` functions whi
 
 The `<identifier>_module_map` function updates the `{leaflet}` map. `map` is a `leafletProxy()` object created in the main server function so leaflet functions can be piped to it e.g. `map &>& addRasterImage()` 
 
-The `*_module_rmd` function creates a list of objects which are passed to the module's .Rmd file to reproduce the analysis. The first `*_knit` object is a boolean used to control whether or not the module has been used and therefore whether the markdown should be included in the user's markdown. If the object to be passed over is a vector, then it should be wrapped in `printVecAsis()` which converts it to a string so that it can be knitted into the .Rmd. Writing this code can be semi-automated using the `metadata()` function once you have finished developing the module.
+The `*_module_rmd` function creates a list of objects which are passed to the module's .Rmd file to reproduce the analysis. The first `*_knit` object is a boolean used to control whether or not the module has been used and therefore whether the markdown should be included in the user's markdown. Writing this code can be semi-automated using the `metadata()` function once you have finished developing the module.
 
 ##### .Rmd
 This is a template for the rmarkdown that can be used to reproduce the module. Objects from `*_module_rmd` are passed into this template when the user downloads the rmarkdown. Objects from the `*_module_rmd` function are passed into the template when the document is knitted. If `module_setting` is added to the list in `*_module_rmd` then the value will be substituted for `{{module_setting}}` inside the .Rmd. If `module_setting` is a character string, then you need to use `"{{module_setting}}"` inside the .Rmd.
@@ -161,7 +161,7 @@ A separate `observe()` named `results` is required to listen for the result of t
 In the default implementation, only the mapping function of the currently selected module can be called, which prevents the result of an asynchronous task being added to the map. Instead `map` is passed as an argument to the module server function and then called once the result has been produced using `do.call("<identifier>_module_map", list(map, common))`.
 
 ##### End-to-end testing
-The task needs to started using `app$click(selector = "#<identifier>-run")`. `{shinytest2}` cannot detect that an asynchronous task is running and so the `timeout` parameter must be set to allow sufficient time for the function to run. An `input` value should be set inside `results` using `shinyjs::runjs("Shiny.setInputValue('<identifier>-complete', 'complete');")` which can then be detected inside the test using `app$wait_for_value(input = "<identifier>-complete")` to indicate that the task has completed.
+The task needs to started using `app$click(selector = "#<identifier>-run")`. `{shinytest2}` cannot detect that an asynchronous task is running and so the `timeout` parameter of `shinytest2::AppDriver()` must be set to allow sufficient time for the function to run. An `input` value should be set inside `results` using `shinyjs::runjs("Shiny.setInputValue('<identifier>-complete', 'complete');")` which can then be detected inside the test using `app$wait_for_value(input = "<identifier>-complete")` to indicate that the task has completed.
 
 ## Acknowledgments
 shinyscholar was developed as part of a project to develop digital tools for modelling infectious diseases [funded by Wellcome](https://wellcome.org/news/digital-tools-climate-sensitive-infectious-disease) at the [University of Leicester](https://le.ac.uk/). The version of Wallace that shinyscholar was derived from was funded by the [Global Biodiversity Information Facility](https://www.gbif.org/), [National Science Foundation](https://www.nsf.gov/) and [NASA](https://www.nasa.gov/).

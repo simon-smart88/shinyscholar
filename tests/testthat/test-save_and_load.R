@@ -3,12 +3,13 @@ test_that("Check metadata function adds line as expected", {
   test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
   td <- tempfile()
   dir.create(td, recursive = TRUE)
-  dir.create(file.path(td, "inst/shiny/modules/"), recursive = TRUE)
-  file.copy(test_files, file.path(td, "inst/shiny/modules/"))
+  module_directory <- file.path(td, "inst", "shiny", "modules")
+  dir.create(module_directory, recursive = TRUE)
+  file.copy(test_files, module_directory)
 
   shinyscholar::save_and_load(td)
 
-  temp_file <- file.path(td, "inst/shiny/modules/test_test.R")
+  temp_file <- file.path(module_directory, "test_test.R")
   r_out <- readLines(temp_file)
 
   expect_true(any(grepl("*checkbox = input\\$checkbox*", r_out)))
@@ -59,12 +60,13 @@ test_that("Check metadata function keeps manually added lines", {
   test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
   td <- tempfile()
   dir.create(td, recursive = TRUE)
-  dir.create(file.path(td, "inst/shiny/modules/"), recursive = TRUE)
-  file.copy(test_files, file.path(td, "inst/shiny/modules/"))
+  module_directory <- file.path(td, "inst", "shiny", "modules")
+  dir.create(module_directory, recursive = TRUE)
+  file.copy(test_files, module_directory)
 
   shinyscholar::save_and_load(td)
 
-  temp_file <- file.path(td, "inst/shiny/modules/test_test.R")
+  temp_file <- file.path(module_directory, "test_test.R")
   r_out <- readLines(temp_file)
 
   save_start_line <- grep("*### Manual save start*", r_out)
@@ -110,17 +112,20 @@ test_that("Check that lines added by save_and_load are functional", {
                   author = "Simon E. H. Smart", install = FALSE)
 
   test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
-  file.copy(test_files, file.path(td, "shinyscholar/inst/shiny/modules/"), overwrite = TRUE)
+
+  module_directory <- file.path(td, "shinyscholar", "inst", "shiny", "modules")
+  file.copy(test_files, module_directory, overwrite = TRUE)
 
   shinyscholar::save_and_load(file.path(td, "shinyscholar"))
 
   # edit to use newly created core_modules
-  global_lines <- readLines(file.path(td, "shinyscholar/inst/shiny/global.R"))
-  core_line <- grep("*core_modules <-*", global_lines)
-  global_lines[core_line] <- glue::glue('core_modules <- file.path("modules", list.files(file.path("{td}", "shinyscholar/inst/shiny/modules"), pattern="core_*"))')
-  writeLines(global_lines, file.path(td, "shinyscholar/inst/shiny/global.R"))
+  global_path <- file.path(td, "shinyscholar", "inst", "shiny", "global.R")
+  global_lines <- readLines(global_path)
+  core_target <- grep("*core_modules <-*", global_lines)
+  global_lines[core_target] <- 'core_modules <- c(file.path("modules", "core_intro.R"), file.path("modules", "core_load.R"), file.path("modules", "core_mapping.R"), file.path("modules", "core_save.R"))'
+  writeLines(global_lines, global_path)
 
-  app <- shinytest2::AppDriver$new(app_dir = file.path(td, "shinyscholar/inst/shiny/"), name = "save_and_load_test")
+  app <- shinytest2::AppDriver$new(app_dir = file.path(td, "shinyscholar", "inst", "shiny"), name = "save_and_load_test")
   app$set_inputs(tabs = "test")
   app$set_inputs(testSel = "test_test")
   app$set_inputs("test_test-checkbox" = FALSE)
@@ -151,7 +156,7 @@ test_that("Check that lines added by save_and_load are functional", {
   expect_equal(common$state$test_test$single_quote, "test")
   expect_equal(common$state$test_test$switch, FALSE)
 
-  app <- shinytest2::AppDriver$new(app_dir = file.path(td, "shinyscholar/inst/shiny/"), name = "save_and_load_test")
+  app <- shinytest2::AppDriver$new(app_dir = file.path(td, "shinyscholar", "inst", "shiny"), name = "save_and_load_test")
   app$set_inputs(introTabs = "Load Prior Session")
   app$upload_file("core_load-load_session" = save_path)
   app$click("core_load-goLoad_session")

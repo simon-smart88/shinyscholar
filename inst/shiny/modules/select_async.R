@@ -134,7 +134,7 @@ select_async_module_rmd <- function(common) {
   list(
     select_async_knit = !is.null(common$meta$select_async$used),
     select_date = common$meta$select_async$date,
-    select_poly = printVecAsis(common$meta$select_async$poly),
+    select_poly = common$meta$select_async$poly,
     select_name = common$meta$select_async$name
 
   )

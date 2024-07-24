@@ -103,7 +103,7 @@ select_query_module_rmd <- function(common) {
   list(
     select_query_knit = !is.null(common$meta$select_query$used),
     select_date = common$meta$select_query$date,
-    select_poly = printVecAsis(common$meta$select_query$poly),
+    select_poly = common$meta$select_query$poly,
     select_name = common$meta$select_query$name
 
   )

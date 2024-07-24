@@ -7,12 +7,9 @@
 #' complete the following steps:
 #' \itemize{
 #'  \item Check that any inputs created by packages other than `{shiny}` are included
-#'  \item Add any inputs created dynamically i.e. inside a loop in a `renderUI`
-#'  \item If the value of an input is a vector, wrap the `common$meta` object
-#'  in the `_module_rmd` function in `printVecAsis()` so that the values can be
-#'  transferred when the `.Rmd` document is knitted.
-#'  \item If the value of input is a string, wrap the `{{input_id}}` object in the
-#'  `.Rmd` file with `""`
+#'  \item Add any inputs created dynamically i.e. those without an explicit
+#'  line of code to generate them, for example those created inside a loop in a
+#'  `renderUI` or from a `{leaflet}` or `{DT}` object.
 #'  \item Use the objects in each `.Rmd` file to call the module's function.
 #'  }
 #' @param folder_path character. Path to the parent directory containing the application
@@ -26,9 +23,9 @@ metadata <- function(folder_path, module = NULL){
             for information on manual steps you need to complete.")
 
   # locate modules to run on
-  module_path <- file.path(folder_path, "inst/shiny/modules/")
+  module_path <- file.path(folder_path, "inst", "shiny", "modules")
   if (is.null(module)){
-    targets <- list.files(module_path, pattern=".R$")
+    targets <- list.files(module_path, pattern = ".R$")
     # exclude core and rep modules
     if (length(grep("(core_|rep_)", targets) > 0)){
       targets <- targets[-grep("(core_|rep_)", targets)]
@@ -40,7 +37,7 @@ metadata <- function(folder_path, module = NULL){
   for (target in targets){
 
     module_name <- gsub(".R","",target)
-    lines <- readLines(paste0(module_path, target))
+    lines <- readLines(file.path(module_path, target))
 
     # extract lines creating input$ values while excluding any updateinput or setInputValue lines
     input_objects <- lines[c(grep("^(?!.*(update|setInputValue)).*Input", lines, perl = TRUE))]
@@ -109,12 +106,7 @@ metadata <- function(folder_path, module = NULL){
 
         rmd_func_line <- glue::glue("{module_name}_{input_id} = common$meta${module_name}${input_id}")
 
-        # wrap strings in quotes
-        if ((objects[row,2] == "Input") & (input_type %in% c("text", "select", "selectize", "file"))){
-          rmd_file_line <- glue::glue("\"{{{{{module_name}_{input_id}}}}}\"")
-        } else {
-          rmd_file_line <- glue::glue("{{{{{module_name}_{input_id}}}}}")
-        }
+        rmd_file_line <- glue::glue("{{{{{module_name}_{input_id}}}}}")
 
         to_server <- append(to_server, server_line)
         to_rmd_func <- append(to_rmd_func, rmd_func_line)
