@@ -194,7 +194,7 @@
 <div class="section level4">
 <h4 id="theme">Theme<a class="anchor" aria-label="anchor" href="#theme"></a>
 </h4>
-<p>The colour of elements in the app are controlled by the theme present in the <code><a href="https://rdrr.io/pkg/bslib/man/bs_theme.html" class="external-link">bslib::bs_theme()</a></code> function inside <code>ui.R</code>. The default theme used is <code>spacelab</code>, but you can choose your own from <a href="https://bootswatch.com/" class="external-link uri">https://bootswatch.com/</a>.</p>
+<p>The colour of elements in the app are controlled by the theme present in the <code><a href="https://rstudio.github.io/bslib/reference/bs_theme.html" class="external-link">bslib::bs_theme()</a></code> function inside <code>ui.R</code>. The default theme used is <code>spacelab</code>, but you can choose your own from <a href="https://bootswatch.com/" class="external-link uri">https://bootswatch.com/</a>.</p>
 </div>
 <div class="section level4">
 <h4 id="commonr">common.R<a class="anchor" aria-label="anchor" href="#commonr"></a>
@@ -236,7 +236,7 @@
 <div class="section level5">
 <h5 id="running-tasks">Running tasks<a class="anchor" aria-label="anchor" href="#running-tasks"></a>
 </h5>
-<p><code>common$tasks</code> is a list that stores details of all the asynchronous tasks. Each task is added to the list above the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> in the <code>&lt;identifier&gt;_module_server</code> function as <code>common$tasks$&lt;identifier&gt;</code>. The task contains the module’s function wrapped by <code><a href="https://rstudio.github.io/promises/reference/future_promise.html" class="external-link">promises::future_promise()</a></code> and bound to a <code><a href="https://rdrr.io/pkg/bslib/man/bind_task_button.html" class="external-link">bslib::bind_task_button()</a></code> which disables the button when the task is running:</p>
+<p><code>common$tasks</code> is a list that stores details of all the asynchronous tasks. Each task is added to the list above the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> in the <code>&lt;identifier&gt;_module_server</code> function as <code>common$tasks$&lt;identifier&gt;</code>. The task contains the module’s function wrapped by <code><a href="https://rstudio.github.io/promises/reference/future_promise.html" class="external-link">promises::future_promise()</a></code> and bound to a <code><a href="https://rstudio.github.io/bslib/reference/bind_task_button.html" class="external-link">bslib::bind_task_button()</a></code> which disables the button when the task is running:</p>
 <pre><code>common$tasks$&lt;identifier&gt; &lt;- ExtendedTask$new(function(...) {
     promises::future_promise({
       &lt;identifer&gt;(...)
