@@ -19,10 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -38,11 +35,6 @@ jobs:
           Set-Content -Path $Env:GITHUB_ENV -Value "LC_CTYPE=en_US.UTF-8"
 
       - uses: r-lib/actions/setup-pandoc@v2
-
-      - name:  Installing GDAL and PROJ in macOS
-        if: runner.os == 'macOS'
-        run:  brew install gdal proj
-        shell: bash
 
       - uses: r-lib/actions/setup-r@v2
         with:
