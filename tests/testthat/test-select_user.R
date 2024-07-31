@@ -21,3 +21,4 @@ test_that("{shinytest2} recording: e2e_select_user", {
   common$ras <- terra::unwrap(common$ras)
   expect_is(common$ras, 'SpatRaster')
 })
+
