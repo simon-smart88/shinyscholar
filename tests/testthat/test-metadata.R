@@ -160,4 +160,6 @@ test_that("Check that lines added by metadata are functional", {
   expect_equal(lines[start_line + 12], "\"B\"")
   expect_equal(lines[start_line + 13], "FALSE")
 
+  app$stop()
+
 })

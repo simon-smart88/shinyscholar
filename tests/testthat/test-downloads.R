@@ -29,6 +29,7 @@ test_that("{shinytest2} recording: e2e_markdown", {
   app$set_inputs(refFileType = "HTML")
   ref_file <- app$get_download("dlrefPackages")
   expect_gt(file.info(ref_file)$size, 10000)
+  app$stop()
   })
 
 test_that("{shinytest2} recording: e2e_table_download", {
@@ -43,6 +44,7 @@ test_that("{shinytest2} recording: e2e_table_download", {
   table_file <- app$get_download("dl_table")
   df <- read.csv(table_file)
   expect_equal(nrow(df),100)
+  app$stop()
   })
 
 test_that("{shinytest2} recording: e2e_plot_downloads", {
@@ -67,6 +69,8 @@ test_that("{shinytest2} recording: e2e_plot_downloads", {
 
   expect_gt(file.info(scatter_file)$size, 1000)
   expect_gt(file.info(hist_file)$size, 1000)
+
+  app$stop()
 
 })
 

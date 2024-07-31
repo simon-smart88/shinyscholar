@@ -59,5 +59,6 @@ test_that("{shinytest2} recording: e2e_select_query", {
     expect_equal(is.null(common$poly), FALSE)
     expect_is(common$ras, 'SpatRaster')
     expect_equal(common$meta$select_async$name, "FCover")
+    app$stop()
   }
 })

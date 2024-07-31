@@ -12,6 +12,7 @@ test_that("{shinytest2} recording: e2e_empty_save", {
   save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)
   expect_true(is.null(common$ras))
+  app$stop()
 })
 
 #this works
@@ -34,6 +35,7 @@ test_that("{shinytest2} recording: e2e_save_scat", {
   common$ras <- terra::unwrap(common$ras)
   expect_is(common$ras, "SpatRaster")
   expect_is(common$scat, "data.frame")
+  app$stop()
 })
 
 #this may be temperamental
@@ -56,6 +58,7 @@ test_that("{shinytest2} recording: e2e_save_hist", {
   common$ras <- terra::unwrap(common$ras)
   expect_is(common$ras, "SpatRaster")
   expect_is(common$hist, "histogram")
+  app$stop()
 })
 
 test_that("{shinytest2} recording: e2e_load", {
@@ -68,5 +71,6 @@ test_that("{shinytest2} recording: e2e_load", {
   app$click("core_load-goLoad_session")
   common <- app$get_value(export = "common")
   expect_is(common$ras, "SpatRaster")
+  app$stop()
 })
 

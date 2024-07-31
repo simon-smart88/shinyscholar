@@ -27,4 +27,5 @@ test_that("{shinytest2} recording: e2e_plot_hist", {
   app$click("plot_hist-run")
   common <- app$get_value(export = "common")
   expect_is(common$hist, "histogram")
+  app$stop()
 })

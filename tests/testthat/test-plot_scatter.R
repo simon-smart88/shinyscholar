@@ -28,4 +28,5 @@ test_that("{shinytest2} recording: e2e_plot_scatter", {
   app$click("plot_scatter-run")
   common <- app$get_value(export = "common")
   expect_is(common$scat, "data.frame")
+  app$stop()
 })

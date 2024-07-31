@@ -155,6 +155,7 @@ test_that("Check that lines added by save_and_load are functional", {
   expect_equal(common$state$test_test$text, "test")
   expect_equal(common$state$test_test$single_quote, "test")
   expect_equal(common$state$test_test$switch, FALSE)
+  app$stop()
 
   app <- shinytest2::AppDriver$new(app_dir = file.path(td, "shinyscholar", "inst", "shiny"), name = "save_and_load_test")
   app$set_inputs(introTabs = "Load Prior Session")
@@ -173,6 +174,6 @@ test_that("Check that lines added by save_and_load are functional", {
   expect_equal(loaded_values$input[["test_test-text"]], "test")
   expect_equal(loaded_values$input[["test_test-single_quote"]], "test")
   expect_equal(loaded_values$input[["test_test-switch"]], FALSE)
-
+  app$stop()
 
 })
