@@ -30,4 +30,5 @@ test_that("{shinytest2} recording: e2e_plot_scatter", {
   save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)
   expect_is(common$scat, "data.frame")
+  app$stop()
 })

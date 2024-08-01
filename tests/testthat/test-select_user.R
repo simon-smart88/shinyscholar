@@ -20,5 +20,6 @@ test_that("{shinytest2} recording: e2e_select_user", {
   common <- readRDS(save_file)
   common$ras <- terra::unwrap(common$ras)
   expect_is(common$ras, 'SpatRaster')
+  app$stop()
 })
 
