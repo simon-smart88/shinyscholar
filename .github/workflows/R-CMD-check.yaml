@@ -35,7 +35,7 @@ jobs:
         run: |
           echo NASA_username="$NASA_USERNAME" >> ~/.Renviron
           echo NASA_password="$NASA_PASSWORD" >> ~/.Renviron
-          shell: bash
+        shell: bash
 
       - uses: actions/checkout@v3
 

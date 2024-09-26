@@ -19,4 +19,4 @@ colnames(poly_matrix_sea) <- c('longitude', 'latitude')
 
 check_live <- suppressWarnings(check_url("https://ladsweb.modaps.eosdis.nasa.gov/api/v2/content/archives"))
 
-token = get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
+token <- get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
