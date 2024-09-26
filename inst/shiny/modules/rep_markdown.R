@@ -36,7 +36,6 @@ rep_markdown_module_server <- function(id, common, parent_session, map, COMPONEN
             rmd_file <- module$rmd_file
             rmd_function <- module$rmd_function
             if (is.null(rmd_file)) next
-
             if (is.null(rmd_function)) {
               rmd_vars <- list()
             } else {

@@ -2,8 +2,11 @@
 select_async_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    selectInput(ns("date"), "Select date",
-                choices = c("2023-06-20", "2023-06-30", "2023-07-10", "2023-07-20")),
+    dateInput(ns("date"), "Select date",
+              min = "2005-01-01",
+              max = as.character(Sys.Date()-20),
+              value = as.character(Sys.Date()-20)),
+    uiOutput(ns("token_out")),
     actionButton(ns("random"), "Pick a random location"),
     br(),br(),
     bslib::input_task_button(ns("run"), "Load imagery")
@@ -13,15 +16,30 @@ select_async_module_ui <- function(id) {
 select_async_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
-  #pick a random location over land, but fail safely in case the API is broken
+  # pick a random location over land, but fail safely in case the API is broken
   observeEvent(input$random, {
     random_land <- httr2::request("https://api.3geonames.org/?randomland=yes") |> httr2::req_perform()
     if (random_land$status_code == 200){
       random_land <- httr2::resp_body_xml(random_land) |> xml2::as_list()
-      map %>% setView(random_land$geodata$nearest$longt, random_land$geodata$nearest$latt, zoom = 9)
+      map %>% setView(random_land$geodata$nearest$longt, random_land$geodata$nearest$latt, zoom = 7)
     } else {
       common$logger %>% writeLog(type = "error", "Something went wrong requesting a random location")
     }
+  })
+
+  # use the environmental variable if set, if not display box to enter it
+  output$token_out <- renderUI({
+    if (Sys.getenv("NASA_username") == ""){
+      textInput(session$ns("token"), "NASA Earthdata token")}
+  })
+
+  token <- reactive({
+    if (Sys.getenv("NASA_username") != ""){
+      token = get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
+    } else {
+      token = input$token
+    }
+    token
   })
 
   #create the asynchronous task
@@ -34,7 +52,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # TEST MODE - required due to the polygon not being able to be tested correctly.
     if (isTRUE(getOption("shiny.testmode"))) {
-      poly_matrix <- matrix(c(0, 0, 0.5, 0.5, 0, 52, 52.5, 52.5, 52, 52), ncol=2)
+      poly_matrix <- matrix(c(0.5, 0.5, 1, 1, 0.5, 52, 52.5, 52.5, 52, 52), ncol = 2)
       colnames(poly_matrix) <- c('longitude', 'latitude')
       common$poly <- poly_matrix
     }
@@ -45,17 +63,28 @@ select_async_module_server <- function(id, common, parent_session, map) {
       return()
     }
 
+    if (length(input$date) == 0) {
+      common$logger %>% writeLog(type = "error", "Please pick a date")
+      return()
+    }
+
+    if (nchar(token()) < 200){
+      common$logger %>% writeLog(type = "error", "That doesn't look like a valid NASA bearer token")
+      return()
+    }
+
     # FUNCTION CALL ####
-    common$logger %>% writeLog(type = "starting", "Starting to download Fcover data")
+    common$logger %>% writeLog(type = "starting", "Starting to download FAPAR data")
     # invoke the async task
-    common$tasks$select_async$invoke(common$poly, input$date, TRUE)
-    # reactive the results observer if it has already been used
+    common$tasks$select_async$invoke(common$poly, input$date, token(), TRUE)
+    # reactivate the results observer if it has already been used
     results$resume()
 
     # METADATA ####
-    common$meta$select_async$date <- input$date
+    common$meta$select_query$date <- as.character(input$date)
+    common$meta$select_async$token <- input$token
     common$meta$select_async$poly <- common$poly
-    common$meta$select_async$name <- "FCover"
+    common$meta$select_async$name <- "FAPAR"
     common$meta$select_async$used <- TRUE
 
   })
@@ -63,9 +92,9 @@ select_async_module_server <- function(id, common, parent_session, map) {
   results <- observe({
     # LOAD INTO COMMON ####
 
-    #fetch the result
+    # fetch the result
     result <- common$tasks$select_async$result()
-    #suspend the observer
+    # suspend the observer
     results$suspend()
 
     # check the class of the result is the class when the function runs successfully
@@ -73,7 +102,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
       raster <- terra::unwrap(result$raster)
       common$ras <- raster
 
-      common$logger %>% writeLog(type = "complete", "Fcover data has been downloaded")
+      common$logger %>% writeLog(type = "complete", "FAPAR data has been downloaded")
       common$logger %>% writeLog(result$message)
 
       # TRIGGER
@@ -90,25 +119,19 @@ select_async_module_server <- function(id, common, parent_session, map) {
     }
   })
 
-
   return(list(
     save = function() {
       list(
-        select_date = input$date
+        select_date = input$date,
+        select_token = input$token
       )
     },
     load = function(state) {
-      updateSelectInput(session, "date", selected = state$select_date)
+      updateDateInput(session, "date", selected = state$select_date)
+      updateTextInput(session, "token", selected = state$select_token)
     }
   ))
 })
-}
-
-select_async_module_result <- function(id) {
-  ns <- NS(id)
-
-  # Result UI
-  verbatimTextOutput(ns("result"))
 }
 
 select_async_module_map <- function(map, common) {
@@ -122,7 +145,7 @@ select_async_module_map <- function(map, common) {
     clearGroup(name) %>%
     removeControl(name) %>%
     addRasterImage(common$ras, colors = pal, group = name) %>%
-    addTiles(urlTemplate = "", attribution = "Copernicus Sentinel data 2023") %>%
+    addTiles(urlTemplate = "", attribution = "MODIS data via LAADS DAAC") %>%
     fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
     addLegend(position = "bottomright", pal = pal, values = terra::values(common$ras),
               group = name, title = name, layer = name) %>%
@@ -135,7 +158,7 @@ select_async_module_rmd <- function(common) {
     select_async_knit = !is.null(common$meta$select_async$used),
     select_date = common$meta$select_async$date,
     select_poly = common$meta$select_async$poly,
-    select_name = common$meta$select_async$name
-
+    select_name = common$meta$select_async$name,
+    select_token = common$meta$select_async$token
   )
 }
