@@ -15,7 +15,7 @@ This module allows you to create and download a template for your own applicatio
 * Include map tab? - Whether to include the map tab in the results panel.
 * Include table tab? - Whether to include the table tab in the results panel.
 * Include code tab? - Whether to include the code tab in the results panel.
-* Options for each module - Where each module should have map, results, rmarkdown and save functionality.
+* Options for each module - Whether each module should have map, results, rmarkdown and save functionality and whether the module should run asynchronously.
 * Common objects - These are the names of data structures that are shared between modules. The structures: meta, logger, state, and poly and used internally and an error will be returned if you try to use these again
 * Author - your name.
 
@@ -23,4 +23,4 @@ The app checks that the lengths of the components and long components and the le
 
 Once all the fields are filled in and validated, the Download! button will appear below the boxes and clicking it will generate a .zip file. After extracting that file, navigate into the folder, and run `devtools::install_local()` to install the package and then you can run the app using `<name>::run_<name>`.
 
-Information on how to develop the app can be found in the [project's README](https://github.com/simon-smart88/shinyscholar/blob/master/README.md)
+Information on how to develop the app can be found in the <a href="https://github.com/simon-smart88/shinyscholar/blob/master/README.md" target="_blank">project's README</a>

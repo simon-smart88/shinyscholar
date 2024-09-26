@@ -10,8 +10,8 @@ output: html_document
 **Components:**  
 
 **1.** *Select Data*  
-- Obtain vegetation cover data through an API
-- Obtain vegetation cover data through an API asynchronously
+- Obtain vegetation data through an API
+- Obtain vegetation data through an API asynchronously
 - Upload your own raster data
 
 **2.** *Plot Data*  

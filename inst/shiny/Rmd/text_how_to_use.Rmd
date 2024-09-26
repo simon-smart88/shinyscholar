@@ -4,7 +4,7 @@ output: html_document
 ---
 
 ### **Overview of** ***shinyscholar***
-This information is designed to orient users and developers to the *shinyscholar* interface and the underlying codebase that the template creates. Most of these attributes derive directly from `{wallace}`. Additional information on developing applications using the template generated can be found in the project's [README](https://github.com/simon-smart88/shinyscholar/blob/master/README.md)
+This information is designed to orient users and developers to the *shinyscholar* interface and the underlying codebase that the template creates. Most of these attributes derive directly from `{wallace}`. Additional information on developing applications using the template generated can be found in the project's <a href="https://github.com/simon-smart88/shinyscholar/blob/master/README.md" target="_blank">README</a>
 
 #### **Components and Modules**
 *shinyscholar* is composed of **Components** – discrete steps in the workflow. Navigate through the components by clicking on the names in the top navigation panel. In this demonstration application, components need to be run consecutively, but in more complex use cases, some may not need to be run. For example in `{wallace}` the Environmental Space component is optional.
