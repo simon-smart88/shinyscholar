@@ -20,12 +20,9 @@ and only semi-automates the process. To ensure that the code is functional
 complete the following steps:
 \itemize{
 \item Check that any inputs created by packages other than \code{{shiny}} are included
-\item Add any inputs created dynamically i.e. inside a loop in a \code{renderUI}
-\item If the value of an input is a vector, wrap the \code{common$meta} object
-in the \verb{_module_rmd} function in \code{printVecAsis()} so that the values can be
-transferred when the \code{.Rmd} document is knitted.
-\item If the value of input is a string, wrap the \code{{{input_id}}} object in the
-\code{.Rmd} file with \code{""}
+\item Add any inputs created dynamically i.e. those without an explicit
+line of code to generate them, for example those created inside a loop in a
+\code{renderUI} or from a \code{{leaflet}} or \code{{DT}} object.
 \item Use the objects in each \code{.Rmd} file to call the module's function.
 }
 }

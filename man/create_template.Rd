@@ -74,7 +74,7 @@ modules <- data.frame(
 "async = c("TRUE, FALSE, FALSE, FALSE))
 common_objects = c("raster", "histogram", "scatter")
 
-create_template(path = "~/Documents", name = "demo",
+create_template(path = file.path("~", "Documents"), name = "demo",
 include_map = TRUE, include_table = TRUE, include_code = TRUE,
 common_objects = common_objects, modules = modules,
 author = "Simon E. H. Smart",
