@@ -25,6 +25,8 @@ jobs:
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      NASA_username: ${{ secrets.NASA_USERNAME }}
+      NASA_password: ${{ secrets.NASA_PASSWORD }}
       R_KEEP_PKG_SOURCE: yes
 
     steps:
