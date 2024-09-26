@@ -17,6 +17,7 @@ vignettes/*.pdf
 .Rproj.user
 .Rproj
 .RData
+.Renviron
 # .rmd files
 KeepNA
 keepInteger

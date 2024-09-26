@@ -1,6 +1,6 @@
 Package: shinyscholar
-Version: 0.2.0
-Date: 2024-07-12
+Version: 0.2.1
+Date: 2024-09-26
 Title: A template for creating modular reproducible shiny applications
 Description: The 'shiny' application shinyscholar is a modular platform for 
     creating reproducible applications to academic standards. 'shinyscholar' is 
@@ -52,5 +52,5 @@ Suggests:
 License: GPL-3
 URL: https://simon-smart88.github.io/shinyscholar/
 Encoding: UTF-8
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)

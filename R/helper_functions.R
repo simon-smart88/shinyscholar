@@ -8,6 +8,9 @@
 #' @keywords internal
 #' @export
 printVecAsis <- function(x, asChar = FALSE) {
+  if (is.null(x)){
+    return("NULL")
+  }
   if (is.character(x)) {
     if (length(x) == 1) {
       return(paste0("\"", x, "\""))
@@ -20,7 +23,7 @@ printVecAsis <- function(x, asChar = FALSE) {
                                  collapse = ", "), ")"))
       }
     }
-  } else if (class(x) == "Date"){
+  } else if ("Date" %in% class(x)){
     if (length(x) == 1) {
       return(paste0("as.Date(\"", x ,"\")"))
     } else {

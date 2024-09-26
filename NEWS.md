@@ -38,3 +38,7 @@ shinyscholar 0.2.0
 - Module function file names now take the form of `<identifier>_f.R` to prevent confusion between the function and module file.
 - Objects are all passed to `printVecAsis()` when generating the Rmarkdown, removing the need to manually wrap strings in the `.Rmd` files.
 - Use `{shinyAce}` to display formatted code in `core_code` module.
+
+shinyscholar 0.2.1
+=============
+- The `select_query` and `select_async` modules in the demonstration have been re-written to use a different API.
