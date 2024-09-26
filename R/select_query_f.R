@@ -19,7 +19,7 @@ get_nasa_token <- function(username, password) {
     httr2_http_401 = function(cnd){NULL}
   )
 
-  if (response$status_code == 200) {
+  if (!is.null(response) && (response$status_code == 200)) {
     body <- response %>% httr2::resp_body_json()
     token <- body$access_token
     return(token)
