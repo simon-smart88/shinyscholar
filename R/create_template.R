@@ -11,7 +11,7 @@ tidy_purl <- function(params){
   rmd <- do.call(knitr::knit_expand, params)
   temp <- tempfile()
   writeLines(rmd, glue::glue("{temp}.Rmd"))
-  knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{temp}.R"))
+  knitr::purl(glue::glue("{temp}.Rmd"), glue::glue("{temp}.R"), quiet = TRUE)
   lines <- readLines(glue::glue("{temp}.R"))
   lines <- lines[!grepl("^## ----*", lines)]
   return(lines)
@@ -413,11 +413,11 @@ file.copy(helper_function_file, file.path(path, "R"))
 description_template <- system.file("app_skeleton", "DESCRIPTION", package = "shinyscholar")
 description_lines <- readLines(description_template)
 description_lines[1] <- glue::glue("Package: {name}")
-description_lines[3] <- Sys.Date()
+description_lines[3] <- glue::glue("Date: {Sys.Date()}")
 if (async){
-  description_lines <- append(description_lines, "    bslib,", 12)
-  description_lines <- append(description_lines, "    future,", 14)
-  description_lines <- append(description_lines, "    promises,", 19)
+  description_lines <- append(description_lines, "    bslib,", 14)
+  description_lines <- append(description_lines, "    future,", 16)
+  description_lines <- append(description_lines, "    promises,", 21)
 }
 
 if (include_code){
