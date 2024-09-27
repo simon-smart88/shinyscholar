@@ -2,7 +2,7 @@
 resourcePath <- system.file("shiny", "www", package = "{{app_library}}")
 shiny::addResourcePath("resources", resourcePath)
 
-cookies::add_cookie_handlers(tagList(
+tagList(
   rintrojs::introjsUI(),
   shinyjs::useShinyjs(),
   shinyjs::extendShinyjs(
@@ -162,7 +162,10 @@ cookies::add_cookie_handlers(tagList(
             tabPanel(
               'About',
               br(),
-              core_intro_module_ui("core_intro"),
+              tags$div(
+                style="text-align: center;",
+                core_intro_module_ui("core_intro")
+              ),
               includeMarkdown("Rmd/text_about.Rmd")
             ),
             tabPanel(
@@ -185,7 +188,7 @@ cookies::add_cookie_handlers(tagList(
       )
     )
   )
-))
+)
 
 ```
 

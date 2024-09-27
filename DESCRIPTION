@@ -15,7 +15,6 @@ Depends:
     gargoyle
 Imports:
     bslib,
-    cookies,
     curl,
     devtools,
     dplyr (>= 1.0.2),
