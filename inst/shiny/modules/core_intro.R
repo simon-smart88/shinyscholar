@@ -1,7 +1,7 @@
 core_intro_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    actionButton(ns("intro"), "Start tour")
+    actionButton(ns("intro"), "Start a guided tour", icon = icon("person-hiking", lib = "font-awesome"), width = "400px", style = "font-size: 2rem;")
   )
 }
 
@@ -19,14 +19,14 @@ core_intro_module_server <- function(id, common, parent_session) {
                         c("#selectHelp", "Click on the question mark to view instructions for the component", "bottom", "$('a[data-value=\"select\"]').removeClass('active');
                                                                                                                      $('a[data-value=\"Component Guidance\"]').trigger('click');
                                                                                                                      $('a[data-value=\"Component Guidance\"]').addClass('active');"),
-                        c("#selectSel", "Select a module to load the options", "bottom", "$('a[data-value=\"Component Guidance\"]').removeClass('active');
+                        c("#selectSel", "Select a module to load the options", "right", "$('a[data-value=\"Component Guidance\"]').removeClass('active');
                                                                                       $('a[data-value=\"Map\"]').trigger('click');
                                                                                       $('a[data-value=\"Map\"]').addClass('active');
                                                                                       $('input[value=\"select_query\"]').trigger('click');"),
                         c("#select_queryHelp", "Click on the question mark to view instructions for the module", "bottom", "$('a[data-value=\"Map\"]').removeClass('active');
                                                                                                                         $('a[data-value=\"Module Guidance\"]').trigger('click');
                                                                                                                         $('a[data-value=\"Module Guidance\"]').addClass('active');"),
-                        c("div[class=\"form-group shiny-input-container\"]", "Choose from the list of options", "bottom", "$('a[data-value=\"Module Guidance\"]').removeClass('active');
+                        c("#select_query-date", "Choose from the list of options", "right", "$('a[data-value=\"Module Guidance\"]').removeClass('active');
                                                                                                                        $('a[data-value=\"Map\"]').trigger('click');
                                                                                                                        $('a[data-value=\"Map\"]').addClass('active');"),
                         c("#select_query-run", "Click the button to run the module", "bottom", NA),

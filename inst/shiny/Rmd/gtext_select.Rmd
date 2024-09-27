@@ -7,5 +7,5 @@ output: html_document
 
 **ORIENTATION**
 
-This module enables loading raster data, either using Module: *Query API* to obtain the data via an API or by using Module: *Upload data* to upload the data from an existing file.
+This component enables loading raster data, either using Module: *Query API* to obtain the data via an API, Module: *Query API asychronously* to load data via an API asynchronously or by using Module: *Upload data* to upload the data from an existing file.
 

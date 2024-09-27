@@ -198,7 +198,10 @@ cookies::add_cookie_handlers(tagList(
             tabPanel(
               'About',
               br(),
-              core_intro_module_ui("core_intro"),
+              tags$div(
+                style="text-align: center;",
+                core_intro_module_ui("core_intro")
+              ),
               includeMarkdown("Rmd/text_about.Rmd")
             ),
             tabPanel(
