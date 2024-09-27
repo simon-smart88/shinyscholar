@@ -25,8 +25,7 @@ jobs:
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      NASA_USERNAME: ${{ secrets.NASA_USERNAME }}
-      NASA_PASSWORD: ${{ secrets.NASA_PASSWORD }}
+
       R_KEEP_PKG_SOURCE: yes
 
     steps:
@@ -35,9 +34,12 @@ jobs:
 
       - name: Create and populate .Renviron file
         run: |
-          echo NASA_username="${NASA_USERNAME}" >> ~/.Renviron
-          echo NASA_password="${NASA_PASSWORD}" >> ~/.Renviron
+          echo NASA_username="$NASA_USERNAME" >> ~/.Renviron
+          echo NASA_password="$NASA_PASSWORD" >> ~/.Renviron
         shell: bash
+        env:
+          NASA_USERNAME: ${{ secrets.NASA_USERNAME }}
+          NASA_PASSWORD: ${{ secrets.NASA_PASSWORD }}
 
       - uses: r-lib/actions/setup-pandoc@v2
 
