@@ -50,15 +50,17 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
     })
 
   return(list(
-    save = function() {
-      list(
-      scatter_sample = input$sample,
-      scatter_axis = input$axis
-      )
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      sample = input$sample, 
+      axis = input$axis)
           },
     load = function(state) {
-      updateSliderInput(session, "sample", value = state$scatter_sample)
-      updateRadioButtons(session, "axis", selected = state$scatter_axis)
+      ### Manual load start
+      ### Manual load end
+      updateSliderInput(session, "sample", value = state$sample) 
+      updateRadioButtons(session, "axis", selected = state$axis)
     }
   ))
   }

@@ -57,16 +57,17 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
     })
 
   return(list(
-    save = function() {
-      list(
-        hist_bins = input$bins,
-        hist_pal = input$pal
-      )
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      bins = input$bins, 
+      pal = input$pal)
           },
     load = function(state) {
-      updateSelectInput(session, "bins", selected = state$hist_bins)
-      updateSelectInput(session, "pal", selected = state$hist_pal)
-
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "bins", selected = state$bins) 
+      updateSelectInput(session, "pal", selected = state$pal)
     }
   ))
 })
