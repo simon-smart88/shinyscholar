@@ -81,7 +81,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
     results$resume()
 
     # METADATA ####
-    common$meta$select_query$date <- as.character(input$date)
+    common$meta$select_async$date <- as.character(input$date)
     common$meta$select_async$token <- input$token
     common$meta$select_async$poly <- common$poly
     common$meta$select_async$name <- "FAPAR"
