@@ -97,7 +97,7 @@ test_that("Check that lines added by save_and_load are functional", {
     "long_component" = c("test"),
     "module" = c("test"),
     "long_module" = c("test"),
-    "map" = c(TRUE),
+    "map" = c(FALSE),
     "result" = c(TRUE),
     "rmd" = c(TRUE),
     "save" = c(TRUE),
@@ -122,7 +122,7 @@ test_that("Check that lines added by save_and_load are functional", {
   global_path <- file.path(td, "shinyscholar", "inst", "shiny", "global.R")
   global_lines <- readLines(global_path)
   core_target <- grep("*core_modules <-*", global_lines)
-  global_lines[core_target] <- 'core_modules <- c(file.path("modules", "core_intro.R"), file.path("modules", "core_load.R"), file.path("modules", "core_mapping.R"), file.path("modules", "core_save.R"))'
+  global_lines[core_target] <- 'core_modules <- c(file.path("modules", "core_intro.R"), file.path("modules", "core_load.R"), file.path("modules", "core_save.R"))'
   writeLines(global_lines, global_path)
 
   app <- shinytest2::AppDriver$new(app_dir = file.path(td, "shinyscholar", "inst", "shiny"), name = "save_and_load_test")

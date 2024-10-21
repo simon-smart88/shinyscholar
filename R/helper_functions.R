@@ -70,7 +70,6 @@ check_url <- function(url){
 #' @export
 spurious <- function(x) {
   bslib::accordion(x)
-  cookies::get_cookie(x)
   DT::renderDataTable(x)
   dplyr::add_count(x)
   future::as.cluster(x)
@@ -85,6 +84,7 @@ spurious <- function(x) {
   renv::activate(x)
   rlang::abort(x)
   rmarkdown::github_document(x)
+  shinyAce::is.empty(x)
   shinybusy::add_busy_bar(x)
   shinyWidgets::pickerInput(x)
   shinyjs::disable(x)

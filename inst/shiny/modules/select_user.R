@@ -38,11 +38,15 @@ select_user_module_server <- function(id, common, parent_session, map) {
   })
 
   return(list(
-    save = function() {
-      list(user_name = input$name)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      name = input$name)
     },
     load = function(state) {
-      updateTextInput(session, "name", value = state$user_name)
+      ### Manual load start
+      ### Manual load end
+      updateTextInput(session, "name", value = state$name)
     }
   ))
 })

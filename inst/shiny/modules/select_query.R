@@ -89,15 +89,17 @@ select_query_module_server <- function(id, common, parent_session, map) {
   })
 
   return(list(
-    save = function() {
-      list(
-        select_date = input$date,
-        select_token = input$token
-      )
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      date = input$date, 
+      token = input$token)
     },
     load = function(state) {
-      updateDateInput(session, "date", selected = state$select_date)
-      updateTextInput(session, "token", selected = state$select_token)
+      ### Manual load start
+      ### Manual load end
+      updateDateInput(session, "date", value = state$date) 
+      updateTextInput(session, "token", value = state$token)
     }
   ))
 })

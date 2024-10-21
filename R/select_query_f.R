@@ -60,12 +60,8 @@ get_nasa_token <- function(username, password) {
 select_query <- function(poly, date, token, logger = NULL) {
 
   if (nchar(token) < 200){
-    message <- "This function requires a NASA token - see the documentation"
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    logger %>% writeLog(type = "error", "This function requires a NASA token - see the documentation")
+    return()
   }
 
   #convert to terra object to calculate area and extent
