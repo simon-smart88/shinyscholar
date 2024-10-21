@@ -14,7 +14,7 @@ test_that("Check select_async function works as expected", {
   } else {
     expect_error(select_query(poly = poly_matrix,
                               date = "2023-06-20",
-                              token = token), "The FCover API is currently offline")
+                              token = token), "The FAPAR API is currently offline")
   }
 })
 

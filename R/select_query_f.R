@@ -112,6 +112,12 @@ select_query <- function(poly, date, token, logger = NULL) {
     }
   }
 
+  if (is.null(raster)){
+    logger %>% writeLog(type = "error", paste0("No data was found for your selected area. ",
+                                               "This could be due to cloud coverage or because the area is not over land."))
+    return()
+  }
+
   # reproject and crop
   raster <- terra::project(raster, "EPSG:4326")
   raster <- terra::crop(raster, terra_poly)

@@ -92,6 +92,15 @@ select_async <- function(poly, date, token, async = FALSE) {
       }
     }
   }
+  if (is.null(raster)){
+    message <- paste0("No data was found for your selected area. ",
+                      "This could be due to cloud coverage or because the area is not over land.")
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
+  }
 
   # reproject and crop
   raster <- terra::project(raster, "EPSG:4326")

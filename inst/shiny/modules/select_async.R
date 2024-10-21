@@ -20,8 +20,13 @@ select_async_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$random, {
     random_land <- httr2::request("https://api.3geonames.org/?randomland=yes") |> httr2::req_perform()
     if (random_land$status_code == 200){
-      random_land <- httr2::resp_body_xml(random_land) |> xml2::as_list()
-      map %>% setView(random_land$geodata$nearest$longt, random_land$geodata$nearest$latt, zoom = 7)
+      content_type <- httr2::resp_content_type(random_land)
+      if (grepl("application/xml|text/xml", content_type)) {
+        random_land <- httr2::resp_body_xml(random_land) |> xml2::as_list()
+        map %>% setView(random_land$geodata$nearest$longt, random_land$geodata$nearest$latt, zoom = 7)
+      } else {
+        common$logger %>% writeLog(type = "error", "Something went wrong requesting a random location")
+      }
     } else {
       common$logger %>% writeLog(type = "error", "Something went wrong requesting a random location")
     }
@@ -123,13 +128,13 @@ select_async_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      date = input$date, 
+      date = input$date,
       token = input$token)
     },
     load = function(state) {
       ### Manual load start
       ### Manual load end
-      updateDateInput(session, "date", value = state$date) 
+      updateDateInput(session, "date", value = state$date)
       updateTextInput(session, "token", value = state$token)
     }
   ))
