@@ -53,7 +53,8 @@ modules <- data.frame(
 "map" = c(TRUE, TRUE, FALSE, FALSE),
 "result" = c(FALSE, FALSE, TRUE, TRUE),
 "rmd" = c(TRUE, TRUE, TRUE, TRUE),
-"save" = c(TRUE, TRUE, TRUE, TRUE))
+"save" = c(TRUE, TRUE, TRUE, TRUE),
+"async" = c(FALSE, TRUE, FALSE, FALSE))
 
 common_objects = c("raster", "histogram", "scatter")
 
