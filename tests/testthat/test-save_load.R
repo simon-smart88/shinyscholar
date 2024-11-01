@@ -4,8 +4,6 @@ path <- list.files(system.file("extdata/wc", package = "shinyscholar"),
 #this works
 test_that("{shinytest2} recording: e2e_empty_save", {
 
-  skip_on_ci()
-
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_empty_save")
   app$set_inputs(tabs = "select")
   app$set_inputs(main = "Save")
@@ -17,8 +15,6 @@ test_that("{shinytest2} recording: e2e_empty_save", {
 
 #this works
 test_that("{shinytest2} recording: e2e_save_scat", {
-
-  skip_on_ci()
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_save_scat")
   app$set_inputs(tabs = "select")
@@ -41,8 +37,6 @@ test_that("{shinytest2} recording: e2e_save_scat", {
 #this may be temperamental
 test_that("{shinytest2} recording: e2e_save_hist", {
 
-  skip_on_ci()
-
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_save_hist")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
@@ -62,8 +56,6 @@ test_that("{shinytest2} recording: e2e_save_hist", {
 })
 
 test_that("{shinytest2} recording: e2e_load", {
-
-  skip_on_ci()
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_load")
   app$set_inputs(introTabs = "Load Prior Session")

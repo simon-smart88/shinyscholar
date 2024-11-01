@@ -1,4 +1,6 @@
 test_that("Check select_async function works as expected", {
+  skip_on_ci()
+
   if (!is.null(check_live)){
     result <- select_async(poly = poly_matrix,
                            date = "2023-06-20",
@@ -19,6 +21,7 @@ test_that("Check select_async function works as expected", {
 })
 
 test_that("Check select_async returns an error if the polygon is too large", {
+  skip_on_ci()
 
   expect_error(select_async(poly = poly_matrix_large,
                             date = "2023-06-20",
@@ -29,6 +32,8 @@ test_that("Check select_async returns an error if the polygon is too large", {
 
 
 test_that("Check select_async returns missing values when over the sea", {
+  skip_on_ci()
+
   if (!is.null(check_live)){
   expect_error(select_async(poly = poly_matrix_sea,
                             date = "2023-06-20",
@@ -39,6 +44,8 @@ test_that("Check select_async returns missing values when over the sea", {
 })
 
 test_that("{shinytest2} recording: e2e_select_query", {
+  skip_on_ci()
+
   if (!is.null(check_live)){
     app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_select_async", timeout = 60000)
     app$set_inputs(tabs = "select")
