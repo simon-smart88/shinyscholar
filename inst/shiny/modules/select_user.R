@@ -2,7 +2,7 @@ select_user_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     # UI
-    fileInput(inputId = ns("ras"),
+    fileInput(inputId = ns("raster"),
               label = "Upload raster",
               multiple = FALSE,
               accept = c(".tif")),
@@ -16,7 +16,7 @@ select_user_module_server <- function(id, common, parent_session, map) {
 
   observeEvent(input$run, {
     # WARNING ####
-    if (is.null(input$ras)) {
+    if (is.null(input$raster)) {
       common$logger %>% writeLog(type = "error", "Please upload a raster file")
       return()
     }
@@ -25,12 +25,12 @@ select_user_module_server <- function(id, common, parent_session, map) {
       return()
     }
     # FUNCTION CALL ####
-    ras <- select_user(input$ras$datapath)
+    raster <- select_user(input$raster$datapath)
     # LOAD INTO COMMON ####
-    common$ras <- ras
+    common$raster <- raster
     # METADATA ####
     common$meta$select_user$name <- input$name
-    common$meta$select_user$path <- input$ras$name
+    common$meta$select_user$path <- input$raster$name
     common$meta$select_user$used <- TRUE
     # TRIGGER ####
     gargoyle::trigger("select_user")
@@ -53,15 +53,15 @@ select_user_module_server <- function(id, common, parent_session, map) {
 }
 
 select_user_module_map <- function(map, common) {
-    req(common$ras)
-    ex <- as.vector(terra::ext(common$ras))
-    pal <- colorBin("YlOrRd", domain = terra::values(common$ras), bins = 9, na.color = "#00000000")
+    req(common$raster)
+    ex <- as.vector(terra::ext(common$raster))
+    pal <- colorBin("YlOrRd", domain = terra::values(common$raster), bins = 9, na.color = "#00000000")
     raster_name <- common$meta$select_user$name
     map %>%
       clearGroup(raster_name) %>%
-      addRasterImage(common$ras, colors = pal, group = raster_name) %>%
+      addRasterImage(common$raster, colors = pal, group = raster_name) %>%
       fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-      addLegend(position = "bottomright", pal = pal, values = terra::values(common$ras),
+      addLegend(position = "bottomright", pal = pal, values = terra::values(common$raster),
                 group = raster_name, title = raster_name) %>%
       addLayersControl(overlayGroups = raster_name, options = layersControlOptions(collapsed = FALSE))
 }

@@ -14,18 +14,18 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
 
   observeEvent(input$run, {
     # WARNING ####
-    if (is.null(common$ras)) {
+    if (is.null(common$raster)) {
       common$logger %>% writeLog(type = "error", "Please load a raster file")
       return()
     }
     # FUNCTION CALL ####
-    hist <- plot_hist(common$ras, input$bins)
+    histogram <- plot_hist(common$raster, input$bins)
     # LOAD INTO COMMON ####
-    common$hist <- hist
+    common$histogram <- histogram
     # METADATA ####
     common$meta$plot_hist$bins <- as.numeric(input$bins)
     common$meta$plot_hist$pal <- input$pal
-    common$meta$plot_hist$name <- c(common$meta$select_query$name, common$meta$select_user$name)
+    common$meta$plot_hist$name <- c(common$meta$select_query$name, common$meta$select_async$name, common$meta$select_user$name)
     # TRIGGER ####
     gargoyle::trigger("plot_hist")
     show_results(parent_session)
@@ -33,13 +33,13 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
 
   output$hist <- renderPlot({
     gargoyle::watch("plot_hist")
-    req(common$hist)
+    req(common$histogram)
     pal <- RColorBrewer::brewer.pal(9, common$meta$plot_hist$pal)
     pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
     bins <- common$meta$plot_hist$bins
     cols <- pal_ramp(bins)
 
-    plot(common$hist, freq = FALSE, main = "", xlab = common$meta$plot_hist$name, ylab = "Frequency (%)", col = cols)
+    plot(common$histogram, freq = FALSE, main = "", xlab = common$meta$plot_hist$name, ylab = "Frequency (%)", col = cols)
   })
 
   output$dl <- downloadHandler(
@@ -52,7 +52,7 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
       pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
       bins <- common$meta$plot_hist$bins
       cols <- pal_ramp(bins)
-      plot(common$hist, freq = FALSE, main = "", xlab = common$meta$plot_hist$name, ylab = "Frequency (%)", col = cols)
+      plot(common$histogram, freq = FALSE, main = "", xlab = common$meta$plot_hist$name, ylab = "Frequency (%)", col = cols)
       dev.off()
     })
 

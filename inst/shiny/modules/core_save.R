@@ -44,14 +44,14 @@ core_save_module_server <- function(id, common, modules, COMPONENTS, main_input)
         }
 
         # wrap and unwrap required due to terra objects being pointers to c++ objects
-        if (is.null(common$ras) == FALSE){
-          common$ras <- terra::wrap(common$ras)
+        if (!is.null(common$raster)){
+          common$raster <- terra::wrap(common$raster)
         }
 
         saveRDS(common, file)
 
-        if (is.null(common$ras) == FALSE){
-          common$ras <- terra::unwrap(common$ras)
+        if (!is.null(common$raster)){
+          common$raster <- terra::unwrap(common$raster)
         }
       }
     )

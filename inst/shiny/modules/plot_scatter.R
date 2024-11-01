@@ -14,20 +14,20 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
 
   observeEvent(input$run, {
     # WARNING ####
-    if (is.null(common$ras)) {
+    if (is.null(common$raster)) {
       common$logger %>% writeLog(type = "error", "Please load a raster file")
       return()
     }
     # FUNCTION CALL ####
     if (input$axis == "Longitude"){axis <- "x"} else {axis <- "y"}
-    scat <- plot_scatter(common$ras, input$sample, axis)
+    scatterplot <- plot_scatter(common$raster, input$sample, axis)
     # LOAD INTO SPP ####
-    common$scat <- scat
+    common$scatterplot <- scatterplot
     # METADATA ####
     common$meta$plot_scatter$axis_short <- axis
     common$meta$plot_scatter$axis_long <- input$axis
     common$meta$plot_scatter$sample <- input$sample
-    common$meta$plot_scatter$name <-  c(common$meta$select_query$name, common$meta$select_user$name)
+    common$meta$plot_scatter$name <-  c(common$meta$select_query$name, common$meta$select_async$name, common$meta$select_user$name)
     # TRIGGER ####
     gargoyle::trigger("plot_scatter")
     show_results(parent_session)
@@ -35,8 +35,8 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
 
   output$result <- renderPlot({
     gargoyle::watch("plot_scatter")
-    req(common$scat)
-    plot(common$scat[[1]], common$scat[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
+    req(common$scatterplot)
+    plot(common$scatterplot[[1]], common$scatterplot[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
   })
 
   output$dl <- downloadHandler(
@@ -45,7 +45,7 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
     },
     content = function(file) {
       png(file, width = 1000, height = 500)
-      plot(common$scat[[1]], common$scat[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
+      plot(common$scatterplot[[1]], common$scatterplot[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
       dev.off()
     })
 

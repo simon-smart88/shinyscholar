@@ -7,7 +7,7 @@ test_that("Check select_async function works as expected", {
     missing_values <- length(terra::values(result$raster)[terra::values(result$raster) > 1])
     non_missing_values <- length(terra::values(result$raster)[terra::values(result$raster) < 1])
 
-    expect_is(result$raster, 'SpatRaster')
+    expect_is(result$raster, "SpatRaster")
 
     expect_gt(missing_values, 2000)
     expect_gt(non_missing_values, 100)
@@ -48,9 +48,9 @@ test_that("{shinytest2} recording: e2e_select_query", {
     app$set_inputs(main = "Save")
     app$get_download("core_save-save_session", filename = save_path)
     common <- readRDS(save_path)
-    common$ras <- terra::unwrap(common$ras)
+    common$raster <- terra::unwrap(common$raster)
     expect_equal(is.null(common$poly), FALSE)
-    expect_is(common$ras, 'SpatRaster')
+    expect_is(common$raster, "SpatRaster")
     expect_equal(common$meta$select_async$name, "FAPAR")
     app$stop()
   }

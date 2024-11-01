@@ -2,9 +2,9 @@
 common_class <- R6::R6Class(
   classname = "common",
   public = list(
-    ras = NULL,
-    hist = NULL,
-    scat = NULL,
+    raster = NULL,
+    histogram = NULL,
+    scatterplot = NULL,
     tasks = list(),
     meta = NULL,
     state = NULL,

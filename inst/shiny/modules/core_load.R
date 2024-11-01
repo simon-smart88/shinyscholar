@@ -37,7 +37,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       }
 
       #required due to terra objects being pointers to c++ objects
-      common$ras <- terra::unwrap(common$ras)
+      common$raster <- terra::unwrap(common$raster)
 
       #restore map and results for used modules
       for (used_module in names(common$meta)){

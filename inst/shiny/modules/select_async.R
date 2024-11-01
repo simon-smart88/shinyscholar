@@ -105,7 +105,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
     # check the class of the result is the class when the function runs successfully
     if (class(result) == "list"){
       raster <- terra::unwrap(result$raster)
-      common$ras <- raster
+      common$raster <- raster
 
       common$logger %>% writeLog(type = "complete", "FAPAR data has been downloaded")
       common$logger %>% writeLog(result$message)
@@ -142,8 +142,8 @@ select_async_module_server <- function(id, common, parent_session, map) {
 }
 
 select_async_module_map <- function(map, common) {
-  ex <- as.vector(terra::ext(common$ras))
-  pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9, na.color = "pink")
+  ex <- as.vector(terra::ext(common$raster))
+  pal <- colorBin("Greens", domain = terra::values(common$raster), bins = 9, na.color = "pink")
   name <- common$meta$select_async$name
   map %>%
     leaflet.extras::removeDrawToolbar(clearFeatures = TRUE) %>%
@@ -151,10 +151,10 @@ select_async_module_map <- function(map, common) {
                    circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE) %>%
     clearGroup(name) %>%
     removeControl(name) %>%
-    addRasterImage(common$ras, colors = pal, group = name) %>%
+    addRasterImage(common$raster, colors = pal, group = name) %>%
     addTiles(urlTemplate = "", attribution = "MODIS data via LAADS DAAC") %>%
     fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-    addLegend(position = "bottomright", pal = pal, values = terra::values(common$ras),
+    addLegend(position = "bottomright", pal = pal, values = terra::values(common$raster),
               group = name, title = name, layer = name) %>%
     addLayersControl(overlayGroups = name, options = layersControlOptions(collapsed = FALSE))
 }

@@ -75,12 +75,12 @@ select_query_module_server <- function(id, common, parent_session, map) {
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded.
                           This window will close once it is complete.")
-    ras <- select_query(common$poly, input$date, token(), common$logger)
+    raster <- select_query(common$poly, input$date, token(), common$logger)
     #close if the function returns null
     close_loading_modal()
-    if (!is.null(ras)){
+    if (!is.null(raster)){
       # LOAD INTO COMMON ####
-      common$ras <- ras
+      common$raster <- raster
       # METADATA ####
       common$meta$select_query$date <- as.character(input$date)
       common$meta$select_query$token <- input$token
@@ -112,8 +112,8 @@ select_query_module_server <- function(id, common, parent_session, map) {
 
 select_query_module_map <- function(map, common) {
 
-  ex <- as.vector(terra::ext(common$ras))
-  pal <- colorBin("Greens", domain = terra::values(common$ras), bins = 9, na.color = "pink")
+  ex <- as.vector(terra::ext(common$raster))
+  pal <- colorBin("Greens", domain = terra::values(common$raster), bins = 9, na.color = "pink")
   name <- common$meta$select_query$name
   map %>%
     leaflet.extras::removeDrawToolbar(clearFeatures = TRUE) %>%
@@ -121,10 +121,10 @@ select_query_module_map <- function(map, common) {
                    circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE) %>%
     clearGroup(name) %>%
     removeControl(name) %>%
-    addRasterImage(common$ras, colors = pal, group = name) %>%
+    addRasterImage(common$raster, colors = pal, group = name) %>%
     addTiles(urlTemplate = "", attribution = "MODIS data via LAADS DAAC") %>%
     fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-    addLegend(position = "bottomright", pal = pal, values = terra::values(common$ras),
+    addLegend(position = "bottomright", pal = pal, values = terra::values(common$raster),
               group = name, title = name, layer = name) %>%
     addLayersControl(overlayGroups = name, options = layersControlOptions(collapsed = FALSE))
 }
