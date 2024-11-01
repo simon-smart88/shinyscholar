@@ -53,13 +53,13 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      sample = input$sample, 
+      sample = input$sample,
       axis = input$axis)
           },
     load = function(state) {
       ### Manual load start
       ### Manual load end
-      updateSliderInput(session, "sample", value = state$sample) 
+      updateSliderInput(session, "sample", value = state$sample)
       updateRadioButtons(session, "axis", selected = state$axis)
     }
   ))
@@ -76,8 +76,8 @@ plot_scatter_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
       plot_scatter_knit = !is.null(common$scat),
-      scat_axis_short = common$meta$plot_scatter$axis_short,
-      scat_axis_long = common$meta$plot_scatter$axis_long,
-      scat_sample = common$meta$plot_scatter$sample,
-      scat_name = common$meta$plot_scatter$name)
+      plot_scatter_axis_short = common$meta$plot_scatter$axis_short,
+      plot_scatter_axis_long = common$meta$plot_scatter$axis_long,
+      plot_scatter_sample = common$meta$plot_scatter$sample,
+      plot_scatter_name = common$meta$plot_scatter$name)
 }

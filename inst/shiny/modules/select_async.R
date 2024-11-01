@@ -163,9 +163,9 @@ select_async_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     select_async_knit = !is.null(common$meta$select_async$used),
-    select_date = common$meta$select_async$date,
-    select_poly = common$meta$select_async$poly,
-    select_name = common$meta$select_async$name,
-    select_token = common$meta$select_async$token
+    select_async_date = common$meta$select_async$date,
+    select_async_poly = common$meta$select_async$poly,
+    select_async_name = common$meta$select_async$name,
+    select_async_token = common$meta$select_async$token
   )
 }

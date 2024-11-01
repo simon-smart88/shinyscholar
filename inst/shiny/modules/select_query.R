@@ -133,9 +133,9 @@ select_query_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     select_query_knit = !is.null(common$meta$select_query$used),
-    select_date = common$meta$select_query$date,
-    select_poly = common$meta$select_query$poly,
-    select_name = common$meta$select_query$name,
-    select_token = common$meta$select_query$token
+    select_query_date = common$meta$select_query$date,
+    select_query_poly = common$meta$select_query$poly,
+    select_query_name = common$meta$select_query$name,
+    select_query_token = common$meta$select_query$token
   )
 }

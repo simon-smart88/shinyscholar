@@ -70,7 +70,7 @@ select_user_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     select_user_knit = !is.null(common$meta$select_user$used),
-    user_path = common$meta$select_user$path,
-    user_name = common$meta$select_user$name
+    select_user_path = common$meta$select_user$path,
+    select_user_name = common$meta$select_user$name
   )
 }

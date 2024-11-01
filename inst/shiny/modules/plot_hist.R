@@ -60,13 +60,13 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      bins = input$bins, 
+      bins = input$bins,
       pal = input$pal)
           },
     load = function(state) {
       ### Manual load start
       ### Manual load end
-      updateSelectInput(session, "bins", selected = state$bins) 
+      updateSelectInput(session, "bins", selected = state$bins)
       updateSelectInput(session, "pal", selected = state$pal)
     }
   ))
@@ -84,8 +84,8 @@ plot_hist_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     plot_hist_knit = !is.null(common$hist),
-    hist_bins = common$meta$plot_hist$bins,
-    hist_pal = common$meta$plot_hist$pal,
-    hist_name = common$meta$plot_hist$name
+    plot_hist_bins = common$meta$plot_hist$bins,
+    plot_hist_pal = common$meta$plot_hist$pal,
+    plot_hist_name = common$meta$plot_hist$name
   )
 }
