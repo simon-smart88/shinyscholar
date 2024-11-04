@@ -20,22 +20,3 @@ colnames(poly_matrix_sea) <- c('longitude', 'latitude')
 check_live <- suppressWarnings(check_url("https://ladsweb.modaps.eosdis.nasa.gov/api/v2/content/archives"))
 
 token <- get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
-
-retry_test <- function(test_expr, retries = 3, delay = 1) {
-  attempts <- 0
-  while (attempts < retries) {
-    result <- tryCatch({
-      test_expr()
-      return(TRUE)
-    }, error = function(e) {
-      return(FALSE)
-    })
-    if (result) {
-      return(TRUE)
-    } else {
-      attempts <- attempts + 1
-      Sys.sleep(delay)
-    }
-  }
-  stop("Test failed after multiple retries")
-}
