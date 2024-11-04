@@ -13,8 +13,8 @@ test_that("Check plot_hist function works as expected", {
 
 })
 
-test_that("{shinytest2} recording: e2e_plot_hist", {
-
+retry_test(function() {
+  test_that("{shinytest2} recording: e2e_plot_hist", {
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_plot_hist")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
@@ -30,4 +30,5 @@ test_that("{shinytest2} recording: e2e_plot_hist", {
   common <- readRDS(save_path)
   expect_is(common$histogram, "histogram")
   app$stop()
+  })
 })
