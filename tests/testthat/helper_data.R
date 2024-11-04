@@ -1,12 +1,17 @@
 is_ci <- Sys.getenv("GITHUB_ACTIONS") == "true"
 
-if (is_ci){
-  save_path <- tempfile(fileext = ".rds")
-} else {
-  save_path <- "~/temprds/saved_file.rds"
-  if (file.exists(save_path)) {
-    file.remove(save_path)
-  }
+# if (is_ci){
+#   save_path <- tempfile(fileext = ".rds")
+# } else {
+#   save_path <- "~/temprds/saved_file.rds"
+#   if (file.exists(save_path)) {
+#     file.remove(save_path)
+#   }
+# }
+
+save_path <- "~/temprds/saved_file.rds"
+if (file.exists(save_path)) {
+  file.remove(save_path)
 }
 
 poly_matrix <- matrix(c(0.5, 0.5, 1, 1, 0.5, 52, 52.5, 52.5, 52, 52), ncol = 2)
