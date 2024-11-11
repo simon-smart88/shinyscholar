@@ -16,7 +16,7 @@ test_that("{shinytest2} recording: e2e_select_user", {
   app$set_inputs("select_user-name" = "test")
   app$click("select_user-run")
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
+  save_app(app, save_path)
   common <- readRDS(save_path)
   common$raster <- terra::unwrap(common$raster)
   expect_is(common$raster, "SpatRaster")

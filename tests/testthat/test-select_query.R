@@ -55,7 +55,7 @@ test_that("{shinytest2} recording: e2e_select_query", {
     app$set_inputs(selectSel = "select_query")
     app$click("select_query-run")
     app$set_inputs(main = "Save")
-    app$get_download("core_save-save_session", filename = save_path)
+    save_app(app, save_path)
     common <- readRDS(save_path)
     common$raster <- terra::unwrap(common$raster)
     expect_equal(is.null(common$poly), FALSE)

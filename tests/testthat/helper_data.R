@@ -20,3 +20,16 @@ colnames(poly_matrix_sea) <- c('longitude', 'latitude')
 check_live <- suppressWarnings(check_url("https://ladsweb.modaps.eosdis.nasa.gov/api/v2/content/archives"))
 
 token <- get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
+
+save_app <- function(app, save_path){
+  attempt <- 0
+  while(attempt < 3){
+    x = try(app$get_download("core_save-save_session", filename = save_path))
+    if ("try-error" %in% class(x)) {
+      attempt <- attempt + 1
+      print("save failed - retrying")
+    } else {
+      break
+    }
+  }
+}

@@ -27,7 +27,7 @@ test_that("{shinytest2} recording: e2e_plot_scatter", {
   app$set_inputs(plotSel = "plot_scatter")
   app$click("plot_scatter-run")
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
+  save_app(app, save_path)
   common <- readRDS(save_path)
   expect_is(common$scatterplot, "data.frame")
   app$stop()
