@@ -125,24 +125,9 @@ test_that("Check that lines added by save_and_load are functional", {
   global_lines[core_target] <- 'core_modules <- c(file.path("modules", "core_intro.R"), file.path("modules", "core_load.R"), file.path("modules", "core_save.R"))'
   writeLines(global_lines, global_path)
 
-  app <- shinytest2::AppDriver$new(app_dir = file.path(td, "shinyscholar", "inst", "shiny"), name = "save_and_load_test")
-  app$set_inputs(tabs = "test")
-  app$set_inputs(testSel = "test_test")
-  app$set_inputs("test_test-checkbox" = FALSE)
-  app$set_inputs("test_test-checkboxgroup" = "B")
-  app$set_inputs("test_test-date" = "2024-01-01")
-  app$set_inputs("test_test-daterange" = c("2024-01-01", "2024-01-02"))
-  app$set_inputs("test_test-numeric" = 6)
-  app$set_inputs("test_test-radio" = "B")
-  app$set_inputs("test_test-select" = "B")
-  app$set_inputs("test_test-slider" = 6)
-  app$set_inputs("test_test-text" = "test")
-  app$set_inputs("test_test-single_quote" = "test")
-  app$set_inputs("test_test-switch" = FALSE)
+  rerun_test("save_and_load_p1_test", list(td = td, save_path = save_path))
 
-  app$set_inputs(main = "Save")
-  save_file <- app$get_download("core_save-save_session", filename = save_path)
-  common <- readRDS(save_file)
+  common <- readRDS(save_path)
 
   expect_equal(common$state$test_test$checkbox, FALSE)
   expect_equal(common$state$test_test$checkboxgroup, "B")
@@ -155,7 +140,6 @@ test_that("Check that lines added by save_and_load are functional", {
   expect_equal(common$state$test_test$text, "test")
   expect_equal(common$state$test_test$single_quote, "test")
   expect_equal(common$state$test_test$switch, FALSE)
-  app$stop()
 
   app <- shinytest2::AppDriver$new(app_dir = file.path(td, "shinyscholar", "inst", "shiny"), name = "save_and_load_test")
   app$set_inputs(introTabs = "Load Prior Session")

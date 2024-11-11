@@ -15,19 +15,8 @@ test_that("Check plot_hist function works as expected", {
 
 test_that("{shinytest2} recording: e2e_plot_hist", {
 
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_plot_hist")
-  app$set_inputs(tabs = "select")
-  app$set_inputs(selectSel = "select_user")
-  app$upload_file("select_user-raster" = path)
-  app$set_inputs("select_user-name" = "bio")
-  app$click("select_user-run")
-  app$set_inputs(tabs = "plot")
-  app$set_inputs(plotSel = "plot_hist")
-  app$set_inputs("plot_hist-pal" = "YlOrRd")
-  app$click("plot_hist-run")
-  app$set_inputs(main = "Save")
-  save_app(app, save_path)
+  rerun_test("plot_hist_test", list(path = path, save_path = save_path))
   common <- readRDS(save_path)
   expect_is(common$histogram, "histogram")
-  app$stop()
+
 })
