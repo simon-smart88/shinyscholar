@@ -41,6 +41,16 @@ jobs:
           NASA_USERNAME: ${{ secrets.NASA_USERNAME }}
           NASA_PASSWORD: ${{ secrets.NASA_PASSWORD }}
 
+      - name: Create and populate .Renviron file (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          echo NASA_username="$NASA_USERNAME" >> $R_USER/.Renviron
+          echo NASA_password="$NASA_PASSWORD" >> $R_USER/.Renviron
+        shell: bash
+        env:
+          NASA_USERNAME: ${{ secrets.NASA_USERNAME }}
+          NASA_PASSWORD: ${{ secrets.NASA_PASSWORD }}
+
       - uses: r-lib/actions/setup-pandoc@v2
 
       - name:  Installing GDAL and PROJ in macOS
