@@ -104,7 +104,7 @@ plot_scatter_test <- function(path, save_path){
   app$stop()
 }
 
-select_user_test <- funciton(path, save_path){
+select_user_test <- function(path, save_path){
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_select_user")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
