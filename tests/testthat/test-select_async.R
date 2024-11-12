@@ -47,18 +47,11 @@ test_that("{shinytest2} recording: e2e_select_query", {
   skip_on_ci()
 
   if (!is.null(check_live)){
-    app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_select_async", timeout = 60000)
-    app$set_inputs(tabs = "select")
-    app$set_inputs(selectSel = "select_async")
-    app$click(selector = "#select_async-run")
-    app$wait_for_value(input = "select_async-complete")
-    app$set_inputs(main = "Save")
-    save_app(app, save_path)
+    rerun_test("select_async_test", list(save_path = save_path))
     common <- readRDS(save_path)
     common$raster <- terra::unwrap(common$raster)
     expect_equal(is.null(common$poly), FALSE)
     expect_is(common$raster, "SpatRaster")
     expect_equal(common$meta$select_async$name, "FAPAR")
-    app$stop()
   }
 })
