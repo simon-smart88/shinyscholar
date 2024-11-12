@@ -104,6 +104,18 @@ plot_scatter_test <- function(path, save_path){
   app$stop()
 }
 
+select_user_test <- funciton(path, save_path){
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_select_user")
+  app$set_inputs(tabs = "select")
+  app$set_inputs(selectSel = "select_user")
+  app$upload_file("select_user-raster" = path)
+  app$set_inputs("select_user-name" = "test")
+  app$click("select_user-run")
+  app$set_inputs(main = "Save")
+  app$get_download("core_save-save_session", filename = save_path)
+  app$stop()
+}
+
 save_and_load_p1_test <- function(td, save_path){
   app <- shinytest2::AppDriver$new(app_dir = file.path(td, "shinyscholar", "inst", "shiny"), name = "save_and_load_test")
   app$set_inputs(tabs = "test")
