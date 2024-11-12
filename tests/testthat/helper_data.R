@@ -21,19 +21,18 @@ check_live <- suppressWarnings(check_url("https://ladsweb.modaps.eosdis.nasa.gov
 
 token <- get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
 
-save_app <- function(app, save_path){
+rerun_test <- function(test_function, args){
   attempt <- 0
-  while(attempt < 3){
-    x = try(app$get_download("core_save-save_session", filename = save_path))
+  while(attempt < 5){
+    x = try(do.call(test_function, args))
     if ("try-error" %in% class(x)) {
       attempt <- attempt + 1
-      print("test failed - retrying")
+      print(paste0(test_function, " setup failed - retrying"))
     } else {
       break
     }
   }
 }
-
 
 empty_save_test <- function(save_path){
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_empty_save")
@@ -126,15 +125,4 @@ save_and_load_p1_test <- function(td, save_path){
 }
 
 
-rerun_test <- function(test_function, args){
-  attempt <- 0
-  while(attempt < 3){
-    x = try(do.call(test_function, args))
-    if ("try-error" %in% class(x)) {
-      attempt <- attempt + 1
-      print("test failed - retrying")
-    } else {
-      break
-    }
-  }
-}
+
