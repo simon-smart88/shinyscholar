@@ -62,6 +62,14 @@ select_async_module_server <- function(id, common, parent_session, map) {
       common$poly <- poly_matrix
     }
 
+    if (Sys.getenv("R_CONFIG_ACTIVE") == "shinyapps"){
+      common$logger %>% writeLog(type = "error", "Unfortunately asynchronous operations are not
+                                 supported on the free tier of shinyapps.io - please download the
+                                 package to run this module.")
+      return()
+    }
+
+
     # WARNING ####
     if (is.null(common$poly)) {
       common$logger %>% writeLog(type = "error", "Please draw a rectangle on the map")
