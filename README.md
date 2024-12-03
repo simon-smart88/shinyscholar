@@ -15,8 +15,6 @@ library(shinyscholar)
 run_shinyscholar()
 ```
 
-An individual module can be run for development purposes using `run_module()` e.g. `run_module("select_query")` but this requires the most recent version of the package to be installed.
-
 ## Justification
 Shiny apps are a great way to lower the barrier for entry for users to complete complex analyses, by enabling online access to the rich ecosystem of R packages through a graphical user interface. However, often apps produced by academics do not follow best practices in software development or open science. If apps become popular, more features are requested and developers move onto new roles, it may become difficult to maintain their codebase. If users cannot reproduce their analyses outside of the application, it prevents them from modifying analyses to suit their particular use-case, makes it harder to understand the analysis and limits their ability to use the results in publications. Additionally, it may not be possible to determine which R packages are being used in the application, making it more onerous to cite the packages in publications. Other packages exist for creating templates of shiny apps, e.g. `{golem}` and `{rhino}` but these are more generic and do not contain features specifically for use by academics.
 
@@ -114,9 +112,6 @@ The colour of elements in the app are controlled by the theme present in the `bs
 
 #### common.R
 This file contains the data structure that is shared between modules and you can add extra objects as you wish. `common` is an [R6 class](https://r6.r-lib.org/) which is similar to a `list()` but items in it must be declared in this file before you use them in the app. Any type of object can be stored in `common`, i.e. dataframes, plots, strings etc. By default, all the objects in `common` are created as `NULL` but you may wish to change these to load a default value. Objects inside `common` are not reactive by default, but you can make them `reactiveVal` or `reactiveValues`, for example like `common$logger`. Objects in `common` can also be functions, for example in the demonstration app, `common$add_map_layer()` is used to add a layer to `common$map_layers`.
-
-#### R/run_module.R
-This function is designed to make it easier to develop modules by being able to run a single module in isolation. If your module requires objects from previous steps in an analysis, you can modify this function to modify the state of `common` so that the objects a module is dependent on are available immediately. For example, in the demonstration app, the function loads a raster image from a file when the module being run is from the plot component.
 
 #### Testing
 One test file for each module is created by `create_template()` and placed in `tests/testthat/`. It contains one unit test for the function which checks that it returns `NULL` and one end-to-end test which runs the app runs and that one of the objects in `common` remains set as `NULL`. During development of the modules, you should add tests to check the function runs as expected, returns errors when it cannot run and that the function runs when called from the app.

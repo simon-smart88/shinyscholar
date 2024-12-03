@@ -427,18 +427,6 @@ if (include_code){
 
 writeLines(description_lines, file.path(path, "DESCRIPTION"))
 
-# Create run_module ====
-
-run_mod_params <- c(
-  file = system.file("app_skeleton", "run_module.Rmd", package = "shinyscholar"),
-  list(include_map = include_map,
-       app_library = name
-       )
-)
-
-run_mod_lines <- tidy_purl(run_mod_params)
-writeLines(run_mod_lines, file.path(path, "R", "run_module.R"))
-
 # Create run_app ====
 
 run_app_params <- c(
