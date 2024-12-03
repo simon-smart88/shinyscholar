@@ -1,7 +1,7 @@
 dependencies <- c("bslib", "dplyr", "DT", "future", "gargoyle", "httr2",
-                  "knitcitations", "leaflet", "leaflet.extras", "magrittr",
-                  "markdown", "promises", "R6", "RColorBrewer", "renv",
-                  "rintrojs", "rmarkdown", "shinyAce", "shinyalert", "shinybusy",
+                  "knitcitations", "leaflet", "leaflet.extras", "markdown",
+                  "promises", "R6", "RColorBrewer", "renv", "rintrojs",
+                  "rmarkdown", "shinyAce", "shinyalert", "shinybusy",
                   "shinyjs", "shinyWidgets", "terra", "xml2")
 
 if (any(!sapply(dependencies, requireNamespace, quietly = TRUE))){

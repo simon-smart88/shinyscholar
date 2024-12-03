@@ -1,5 +1,9 @@
 ```{r renv.ignore = TRUE}
 library(glue)
+library(gargoyle)
+```
+```{r renv.ignore = TRUE, purl = {{include_map}}}
+library(leaflet)
 ```
 
 ```{r renv.ignore = TRUE, purl = {{async}}}

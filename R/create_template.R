@@ -254,6 +254,7 @@ global_params <- c(
   file = system.file("app_skeleton", "global.Rmd", package = "shinyscholar"),
   list(app_library = name,
        component_list = printVecAsis(full_component_list),
+       include_map = include_map,
        async = async
   )
 )

@@ -18,6 +18,7 @@ Imports:
     devtools,
     glue,
     knitr,
+    magrittr,
     tools,
     zip
 Suggests:
@@ -30,7 +31,6 @@ Suggests:
     knitcitations,
     leaflet (>= 2.0.2),
     leaflet.extras (>= 1.0.0),
-    magrittr,
     markdown,
     promises,
     R6,
