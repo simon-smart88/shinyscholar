@@ -74,7 +74,6 @@ spurious <- function(x) {
   dplyr::add_count(x)
   future::as.cluster(x)
   httr2::curl_help(x)
-  leafem::addMouseCoordinates(x)
   leaflet.extras::removeDrawToolbar(x)
   markdown::html_format(x)
   promises::as.promise(x)
