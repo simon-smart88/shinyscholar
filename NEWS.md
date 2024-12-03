@@ -42,3 +42,8 @@ shinyscholar 0.2.0
 shinyscholar 0.2.1
 =============
 - The `select_query` and `select_async` modules in the demonstration have been re-written to use a different API.
+
+shinyscholar 0.2.2
+=============
+- Removed `run_module()` as it was not maintainable
+- Moved all packages to Suggests unless they are required for development of new applications

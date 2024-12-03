@@ -1,30 +1,33 @@
 Package: shinyscholar
-Version: 0.2.1
-Date: 2024-09-26
-Title: A template for creating modular reproducible shiny applications
-Description: The 'shiny' application shinyscholar is a modular platform for 
-    creating reproducible applications to academic standards. 'shinyscholar' is 
-    forked from 'wallace' and provides a template for producing applications 
-    that are interactive, reproducible, adaptable and built to high standards.
+Version: 0.2.2
+Date: 2024-12-03
+Title: A template for creating modular reproducible Shiny applications
+Description: Creates a skeleton shiny application that is modular, reproducible,
+    can be saved and loaded and meets academic standards for attribution. Using 
+    Shinyscholar encourages best practices in software development. Includes 
+    functions for automating repetitive development tasks. 'shinyscholar' 
+    was forked from 'wallace'. 
 Authors@R: 
-    c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut","cre")))
+    c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut", "cre", "cph")))
 Depends:
     R (>= 3.5.0),
     shiny (>= 1.8.1),
     leaflet (>= 2.0.2),
     gargoyle
 Imports:
-    bslib,
     curl,
     devtools,
+    glue,
+    knitr,
+    tools,
+    zip
+Suggests:
+    bslib,
     dplyr (>= 1.0.2),
     DT (>= 0.5),
     future,
-    glue,
     httr2,
     knitcitations,
-    knitr,
-    leafem,
     leaflet.extras (>= 1.0.0),
     magrittr,
     markdown,
@@ -33,20 +36,17 @@ Imports:
     RColorBrewer,
     renv,
     rintrojs,
-    rlang,
     rmarkdown,
     shinyAce,
     shinyalert,
     shinybusy,
     shinyjs,
+    shinytest2,
     shinyWidgets (>= 0.6.0),
     terra,
-    tools,
-    xml2,
-    zip
-Suggests: 
-    shinytest2,
-    testthat
+    testthat,
+    xml2
+    
 License: GPL-3
 URL: https://simon-smart88.github.io/shinyscholar/
 Encoding: UTF-8

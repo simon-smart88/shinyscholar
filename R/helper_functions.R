@@ -81,7 +81,6 @@ spurious <- function(x) {
   RColorBrewer::brewer.pal(x)
   rintrojs::introjs(x)
   renv::activate(x)
-  rlang::abort(x)
   rmarkdown::github_document(x)
   shinyAce::is.empty(x)
   shinybusy::add_busy_bar(x)

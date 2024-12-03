@@ -1,5 +1,15 @@
 library(glue)
 
+dependencies <- c("bslib", "dplyr", "DT", "future", "httr2", "knitcitations",
+"leaflet.extras", "magrittr", "markdown", "promises", "R6", "RColorBrewer",
+"renv", "rintrojs", "rmarkdown", "shinyAce", "shinyalert", "shinybusy",
+"shinyjs", "shinyWidgets", "terra", "xml2")
+
+if (any(!sapply(dependencies, requireNamespace, quietly = TRUE))){
+  stop('Some packages required to run the application are not installed, please reinstall using:
+       install.packages("shinyscholar", dependencies = TRUE)')
+}
+
 future::plan(future::multisession)
 
 MB <- 1024^2
