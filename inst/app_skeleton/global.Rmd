@@ -25,6 +25,7 @@ COMPONENT_MODULES <- list()
 # Loadbase modules
 base_module_configs <- c(
   "modules/rep_markdown.yml",
+  "modules/rep_renv.yml",
   "modules/rep_refPackages.yml"
 )
 
