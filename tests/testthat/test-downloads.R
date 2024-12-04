@@ -2,7 +2,6 @@ path <- list.files(system.file("extdata/wc", package = "shinyscholar"),
                    pattern = ".tif$", full.names = TRUE)
 
 test_that("{shinytest2} recording: e2e_markdown", {
-
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_markdown")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
@@ -21,10 +20,8 @@ test_that("{shinytest2} recording: e2e_markdown", {
   lines[target_line] <- paste0('raster_directory <- "',gsub("bio05.tif","",path),'"')
   writeLines(lines,sess_file)
   rmarkdown::render(sess_file)
-
   html_file <- gsub("Rmd", "html", sess_file)
   expect_gt(file.info(html_file)$size, 100000)
-
   app$set_inputs(repSel = "rep_refPackages")
   app$set_inputs(refFileType = "HTML")
   ref_file <- app$get_download("dlrefPackages")
@@ -33,7 +30,6 @@ test_that("{shinytest2} recording: e2e_markdown", {
   })
 
 test_that("{shinytest2} recording: e2e_table_download", {
-
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_table_download")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
@@ -48,7 +44,6 @@ test_that("{shinytest2} recording: e2e_table_download", {
   })
 
 test_that("{shinytest2} recording: e2e_plot_downloads", {
-
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_plot_downloads")
   app$set_inputs(tabs = "select")
   app$set_inputs(selectSel = "select_user")
@@ -66,11 +61,8 @@ test_that("{shinytest2} recording: e2e_plot_downloads", {
   app$click("plot_hist-run")
   app$set_inputs(main = "Save")
   hist_file <- app$get_download("dl_hist")
-
+  app$stop()
   expect_gt(file.info(scatter_file)$size, 1000)
   expect_gt(file.info(hist_file)$size, 1000)
-
-  app$stop()
-
 })
 

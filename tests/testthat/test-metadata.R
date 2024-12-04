@@ -1,5 +1,4 @@
 test_that("Check metadata function adds lines as expected", {
-
   test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
   td <- tempfile()
   dir.create(td, recursive = TRUE)
@@ -55,7 +54,6 @@ test_that("Check metadata function adds lines as expected", {
 })
 
 test_that("Check metadata function returns errors as expected", {
-
   test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
   td <- tempfile()
   dir.create(td, recursive = TRUE)
@@ -85,7 +83,6 @@ test_that("Check metadata function returns errors as expected", {
 })
 
 test_that("Check that lines added by metadata are functional", {
-
   upload_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),
                      pattern = ".tif$", full.names = TRUE)
 
@@ -138,13 +135,13 @@ test_that("Check that lines added by metadata are functional", {
   #upload for file
   app$upload_file("test_test-file" = upload_path)
   app$click("test_test-run")
-
   app$set_inputs(tabs = "rep")
   app$set_inputs(repSel = "rep_markdown")
   sess_file <- app$get_download("rep_markdown-dlRMD")
+  app$stop()
+
   expect_false(is.null(sess_file))
   lines <- readLines(sess_file)
-
   start_line <- grep("```\\{r\\}", lines)[2]
   expect_equal(lines[start_line + 1], "TRUE")
   expect_equal(lines[start_line + 2], "\"A\"")
@@ -159,7 +156,4 @@ test_that("Check that lines added by metadata are functional", {
   expect_equal(lines[start_line + 11], "\"test3\"")
   expect_equal(lines[start_line + 12], "\"B\"")
   expect_equal(lines[start_line + 13], "FALSE")
-
-  app$stop()
-
 })
