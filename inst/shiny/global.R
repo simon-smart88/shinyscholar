@@ -1,17 +1,6 @@
-dependencies <- c("bslib", "dplyr", "DT", "future", "gargoyle", "httr2",
-                  "knitcitations", "leaflet", "leaflet.extras", "markdown",
-                  "promises", "R6", "RColorBrewer", "renv", "rintrojs",
-                  "rmarkdown", "shinyAce", "shinyalert", "shinybusy",
-                  "shinyjs", "shinyWidgets", "terra", "xml2")
-
-if (any(!sapply(dependencies, requireNamespace, quietly = TRUE))){
-  stop('Some packages required to run the application are not installed, please reinstall using:
-       install.packages("shinyscholar", dependencies = TRUE)')
-}
+shinyscholar::check_suggests()
 
 library(glue)
-library(leaflet)
-library(gargoyle)
 
 future::plan(future::multisession)
 

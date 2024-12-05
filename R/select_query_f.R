@@ -7,7 +7,7 @@
 #' @export
 
 get_nasa_token <- function(username, password) {
-
+  check_suggests()
   token_url <- "https://urs.earthdata.nasa.gov/api/users/find_or_create_token"
   req <- httr2::request(token_url)
 
@@ -59,12 +59,14 @@ get_nasa_token <- function(username, password) {
 
 select_query <- function(poly, date, token, logger = NULL) {
 
+  check_suggests()
+
   if (nchar(token) < 200){
     logger %>% writeLog(type = "error", "This function requires a NASA token - see the documentation")
     return()
   }
 
-  #convert to terra object to calculate area and extent
+  # convert to terra object to calculate area and extent
   terra_poly <- terra::vect(poly, crs = "EPSG:4326", type = "polygons")
   area <- terra::expanse(terra_poly, unit = "km")
   if (area > 1000000) {

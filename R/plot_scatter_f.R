@@ -9,6 +9,7 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 plot_scatter <- function(ras, sample, axis) {
+  check_suggests()
   set.seed(12345)
   samp <- terra::spatSample(ras, sample, method = "random", xy = TRUE, as.df = TRUE)
   colnames(samp)[3] <- "value"

@@ -113,13 +113,15 @@ test_that("Check create template function works as expected", {
   expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.yml")))
   expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.md")))
 
-  #there is not much to test when running the app, but this confirms that it runs
-  test_that("{shinytest2} recording: testing_create_template", {
-    app <- shinytest2::AppDriver$new(app_dir = file.path(directory, "shinyscholar", "inst", "shiny"), name = "create_test")
-    common <- app$get_value(export = "common")
-    expect_true(is.null(common$raster))
-    app$stop()
-  })
+  if (!no_suggests){
+    #there is not much to test when running the app, but this confirms that it runs
+    test_that("{shinytest2} recording: testing_create_template", {
+      app <- shinytest2::AppDriver$new(app_dir = file.path(directory, "shinyscholar", "inst", "shiny"), name = "create_test")
+      common <- app$get_value(export = "common")
+      expect_true(is.null(common$raster))
+      app$stop()
+    })
+  }
 
 })
 
@@ -139,7 +141,6 @@ test_that("Check create template function works with false settings", {
                   common_objects = common_objects, modules = modules,
                   author = "Simon E. H. Smart", install = FALSE)
 
-
   global <- readLines(file.path(directory, "shinyscholar", "inst", "shiny", "global.R"))
   core_target <- grep("core_modules <-", global)
   global[core_target] <- 'core_modules <- c(file.path("modules", "core_intro.R"), file.path("modules", "core_load.R"), file.path("modules", "core_save.R"))'
@@ -155,12 +156,14 @@ test_that("Check create template function works with false settings", {
   expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.yml")))
   expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.md")))
 
-  #there is not much to test when running the app, but this confirms that it runs
-  test_that("{shinytest2} recording: testing_create_template", {
-    app <- shinytest2::AppDriver$new(app_dir = file.path(directory, "shinyscholar", "inst", "shiny"), name = "create_test")
-    common <- app$get_value(export = "common")
-    expect_true(is.null(common$raster))
-    app$stop()
-  })
+  if (!no_suggests){
+    #there is not much to test when running the app, but this confirms that it runs
+    test_that("{shinytest2} recording: testing_create_template", {
+      app <- shinytest2::AppDriver$new(app_dir = file.path(directory, "shinyscholar", "inst", "shiny"), name = "create_test")
+      common <- app$get_value(export = "common")
+      expect_true(is.null(common$raster))
+      app$stop()
+    })
+  }
 })
 

@@ -27,6 +27,7 @@
 #' @export
 
 select_async <- function(poly, date, token, async = FALSE) {
+  check_suggests()
 
   if (nchar(token) < 200){
     message <- "This function requires a NASA token - see the documentation"
