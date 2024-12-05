@@ -30,6 +30,8 @@ Authors@R:
       person("Robert", "Muscarella", email = "bob.muscarella@gmail.com", role = "ctb"))
 Depends:
     R (>= 3.5.0),
+    gargoyle,
+    leaflet (>= 2.0.2),
     shiny (>= 1.8.1)
 Imports:
     curl,
@@ -44,10 +46,8 @@ Suggests:
     dplyr (>= 1.0.2),
     DT (>= 0.5),
     future,
-    gargoyle,
     httr2,
     knitcitations,
-    leaflet (>= 2.0.2),
     leaflet.extras (>= 1.0.0),
     markdown,
     promises,
