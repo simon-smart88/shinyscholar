@@ -3,8 +3,8 @@
 #' @aliases shinyscholar
 #' @aliases shinyscholar-package
 #' @title \emph{shinyscholar}: A modular platform for creating reproducible applications
-#' @description \emph{shinyscholar} is a \code{shiny} app template for creating
-#'   reproducible applications to academic standards. shinyscholar is forked from 'wallace'
+#' @description \emph{shinyscholar} is a template for creatingreproducible \code{shiny}
+#'   applications to academic standards. shinyscholar is forked from 'wallace'
 #'   and provides a template for producing applications that are interactive,
 #'   reproducible, adaptable and built to high standards. It was created to ease
 #'   the process of creating complex workflows in a single, streamlined GUI interface.
@@ -13,6 +13,6 @@
 #'    for scientific papers and reports. The application is run via the
 #'    function \code{\link{run_shinyscholar}}.
 #'
-#' @import leaflet shiny gargoyle
+#' @import shiny
 #' @importFrom magrittr "%>%"
 NULL
