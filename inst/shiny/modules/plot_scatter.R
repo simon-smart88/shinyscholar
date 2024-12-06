@@ -75,7 +75,7 @@ plot_scatter_module_result <- function(id) {
 plot_scatter_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-      plot_scatter_knit = !is.null(common$scat),
+      plot_scatter_knit = !is.null(common$scatterplot),
       plot_scatter_axis_short = common$meta$plot_scatter$axis_short,
       plot_scatter_axis_long = common$meta$plot_scatter$axis_long,
       plot_scatter_sample = common$meta$plot_scatter$sample,

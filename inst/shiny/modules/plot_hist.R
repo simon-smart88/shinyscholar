@@ -83,7 +83,7 @@ plot_hist_module_result <- function(id) {
 plot_hist_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    plot_hist_knit = !is.null(common$hist),
+    plot_hist_knit = !is.null(common$histogram),
     plot_hist_bins = common$meta$plot_hist$bins,
     plot_hist_pal = common$meta$plot_hist$pal,
     plot_hist_name = common$meta$plot_hist$name
