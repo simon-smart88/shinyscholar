@@ -61,7 +61,7 @@ select_query <- function(poly, date, token, logger = NULL) {
 
   check_suggests()
 
-  if (nchar(token) < 200){
+  if (nchar(token) < 200 || is.null(token)){
     logger %>% writeLog(type = "error", "This function requires a NASA token - see the documentation")
     return()
   }

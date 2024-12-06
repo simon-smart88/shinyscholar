@@ -29,7 +29,7 @@
 select_async <- function(poly, date, token, async = FALSE) {
   check_suggests()
 
-  if (nchar(token) < 200){
+  if (nchar(token) < 200 || is.null(token)){
     message <- "This function requires a NASA token - see the documentation"
     if (async){
       return(message)
