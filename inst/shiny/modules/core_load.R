@@ -69,16 +69,16 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
     })
 
     # load file if run_shinyscholar has a load_file parameter
-    loaded_state <- reactive({if (exists("loaded_state", envir = .GlobalEnv)) {
-      get("loaded_state", envir = .GlobalEnv)
+    load_file_path <- reactive({if (exists("load_file_path", envir = .GlobalEnv)) {
+      get("load_file_path", envir = .GlobalEnv)
     } else {
       NULL
     }})
 
     load_on_start <- observe({
-      req(loaded_state())
+      req(load_file_path())
       show_loading_modal("Loading previous session")
-      load_session(readRDS(loaded_state()))
+      load_session(readRDS(load_file_path()))
       close_loading_modal()
       common$logger %>% writeLog(type="info", "The previous session has been loaded successfully")
       load_on_start$destroy()

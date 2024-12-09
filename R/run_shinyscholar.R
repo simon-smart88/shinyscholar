@@ -22,7 +22,7 @@ run_shinyscholar <- function(launch.browser = TRUE, port = getOption("shiny.port
   }
 
   # Store the load_file path to make it accessible inside the app
-  .GlobalEnv$loaded_state <- if (!is.null(load_file) && file.exists(load_file)) {
+  .GlobalEnv$load_file_path <- if (!is.null(load_file) && file.exists(load_file)) {
     load_file
   } else {
     NULL
