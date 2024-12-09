@@ -2,7 +2,7 @@
 title: "A guide to developing applications with Shinyscholar"
 author: "Simon Smart"
 date: "
-2024-12-04
+2024-12-09
 "
 output: rmarkdown::html_vignette
 vignette: >
@@ -89,8 +89,9 @@ include_map = TRUE, include_table = TRUE, include_code = TRUE, common_objects = 
 `create_template()` creates the file structure of a package and if `install` is set to `TRUE` it will be installed automatically. If you prefer to install manually, run `devtools::install_local(path = "~/Documents/demo", force=TRUE)` (assuming as in the example above the app was initiated in `~/Documents/demo`). You need to repeat this process after making changes to the app, or if using Rstudio, use Ctrl+Shift+B or Command+Shift+B. Now you can run the app using `shiny::runApp(system.file('shiny', package='demo'))` or `demo::run_demo()`.
 
 ### Development
+
 #### Modules
-After installing the initial version, the modules only contain skeleton code. There are four files for each module located in `/inst/shiny/modules` and each module calls a function found in `/R`. It may be helpful to familiarise yourself with the code for the existing application either by viewing the files in `/inst/shiny/modules` or by using the Code tab in the app.
+After installing the initial version, the modules only contain skeleton code. There are four files for each module located in `/inst/shiny/modules` and each module calls a function found in `/R`. It may be helpful to familiarise yourself with the code for the existing application either by viewing the files in `/inst/shiny/modules` or by using the Code tab in the example app.
 
 ##### .R
 
@@ -138,6 +139,9 @@ The colour of elements in the app are controlled by the theme present in the `bs
 #### common.R
 This file contains the data structure that is shared between modules and you can add extra objects as you wish. `common` is an [R6 class](https://r6.r-lib.org/) which is similar to a `list()` but items in it must be declared in this file before you use them in the app. Any type of object can be stored in `common`, i.e. dataframes, plots, strings etc. By default, all the objects in `common` are created as `NULL` but you may wish to change these to load a default value. Objects inside `common` are not reactive by default, but you can make them `reactiveVal` or `reactiveValues`, for example like `common$logger`. Objects in `common` can also be functions, for example in the demonstration app, `common$add_map_layer()` is used to add a layer to `common$map_layers`.
 
+#### Loading app state
+During development, it is often necessary to run the app to manually test functionality and in a complex application, it may take a long time to get the app into a state where the module in development can be used. The save and load functionality provides a mechanism to speed up this process, as the app can be saved prior to a module being tested, allowing the state to be restored quickly if the module contains fatal errors. You can preload the saved file by passing `load_file` to the `run_<app name>` function, but this requires the most recent changes to be installed. Alternatively to run uninstalled changes, create a `load_file_path` variable containing a path to the save file, then use `shiny::runApp('inst/shiny')` or click the "Run App" button in Rstudio.
+
 #### Testing
 One test file for each module is created by `create_template()` and placed in `tests/testthat/`. It contains one unit test for the function which checks that it returns `NULL` and one end-to-end test which runs the app runs and that one of the objects in `common` remains set as `NULL`. During development of the modules, you should add tests to check the function runs as expected, returns errors when it cannot run and that the function runs when called from the app.
 
@@ -173,7 +177,7 @@ common$tasks$<identifier> <- ExtendedTask$new(function(...) {
 The task is invoked inside the `observeEvent()` by calling `common$tasks$<identifier>$invoke()` with the arguments of the module's function. As in the default implementation, metadata should be stored at this point when the function is called.
 
 ##### Logging
-Because the asynchronous tasks are run in a different R session, `common$logger` is no longer accessible from inside the module's function and therefore cannot be used to send messages to the logger directly. Instead, an `async` parameter needs to be added to the function and error messages are returned by the function when `async` is `TRUE` or transferred to `stop` or `warning` if `async` is `FALSE` e.g. when being used in the .Rmd.
+Because the asynchronous tasks are run in a different R session, `common$logger` is no longer accessible from inside the module's function and therefore cannot be used to send messages to the logger directly. Instead, an `async` parameter needs to be added to the function and error messages can be passed to `return(async %>% asyncLog("message", type = "error"))` which returns the error when used asynchronously or passes the message to `stop()` when not used asynchronously, for example in the .Rmd.
 
 ##### Receiving results
 A separate `observe()` named `results` is required to listen for the result of the task available at `common$tasks$<identifier>$result()` but to prevent endless loops, we must stop the observer from functioning once the results are calculated by calling `results$suspend()` and reactivate it prior to the task being invoked using `results$resume()`. Inside `results`, the class of the object returned by the function should be checked and either passed to `common$logger` if it is an error message or stored in `common` as in the default implementation. 
