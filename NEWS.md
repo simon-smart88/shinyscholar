@@ -47,3 +47,5 @@ shinyscholar 0.2.2
 =============
 - Removed `run_module()` as it was not maintainable
 - Moved all packages to Suggests unless they are required for development of new applications
+- Added `asyncLog()` to improve logging from inside async functions
+- Updated `run_<app name>()` function to take a load file as an argument which is loaded automatically
