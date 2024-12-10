@@ -19,7 +19,7 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
       return()
     }
     # FUNCTION CALL ####
-    histogram <- plot_hist(common$raster, input$bins)
+    histogram <- plot_hist(common$raster, as.numeric(input$bins))
     # LOAD INTO COMMON ####
     common$histogram <- histogram
     # METADATA ####

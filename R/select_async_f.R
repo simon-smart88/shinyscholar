@@ -29,16 +29,24 @@
 select_async <- function(poly, date, token, async = FALSE) {
   check_suggests()
 
-  if (nchar(token) < 200 || is.null(token)){
-    return(async %>% asyncLog("This function requires a NASA token - see the documentation", type = "error"))
+  if (!("matrix" %in% class(poly))){
+    return(async %>% asyncLog(type = "error", "poly must be a matrix"))
   }
 
-  #convert to terra object to calculate area and extent
+  if (!is.character(date) || is.na(as.Date(date, format = "%Y-%m-%d"))) {
+    return(async %>% asyncLog(type = "error", "date must be a string with the format YYYY-MM-DD"))
+  }
+
+  if (nchar(token) < 200 || is.null(token)){
+    return(async %>% asyncLog(type = "error", "This function requires a NASA token - see the documentation"))
+  }
+
+  # convert to terra object to calculate area and extent
   terra_poly <- terra::vect(poly, crs = "EPSG:4326", type = "polygons")
   area <- terra::expanse(terra_poly, unit = "km")
   if (area > 1000000) {
-    return(async %>% asyncLog(paste0("Your selected area is too large (",round(area,0)," km2)",
-                              " when the maximum is 1m km2. Please select a smaller area"), type = "error"))
+    return(async %>% asyncLog(type = "error", paste0("Your selected area is too large (",round(area,0)," km2)",
+                              " when the maximum is 1m km2. Please select a smaller area")))
   }
 
   bbox <- c(min(poly[,1]), max(poly[,2]), max(poly[,1]), min(poly[,2]))
@@ -56,7 +64,7 @@ select_async <- function(poly, date, token, async = FALSE) {
     image_links <- xml2::xml_find_all(image_resp, "//a")
     image_urls <- xml2::xml_attr(image_links, "href")
   } else {
-    return(async %>% asyncLog("The FAPAR API is currently offline"))
+    return(async %>% asyncLog(type = "error", "The FAPAR API is currently offline"))
   }
 
   # download and stitch together tiles
@@ -79,8 +87,8 @@ select_async <- function(poly, date, token, async = FALSE) {
     }
   }
   if (is.null(raster)){
-    return(async %>% asyncLog(paste0("No data was found for your selected area. ",
-                      "This could be due to cloud coverage or because the area is not over land."), type = "error"))
+    return(async %>% asyncLog(type = "error", paste0("No data was found for your selected area. ",
+                      "This could be due to cloud coverage or because the area is not over land.")))
   }
 
   # reproject and crop
@@ -92,10 +100,10 @@ select_async <- function(poly, date, token, async = FALSE) {
   urban <- length(terra::values(raster)[terra::values(raster) == 2.5])
   water <- length(terra::values(raster)[terra::values(raster) == 2.54])
 
-  #count missing values and log accordingly
+  # count missing values and log accordingly
   if (missing_values == terra::ncell(raster)) {
-    return(async %>% asyncLog(paste0("No data was found for your selected area. ",
-                                     "This could be due to cloud coverage or because the area is not over land."), type = "error"))
+    return(async %>% asyncLog(type = "error", paste0("No data was found for your selected area. ",
+                                     "This could be due to cloud coverage or because the area is not over land.")))
   }
 
   if (missing_values > 0) {
@@ -111,7 +119,7 @@ select_async <- function(poly, date, token, async = FALSE) {
   # remove missing values and rescale data to 0 - 100 %
   raster <- terra::clamp(raster, upper = 1, value = FALSE) * 100
 
-  #wrap the raster for transfer if running async
+  # wrap the raster for transfer if running async
   if (async){
     raster <- terra::wrap(raster)
   }

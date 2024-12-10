@@ -61,6 +61,16 @@ select_query <- function(poly, date, token, logger = NULL) {
 
   check_suggests()
 
+  if (!("matrix" %in% class(poly))){
+    logger %>% writeLog(type = "error","poly must be a matrix")
+    return()
+  }
+
+  if (!is.character(date) || is.na(as.Date(date, format = "%Y-%m-%d"))) {
+    logger %>% writeLog(type = "error","date must be a string with the format YYYY-MM-DD")
+    return()
+  }
+
   if (nchar(token) < 200 || is.null(token)){
     logger %>% writeLog(type = "error", "This function requires a NASA token - see the documentation")
     return()

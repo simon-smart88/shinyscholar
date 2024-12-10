@@ -1,20 +1,40 @@
 #' @title plot_hist
 #' @description This function is called by the plot_hist module and extracts
-#'  values from a raster image.
+#'  values from a raster image, returning a histogram of density
 #'
-#' @param ras SpatRaster object
+#' @param raster SpatRaster object
 #' @param bins The number of breaks in the histogram
-
-#' @return a vector of values extracted from the raster
+#' @param logger Stores all notification messages to be displayed in the Log
+#'   Window. Insert the logger reactive list here for running in
+#'   shiny, otherwise leave the default NULL
+#' @return a list of class histogram
 #' @author Simon Smart <simon.smart@@cantab.net>
+#' @examples
+#' raster <- terra::rast(ncol = 8, nrow = 8)
+#' raster[] <- sapply(1:terra::ncell(raster), function(x){
+#'    rnorm(1, ifelse(x %% 8 != 0, x %% 8, 8), 3))}
+#' histogram <- plot_hist(raster, bins = 10)
 #' @export
 
-plot_hist <- function(ras, bins) {
+plot_hist <- function(raster, bins, logger = NULL) {
+
   check_suggests()
-  ras_values <- terra::values(ras)
-  h <- graphics::hist(ras_values, plot = FALSE, breaks = seq(min(ras_values, na.rm = TRUE),
-                                                             max(ras_values, na.rm = TRUE),
-                                                             length.out = as.numeric(bins) + 1))
-  h$density <- h$counts / sum(h$counts) * 100
-  h
+
+  if (!("SpatRaster" %in% class(raster))){
+    logger %>% writeLog(type = "error", "The raster must be a SpatRaster")
+    return()
+  }
+
+  if (!is.numeric(bins)){
+    logger %>% writeLog(type = "error", "bins must be numeric")
+    return()
+  }
+
+  raster_values <- terra::values(raster)
+  histogram <- graphics::hist(raster_values, plot = FALSE,
+                              breaks = seq(min(raster_values, na.rm = TRUE),
+                                           max(raster_values, na.rm = TRUE),
+                                           length.out = bins + 1))
+  histogram$density <- histogram$counts / sum(histogram$counts) * 100
+  histogram
 }

@@ -38,7 +38,7 @@ if (!no_suggests){
 
   token <- get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
 
-  raster_path <- list.files(system.file("extdata/wc", package = "shinyscholar"),
-                     pattern = ".tif$", full.names = TRUE)
+  raster_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),
+                     full.names = TRUE)
   raster <- terra::rast(raster_path)
 }

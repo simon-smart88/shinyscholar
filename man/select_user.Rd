@@ -4,17 +4,26 @@
 \alias{select_user}
 \title{select_user}
 \usage{
-select_user(ras_path)
+select_user(raster_path, logger = NULL)
 }
 \arguments{
-\item{ras_path}{character. Path to file to be loaded}
+\item{raster_path}{character. Path to file to be loaded}
+
+\item{logger}{Stores all notification messages to be displayed in the Log
+Window. Insert the logger reactive list here for running in
+shiny, otherwise leave the default NULL}
 }
 \value{
 a SpatRaster object
 }
 \description{
 This function is called by the select_user module and loads a
-raster image.
+.tif file as a SpatRaster
+}
+\examples{
+raster_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),
+full.names = TRUE)
+raster <- select_user(raster_path)
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
