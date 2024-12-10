@@ -1,22 +1,19 @@
-path <- list.files(system.file("extdata/wc", package = "shinyscholar"),
-                   pattern = ".tif$", full.names = TRUE)
-raster <- terra::rast(path)
-bins <- 20
+if (!no_suggests){
+  bins <- 20
 
-test_that("Check plot_hist function works as expected", {
+  test_that("Check plot_hist function works as expected", {
+    result <- plot_hist(raster, bins)
+    expect_is(result, "histogram")
+    expect_equal(length(result$mids), 20)
+    expect_equal(sum(result$density), 100)
 
-  result <- plot_hist(raster, bins)
+    expect_error(plot_hist("raster", 10), "The raster must be a SpatRaster")
+    expect_error(plot_hist(raster, "ten"), "bins must be numeric")
+  })
 
-  expect_is(result, "histogram")
-  expect_equal(length(result$mids), 20)
-  expect_equal(sum(result$density), 100)
-
-})
-
-test_that("{shinytest2} recording: e2e_plot_hist", {
-
-  rerun_test("plot_hist_test", list(path = path, save_path = save_path))
-  common <- readRDS(save_path)
-  expect_is(common$histogram, "histogram")
-
-})
+  test_that("{shinytest2} recording: e2e_plot_hist", {
+    rerun_test("plot_hist_test", list(raster_path = raster_path, save_path = save_path))
+    common <- readRDS(save_path)
+    expect_is(common$histogram, "histogram")
+  })
+}

@@ -4,4 +4,5 @@ Description of what the code will do {{var1}}
 
 ```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
 # R code to run {{var2}}
+# Populate using metadata()
 ```

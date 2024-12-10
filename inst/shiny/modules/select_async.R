@@ -89,7 +89,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
     # FUNCTION CALL ####
     common$logger %>% writeLog(type = "starting", "Starting to download FAPAR data")
     # invoke the async task
-    common$tasks$select_async$invoke(common$poly, input$date, token(), TRUE)
+    common$tasks$select_async$invoke(common$poly, as.character(input$date), token(), TRUE)
     # reactivate the results observer if it has already been used
     results$resume()
 

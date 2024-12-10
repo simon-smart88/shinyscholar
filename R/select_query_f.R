@@ -7,7 +7,7 @@
 #' @export
 
 get_nasa_token <- function(username, password) {
-
+  check_suggests()
   token_url <- "https://urs.earthdata.nasa.gov/api/users/find_or_create_token"
   req <- httr2::request(token_url)
 
@@ -47,11 +47,16 @@ get_nasa_token <- function(username, password) {
 #'   shiny, otherwise leave the default NULL
 #' @examples
 #' \dontrun{
-#'  poly <- matrix(c(0.5, 0.5, 1, 1, 0.5, 52, 52.5, 52.5, 52, 52), ncol = 2)
-#'  colnames(poly) <- c("longitude", "latitude")
-#'  date <- "2023-06-20"
-#'  token <- get_nasa_token(username = "<username>", password = "<password>")
-#'  ras <- select_query(poly, date, token)
+#'  if (check_suggests(example = TRUE)) {
+#'    poly <- matrix(c(0.5, 0.5, 1, 1, 0.5, 52, 52.5, 52.5, 52, 52), ncol = 2)
+#'    colnames(poly) <- c("longitude", "latitude")
+#'    date <- "2023-06-20"
+#'    token <- get_nasa_token(username = "<username>", password = "<password>")
+#'    ras <- select_query(poly, date, token)
+#'  } else {
+#'    message('reinstall with install.packages("shinyscholar", dependencies = TRUE)
+#'    to run this example')
+#'  }
 #'  }
 #' @return a SpatRaster object
 #' @author Simon Smart <simon.smart@@cantab.net>
@@ -59,12 +64,24 @@ get_nasa_token <- function(username, password) {
 
 select_query <- function(poly, date, token, logger = NULL) {
 
-  if (nchar(token) < 200){
+  check_suggests()
+
+  if (!("matrix" %in% class(poly))){
+    logger %>% writeLog(type = "error","poly must be a matrix")
+    return()
+  }
+
+  if (!is.character(date) || is.na(as.Date(date, format = "%Y-%m-%d"))) {
+    logger %>% writeLog(type = "error","date must be a string with the format YYYY-MM-DD")
+    return()
+  }
+
+  if (nchar(token) < 200 || is.null(token)){
     logger %>% writeLog(type = "error", "This function requires a NASA token - see the documentation")
     return()
   }
 
-  #convert to terra object to calculate area and extent
+  # convert to terra object to calculate area and extent
   terra_poly <- terra::vect(poly, crs = "EPSG:4326", type = "polygons")
   area <- terra::expanse(terra_poly, unit = "km")
   if (area > 1000000) {

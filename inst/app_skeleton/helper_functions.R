@@ -47,12 +47,10 @@ printVecAsis <- function(x, asChar = FALSE) {
 spurious <- function(x) {
   DT::renderDataTable(x)
   RColorBrewer::brewer.pal(x)
-  leafem::addMouseCoordinates(x)
   leaflet.extras::removeDrawToolbar(x)
   rmarkdown::github_document(x)
   shinyWidgets::pickerInput(x)
   shinyjs::disable(x)
-  zip::zipr(x)
   return()
 }
 
@@ -119,6 +117,27 @@ writeLog <- function(logger, ..., type = "default") {
   invisible()
 }
 
+#' @title asyncLog
+#' @description For internal use. Similar to writeLog but for use inside async
+#' functions
+#' @param async Whether the function is being used asynchronously
+#' @param message The message to write to the logger
+#' @param type One of "default", "info", "error", "warning"
+#' @keywords internal
+#' @export
+asyncLog <- function(async, message, type = "default"){
+  if (!async) {
+    if (type == "error") {
+      stop(paste0(message, collapse = ""), call. = FALSE)
+    } else if (type == "warning") {
+      warning(paste0(message, collapse = ""), call. = FALSE)
+    } else {
+      message(paste0(message, collapse = ""))
+    }
+  } else {
+    return(message)
+  }
+}
 
 ####################### #
 # LOADING MODAL #

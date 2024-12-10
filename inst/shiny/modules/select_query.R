@@ -75,7 +75,7 @@ select_query_module_server <- function(id, common, parent_session, map) {
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded.
                           This window will close once it is complete.")
-    raster <- select_query(common$poly, input$date, token(), common$logger)
+    raster <- select_query(common$poly, as.character(input$date), token(), common$logger)
     #close if the function returns null
     close_loading_modal()
     if (!is.null(raster)){

@@ -1,3 +1,5 @@
+shinyscholar::check_suggests()
+
 library(glue)
 
 future::plan(future::multisession)

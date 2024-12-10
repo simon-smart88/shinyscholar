@@ -17,6 +17,7 @@
     # LOAD INTO COMMON ####
 
     # METADATA ####
+    # Populate using metadata()
 
     # TRIGGER
     gargoyle::trigger("{{id}}")
@@ -30,9 +31,11 @@
   return(list(
     save = function() {
       # Save any values that should be saved when the current session is saved
+      # Populate using save_and_load()
     },
     load = function(state) {
       # Load
+      # Populate using save_and_load()
     }
   ))
 })
@@ -51,5 +54,6 @@
 
 {{id}}_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
+  # Populate using metadata()
 }
 

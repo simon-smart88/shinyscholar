@@ -15,8 +15,20 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       shinyjs::toggleState("goLoad_session", !is.null(input$load_session$datapath))
     })
 
-    observeEvent(input$goLoad_session, {
-      temp <- readRDS(input$load_session$datapath)
+    load_session <- function(temp){
+
+      if (!("common" %in% class(temp))){
+        close_loading_modal()
+        common$logger %>% writeLog(type = "error", "That is not a valid Shinyscholar save file")
+        return()
+      }
+
+      if (temp$state$main$version != as.character(packageVersion("shinyscholar"))){
+        current_version <- as.character(packageVersion("shinyscholar"))
+        common$logger %>% writeLog(type = "warning",
+                      glue::glue("The save file was created using shinyscholar v{temp$state$main$version},
+                                 but you are using shinyscholar v{current_version}"))
+      }
 
       temp_names <- names(temp)
       #exclude the non-public and function objects
@@ -48,9 +60,31 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
           do.call(map_fx, list(map, common = common))
         }
       }
+    }
 
+    observeEvent(input$goLoad_session, {
+      temp <- readRDS(input$load_session$datapath)
+      load_session(temp)
       common$logger %>% writeLog(type="info", "The previous session has been loaded successfully")
     })
+
+    # load file if run_shinyscholar has a load_file parameter
+    load_file_path <- reactive({if (exists("load_file_path", envir = .GlobalEnv)) {
+      get("load_file_path", envir = .GlobalEnv)
+    } else {
+      NULL
+    }})
+
+    load_on_start <- observe({
+      req(load_file_path())
+      show_loading_modal("Loading previous session")
+      load_session(readRDS(load_file_path()))
+      close_loading_modal()
+      common$logger %>% writeLog(type="info", "The previous session has been loaded successfully")
+      load_on_start$destroy()
+    })
+
+
 
   }
 )}

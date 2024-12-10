@@ -74,7 +74,6 @@ spurious <- function(x) {
   dplyr::add_count(x)
   future::as.cluster(x)
   httr2::curl_help(x)
-  leafem::addMouseCoordinates(x)
   leaflet.extras::removeDrawToolbar(x)
   markdown::html_format(x)
   promises::as.promise(x)
@@ -82,7 +81,6 @@ spurious <- function(x) {
   RColorBrewer::brewer.pal(x)
   rintrojs::introjs(x)
   renv::activate(x)
-  rlang::abort(x)
   rmarkdown::github_document(x)
   shinyAce::is.empty(x)
   shinybusy::add_busy_bar(x)
@@ -157,6 +155,27 @@ writeLog <- function(logger, ..., type = "default") {
   invisible()
 }
 
+#' @title asyncLog
+#' @description For internal use. Similar to writeLog but for use inside async
+#' functions
+#' @param async Whether the function is being used asynchronously
+#' @param ... Messages to write to the logger
+#' @param type One of "default", "info", "error", "warning"
+#' @keywords internal
+#' @export
+asyncLog <- function(async, ..., type = "default"){
+  if (!async) {
+    if (type == "error") {
+      stop(paste0(..., collapse = ""), call. = FALSE)
+    } else if (type == "warning") {
+      warning(paste0(..., collapse = ""), call. = FALSE)
+    } else {
+      message(paste0(..., collapse = ""))
+    }
+  } else {
+    return(as.character(...))
+  }
+}
 
 ####################### #
 # LOADING MODAL #
