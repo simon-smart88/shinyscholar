@@ -22,7 +22,7 @@ check_suggests <- function(testing = FALSE, example = FALSE){
   check <- any(!sapply(suggests, requireNamespace, quietly = TRUE))
 
   if (example){
-    return(check)
+    return(!check)
   } else {
     if (check){
       stop('Some packages required to run the application are not installed, please reinstall using:
