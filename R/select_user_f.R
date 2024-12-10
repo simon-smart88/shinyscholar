@@ -10,9 +10,14 @@
 #' @return a SpatRaster object
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @examples
-#' raster_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),
-#' full.names = TRUE)
-#' raster <- select_user(raster_path)
+#' if (check_suggests(example = TRUE)) {
+#'   raster_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),
+#'   full.names = TRUE)
+#'   raster <- select_user(raster_path)
+#' } else {
+#'   message('reinstall with install.packages("shinyscholar", dependencies = TRUE)
+#'   to run this example')
+#' }
 #' @export
 
 select_user <- function(raster_path, logger = NULL) {

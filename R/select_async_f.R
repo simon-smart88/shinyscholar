@@ -13,11 +13,16 @@
 #' @param async logical. Whether the function is being run asynchronously
 #' @examples
 #' \dontrun{
-#'  poly <- matrix(c(0.5, 0.5, 1, 1, 0.5, 52, 52.5, 52.5, 52, 52), ncol = 2)
-#'  colnames(poly) <- c("longitude", "latitude")
-#'  date <- "2023-06-20"
-#'  token <- get_nasa_token(username = "<username>", password = "<password>")
-#'  ras <- select_async(poly, date, token)
+#'  if (check_suggests(example = TRUE)) {
+#'    poly <- matrix(c(0.5, 0.5, 1, 1, 0.5, 52, 52.5, 52.5, 52, 52), ncol = 2)
+#'    colnames(poly) <- c("longitude", "latitude")
+#'    date <- "2023-06-20"
+#'    token <- get_nasa_token(username = "<username>", password = "<password>")
+#'    ras <- select_async(poly, date, token)
+#'  } else {
+#'    message('reinstall with install.packages("shinyscholar", dependencies = TRUE)
+#'    to run this example')
+#'  }
 #'  }
 #' @return A list containing:
 #'  \item{raster}{a SpatRaster object when `async` is `FALSE` or a PackedSpatRaster when

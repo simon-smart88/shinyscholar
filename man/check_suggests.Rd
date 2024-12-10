@@ -4,10 +4,12 @@
 \alias{check_suggests}
 \title{Check suggests}
 \usage{
-check_suggests(testing = FALSE)
+check_suggests(testing = FALSE, example = FALSE)
 }
 \arguments{
 \item{testing}{logical. For use in testing.}
+
+\item{example}{logical. For use in examples.}
 }
 \description{
 Checks whether all the packages in Suggests are installed and stops execution

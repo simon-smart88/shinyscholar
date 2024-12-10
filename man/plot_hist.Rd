@@ -23,10 +23,15 @@ This function is called by the plot_hist module and extracts
 values from a raster image, returning a histogram of density
 }
 \examples{
-raster <- terra::rast(ncol = 8, nrow = 8)
-raster[] <- sapply(1:terra::ncell(raster), function(x){
-   rnorm(1, ifelse(x \%\% 8 != 0, x \%\% 8, 8), 3)})
-histogram <- plot_hist(raster, bins = 10)
+if (check_suggests(example = TRUE)) {
+  raster <- terra::rast(ncol = 8, nrow = 8)
+  raster[] <- sapply(1:terra::ncell(raster), function(x){
+    rnorm(1, ifelse(x \%\% 8 != 0, x \%\% 8, 8), 3)})
+  histogram <- plot_hist(raster, bins = 10)
+} else {
+  message('reinstall with install.packages("shinyscholar", dependencies = TRUE)
+  to run this example')
+}
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

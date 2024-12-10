@@ -26,10 +26,15 @@ values from a raster along with either the x or y coordinates
 of the points sampled
 }
 \examples{
-raster <- terra::rast(ncol = 8, nrow = 8)
-raster[] <- sapply(1:terra::ncell(raster), function(x){
-   rnorm(1, ifelse(x \%\% 8 != 0, x \%\% 8, 8), 3)})
-scatterplot <- plot_scatter(raster, sample = 10, axis = "y")
+if (check_suggests(example = TRUE)) {
+  raster <- terra::rast(ncol = 8, nrow = 8)
+  raster[] <- sapply(1:terra::ncell(raster), function(x){
+     rnorm(1, ifelse(x \%\% 8 != 0, x \%\% 8, 8), 3)})
+  scatterplot <- plot_scatter(raster, sample = 10, axis = "y")
+} else {
+  message('reinstall with install.packages("shinyscholar", dependencies = TRUE)
+  to run this example')
+}
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

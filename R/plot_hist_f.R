@@ -10,10 +10,15 @@
 #' @return a list of class histogram
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @examples
-#' raster <- terra::rast(ncol = 8, nrow = 8)
-#' raster[] <- sapply(1:terra::ncell(raster), function(x){
-#'    rnorm(1, ifelse(x %% 8 != 0, x %% 8, 8), 3)})
-#' histogram <- plot_hist(raster, bins = 10)
+#' if (check_suggests(example = TRUE)) {
+#'   raster <- terra::rast(ncol = 8, nrow = 8)
+#'   raster[] <- sapply(1:terra::ncell(raster), function(x){
+#'     rnorm(1, ifelse(x %% 8 != 0, x %% 8, 8), 3)})
+#'   histogram <- plot_hist(raster, bins = 10)
+#' } else {
+#'   message('reinstall with install.packages("shinyscholar", dependencies = TRUE)
+#'   to run this example')
+#' }
 #' @export
 
 plot_hist <- function(raster, bins, logger = NULL) {
