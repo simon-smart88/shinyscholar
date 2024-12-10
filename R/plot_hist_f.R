@@ -12,7 +12,7 @@
 #' @examples
 #' raster <- terra::rast(ncol = 8, nrow = 8)
 #' raster[] <- sapply(1:terra::ncell(raster), function(x){
-#'    rnorm(1, ifelse(x %% 8 != 0, x %% 8, 8), 3))}
+#'    rnorm(1, ifelse(x %% 8 != 0, x %% 8, 8), 3)})
 #' histogram <- plot_hist(raster, bins = 10)
 #' @export
 

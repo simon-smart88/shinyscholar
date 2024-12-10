@@ -7,7 +7,7 @@
 check_suggests(testing = FALSE)
 }
 \arguments{
-\item{testing.}{logical. For use in testing.}
+\item{testing}{logical. For use in testing.}
 }
 \description{
 Checks whether all the packages in Suggests are installed and stops execution

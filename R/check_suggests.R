@@ -3,17 +3,17 @@
 #' Checks whether all the packages in Suggests are installed and stops execution
 #' if not.
 #' @author Simon Smart <simon.smart@@cantab.net>
-#' @param testing. logical. For use in testing.
+#' @param testing logical. For use in testing.
 #' @keywords internal
 #' @export
 check_suggests <- function(testing = FALSE){
   desc <- read.dcf(system.file("DESCRIPTION", package = "shinyscholar"))
-  suggests <- desc[,"Suggests"] %>%
-    strsplit(",") %>%
-    unlist() %>%
-    gsub("\\n", "", .) %>%
-    gsub("\\(.*\\)", "", .) %>%
-    trimws()
+  suggests <- trimws(
+    gsub(
+      "\\(.*\\)", "",
+      gsub("\\n", "", unlist(strsplit(desc[,"Suggests"], ",")))
+    )
+  )
   if (testing){
     suggests <- c(suggests, "phantompackage")
   }
