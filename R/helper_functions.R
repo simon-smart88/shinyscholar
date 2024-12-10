@@ -159,21 +159,21 @@ writeLog <- function(logger, ..., type = "default") {
 #' @description For internal use. Similar to writeLog but for use inside async
 #' functions
 #' @param async Whether the function is being used asynchronously
-#' @param message The message to write to the logger
+#' @param ... Messages to write to the logger
 #' @param type One of "default", "info", "error", "warning"
 #' @keywords internal
 #' @export
-asyncLog <- function(async, message, type = "default"){
+asyncLog <- function(async, ..., type = "default"){
   if (!async) {
     if (type == "error") {
-      stop(paste0(message, collapse = ""), call. = FALSE)
+      stop(paste0(..., collapse = ""), call. = FALSE)
     } else if (type == "warning") {
-      warning(paste0(message, collapse = ""), call. = FALSE)
+      warning(paste0(..., collapse = ""), call. = FALSE)
     } else {
-      message(paste0(message, collapse = ""))
+      message(paste0(..., collapse = ""))
     }
   } else {
-    return(message)
+    return(as.character(...))
   }
 }
 

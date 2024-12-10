@@ -4,12 +4,12 @@
 \alias{asyncLog}
 \title{asyncLog}
 \usage{
-asyncLog(async, message, type = "default")
+asyncLog(async, ..., type = "default")
 }
 \arguments{
 \item{async}{Whether the function is being used asynchronously}
 
-\item{message}{The message to write to the logger}
+\item{...}{Messages to write to the logger}
 
 \item{type}{One of "default", "info", "error", "warning"}
 }
