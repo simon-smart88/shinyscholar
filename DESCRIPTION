@@ -1,15 +1,20 @@
 Package: shinyscholar
 Version: 0.2.2
-Date: 2024-12-03
-Title: A template for creating modular reproducible Shiny applications
-Description: Creates a skeleton shiny application that is modular, reproducible,
-    can be saved and loaded and meets academic standards for attribution. Using 
-    shinyscholar encourages best practices in software development. Includes 
-    functions for automating repetitive development tasks. 'shinyscholar' 
-    was forked from 'wallace'. 
+Date: 2024-12-10
+Title: A template for creating reproducible 'shiny' applications
+Description: Create a skeleton shiny application with create_template() that is 
+    reproducible, can be saved and meets academic standards for attribution. 
+    Forked from 'wallace'. Code is split into modules that are loaded and linked
+    together automatically and each call one function. Guidance pages explain 
+    modules to users and flexible logging informs them of any errors. Options 
+    enable asynchronous operations, viewing of source code, interactive maps and
+    data tables. Use to create complex analytical applications, following best 
+    practices in open science and software development. Includes functions for
+    automating repetitive development tasks and an example application at 
+    run_shinyscholar() that requires 
+    install.packages("shinyscholar", dependencies = TRUE).
 Authors@R: 
-    c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", 
-      role = c("aut", "cre", "cph")),
+    c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut", "cre", "cph")),
       person("Jamie M.", "Kass", email = "jamie.kass@oist.jp", role = "ctb"),
       person("Gonzalo E.", "Pinilla-Buitrago", email = "gpinillabuitrago@gradcenter.cuny.edu", role = "ctb"),
       person("Andrea", "Paz", email = "paz.andreita@gmail.com", role = "ctb"),
@@ -43,8 +48,8 @@ Imports:
     zip
 Suggests:
     bslib,
-    dplyr (>= 1.0.2),
     DT (>= 0.5),
+    dplyr (>= 1.0.2),
     future,
     httr2,
     knitcitations,

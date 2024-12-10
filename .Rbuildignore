@@ -19,4 +19,9 @@ Dockerfile
 runtime.txt
 apt.txt
 install.R
+inst/shiny/rsconnect/
+inst/shiny/debug*
+inst/shiny/install*
+.lintr
 paper/
+renv.lock
