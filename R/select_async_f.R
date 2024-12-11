@@ -13,11 +13,16 @@
 #' @param async logical. Whether the function is being run asynchronously
 #' @examples
 #' \dontrun{
-#'  poly <- matrix(c(0.5, 0.5, 1, 1, 0.5, 52, 52.5, 52.5, 52, 52), ncol = 2)
-#'  colnames(poly) <- c("longitude", "latitude")
-#'  date <- "2023-06-20"
-#'  token <- get_nasa_token(username = "<username>", password = "<password>")
-#'  ras <- select_async(poly, date, token)
+#'  if (check_suggests(example = TRUE)) {
+#'    poly <- matrix(c(0.5, 0.5, 1, 1, 0.5, 52, 52.5, 52.5, 52, 52), ncol = 2)
+#'    colnames(poly) <- c("longitude", "latitude")
+#'    date <- "2023-06-20"
+#'    token <- get_nasa_token(username = "<username>", password = "<password>")
+#'    ras <- select_async(poly, date, token)
+#'  } else {
+#'    message('reinstall with install.packages("shinyscholar", dependencies = TRUE)
+#'    to run this example')
+#'  }
 #'  }
 #' @return A list containing:
 #'  \item{raster}{a SpatRaster object when `async` is `FALSE` or a PackedSpatRaster when
@@ -27,27 +32,26 @@
 #' @export
 
 select_async <- function(poly, date, token, async = FALSE) {
+  check_suggests()
 
-  if (nchar(token) < 200){
-    message <- "This function requires a NASA token - see the documentation"
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+  if (!("matrix" %in% class(poly))){
+    return(async %>% asyncLog(type = "error", "poly must be a matrix"))
   }
 
-  #convert to terra object to calculate area and extent
+  if (!is.character(date) || is.na(as.Date(date, format = "%Y-%m-%d"))) {
+    return(async %>% asyncLog(type = "error", "date must be a string with the format YYYY-MM-DD"))
+  }
+
+  if (nchar(token) < 200 || is.null(token)){
+    return(async %>% asyncLog(type = "error", "This function requires a NASA token - see the documentation"))
+  }
+
+  # convert to terra object to calculate area and extent
   terra_poly <- terra::vect(poly, crs = "EPSG:4326", type = "polygons")
   area <- terra::expanse(terra_poly, unit = "km")
   if (area > 1000000) {
-    message <- paste0("Your selected area is too large (",round(area,0)," km2)",
-                      " when the maximum is 1m km2. Please select a smaller area")
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", paste0("Your selected area is too large (",round(area,0)," km2)",
+                              " when the maximum is 1m km2. Please select a smaller area")))
   }
 
   bbox <- c(min(poly[,1]), max(poly[,2]), max(poly[,1]), min(poly[,2]))
@@ -65,12 +69,7 @@ select_async <- function(poly, date, token, async = FALSE) {
     image_links <- xml2::xml_find_all(image_resp, "//a")
     image_urls <- xml2::xml_attr(image_links, "href")
   } else {
-    message <- "The FAPAR API is currently offline"
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", "The FAPAR API is currently offline"))
   }
 
   # download and stitch together tiles
@@ -93,13 +92,8 @@ select_async <- function(poly, date, token, async = FALSE) {
     }
   }
   if (is.null(raster)){
-    message <- paste0("No data was found for your selected area. ",
-                      "This could be due to cloud coverage or because the area is not over land.")
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", paste0("No data was found for your selected area. ",
+                      "This could be due to cloud coverage or because the area is not over land.")))
   }
 
   # reproject and crop
@@ -111,15 +105,10 @@ select_async <- function(poly, date, token, async = FALSE) {
   urban <- length(terra::values(raster)[terra::values(raster) == 2.5])
   water <- length(terra::values(raster)[terra::values(raster) == 2.54])
 
-  #count missing values and log accordingly
+  # count missing values and log accordingly
   if (missing_values == terra::ncell(raster)) {
-    message <- paste0("No data was found for your selected area. ",
-                             "This could be due to cloud coverage or because the area is not over land.")
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", paste0("No data was found for your selected area. ",
+                                     "This could be due to cloud coverage or because the area is not over land.")))
   }
 
   if (missing_values > 0) {
@@ -135,7 +124,7 @@ select_async <- function(poly, date, token, async = FALSE) {
   # remove missing values and rescale data to 0 - 100 %
   raster <- terra::clamp(raster, upper = 1, value = FALSE) * 100
 
-  #wrap the raster for transfer if running async
+  # wrap the raster for transfer if running async
   if (async){
     raster <- terra::wrap(raster)
   }

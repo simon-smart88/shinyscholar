@@ -1,54 +1,78 @@
 Package: shinyscholar
-Version: 0.2.1
-Date: 2024-09-26
-Title: A template for creating modular reproducible shiny applications
-Description: The 'shiny' application shinyscholar is a modular platform for 
-    creating reproducible applications to academic standards. 'shinyscholar' is 
-    forked from 'wallace' and provides a template for producing applications 
-    that are interactive, reproducible, adaptable and built to high standards.
+Version: 0.2.2
+Date: 2024-12-10
+Title: A template for creating reproducible 'shiny' applications
+Description: Create a skeleton shiny application with create_template() that is 
+    reproducible, can be saved and meets academic standards for attribution. 
+    Forked from 'wallace'. Code is split into modules that are loaded and linked
+    together automatically and each call one function. Guidance pages explain 
+    modules to users and flexible logging informs them of any errors. Options 
+    enable asynchronous operations, viewing of source code, interactive maps and
+    data tables. Use to create complex analytical applications, following best 
+    practices in open science and software development. Includes functions for
+    automating repetitive development tasks and an example application at 
+    run_shinyscholar() that requires 
+    install.packages("shinyscholar", dependencies = TRUE).
 Authors@R: 
-    c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut","cre")))
+    c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut", "cre", "cph")),
+      person("Jamie M.", "Kass", email = "jamie.kass@oist.jp", role = "ctb"),
+      person("Gonzalo E.", "Pinilla-Buitrago", email = "gpinillabuitrago@gradcenter.cuny.edu", role = "ctb"),
+      person("Andrea", "Paz", email = "paz.andreita@gmail.com", role = "ctb"),
+      person("Bethany A.", "Johnson", email = "bjohnso005@citymail.cuny.edu", role = "ctb"),
+      person("Valentina", "Grisales-Betancur", email = "vgrisale@eafit.edu.co", role = "ctb"),
+      person("Dean", "Attali", email = "daattali@gmail.com", role = "ctb"),
+      person("Matthew E.", "Aiello-Lammens", email = "matt.lammens@gmail.com", role = "ctb"),
+      person("Cory", "Merow", email = "corymerow@gmail.com", role = "ctb"),
+      person("Mary E.", "Blair", email = "mblair1@amnh.org", role = "ctb"),
+      person("Robert P.", "Anderson", email = "randerson@ccny.cuny.edu", role = "ctb"),
+      person("Sarah I.", "Meenan", email = "sarah.meenan@gmail.com", role = "ctb"),
+      person("Olivier", "Broennimann", email = "olivier.broennimann@unil.ch", role = "ctb"),
+      person("Peter J.", "Galante", email = "pgalante@amnh.org", role = "ctb"),
+      person("Brian S.", "Maitner", email = "bmaitner@gmail.com", role = "ctb"),
+      person("Hannah L.", "Owens", email = "hannah.owens@gmail.com", role = "ctb"),
+      person("Sara", "Varela", email = "sara_varela@yahoo.com", role = "ctb"),
+      person("Bruno", "Vilela", email = "bvilela@wustl.edu", role = "ctb"),
+      person("Robert", "Muscarella", email = "bob.muscarella@gmail.com", role = "ctb"))
 Depends:
     R (>= 3.5.0),
-    shiny (>= 1.8.1),
+    gargoyle,
     leaflet (>= 2.0.2),
-    gargoyle
+    shiny (>= 1.8.1)
 Imports:
-    bslib,
     curl,
     devtools,
-    dplyr (>= 1.0.2),
-    DT (>= 0.5),
-    future,
     glue,
+    knitr,
+    magrittr,
+    tools,
+    zip
+Suggests:
+    bslib,
+    DT (>= 0.5),
+    dplyr (>= 1.0.2),
+    future,
     httr2,
     knitcitations,
-    knitr,
-    leafem,
     leaflet.extras (>= 1.0.0),
-    magrittr,
     markdown,
     promises,
     R6,
     RColorBrewer,
     renv,
     rintrojs,
-    rlang,
     rmarkdown,
     shinyAce,
     shinyalert,
     shinybusy,
     shinyjs,
+    shinytest2,
     shinyWidgets (>= 0.6.0),
     terra,
-    tools,
-    xml2,
-    zip
-Suggests: 
-    shinytest2,
-    testthat
+    testthat,
+    xml2
 License: GPL-3
 URL: https://simon-smart88.github.io/shinyscholar/
+BugReports: https://github.com/simon-smart88/shinyscholar/issues
 Encoding: UTF-8
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)

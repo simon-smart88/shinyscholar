@@ -4,21 +4,37 @@
 \alias{plot_scatter}
 \title{plot_scatter}
 \usage{
-plot_scatter(ras, sample, axis)
+plot_scatter(raster, sample, axis, logger = NULL)
 }
 \arguments{
-\item{ras}{SpatRaster object. Image to be analysed}
+\item{raster}{SpatRaster. Raster to be sampled}
 
 \item{sample}{numeric. Number of points to sample}
 
-\item{axis}{character.}
+\item{axis}{character. Which axis coordinates of the raster to return}
+
+\item{logger}{Stores all notification messages to be displayed in the Log
+Window. Insert the logger reactive list here for running in
+shiny, otherwise leave the default NULL}
 }
 \value{
 a dataframe containing the axis values and the cell values
 }
 \description{
 This function is called by the plot_scatter module and samples
-values from a raster
+values from a raster along with either the x or y coordinates
+of the points sampled
+}
+\examples{
+if (check_suggests(example = TRUE)) {
+  raster <- terra::rast(ncol = 8, nrow = 8)
+  raster[] <- sapply(1:terra::ncell(raster), function(x){
+     rnorm(1, ifelse(x \%\% 8 != 0, x \%\% 8, 8), 3)})
+  scatterplot <- plot_scatter(raster, sample = 10, axis = "y")
+} else {
+  message('reinstall with install.packages("shinyscholar", dependencies = TRUE)
+  to run this example')
+}
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

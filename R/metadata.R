@@ -19,11 +19,24 @@
 
 metadata <- function(folder_path, module = NULL){
 
+  if (!is.character(folder_path)){
+    stop("folder_path must be a character string")
+  }
+
+  if (!dir.exists(folder_path)){
+    stop("The specified folder_path does not exist")
+  }
+
   message("This function only semi-automates this process - see the documentation
             for information on manual steps you need to complete.")
 
   # locate modules to run on
   module_path <- file.path(folder_path, "inst", "shiny", "modules")
+
+  if (!dir.exists(module_path)){
+    stop("No modules could be found in the specified folder")
+  }
+
   if (is.null(module)){
     targets <- list.files(module_path, pattern = ".R$")
     # exclude core and rep modules
@@ -37,6 +50,11 @@ metadata <- function(folder_path, module = NULL){
   for (target in targets){
 
     module_name <- gsub(".R","",target)
+
+    if (!file.exists(file.path(module_path, target))){
+      stop("The specified module does not exist")
+    }
+
     lines <- readLines(file.path(module_path, target))
 
     # extract lines creating input$ values while excluding any updateinput or setInputValue lines
@@ -67,14 +85,12 @@ metadata <- function(folder_path, module = NULL){
       next
     }
 
-    if ((length(check_for_existing) > 0) & (length(meta_start) > 0)){
+    if ((length(check_for_existing) > 0) && (length(meta_start) > 0)){
       warning(glue::glue("metadata lines are already present in {module_name}"))
       next
     }
 
-
-
-    if ((nrow(objects) >= 1) & (length(meta_start == 1)) & (length(rmd_func_start == 1)) & (length(check_for_existing) == 0)){
+    if ((nrow(objects) >= 1) && (length(meta_start == 1)) && (length(rmd_func_start == 1)) && (length(check_for_existing) == 0)){
       to_server <- list()
       to_rmd_func <- list()
       to_rmd_file <- list()
@@ -90,15 +106,15 @@ metadata <- function(folder_path, module = NULL){
           input_id <- strsplit(split_string[2], "'")[[1]][2]
         }
         if (is.na(input_id)){
-          warning(glue::glue("No inputId could could be found for {objects[row,1]} in {module_name}"))
+          warning(glue::glue("No inputId could could be found for {objects[row,1]}) in {module_name} - make sure it is on the same line"))
           next
         }
         input_type <- trimws(split_string[1])
 
         # wrap numeric values and use $name column of fileInputs
-        if ((objects[row,2] == "Input") & (input_type %in% c("numeric", "slider"))){
+        if ((objects[row,2] == "Input") && (input_type %in% c("numeric", "slider"))){
           server_line <- glue::glue("common$meta${module_name}${input_id} <- as.numeric(input${input_id})")
-        } else if ((objects[row,2] == "Input") & (input_type == "file")){
+        } else if ((objects[row,2] == "Input") && (input_type == "file")){
           server_line <- glue::glue("common$meta${module_name}${input_id} <- input${input_id}$name")
         } else {
           server_line <- glue::glue("common$meta${module_name}${input_id} <- input${input_id}")

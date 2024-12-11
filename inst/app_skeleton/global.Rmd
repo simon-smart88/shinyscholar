@@ -1,5 +1,9 @@
 ```{r renv.ignore = TRUE}
 library(glue)
+library(gargoyle)
+```
+```{r renv.ignore = TRUE, purl = {{include_map}}}
+library(leaflet)
 ```
 
 ```{r renv.ignore = TRUE, purl = {{async}}}
@@ -25,6 +29,7 @@ COMPONENT_MODULES <- list()
 # Loadbase modules
 base_module_configs <- c(
   "modules/rep_markdown.yml",
+  "modules/rep_renv.yml",
   "modules/rep_refPackages.yml"
 )
 
