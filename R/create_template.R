@@ -75,391 +75,427 @@ create_template <- function(path, name, common_objects, modules, author,
                             include_map = TRUE, include_table = TRUE,
                             include_code = TRUE, install = FALSE, logger = NULL){
 
-# Check inputs ====
+  # Check inputs ====
 
-if (grepl("^[A-Za-z0-9]+$", name, perl = TRUE) == FALSE){
-  logger %>% writeLog(type = "error", "Package names can only contain letters and numbers")
-  return()
-}
-
-if (grepl("^[0-9]+$", substr(name, 1, 1), perl = TRUE) == TRUE){
-  logger %>% writeLog(type = "error", "Package names cannot start with numbers")
-  return()
-}
-
-online <- curl::has_internet()
-
-if (online) {
-  if (name %in% tools::CRAN_package_db()[, c("Package")]) {
-    logger %>% writeLog(type = "error", "A package on CRAN already uses that name")
+  if (!is.character(path)){
+    logger %>% writeLog(type = "error", "path must be a character string")
     return()
   }
-} else {
-  logger %>% writeLog(type = "warning", "You are not online so your package name could
-                      not be checked against existing CRAN packages")
-}
 
-module_columns <- c("component", "long_component", "module", "long_module", "map", "result", "rmd", "save", "async")
+  if (!dir.exists(path)){
+    logger %>% writeLog(type = "error", "The specified path does not exist")
+    return()
+  }
 
-if (!all(module_columns %in% colnames(modules))){
-  missing_column <- module_columns[!(module_columns %in% colnames(modules))]
-  missing_column <- paste(missing_column, collapse = ",")
-  if (missing_column == "async"){
-    logger %>% writeLog(type = "warning", glue::glue("As of v0.2.0 the modules dataframe should also contain an async column"))
-    modules <- cbind(modules, data.frame("async" = rep(FALSE, nrow(modules))))
+  if (!is.character(name)){
+    logger %>% writeLog(type = "error", "name must be a character string")
+    return()
+  }
+
+  if (grepl("^[A-Za-z0-9]+$", name, perl = TRUE) == FALSE){
+    logger %>% writeLog(type = "error", "Package names can only contain letters and numbers")
+    return()
+  }
+
+  if (grepl("^[0-9]+$", substr(name, 1, 1), perl = TRUE) == TRUE){
+    logger %>% writeLog(type = "error", "Package names cannot start with numbers")
+    return()
+  }
+
+  online <- curl::has_internet()
+
+  if (online) {
+    if (name %in% tools::CRAN_package_db()[, c("Package")]) {
+      logger %>% writeLog(type = "error", "A package on CRAN already uses that name")
+      return()
+    }
   } else {
-    logger %>% writeLog(type = "error", glue::glue("The modules dataframe must contain the column(s): {missing_column}"))
+    logger %>% writeLog(type = "warning", "You are not online so your package name could
+                        not be checked against existing CRAN packages")
+  }
+
+  if (dir.exists(file.path(path, name))){
+    logger %>% writeLog(type = "error", "The specified app directory already exists")
     return()
   }
-}
 
-if (!all(colnames(modules) %in% module_columns)){
-  invalid_column <- colnames(modules)[!colnames(modules) %in% module_columns]
-  invalid_column <- paste(invalid_column, collapse = ",")
-  logger %>% writeLog(type = "error", glue::glue("The modules dataframe contains {invalid_column} which is/are not valid column names"))
-  return()
-}
+  if (!is.vector(common_objects) || !is.character(common_objects)){
+    logger %>% writeLog(type = "error", "common_objects must be a vector of character strings")
+    return()
+  }
 
-if (any(modules$map) == TRUE & include_map == FALSE){
-  logger %>% writeLog(type = "info", "Your modules use a map but you had not included it so changing include_map to TRUE")
-  include_map <- TRUE
-}
+  if (any(common_objects %in% c("meta", "logger", "state", "poly", "tasks"))){
+    conflicts <- common_objects[common_objects %in% c("meta", "logger", "state", "poly", "tasks")]
+    conflicts <- paste(conflicts, collapse = ",")
+    logger %>% writeLog(type = "error", glue::glue("common_objects contains {conflicts} which are included
+                                        in common by default. Please choose a different name."))
+    return()
+  }
 
-if (any(modules$map) == FALSE & include_map == TRUE){
-  logger %>% writeLog(type = "error", "You have included a map but none of your modules use it")
-  return()
-}
+  if (!is.data.frame(modules)){
+    logger %>% writeLog(type = "error", "modules must be a dataframe")
+    return()
+  }
 
-if (any(modules$result) == FALSE){
+  module_columns <- c("component", "long_component", "module", "long_module", "map", "result", "rmd", "save", "async")
+
+  if (!all(module_columns %in% colnames(modules))){
+    missing_column <- module_columns[!(module_columns %in% colnames(modules))]
+    missing_column <- paste(missing_column, collapse = ",")
+    if (missing_column == "async"){
+      logger %>% writeLog(type = "warning", glue::glue("As of v0.2.0 the modules dataframe should also contain an async column"))
+      modules <- cbind(modules, data.frame("async" = rep(FALSE, nrow(modules))))
+    } else {
+      logger %>% writeLog(type = "error", glue::glue("The modules dataframe must contain the column(s): {missing_column}"))
+      return()
+    }
+  }
+
+  if (!all(colnames(modules) %in% module_columns)){
+    invalid_column <- colnames(modules)[!colnames(modules) %in% module_columns]
+    invalid_column <- paste(invalid_column, collapse = ",")
+    logger %>% writeLog(type = "error", glue::glue("The modules dataframe contains {invalid_column} which is/are not valid column names"))
+    return()
+  }
+
+  if (any(modules$map) == TRUE & include_map == FALSE){
+    logger %>% writeLog(type = "info", "Your modules use a map but you had not included it so changing include_map to TRUE")
+    include_map <- TRUE
+  }
+
+  if (any(modules$map) == FALSE & include_map == TRUE){
+    logger %>% writeLog(type = "error", "You have included a map but none of your modules use it")
+    return()
+  }
+
+  if (any(modules$result) == FALSE){
     logger %>% writeLog(type = "error", "At least one module must return results")
     return()
   }
 
-if (any(common_objects %in% c("meta", "logger", "state", "poly"))){
-  conflicts <- common_objects[common_objects %in% c("meta", "logger", "state", "poly")]
-  conflicts <- paste(conflicts, collapse = ",")
+  if (any(modules$async)){
+    async = TRUE
+  } else {
+    async = FALSE
+  }
 
-  logger %>% writeLog(type = "error", glue::glue("common_objects contains {conflicts} which are included
-                                      in common by default. Please choose a different name."))
-  return()
-}
+  if (!is.character(author)){
+    logger %>% writeLog(type = "error", "author must be a character string")
+    return()
+  }
 
-if (any(modules$async)){
-  async = TRUE
-} else {
-  async = FALSE
-}
+  if (!is.logical(c(include_map, include_table, include_code, install))){
+    logger %>% writeLog(type = "error", "include_map, include_table,
+                        include_code & install must be TRUE or FALSE")
+    return()
+  }
 
-# Create directories ====
-#root folder
-if (dir.exists(file.path(path, name))){
-  stop("The specified app directory already exists")
-} else {
+  # Create directories ====
+  #root folder
   dir.create(file.path(path, name))
-}
 
-#update path to be the root and create folders
-path <- file.path(path, name)
-dir.create(file.path(path, "R"))
-dir.create(file.path(path, "inst", "shiny", "modules"), recursive = TRUE)
-dir.create(file.path(path, "inst", "shiny", "Rmd"))
-dir.create(file.path(path, "inst", "shiny", "www"))
-dir.create(file.path(path, "tests", "testthat"), recursive = TRUE)
+  #update path to be the root and create folders
+  path <- file.path(path, name)
+  dir.create(file.path(path, "R"))
+  dir.create(file.path(path, "inst", "shiny", "modules"), recursive = TRUE)
+  dir.create(file.path(path, "inst", "shiny", "Rmd"))
+  dir.create(file.path(path, "inst", "shiny", "www"))
+  dir.create(file.path(path, "tests", "testthat"), recursive = TRUE)
 
-# Create common list ====
-#add always present objects to common
-common_objects_internal <- c(common_objects, c("meta", "logger", "state"))
-if (include_map == TRUE){
-  common_objects_internal <- c(common_objects_internal, c("poly"))
-}
-
-if (async == TRUE){
-  common_objects_internal <- c(common_objects_internal, c("tasks"))
-}
-
-#convert common_objects to list string
-common_objects_list <- paste0("list(", paste(sapply(common_objects_internal, function(a) paste0(a, " = NULL")), collapse = ",\n "), ")")
-
-common_params <- c(
-  file = system.file("app_skeleton", "common.Rmd", package = "shinyscholar"),
-  list(common_objects = common_objects_list)
-  )
-
-common_lines <- tidy_purl(common_params)
-writeLines(common_lines, file.path(path, "inst", "shiny", "common.R"))
-
-# Subset components ====
-components <- modules[!duplicated(modules$component),]
-
-# Create Server ====
-
-server_params <- c(
-  file = system.file("app_skeleton", "server.Rmd", package = "shinyscholar"),
-  list(app_library = name,
-       include_map = include_map,
-       include_table = include_table,
-       include_code = include_code,
-       async = async
-       )
-)
-server_lines <- tidy_purl(server_params)
-
-writeLines(server_lines, file.path(path, "inst", "shiny", "server.R"))
-
-# Create UI ====
-
-ui_params <- c(
-  file = system.file("app_skeleton", "ui.Rmd", package = "shinyscholar"),
-  list(app_library = name,
-       include_map = include_map,
-       include_table = include_table,
-       include_code = include_code,
-       async = async
-  )
-)
-
-ui_lines <- tidy_purl(ui_params)
-
-component_tab_target <- grep("*value = \"intro\"*", ui_lines)
-for (i in 1:nrow(components)){
-  ui_lines <- append(ui_lines, glue::glue('tabPanel("{components$long_component[i]}", value = "{components$component[i]}"),'), component_tab_target)
-  #increment target as order matters in UI
-  component_tab_target <- component_tab_target + 1
-}
-
-component_interface_target <- grep("*Rmd/text_intro_tab.Rmd*", ui_lines) + 1
-for (i in 1:nrow(components)){
-  ui_lines <- append(ui_lines, c(glue::glue('          # {toupper(components$long_component[i])} ####'),
-                                               '           conditionalPanel(',
-                                    glue::glue('          "input.tabs == \'{components$component[i]}\'",'),
-                                    glue::glue('          div("Component: {components$long_component[i]}", class = "componentName"),'),
-                                    glue::glue('          help_comp_ui("{components$component[i]}Help"),'),
-                                               '          radioButtons(',
-                                    glue::glue('          "{components$component[i]}Sel", "Modules Available:",'),
-                                    glue::glue('          choices = insert_modules_options("{components$component[i]}"),'),
-                                               '          selected = character(0)',
-                                               '          ),',
-                                               '          tags$hr(),',
-                                    glue::glue('          insert_modules_ui("{components$component[i]}")'),
-                                               '          ),'),
-                                               component_interface_target)
-  component_interface_target <- component_interface_target + 13
-}
-writeLines(ui_lines, file.path(path, "inst", "shiny", "ui.R"))
-
-# Create global ====
-
-full_component_list <- c(components$component, "rep")
-
-global_params <- c(
-  file = system.file("app_skeleton", "global.Rmd", package = "shinyscholar"),
-  list(app_library = name,
-       component_list = printVecAsis(full_component_list),
-       include_map = include_map,
-       async = async
-  )
-)
-
-global_lines <- tidy_purl(global_params)
-
-global_yaml_target <- grep("*base_module_configs <-*", global_lines)
-for (m in 1:nrow(modules)){
-  global_lines <- append(global_lines, glue::glue('"modules/{modules$component[m]}_{modules$module[m]}.yml",'), global_yaml_target)
-}
-
-writeLines(global_lines, file.path(path, "inst", "shiny", "global.R"))
-
-# Core modules ====
-
-core_params <- c(
-  file = NULL,
-  list(app_library = name,
-       include_map = include_map,
-       include_table = include_table,
-       include_code = include_code,
-       first_component = components$component[1],
-       first_module = glue::glue("{modules$component[1]}_{modules$module[1]}")
-  )
-)
-
-core_modules <- c("intro", "save", "load")
-if (include_map) core_modules <- c(core_modules, "mapping")
-if (include_code) core_modules <- c(core_modules, "code")
-
-for (c in core_modules){
-  core_params$file <- system.file("app_skeleton", paste0(c, ".Rmd"), package = "shinyscholar")
-  core_lines <- tidy_purl(core_params)
-  writeLines(core_lines, file.path(path, "inst", "shiny", "modules", paste0("core_",c,".R")))
-}
-
-# Create modules ====
-
-for (m in 1:nrow(modules)){
-  module_name <- glue::glue("{modules$component[m]}_{modules$module[m]}")
-
-  #create files for each module
-  shinyscholar::create_module(id = module_name,
-                      dir = file.path(path, "inst", "shiny", "modules"),
-                      map = modules$map[m],
-                      result = modules$result[m],
-                      rmd = modules$rmd[m],
-                      save = modules$save[m],
-                      async = modules$async[m],
-                      init = TRUE)
-
-  #add map parameter if any module is async, but the individual module is not
-  if ((async) && (!modules$async[m])){
-    module_file <- file.path(path, "inst", "shiny", "modules", paste0(module_name, ".R"))
-    module_lines <- readLines(module_file)
-    module_lines <- gsub("id, common, parent_session", "id, common, parent_session, map", module_lines)
-    writeLines(module_lines, module_file)
+  # Create common list ====
+  #add always present objects to common
+  common_objects_internal <- c(common_objects, c("meta", "logger", "state"))
+  if (include_map == TRUE){
+    common_objects_internal <- c(common_objects_internal, c("poly"))
   }
 
-  #create function for each module
-  empty_function <- paste0(module_name," <- function(x){return(NULL)}")
-  writeLines(empty_function, file.path(path, "R", paste0(module_name, "_f.R")))
-
-  #edit yaml configs
-  yml_lines <- rep(NA,5)
-
-  #Capitalise module name for UI
-  short_mod <- modules$module[m]
-  substr(short_mod, 1, 1) <- toupper(substr(short_mod, 1, 1))
-
-  yml_lines[1] <- glue::glue('component: "{modules$component[m]}"')
-  yml_lines[2] <- glue::glue('short_name: "{short_mod}"')
-  yml_lines[3] <- glue::glue('long_name: "{modules$long_module[m]}"')
-  yml_lines[4] <- glue::glue('authors: "{author}"')
-  yml_lines[5] <- "package: []"
-
-  writeLines(yml_lines,  file.path(path, "inst", "shiny", "modules", paste0(module_name, ".yml")))
-
-}
-
-#copy reproduce modules
-rep_files <- list.files(system.file("shiny", "modules", package = "shinyscholar"),
-                        pattern = "rep_", full.names = TRUE)
-lapply(rep_files, file.copy, file.path(path, "inst", "shiny", "modules"))
-
-
-#remove map from function calls if not async
-if (!async){
- for (rep_mod in c("markdown", "refPackages", "renv")){
-   rep_path <- file.path(path, "inst", "shiny", "modules", paste0("rep_", rep_mod ,".R"))
-   rep_lines <- readLines(rep_path)
-   rep_lines <- gsub("id, common, parent_session, map", "id, common, parent_session", rep_lines)
-   writeLines(rep_lines, rep_path)
- }
-}
-
-#fix rep_renv
-renv_path <- file.path(path, "inst", "shiny", "modules", "rep_renv.R")
-renv_lines <- readLines(renv_path)
-renv_lines <- gsub("shinyscholar", name, renv_lines)
-writeLines(renv_lines, renv_path)
-
-# Rmds ====
-#copy existing rmds
-rmd_files <- list.files(system.file("shiny", "Rmd", package = "shinyscholar"),
-                        pattern = ".Rmd", full.names = TRUE)
-
-#exclude guidance for existing components and intro tab
-rmd_files <- rmd_files[!grepl("gtext_plot|gtext_select|text_intro_tab", rmd_files)]
-lapply(rmd_files, file.copy, file.path(path, "inst", "shiny", "Rmd"))
-
-# Intro tab====
-number_word <- c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
-if (nrow(components) <= 10){
-  n_components <- number_word[nrow(components)]
-} else {
-  n_components <- nrow(components)
-}
-
-intro_lines <- readLines(system.file("app_skeleton", "text_intro_tab.Rmd", package = "shinyscholar"))
-intro_lines[8] <- glue::glue("*{name}* (v0.0.1) includes {n_components} components, or steps of a possible workflow. Each component includes one or more modules, which are possible analyses for that step.")
-
-for (c in 1:nrow(components)){
-  intro_lines <- append(intro_lines, glue::glue("**{c}.** *{components$long_component[c]}*"))
-  component_modules <- modules[modules$long_component == components$long_component[c],]
-  for (m in component_modules$long_module){
-    intro_lines <- append(intro_lines, glue::glue("- {m}"))
+  if (async == TRUE){
+    common_objects_internal <- c(common_objects_internal, c("tasks"))
   }
-  intro_lines <- append(intro_lines,"")
-}
-intro_lines <- append(intro_lines, glue::glue("**{c+1}.** *Reproduce*"))
-intro_lines <- append(intro_lines, "- Download Session Code")
-intro_lines <- append(intro_lines, "- Download Package References")
-writeLines(intro_lines, file.path(path, "inst", "shiny", "Rmd", "text_intro_tab.Rmd"))
 
-# guidance rmds for components ====
-guidance_template <- system.file("app_skeleton", "gtext.Rmd", package = "shinyscholar")
-for (c in 1:nrow(components)){
-guidance_lines <- readLines(guidance_template)
-guidance_lines[2] <- glue::glue("title: {components$component[c]}")
-guidance_lines[6] <- glue::glue("### **Component: {components$long_component[c]}**")
-writeLines(guidance_lines, file.path(path, "inst", "shiny", "Rmd", paste0("gtext_", components$component[c], ".Rmd")))
-}
+  #convert common_objects to list string
+  common_objects_list <- paste0("list(", paste(sapply(common_objects_internal, function(a) paste0(a, " = NULL")), collapse = ",\n "), ")")
 
-# copy www folder ====
-www_files <- system.file("shiny", "www", package = "shinyscholar")
-file.copy(www_files, file.path(path, "inst", "shiny"), recursive = TRUE)
+  common_params <- c(
+    file = system.file("app_skeleton", "common.Rmd", package = "shinyscholar"),
+    list(common_objects = common_objects_list)
+    )
 
-# copy helpers ====
-helper_file <- system.file("shiny", "helpers.R", package = "shinyscholar")
-file.copy(helper_file, file.path(path, "inst", "shiny"))
+  common_lines <- tidy_purl(common_params)
+  writeLines(common_lines, file.path(path, "inst", "shiny", "common.R"))
 
-helper_function_file <- system.file("app_skeleton", "helper_functions.R", package = "shinyscholar")
-file.copy(helper_function_file, file.path(path, "R"))
+  # Subset components ====
+  components <- modules[!duplicated(modules$component),]
 
-# package DESCRIPTION ====
-description_template <- system.file("app_skeleton", "DESCRIPTION", package = "shinyscholar")
-description_lines <- readLines(description_template)
-description_lines[1] <- glue::glue("Package: {name}")
-description_lines[3] <- glue::glue("Date: {Sys.Date()}")
-if (async){
-  description_lines <- append(description_lines, "    bslib,", 14)
-  description_lines <- append(description_lines, "    future,", 16)
-  description_lines <- append(description_lines, "    promises,", 21)
-}
+  # Create Server ====
 
-if (include_code){
-  shinyalert_line <- grep("*shinyalert*", description_lines)
-  description_lines <- append(description_lines, "    shinyAce,", shinyalert_line - 1)
-}
-
-writeLines(description_lines, file.path(path, "DESCRIPTION"))
-
-# Create run_app ====
-
-run_app_params <- c(
-  file = system.file("app_skeleton", "run_app.Rmd", package = "shinyscholar"),
-  list(app_library = name
+  server_params <- c(
+    file = system.file("app_skeleton", "server.Rmd", package = "shinyscholar"),
+    list(app_library = name,
+         include_map = include_map,
+         include_table = include_table,
+         include_code = include_code,
+         async = async
+         )
   )
-)
+  server_lines <- tidy_purl(server_params)
 
-run_app_lines <- tidy_purl(run_app_params)
-writeLines(run_app_lines, file.path(path, "R", paste0("run_", name, ".R")))
+  writeLines(server_lines, file.path(path, "inst", "shiny", "server.R"))
 
-# Create tests ====
-for (m in 1:nrow(modules)){
-  module_name <- glue::glue("{modules$component[m]}_{modules$module[m]}")
+  # Create UI ====
 
-test_params <- c(
-  file = system.file("app_skeleton", "test.Rmd", package = "shinyscholar"),
-  list(app_library = name,
-       component = modules$component[m],
-       module = module_name,
-       common_object = common_objects[1])
-)
+  ui_params <- c(
+    file = system.file("app_skeleton", "ui.Rmd", package = "shinyscholar"),
+    list(app_library = name,
+         include_map = include_map,
+         include_table = include_table,
+         include_code = include_code,
+         async = async
+    )
+  )
 
-test_lines <- tidy_purl(test_params)
-writeLines(test_lines, file.path(path, "tests", "testthat", paste0("test-", module_name, ".R")))
-}
+  ui_lines <- tidy_purl(ui_params)
 
-# Install package ====
-if (install){
-devtools::install_local(path = path, force = TRUE)
-}
+  component_tab_target <- grep("*value = \"intro\"*", ui_lines)
+  for (i in 1:nrow(components)){
+    ui_lines <- append(ui_lines, glue::glue('tabPanel("{components$long_component[i]}", value = "{components$component[i]}"),'), component_tab_target)
+    #increment target as order matters in UI
+    component_tab_target <- component_tab_target + 1
+  }
+
+  component_interface_target <- grep("*Rmd/text_intro_tab.Rmd*", ui_lines) + 1
+  for (i in 1:nrow(components)){
+    ui_lines <- append(ui_lines, c(glue::glue('          # {toupper(components$long_component[i])} ####'),
+                                                 '           conditionalPanel(',
+                                      glue::glue('          "input.tabs == \'{components$component[i]}\'",'),
+                                      glue::glue('          div("Component: {components$long_component[i]}", class = "componentName"),'),
+                                      glue::glue('          help_comp_ui("{components$component[i]}Help"),'),
+                                                 '          radioButtons(',
+                                      glue::glue('          "{components$component[i]}Sel", "Modules Available:",'),
+                                      glue::glue('          choices = insert_modules_options("{components$component[i]}"),'),
+                                                 '          selected = character(0)',
+                                                 '          ),',
+                                                 '          tags$hr(),',
+                                      glue::glue('          insert_modules_ui("{components$component[i]}")'),
+                                                 '          ),'),
+                                                 component_interface_target)
+    component_interface_target <- component_interface_target + 13
+  }
+  writeLines(ui_lines, file.path(path, "inst", "shiny", "ui.R"))
+
+  # Create global ====
+
+  full_component_list <- c(components$component, "rep")
+
+  global_params <- c(
+    file = system.file("app_skeleton", "global.Rmd", package = "shinyscholar"),
+    list(app_library = name,
+         component_list = printVecAsis(full_component_list),
+         include_map = include_map,
+         async = async
+    )
+  )
+
+  global_lines <- tidy_purl(global_params)
+
+  global_yaml_target <- grep("*base_module_configs <-*", global_lines)
+  for (m in 1:nrow(modules)){
+    global_lines <- append(global_lines, glue::glue('"modules/{modules$component[m]}_{modules$module[m]}.yml",'), global_yaml_target)
+  }
+
+  writeLines(global_lines, file.path(path, "inst", "shiny", "global.R"))
+
+  # Core modules ====
+
+  core_params <- c(
+    file = NULL,
+    list(app_library = name,
+         include_map = include_map,
+         include_table = include_table,
+         include_code = include_code,
+         first_component = components$component[1],
+         first_module = glue::glue("{modules$component[1]}_{modules$module[1]}")
+    )
+  )
+
+  core_modules <- c("intro", "save", "load")
+  if (include_map) core_modules <- c(core_modules, "mapping")
+  if (include_code) core_modules <- c(core_modules, "code")
+
+  for (c in core_modules){
+    core_params$file <- system.file("app_skeleton", paste0(c, ".Rmd"), package = "shinyscholar")
+    core_lines <- tidy_purl(core_params)
+    writeLines(core_lines, file.path(path, "inst", "shiny", "modules", paste0("core_",c,".R")))
+  }
+
+  # Create modules ====
+
+  for (m in 1:nrow(modules)){
+    module_name <- glue::glue("{modules$component[m]}_{modules$module[m]}")
+
+    #create files for each module
+    shinyscholar::create_module(id = module_name,
+                        dir = file.path(path, "inst", "shiny", "modules"),
+                        map = modules$map[m],
+                        result = modules$result[m],
+                        rmd = modules$rmd[m],
+                        save = modules$save[m],
+                        async = modules$async[m],
+                        init = TRUE)
+
+    #add map parameter if any module is async, but the individual module is not
+    if ((async) && (!modules$async[m])){
+      module_file <- file.path(path, "inst", "shiny", "modules", paste0(module_name, ".R"))
+      module_lines <- readLines(module_file)
+      module_lines <- gsub("id, common, parent_session", "id, common, parent_session, map", module_lines)
+      writeLines(module_lines, module_file)
+    }
+
+    #create function for each module
+    empty_function <- paste0(module_name," <- function(x){return(NULL)}")
+    writeLines(empty_function, file.path(path, "R", paste0(module_name, "_f.R")))
+
+    #edit yaml configs
+    yml_lines <- rep(NA,5)
+
+    #Capitalise module name for UI
+    short_mod <- modules$module[m]
+    substr(short_mod, 1, 1) <- toupper(substr(short_mod, 1, 1))
+
+    yml_lines[1] <- glue::glue('component: "{modules$component[m]}"')
+    yml_lines[2] <- glue::glue('short_name: "{short_mod}"')
+    yml_lines[3] <- glue::glue('long_name: "{modules$long_module[m]}"')
+    yml_lines[4] <- glue::glue('authors: "{author}"')
+    yml_lines[5] <- "package: []"
+
+    writeLines(yml_lines,  file.path(path, "inst", "shiny", "modules", paste0(module_name, ".yml")))
+
+  }
+
+  #copy reproduce modules
+  rep_files <- list.files(system.file("shiny", "modules", package = "shinyscholar"),
+                          pattern = "rep_", full.names = TRUE)
+  lapply(rep_files, file.copy, file.path(path, "inst", "shiny", "modules"))
+
+
+  #remove map from function calls if not async
+  if (!async){
+   for (rep_mod in c("markdown", "refPackages", "renv")){
+     rep_path <- file.path(path, "inst", "shiny", "modules", paste0("rep_", rep_mod ,".R"))
+     rep_lines <- readLines(rep_path)
+     rep_lines <- gsub("id, common, parent_session, map", "id, common, parent_session", rep_lines)
+     writeLines(rep_lines, rep_path)
+   }
+  }
+
+  #fix rep_renv
+  renv_path <- file.path(path, "inst", "shiny", "modules", "rep_renv.R")
+  renv_lines <- readLines(renv_path)
+  renv_lines <- gsub("shinyscholar", name, renv_lines)
+  writeLines(renv_lines, renv_path)
+
+  # Rmds ====
+  #copy existing rmds
+  rmd_files <- list.files(system.file("shiny", "Rmd", package = "shinyscholar"),
+                          pattern = ".Rmd", full.names = TRUE)
+
+  #exclude guidance for existing components and intro tab
+  rmd_files <- rmd_files[!grepl("gtext_plot|gtext_select|text_intro_tab", rmd_files)]
+  lapply(rmd_files, file.copy, file.path(path, "inst", "shiny", "Rmd"))
+
+  # Intro tab====
+  number_word <- c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
+  if (nrow(components) <= 10){
+    n_components <- number_word[nrow(components)]
+  } else {
+    n_components <- nrow(components)
+  }
+
+  intro_lines <- readLines(system.file("app_skeleton", "text_intro_tab.Rmd", package = "shinyscholar"))
+  intro_lines[8] <- glue::glue("*{name}* (v0.0.1) includes {n_components} components, or steps of a possible workflow. Each component includes one or more modules, which are possible analyses for that step.")
+
+  for (c in 1:nrow(components)){
+    intro_lines <- append(intro_lines, glue::glue("**{c}.** *{components$long_component[c]}*"))
+    component_modules <- modules[modules$long_component == components$long_component[c],]
+    for (m in component_modules$long_module){
+      intro_lines <- append(intro_lines, glue::glue("- {m}"))
+    }
+    intro_lines <- append(intro_lines,"")
+  }
+  intro_lines <- append(intro_lines, glue::glue("**{c+1}.** *Reproduce*"))
+  intro_lines <- append(intro_lines, "- Download Session Code")
+  intro_lines <- append(intro_lines, "- Download Package References")
+  writeLines(intro_lines, file.path(path, "inst", "shiny", "Rmd", "text_intro_tab.Rmd"))
+
+  # guidance rmds for components ====
+  guidance_template <- system.file("app_skeleton", "gtext.Rmd", package = "shinyscholar")
+  for (c in 1:nrow(components)){
+  guidance_lines <- readLines(guidance_template)
+  guidance_lines[2] <- glue::glue("title: {components$component[c]}")
+  guidance_lines[6] <- glue::glue("### **Component: {components$long_component[c]}**")
+  writeLines(guidance_lines, file.path(path, "inst", "shiny", "Rmd", paste0("gtext_", components$component[c], ".Rmd")))
+  }
+
+  # copy www folder ====
+  www_files <- system.file("shiny", "www", package = "shinyscholar")
+  file.copy(www_files, file.path(path, "inst", "shiny"), recursive = TRUE)
+
+  # copy helpers ====
+  helper_file <- system.file("shiny", "helpers.R", package = "shinyscholar")
+  file.copy(helper_file, file.path(path, "inst", "shiny"))
+
+  helper_function_file <- system.file("app_skeleton", "helper_functions.R", package = "shinyscholar")
+  file.copy(helper_function_file, file.path(path, "R"))
+
+  # package DESCRIPTION ====
+  description_template <- system.file("app_skeleton", "DESCRIPTION", package = "shinyscholar")
+  description_lines <- readLines(description_template)
+  description_lines[1] <- glue::glue("Package: {name}")
+  description_lines[3] <- glue::glue("Date: {Sys.Date()}")
+  if (async){
+    description_lines <- append(description_lines, "    bslib,", 14)
+    description_lines <- append(description_lines, "    future,", 16)
+    description_lines <- append(description_lines, "    promises,", 21)
+  }
+
+  if (include_code){
+    shinyalert_line <- grep("*shinyalert*", description_lines)
+    description_lines <- append(description_lines, "    shinyAce,", shinyalert_line - 1)
+  }
+
+  writeLines(description_lines, file.path(path, "DESCRIPTION"))
+
+  # Create run_app ====
+
+  run_app_params <- c(
+    file = system.file("app_skeleton", "run_app.Rmd", package = "shinyscholar"),
+    list(app_library = name
+    )
+  )
+
+  run_app_lines <- tidy_purl(run_app_params)
+  writeLines(run_app_lines, file.path(path, "R", paste0("run_", name, ".R")))
+
+  # Create tests ====
+  for (m in 1:nrow(modules)){
+    module_name <- glue::glue("{modules$component[m]}_{modules$module[m]}")
+
+  test_params <- c(
+    file = system.file("app_skeleton", "test.Rmd", package = "shinyscholar"),
+    list(app_library = name,
+         component = modules$component[m],
+         module = module_name,
+         common_object = common_objects[1])
+  )
+
+  test_lines <- tidy_purl(test_params)
+  writeLines(test_lines, file.path(path, "tests", "testthat", paste0("test-", module_name, ".R")))
+  }
+
+  # Install package ====
+  if (install){
+  devtools::install_local(path = path, force = TRUE)
+  }
 
 }
 

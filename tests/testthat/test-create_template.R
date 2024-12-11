@@ -16,6 +16,22 @@ test_that("Check create template returns expected errors", {
 
   directory <- tempfile()
   dir.create(directory, recursive = TRUE)
+  dir.create(file.path(directory, "existing"))
+
+  expect_error(create_template(path = 123, name = "shinyscholar",
+               common_objects = common_objects, modules = modules,
+               author = "Simon E. H. Smart", install = FALSE, logger = NULL),
+               "path must be a character string")
+
+  expect_error(create_template(path = "~/a_faulty_path", name = "shinyscholar",
+               common_objects = common_objects, modules = modules,
+               author = "Simon E. H. Smart", install = FALSE, logger = NULL),
+               "The specified path does not exist")
+
+  expect_error(create_template(path = "~", name = 123,
+               common_objects = common_objects, modules = modules,
+               author = "Simon E. H. Smart", install = FALSE, logger = NULL),
+               "name must be a character string")
 
   expect_error(create_template(path = "~", name = "shiny_scholar",
               common_objects = common_objects, modules = modules,
@@ -31,6 +47,16 @@ test_that("Check create template returns expected errors", {
                common_objects = common_objects, modules = modules,
                author = "Simon E. H. Smart", install = FALSE, logger = NULL),
                "A package on CRAN already uses that name")
+
+  expect_error(create_template(path = directory, name = "existing",
+               common_objects = common_objects, modules = modules,
+               author = "Simon E. H. Smart", install = FALSE, logger = NULL),
+               "The specified app directory already exists")
+
+  expect_error(create_template(path = directory, name = "shinydemo",
+                 common_objects = common_objects, modules = "not_df",
+                 author = "Simon E. H. Smart", install = FALSE, logger = NULL),
+                 "modules must be a dataframe")
 
   expect_warning(create_template(path = directory, name = "shinydemo",
                common_objects = common_objects, modules = within(modules, rm("async")),
@@ -74,10 +100,31 @@ test_that("Check create template returns expected errors", {
 
   modules$result <- c(FALSE, FALSE, TRUE, TRUE)
   expect_error(create_template(path = "~", name = "shinydemo",
-                               common_objects = c("logger", common_objects), modules = modules,
-                               author = "Simon E. H. Smart", install = FALSE, logger = NULL),
+               common_objects = modules, modules = modules,
+               author = "Simon E. H. Smart", install = FALSE, logger = NULL),
+               "common_objects must be a vector of character strings")
+
+  expect_error(create_template(path = "~", name = "shinydemo",
+               common_objects = c(123, 123), modules = modules,
+               author = "Simon E. H. Smart", install = FALSE, logger = NULL),
+               "common_objects must be a vector of character strings")
+
+  expect_error(create_template(path = "~", name = "shinydemo",
+               common_objects = c("logger", common_objects), modules = modules,
+               author = "Simon E. H. Smart", install = FALSE, logger = NULL),
                paste0("common_objects contains logger which are included\nin common by default\\. ",
                       "Please choose a different name\\."))
+
+  expect_error(create_template(path = "~", name = "shinydemo",
+               common_objects = common_objects, modules = modules,
+               author = 123, install = FALSE, include_map = "no", logger = NULL),
+               "author must be a character string")
+
+  expect_error(create_template(path = "~", name = "shinydemo",
+               common_objects = common_objects, modules = modules,
+               author = "Simon E. H. Smart", install = FALSE, include_map = "no", logger = NULL),
+               "include_map, include_table")
+
 })
 
 test_that("Check create template function works as expected", {

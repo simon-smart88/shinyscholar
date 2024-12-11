@@ -1,3 +1,40 @@
+test_that("Check metadata function returns errors as expected", {
+
+  expect_error(metadata(123), "folder_path must be a character string")
+  expect_error(metadata("faulty_path"), "The specified folder_path does not exist")
+  expect_error(metadata("~"), "No modules could be found in the specified folder")
+
+  test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
+  td <- tempfile()
+  dir.create(td, recursive = TRUE)
+  module_path <- file.path(td, "inst", "shiny", "modules")
+  dir.create(module_path, recursive = TRUE)
+  file.copy(test_files, module_path, overwrite = TRUE)
+
+  expect_error(metadata(td, "not_there"), "The specified module does not exist")
+
+  original <- readLines(file.path(module_path, "test_test.R"))
+  rmd_func_line <- grep("*module_rmd <- function(common)*", original)
+  lines <- original[-rmd_func_line]
+  writeLines(lines, file.path(module_path, "test_test.R"))
+  expect_warning(metadata(td), "The test_test_module_rmd function could not be located")
+
+  metadata_line <- grep("*# METADATA ####*", original)
+  lines <- original[-metadata_line]
+  writeLines(lines, file.path(module_path, "test_test.R"))
+  expect_warning(metadata(td), "No # METADATA #### line could be located in test_test")
+
+  insert_line <- grep("textInput\\(inputId", original)
+  lines <- append(original, c('textInput(', 'ns("invalid"), "Text")'), insert_line)
+  writeLines(lines, file.path(module_path, "test_test.R"))
+  expect_warning(save_and_load(td), "No inputId could could be found for textInput")
+
+  metadata_line <- grep("*# METADATA ####*", original)
+  lines <- append(original, "common$meta$test <- input$test", metadata_line)
+  writeLines(lines, file.path(module_path, "test_test.R"))
+  expect_warning(metadata(td), "metadata lines are already present in test_test")
+})
+
 test_that("Check metadata function adds lines as expected", {
   test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
   td <- tempfile()
@@ -53,35 +90,6 @@ test_that("Check metadata function adds lines as expected", {
   expect_true(any(grepl("*\\{\\{test_test_switch\\}\\}*", rmd_out)))
 })
 
-test_that("Check metadata function returns errors as expected", {
-  test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
-  td <- tempfile()
-  dir.create(td, recursive = TRUE)
-  module_path <- file.path(td, "inst", "shiny", "modules")
-  dir.create(module_path, recursive = TRUE)
-  file.copy(test_files, module_path, overwrite = TRUE)
-
-  lines <- readLines(file.path(module_path, "test_test.R"))
-  rmd_func_line <- grep("*module_rmd <- function(common)*", lines)
-  lines <- lines[-rmd_func_line]
-  writeLines(lines, file.path(module_path, "test_test.R"))
-  expect_warning(shinyscholar::metadata(td), "The test_test_module_rmd function could not be located")
-
-  file.copy(test_files, module_path, overwrite = TRUE)
-  lines <- readLines(file.path(module_path, "test_test.R"))
-  metadata_line <- grep("*# METADATA ####*", lines)
-  lines <- lines[-metadata_line]
-  writeLines(lines, file.path(module_path, "test_test.R"))
-  expect_warning(shinyscholar::metadata(td), "No # METADATA #### line could be located in test_test")
-
-  file.copy(test_files, module_path, overwrite = TRUE)
-  lines <- readLines(file.path(module_path, "test_test.R"))
-  metadata_line <- grep("*# METADATA ####*", lines)
-  lines <- append(lines, "common$meta$test <- input$test", metadata_line)
-  writeLines(lines, file.path(module_path, "test_test.R"))
-  expect_warning(shinyscholar::metadata(td), "metadata lines are already present in test_test")
-})
-
 if (!no_suggests){
   test_that("Check that lines added by metadata are functional", {
     upload_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),
@@ -110,7 +118,7 @@ if (!no_suggests){
     shiny_path <- file.path(td, "shinyscholar", "inst", "shiny")
     file.copy(test_files, file.path(shiny_path, "modules"), overwrite = TRUE)
 
-    shinyscholar::metadata(file.path(td, "shinyscholar"))
+    metadata(file.path(td, "shinyscholar"))
 
     # edit to use newly created core_modules
     global_lines <- readLines(file.path(shiny_path, "global.R"))
