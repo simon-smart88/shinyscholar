@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shinyscholar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
       </span>
     </div>
 
@@ -28,7 +28,13 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-      </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
+      </ul><ul class="nav navbar-nav navbar-right"><li>
+  <a href="https://github.com/simon-smart88/shinyscholar/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+
+  </a>
+</li>
+      </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
@@ -38,7 +44,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>create_template</h1>
-
+    <small class="dont-index">Source: <a href="https://github.com/simon-smart88/shinyscholar/blob/master/R/create_template.R" class="external-link"><code>R/create_template.R</code></a></small>
     <div class="hidden name"><code>create_template.Rd</code></div>
     </div>
 
@@ -50,13 +56,13 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_template</span><span class="op">(</span></span>
 <span>  <span class="va">path</span>,</span>
 <span>  <span class="va">name</span>,</span>
-<span>  <span class="va">include_map</span>,</span>
-<span>  <span class="va">include_table</span>,</span>
-<span>  <span class="va">include_code</span>,</span>
 <span>  <span class="va">common_objects</span>,</span>
 <span>  <span class="va">modules</span>,</span>
 <span>  <span class="va">author</span>,</span>
-<span>  <span class="va">install</span>,</span>
+<span>  include_map <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  include_table <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  include_code <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  install <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  logger <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -72,18 +78,6 @@
 <dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
 <dd><p>character. Name of the app which will be used as the package name.
 Must be only characters and numbers and not start with a number.</p></dd>
-
-
-<dt id="arg-include-map">include_map<a class="anchor" aria-label="anchor" href="#arg-include-map"></a></dt>
-<dd><p>logical. Whether to include a leaflet map</p></dd>
-
-
-<dt id="arg-include-table">include_table<a class="anchor" aria-label="anchor" href="#arg-include-table"></a></dt>
-<dd><p>logical. Whether to include a table tab</p></dd>
-
-
-<dt id="arg-include-code">include_code<a class="anchor" aria-label="anchor" href="#arg-include-code"></a></dt>
-<dd><p>logical. Whether to include a tab for viewing module code</p></dd>
 
 
 <dt id="arg-common-objects">common_objects<a class="anchor" aria-label="anchor" href="#arg-common-objects"></a></dt>
@@ -111,14 +105,27 @@ to be included and with the following column names:</p><ul><li><p><code>componen
 <dd><p>character. Name of the author(s)</p></dd>
 
 
+<dt id="arg-include-map">include_map<a class="anchor" aria-label="anchor" href="#arg-include-map"></a></dt>
+<dd><p>logical. Whether to include a leaflet map. Default <code>TRUE</code></p></dd>
+
+
+<dt id="arg-include-table">include_table<a class="anchor" aria-label="anchor" href="#arg-include-table"></a></dt>
+<dd><p>logical. Whether to include a table tab. Default <code>TRUE</code></p></dd>
+
+
+<dt id="arg-include-code">include_code<a class="anchor" aria-label="anchor" href="#arg-include-code"></a></dt>
+<dd><p>logical. Whether to include a tab for viewing module
+code. Default <code>TRUE</code></p></dd>
+
+
 <dt id="arg-install">install<a class="anchor" aria-label="anchor" href="#arg-install"></a></dt>
-<dd><p>logical. Whether to install the package</p></dd>
+<dd><p>logical. Whether to install the package. Default <code>FALSE</code></p></dd>
 
 
 <dt id="arg-logger">logger<a class="anchor" aria-label="anchor" href="#arg-logger"></a></dt>
 <dd><p>Stores all notification messages to be displayed in the Log
 Window. Insert the logger reactive list here for running in
-shiny, otherwise leave the default NULL</p></dd>
+shiny, otherwise leave the default <code>NULL</code></p></dd>
 
 </dl></div>
     <div id="author">

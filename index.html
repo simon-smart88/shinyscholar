@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A template for creating modular reproducible shiny applications • shinyscholar</title>
+<title>A template for creating reproducible shiny applications • shinyscholar</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="A template for creating modular reproducible shiny applications">
-<meta property="og:description" content="The shiny application shinyscholar is a modular platform for creating reproducible applications to academic standards. shinyscholar is forked from wallace and provides a template for producing applications that are interactive, reproducible, adaptable and built to high standards.">
+<script src="pkgdown.js"></script><meta property="og:title" content="A template for creating reproducible shiny applications">
+<meta property="og:description" content='Create a skeleton shiny application with create_template() that is reproducible, can be saved and meets academic standards for attribution. Forked from wallace. Code is split into modules that are loaded and linked together automatically and each call one function. Guidance pages explain modules to users and flexible logging informs them of any errors. Options enable asynchronous operations, viewing of source code, interactive maps and data tables. Use to create complex analytical applications, following best practices in open science and software development. Includes functions for automating repetitive development tasks and an example application at run_shinyscholar() that requires install.packages("shinyscholar", dependencies = TRUE).'>
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">shinyscholar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
       </span>
     </div>
 
@@ -46,7 +46,14 @@
   <a href="news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/simon-smart88/shinyscholar/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -59,22 +66,27 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="shinyscholar-v021">shinyscholar (v0.2.1)<a class="anchor" aria-label="anchor" href="#shinyscholar-v021"></a>
+<div class="page-header"><h1 id="shinyscholar-v022">shinyscholar (v0.2.2)<a class="anchor" aria-label="anchor" href="#shinyscholar-v022"></a>
 </h1></div>
 <p><img src="https://raw.githubusercontent.com/simon-smart88/shinyscholar/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;"></p>
-<p>Shinyscholar is a basic application written in R that can be used as a template to create complex applications that are modular, meet academic standards of attribution and are reproducible outside of the application. By using <em>shinyscholar</em>, to create a template application, developers will be encouraged to produce applications that are maintainable and run reliably without having to learn software development best-practices from scratch. <em>shinyscholar</em> was <a href="https://github.com/wallaceEcoMod/wallace/tree/51a3ebe10ffd797fc36ad2d2cf8245b014d11b41" class="external-link">forked</a> from <a href="http://wallaceecomod.github.io/wallace/" class="external-link">wallace</a> v2.0.5 (<a href="https://cran.r-project.org/package=wallace" class="external-link">CRAN</a>, <a href="https://wallaceecomod.github.io/wallace/index.html" class="external-link">website</a>) a modular platform for reproducible modelling of species distributions. Specifically, it harnesses the higher-level structure and core attributes of Wallace but removes its discipline-specific features, yielding a generic template for developers to make their own applications. We are very grateful to the contributors to <a href="http://wallaceecomod.github.io/wallace/" class="external-link">wallace</a> and the features retained from it and the new features added in <em>shinyscholar</em> are described in <code>NEWS</code>.</p>
-<p><em>Shinyscholar</em> contains four components (Select, Plot, Reproduce, Template) each of which contain one or two modules (<code>select_query</code>, <code>select_async</code>, <code>select_user</code>, <code>plot_hist</code>, <code>plot_scatter</code>, <code>rep_markdown</code>, <code>rep_renv</code>, <code>rep_refPackages</code> and <code>template_create</code>) and their code is found in the <code>inst/shiny/modules</code> directory. Each of the modules in the Select and Plot components calls a function with the same name that is found in the <code>R</code> directory. The <code>select_query</code> module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used. The Reproduce component is used to generate an rmarkdown document that reproduces the analysis conducted in the application. The Template component can be used to produce and download a template version of an app with the same features.</p>
-<p>Install <em>shinyscholar</em> via Github and run the application with the following R code.</p>
+<p>Shinyscholar creates a skeleton R Shiny application that can be used to create complex applications that are modular, meet academic standards of attribution and are reproducible outside of the application. By using <em>shinyscholar</em>, to create a template application, developers will be encouraged to produce applications that are maintainable and run reliably without having to learn software development best-practices from scratch. <em>shinyscholar</em> was <a href="https://github.com/wallaceEcoMod/wallace/tree/51a3ebe10ffd797fc36ad2d2cf8245b014d11b41" class="external-link">forked</a> from <a href="http://wallaceecomod.github.io/wallace/" class="external-link">wallace</a> v2.0.5 (<a href="https://cran.r-project.org/package=wallace" class="external-link">CRAN</a>, <a href="https://wallaceecomod.github.io/wallace/index.html" class="external-link">website</a>) a modular platform for reproducible modelling of species distributions. Specifically, it harnesses the higher-level structure and core attributes of Wallace but removes its discipline-specific features, yielding a generic template for developers to make their own applications. We are very grateful to the contributors to <a href="http://wallaceecomod.github.io/wallace/" class="external-link">wallace</a> and the features retained from it and the new features added in <em>shinyscholar</em> are described in <code>NEWS</code>.</p>
+<p><em>Shinyscholar</em> also contains an example application with four components (Select, Plot, Reproduce, Template) each of which contain one or two modules (<code>select_query</code>, <code>select_async</code>, <code>select_user</code>, <code>plot_hist</code>, <code>plot_scatter</code>, <code>rep_markdown</code>, <code>rep_renv</code>, <code>rep_refPackages</code> and <code>template_create</code>) and their code is found in the <code>inst/shiny/modules</code> directory. Each of the modules in the Select and Plot components calls a function with the same name that is found in the <code>R</code> directory. The <code>select_query</code> module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used. The Reproduce component is used to generate an rmarkdown document that reproduces the analysis conducted in the application. The Template component can be used to produce and download a template version of an app with the same features.</p>
+<p>To use <em>shinyscholar</em> to create new applications you can install with the following R code:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"simon-smart88/shinyscholar"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"shinyscholar"</span><span class="op">)</span></span></code></pre></div>
+<p>Or via Github with:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"simon-smart88/shinyscholar"</span><span class="op">)</span></span></code></pre></div>
+<p>To run the example application requires additional packages and this can be achieved with:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"shinyscholar"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://simon-smart88.github.io/shinyscholar/" class="external-link">shinyscholar</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/run_shinyscholar.html">run_shinyscholar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>An individual module can be run for development purposes using <code><a href="reference/run_module.html">run_module()</a></code> e.g. <code>run_module("select_query")</code> but this requires the most recent version of the package to be installed.</p>
 <div class="section level2">
 <h2 id="justification">Justification<a class="anchor" aria-label="anchor" href="#justification"></a>
 </h2>
-<p>Shiny apps are a great way to lower the barrier for entry for users to complete complex analyses, by enabling online access to the rich ecosystem of R packages through a graphical user interface. However, often apps produced by academics do not follow best practices in software development or open science. If apps become popular, more features are requested and developers move onto new roles, it may become difficult to maintain their codebase. If users cannot reproduce their analyses outside of the application, it prevents them from modifying analyses to suit their particular use-case, makes it harder to understand the analysis and limits their ability to use the results in publications. Additionally, it may not be possible to determine which R packages are being used in the application, making it more onerous to cite the packages in publications. Other packages exist for creating templates of shiny apps, e.g. <a href="https://thinkr-open.github.io/golem/" class="external-link">golem</a> and <a href="https://appsilon.github.io/rhino/" class="external-link">rhino</a> but these are more generic and do not contain features specifically for use by academics.</p>
+<p>Shiny apps lower the barrier for entry for users to complete complex analyses, by enabling online access to the rich ecosystem of R packages through a graphical user interface. However, often apps produced by academics do not follow best practices in software development or open science. If apps become popular, more features are requested and developers move onto new roles, it may become difficult to maintain their codebase. If users cannot reproduce their analyses outside of the application, it prevents them from modifying analyses to suit their particular use-case, makes it harder to understand the analysis and limits their ability to use the results in publications. Additionally, it may not be possible to determine which R packages are being used in the application, making it more onerous to cite the packages in publications. Other packages exist for creating templates of shiny apps, e.g. <a href="https://thinkr-open.github.io/golem/" class="external-link">golem</a> and <a href="https://appsilon.github.io/rhino/" class="external-link">rhino</a> but these are more generic and do not contain features specifically for use by academics.</p>
 <p><a href="http://wallaceecomod.github.io/wallace/" class="external-link">wallace</a> addressed these shortcomings and the attributes of <em>shinyscholar</em> are built upon those of <a href="http://wallaceecomod.github.io/wallace/" class="external-link">wallace</a>. Apps built using <em>shinyscholar</em> should maintain these characteristics:</p>
 <ul>
 <li>
@@ -127,8 +139,7 @@
 <span></span>
 <span><span class="va">common_objects</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raster"</span>, <span class="st">"histogram"</span>, <span class="st">"scatter"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">shinyscholar</span><span class="fu">::</span><span class="fu"><a href="reference/create_template.html">create_template</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~"</span>, <span class="st">"Documents"</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"demo"</span>, author <span class="op">=</span> <span class="st">"Simon E. H. Smart"</span>,</span>
-<span>include_map <span class="op">=</span> <span class="cn">TRUE</span>, include_table <span class="op">=</span> <span class="cn">TRUE</span>, include_code <span class="op">=</span> <span class="cn">TRUE</span>, common_objects <span class="op">=</span> <span class="va">common_objects</span>, modules <span class="op">=</span> <span class="va">modules</span>, install <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
+<span><span class="fu">shinyscholar</span><span class="fu">::</span><span class="fu"><a href="reference/create_template.html">create_template</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~"</span>, <span class="st">"Documents"</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"demo"</span>, author <span class="op">=</span> <span class="st">"Simon E. H. Smart"</span>, common_objects <span class="op">=</span> <span class="va">common_objects</span>, modules <span class="op">=</span> <span class="va">modules</span>, install <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -141,7 +152,7 @@
 <div class="section level4">
 <h4 id="modules">Modules<a class="anchor" aria-label="anchor" href="#modules"></a>
 </h4>
-<p>After installing the initial version, the modules only contain skeleton code. There are four files for each module located in <code>/inst/shiny/modules</code> and each module calls a function found in <code>/R</code>. It may be helpful to familiarise yourself with the code for the existing application either by viewing the files in <code>/inst/shiny/modules</code> or by using the Code tab in the app.</p>
+<p>After installing the initial version, the modules only contain skeleton code. There are four files for each module located in <code>/inst/shiny/modules</code> and each module calls a function found in <code>/R</code>. It may be helpful to familiarise yourself with the code for the existing application either by viewing the files in <code>/inst/shiny/modules</code> or by using the Code tab in the example app.</p>
 <div class="section level5">
 <h5 id="r">.R<a class="anchor" aria-label="anchor" href="#r"></a>
 </h5>
@@ -203,9 +214,9 @@
 <p>This file contains the data structure that is shared between modules and you can add extra objects as you wish. <code>common</code> is an <a href="https://r6.r-lib.org/" class="external-link">R6 class</a> which is similar to a <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> but items in it must be declared in this file before you use them in the app. Any type of object can be stored in <code>common</code>, i.e. dataframes, plots, strings etc. By default, all the objects in <code>common</code> are created as <code>NULL</code> but you may wish to change these to load a default value. Objects inside <code>common</code> are not reactive by default, but you can make them <code>reactiveVal</code> or <code>reactiveValues</code>, for example like <code>common$logger</code>. Objects in <code>common</code> can also be functions, for example in the demonstration app, <code>common$add_map_layer()</code> is used to add a layer to <code>common$map_layers</code>.</p>
 </div>
 <div class="section level4">
-<h4 id="rrun_moduler">R/run_module.R<a class="anchor" aria-label="anchor" href="#rrun_moduler"></a>
+<h4 id="loading-app-state">Loading app state<a class="anchor" aria-label="anchor" href="#loading-app-state"></a>
 </h4>
-<p>This function is designed to make it easier to develop modules by being able to run a single module in isolation. If your module requires objects from previous steps in an analysis, you can modify this function to modify the state of <code>common</code> so that the objects a module is dependent on are available immediately. For example, in the demonstration app, the function loads a raster image from a file when the module being run is from the plot component.</p>
+<p>During development, it is often necessary to run the app to manually test functionality and in a complex application, it may take a long time to get the app into a state where the module in development can be used. The save and load functionality provides a mechanism to speed up this process, as the app can be saved prior to a module being tested, allowing the state to be restored quickly if the module contains fatal errors. You can preload the saved file by passing <code>load_file</code> to the <code>run_&lt;app name&gt;</code> function, but this requires the most recent changes to be installed. Alternatively to run uninstalled changes, create a <code>load_file_path</code> variable containing a path to the save file, then use <code>shiny::runApp('inst/shiny')</code> or click the “Run App” button in Rstudio.</p>
 </div>
 <div class="section level4">
 <h4 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a>
@@ -248,7 +259,7 @@
 <div class="section level5">
 <h5 id="logging">Logging<a class="anchor" aria-label="anchor" href="#logging"></a>
 </h5>
-<p>Because the asynchronous tasks are run in a different R session, <code>common$logger</code> is no longer accessible from inside the module’s function and therefore cannot be used to send messages to the logger directly. Instead, an <code>async</code> parameter needs to be added to the function and error messages are returned by the function when <code>async</code> is <code>TRUE</code> or transferred to <code>stop</code> or <code>warning</code> if <code>async</code> is <code>FALSE</code> e.g. when being used in the .Rmd.</p>
+<p>Because the asynchronous tasks are run in a different R session, <code>common$logger</code> is no longer accessible from inside the module’s function and therefore cannot be used to send messages to the logger directly. Instead, an <code>async</code> parameter needs to be added to the function and error messages can be passed to <code>return(async %&gt;% asyncLog("message", type = "error"))</code> which returns the error when used asynchronously or passes the message to <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> when not used asynchronously, for example in the .Rmd.</p>
 </div>
 <div class="section level5">
 <h5 id="receiving-results">Receiving results<a class="anchor" aria-label="anchor" href="#receiving-results"></a>
@@ -291,7 +302,15 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="license">
+    <div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/simon-smart88/shinyscholar/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/simon-smart88/shinyscholar/issues" class="external-link">Report a bug</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
@@ -310,7 +329,8 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Simon E. H. Smart <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Simon E. H. Smart <br><small class="roles"> Author, maintainer, copyright holder </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 

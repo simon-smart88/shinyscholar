@@ -4,6 +4,8 @@
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/news/index.html</loc></url>
+<url><loc>/reference/asyncLog.html</loc></url>
+<url><loc>/reference/check_suggests.html</loc></url>
 <url><loc>/reference/check_url.html</loc></url>
 <url><loc>/reference/close_loading_modal.html</loc></url>
 <url><loc>/reference/create_module.html</loc></url>
@@ -15,7 +17,6 @@
 <url><loc>/reference/plot_scatter.html</loc></url>
 <url><loc>/reference/printVecAsis.html</loc></url>
 <url><loc>/reference/register_module.html</loc></url>
-<url><loc>/reference/run_module.html</loc></url>
 <url><loc>/reference/run_shinyscholar.html</loc></url>
 <url><loc>/reference/save_and_load.html</loc></url>
 <url><loc>/reference/select_async.html</loc></url>

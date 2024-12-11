@@ -18,7 +18,7 @@ default web browser."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shinyscholar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
       </span>
     </div>
 
@@ -29,7 +29,13 @@ default web browser."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-      </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
+      </ul><ul class="nav navbar-nav navbar-right"><li>
+  <a href="https://github.com/simon-smart88/shinyscholar/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+
+  </a>
+</li>
+      </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
@@ -39,7 +45,7 @@ default web browser."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Run <em>shinyscholar</em> Application</h1>
-
+    <small class="dont-index">Source: <a href="https://github.com/simon-smart88/shinyscholar/blob/master/R/run_shinyscholar.R" class="external-link"><code>R/run_shinyscholar.R</code></a></small>
     <div class="hidden name"><code>run_shinyscholar.Rd</code></div>
     </div>
 
@@ -49,7 +55,11 @@ default web browser.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">run_shinyscholar</span><span class="op">(</span>launch.browser <span class="op">=</span> <span class="cn">TRUE</span>, port <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"shiny.port"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">run_shinyscholar</span><span class="op">(</span></span>
+<span>  launch.browser <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  port <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"shiny.port"</span><span class="op">)</span>,</span>
+<span>  load_file <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -63,6 +73,11 @@ default web browser.</p>
 <dt id="arg-port">port<a class="anchor" aria-label="anchor" href="#arg-port"></a></dt>
 <dd><p>The port for the shiny server to listen on. Defaults to a
 random available port.</p></dd>
+
+
+<dt id="arg-load-file">load_file<a class="anchor" aria-label="anchor" href="#arg-load-file"></a></dt>
+<dd><p>Path to a saved session file which will be loaded when the
+app is opened</p></dd>
 
 </dl></div>
     <div id="author">

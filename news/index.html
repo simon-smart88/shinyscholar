@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shinyscholar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
       </span>
     </div>
 
@@ -28,7 +28,13 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-      </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
+      </ul><ul class="nav navbar-nav navbar-right"><li>
+  <a href="https://github.com/simon-smart88/shinyscholar/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+
+  </a>
+</li>
+      </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
@@ -38,7 +44,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-
+      <small>Source: <a href="https://github.com/simon-smart88/shinyscholar/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
@@ -56,7 +62,9 @@
 </li>
 <li>A Code tab has been added to the Visualization panel to allow the code for each module and the function that each module calls to be viewed.</li>
 <li>Unit tests for each module have been created using <a href="https://rstudio.github.io/shinytest2/" class="external-link">shinytest2</a> in addition to unit tests for the function that the module calls.</li>
-<li>Added a new function <code><a href="../reference/run_module.html">run_module()</a></code> which can be used to run a single module.</li>
+<li>
+<del>Added a new function <code>run_module()</code> which can be used to run a single module.</del> Removed in 0.2.2 use <code>run_&lt;app name&gt;()</code> or <code>load_file</code>
+</li>
 <li>Added a new function <code><a href="../reference/create_template.html">create_template()</a></code> which can be used to create a skeleton app.</li>
 <li>Added a Dockerfile which can be used to run the app on a shiny-server.</li>
 <li>Added <code><a href="../reference/show_loading_modal.html">show_loading_modal()</a></code> which uses <a href="https://github.com/dreamRs/shinybusy" class="external-link">shinybusy</a> to display a modal whilst slow functions are running.</li>
@@ -86,6 +94,15 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.1" id="shinyscholar-021">shinyscholar 0.2.1<a class="anchor" aria-label="anchor" href="#shinyscholar-021"></a></h2>
 <ul><li>The <code>select_query</code> and <code>select_async</code> modules in the demonstration have been re-written to use a different API.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.2" id="shinyscholar-022">shinyscholar 0.2.2<a class="anchor" aria-label="anchor" href="#shinyscholar-022"></a></h2>
+<ul><li>Removed <code>run_module()</code> as it was not maintainable.</li>
+<li>Moved all packages to Suggests unless they are required for development of new applications.</li>
+<li>Added <code><a href="../reference/asyncLog.html">asyncLog()</a></code> to improve logging from inside async functions.</li>
+<li>Updated <code>run_&lt;app name&gt;()</code> to take a load file as an argument which is loaded automatically.</li>
+<li>Creating <code>load_file</code> containing the path to a save file will attempt to load it on app start up.</li>
+<li>Made <code><a href="../reference/create_template.html">create_template()</a></code>, <code><a href="../reference/metadata.html">metadata()</a></code> and <code><a href="../reference/save_and_load.html">save_and_load()</a></code> more robust.</li>
 </ul></div>
   </div>
 
