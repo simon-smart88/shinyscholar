@@ -45,8 +45,7 @@ Imports:
     knitr,
     magrittr,
     tools,
-    zip
-Suggests:
+    zip,
     bslib,
     DT (>= 0.5),
     dplyr (>= 1.0.2),
@@ -70,6 +69,9 @@ Suggests:
     terra,
     testthat,
     xml2
+Suggests:
+    shinytest2,
+    testthat
 License: GPL-3
 URL: https://simon-smart88.github.io/shinyscholar/
 BugReports: https://github.com/simon-smart88/shinyscholar/issues
