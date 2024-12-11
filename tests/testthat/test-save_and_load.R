@@ -108,9 +108,9 @@ if (!no_suggests){
     dir.create(td, recursive = TRUE)
     #the name must be shinyscholar so that the calls to package files work
     create_template(path = td, name = "shinyscholar",
-                    include_map = FALSE, include_table = FALSE, include_code = FALSE,
                     common_objects = c("test"), modules = modules,
-                    author = "Simon E. H. Smart", install = FALSE)
+                    author = "Simon E. H. Smart", include_map = FALSE,
+                    include_table = FALSE, include_code = FALSE, install = FALSE)
 
     test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
 

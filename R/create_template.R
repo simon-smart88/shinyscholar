@@ -22,9 +22,6 @@ tidy_purl <- function(params){
 #' @param path character. Path to where the app should be created
 #' @param name character. Name of the app which will be used as the package name.
 #' Must be only characters and numbers and not start with a number.
-#' @param include_map logical. Whether to include a leaflet map
-#' @param include_table logical. Whether to include a table tab
-#' @param include_code logical. Whether to include a tab for viewing module code
 #' @param common_objects character vector. Names of objects which will be shared
 #' between modules. The objects meta, logger and state are included by default
 #' and if include_map is TRUE, the object poly is included to store polygons
@@ -43,10 +40,14 @@ tidy_purl <- function(params){
 #'  \item `async` logical. Whether or not the module will run asynchronously
 #' }
 #' @param author character. Name of the author(s)
-#' @param install logical. Whether to install the package
+#' @param include_map logical. Whether to include a leaflet map. Default `TRUE`
+#' @param include_table logical. Whether to include a table tab. Default `TRUE`
+#' @param include_code logical. Whether to include a tab for viewing module
+#' code. Default `TRUE`
+#' @param install logical. Whether to install the package. Default `FALSE`
 #' @param logger Stores all notification messages to be displayed in the Log
 #'   Window. Insert the logger reactive list here for running in
-#'   shiny, otherwise leave the default NULL
+#'   shiny, otherwise leave the default `NULL`
 #'
 #' @examples
 #' \dontrun{
@@ -62,17 +63,17 @@ tidy_purl <- function(params){
 #' "save" = c(TRUE, TRUE, TRUE, TRUE),
 #' "async = c("TRUE, FALSE, FALSE, FALSE))
 #' common_objects = c("raster", "histogram", "scatter")
-#'
 #' create_template(path = file.path("~", "Documents"), name = "demo",
-#' include_map = TRUE, include_table = TRUE, include_code = TRUE,
 #' common_objects = common_objects, modules = modules,
-#' author = "Simon E. H. Smart",
-#' install = TRUE)
+#' author = "Simon E. H. Smart", include_map = TRUE, include_table = TRUE,
+#' include_code = TRUE, install = TRUE)
 #' }
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 
-create_template <- function(path, name, include_map, include_table, include_code, common_objects, modules, author, install, logger = NULL){
+create_template <- function(path, name, common_objects, modules, author,
+                            include_map = TRUE, include_table = TRUE,
+                            include_code = TRUE, install = FALSE, logger = NULL){
 
 # Check inputs ====
 

@@ -2,7 +2,7 @@
 title: "A guide to developing applications with Shinyscholar"
 author: "Simon Smart"
 date: "
-2024-12-09
+2024-12-11
 "
 output: rmarkdown::html_vignette
 vignette: >
@@ -81,8 +81,7 @@ modules <- data.frame(
 
 common_objects = c("raster", "histogram", "scatter")
 
-shinyscholar::create_template(path = file.path("~", "Documents"), name = "demo", author = "Simon E. H. Smart",
-include_map = TRUE, include_table = TRUE, include_code = TRUE, common_objects = common_objects, modules = modules, install = TRUE)
+shinyscholar::create_template(path = file.path("~", "Documents"), name = "demo", author = "Simon E. H. Smart", common_objects = common_objects, modules = modules, install = TRUE)
 ```
 
 ### Installation
