@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_hist_f.R
 \name{plot_hist}
 \alias{plot_hist}
-\title{plot_hist}
+\title{Extract values from a raster to produce a histogram}
 \usage{
 plot_hist(raster, bins, logger = NULL)
 }
@@ -19,8 +19,8 @@ shiny, otherwise leave the default NULL}
 a list of class histogram
 }
 \description{
-This function is called by the plot_hist module and extracts
-values from a raster image, returning a histogram of density
+Called by the plot_hist module in the example app
+and extracts values from a raster image, returning a histogram of density
 }
 \examples{
 if (check_suggests(example = TRUE)) {

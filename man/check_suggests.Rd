@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_suggests.R
 \name{check_suggests}
 \alias{check_suggests}
-\title{Check suggests}
+\title{Check whether suggested packages are installed}
 \usage{
 check_suggests(testing = FALSE, example = FALSE)
 }
@@ -12,8 +12,8 @@ check_suggests(testing = FALSE, example = FALSE)
 \item{example}{logical. For use in examples.}
 }
 \description{
-Checks whether all the packages in Suggests are installed and stops execution
-if not.
+Checks whether all the packages in Suggests are installed
+and stops execution if not or returns \code{FALSE} when example = \code{TRUE}
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

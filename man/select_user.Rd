@@ -2,7 +2,7 @@
 % Please edit documentation in R/select_user_f.R
 \name{select_user}
 \alias{select_user}
-\title{select_user}
+\title{Load a raster image}
 \usage{
 select_user(raster_path, logger = NULL)
 }
@@ -17,7 +17,7 @@ shiny, otherwise leave the default NULL}
 a SpatRaster object
 }
 \description{
-This function is called by the select_user module and loads a
+Called by the select_user module in the example app and loads a
 .tif file as a SpatRaster
 }
 \examples{

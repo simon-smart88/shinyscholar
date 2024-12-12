@@ -11,8 +11,9 @@ register_module(config_file)
 one or more modules.}
 }
 \description{
-Before running the shinyscholar application with \code{run_shinyscholar()}, you can
-register your own modules to be used in shinyscholar.
+Before running the shinyscholar application with
+\code{run_shinyscholar()}, you can register your own modules to be used in
+shinyscholar.
 }
 \seealso{
 \code{\link[shinyscholar]{create_module}}

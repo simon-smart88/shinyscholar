@@ -2,7 +2,7 @@
 % Please edit documentation in R/metadata.R
 \name{metadata}
 \alias{metadata}
-\title{metadata}
+\title{Add metadata lines to modules}
 \usage{
 metadata(folder_path, module = NULL)
 }
@@ -19,10 +19,10 @@ present, the file will not be edited. This function is currently experimental
 and only semi-automates the process. To ensure that the code is functional
 complete the following steps:
 \itemize{
-\item Check that any inputs created by packages other than \code{{shiny}} are included
+\item Check that any inputs created by packages other than 'shiny' are included
 \item Add any inputs created dynamically i.e. those without an explicit
 line of code to generate them, for example those created inside a loop in a
-\code{renderUI} or from a \code{{leaflet}} or \code{{DT}} object.
+\code{renderUI} or from a 'leaflet' or 'DT' object.
 \item Use the objects in each \code{.Rmd} file to call the module's function.
 }
 }

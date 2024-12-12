@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_scatter_f.R
 \name{plot_scatter}
 \alias{plot_scatter}
-\title{plot_scatter}
+\title{Extract values from a raster to produce a scatterplot}
 \usage{
 plot_scatter(raster, sample, axis, logger = NULL)
 }
@@ -21,9 +21,9 @@ shiny, otherwise leave the default NULL}
 a dataframe containing the axis values and the cell values
 }
 \description{
-This function is called by the plot_scatter module and samples
-values from a raster along with either the x or y coordinates
-of the points sampled
+Called by the plot_scatter module in the example app and samples
+values from a raster along with either the x or y coordinates of the points
+sampled
 }
 \examples{
 if (check_suggests(example = TRUE)) {

@@ -5,7 +5,6 @@
 #' and a list containing any objects to be knitted into the file.
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @keywords internal
-#' @export
 
 tidy_purl <- function(params){
   rmd <- do.call(knitr::knit_expand, params)
@@ -17,8 +16,9 @@ tidy_purl <- function(params){
   return(lines)
 }
 
-#' @title create_template
-#' @description Creates a skeleton app containing empty modules
+#' @title Create a skeleton application containing empty modules
+#' @description Creates a skeleton app containing empty modules with options
+#' controlling objects in `common` and whether to include a map, code and tables
 #' @param path character. Path to where the app should be created
 #' @param name character. Name of the app which will be used as the package name.
 #' Must be only characters and numbers and not start with a number.

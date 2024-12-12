@@ -1,7 +1,8 @@
-#' @title save_and_load
-#' @description Adds lines to modules to save and load input values. By default
+#' @title Adds lines to modules to save and load input values.
+#' @description  Converts 'shiny' `*Input` functions to lines of code required
+#' to store and reload the values when the app is saved or loaded. By default
 #' all the modules in the application are edited. Currently only input
-#' functions from `{shiny}` and `shinyWidgets::materialSwitch` are included.
+#' functions from 'shiny' and `shinyWidgets::materialSwitch` are supported.
 #' @param folder_path character. Path to the parent directory containing the application
 #' @param module character. (optional) Name of a single module to edit
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>

@@ -2,7 +2,7 @@
 % Please edit documentation in R/select_async_f.R
 \name{select_async}
 \alias{select_async}
-\title{select_async}
+\title{Load FAPAR data from NASA asynchronously}
 \usage{
 select_async(poly, date, token, async = FALSE)
 }
@@ -27,7 +27,9 @@ A list containing:
 \item{message}{Information on the number of missing pixels}
 }
 \description{
-This function is identical to select_query but can be run asynchronously
+Called by the select_async module in the example app and loads an
+FAPAR raster for the selected area via the Earthdata API. This function is
+identical to select_query but can be run asynchronously
 }
 \examples{
 \dontrun{

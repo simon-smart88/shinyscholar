@@ -2,7 +2,7 @@
 % Please edit documentation in R/save_and_load.R
 \name{save_and_load}
 \alias{save_and_load}
-\title{save_and_load}
+\title{Adds lines to modules to save and load input values.}
 \usage{
 save_and_load(folder_path, module = NULL)
 }
@@ -12,9 +12,10 @@ save_and_load(folder_path, module = NULL)
 \item{module}{character. (optional) Name of a single module to edit}
 }
 \description{
-Adds lines to modules to save and load input values. By default
+Converts 'shiny' \verb{*Input} functions to lines of code required
+to store and reload the values when the app is saved or loaded. By default
 all the modules in the application are edited. Currently only input
-functions from \code{{shiny}} and \code{shinyWidgets::materialSwitch} are included.
+functions from 'shiny' and \code{shinyWidgets::materialSwitch} are supported.
 }
 \author{
 Simon E. H. Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

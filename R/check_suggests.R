@@ -1,7 +1,6 @@
-#' @title Check suggests
-#' @description
-#' Checks whether all the packages in Suggests are installed and stops execution
-#' if not.
+#' @title Check whether suggested packages are installed
+#' @description Checks whether all the packages in Suggests are installed
+#' and stops execution if not or returns `FALSE` when example = `TRUE`
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @param testing logical. For use in testing.
 #' @param example logical. For use in examples.

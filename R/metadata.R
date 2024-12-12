@@ -1,4 +1,4 @@
-#' @title metadata
+#' @title Add metadata lines to modules
 #' @description Adds lines to modules and their associated rmarkdown files to
 #' semi-automate reproducibility. By default all the modules in the application
 #' are edited or you can specify a single module. If metadata lines are already
@@ -6,10 +6,10 @@
 #' and only semi-automates the process. To ensure that the code is functional
 #' complete the following steps:
 #' \itemize{
-#'  \item Check that any inputs created by packages other than `{shiny}` are included
+#'  \item Check that any inputs created by packages other than 'shiny' are included
 #'  \item Add any inputs created dynamically i.e. those without an explicit
 #'  line of code to generate them, for example those created inside a loop in a
-#'  `renderUI` or from a `{leaflet}` or `{DT}` object.
+#'  `renderUI` or from a 'leaflet' or 'DT' object.
 #'  \item Use the objects in each `.Rmd` file to call the module's function.
 #'  }
 #' @param folder_path character. Path to the parent directory containing the application

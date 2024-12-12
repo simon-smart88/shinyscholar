@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_template.R
 \name{create_template}
 \alias{create_template}
-\title{create_template}
+\title{Create a skeleton application containing empty modules}
 \usage{
 create_template(
   path,
@@ -58,7 +58,8 @@ Window. Insert the logger reactive list here for running in
 shiny, otherwise leave the default \code{NULL}}
 }
 \description{
-Creates a skeleton app containing empty modules
+Creates a skeleton app containing empty modules with options
+controlling objects in \code{common} and whether to include a map, code and tables
 }
 \examples{
 \dontrun{

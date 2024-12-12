@@ -1,7 +1,7 @@
-#' @title select_async
-#' @description
-#' This function is identical to select_query but can be run asynchronously
-#'
+#' @title Load FAPAR data from NASA asynchronously
+#' @description Called by the select_async module in the example app and loads an
+#'  FAPAR raster for the selected area via the Earthdata API. This function is
+#'  identical to select_query but can be run asynchronously
 #' @param poly matrix. Coordinates of area to load
 #' @param date character. Date of image to load in `YYYY-MM-DD` format.
 #' @param token character. NASA Earthdata API token.

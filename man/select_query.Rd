@@ -2,7 +2,7 @@
 % Please edit documentation in R/select_query_f.R
 \name{select_query}
 \alias{select_query}
-\title{select_query}
+\title{Load FAPAR data from NASA}
 \usage{
 select_query(poly, date, token, logger = NULL)
 }
@@ -26,8 +26,8 @@ shiny, otherwise leave the default NULL}
 a SpatRaster object
 }
 \description{
-This function is called by the select_query module and loads an
-FAPAR raster for the selected area.
+Called by the select_query module in the example app and loads an
+FAPAR raster for the selected area via the Earthdata API.
 }
 \examples{
 \dontrun{
