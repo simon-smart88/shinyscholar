@@ -1,0 +1,15 @@
+```{r plot, echo=FALSE, fig.height=3.5, fig.align='center', eval = ("plot_hist" %in% names(common$meta)} 
+# if ("plot_hist" %in% names(common$meta)){
+  pal <- RColorBrewer::brewer.pal(9, common$meta$plot_hist$pal)
+    pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
+    bins <- common$meta$plot_hist$bins
+    cols <- pal_ramp(bins)
+
+    plot(common$histogram, freq = FALSE, main = "", xlab = common$meta$plot_hist$name, ylab = "Frequency (%)", col = cols)
+# }
+```
+
+
+```{r plot, echo=FALSE, fig.height=3.5, fig.align='center', eval = ("plot_scatter" %in% names(common$meta)} 
+    plot(common$scatterplot[[1]], common$scatterplot[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
+```
