@@ -15,10 +15,12 @@ rep_markdown_module_server <- function(id, common, parent_session, map, COMPONEN
 
     output$report <- downloadHandler(
       filename = function() {
-        paste0("shinyscholar-session-report.pdf")
+        paste0("shinyscholar-session-report.html")
       },
       content = function(file) {
-        rmarkdown::render("Rmd/report.Rmd", rmarkdown::pdf_document())
+        rmarkdown::render("Rmd/report.Rmd",
+                          # rmarkdown::pdf_document(),
+                          output_file = file)
       }
     )
 

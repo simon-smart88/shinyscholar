@@ -1,15 +1,60 @@
-```{r plot, echo=FALSE, fig.height=3.5, fig.align='center', eval = ("plot_hist" %in% names(common$meta)} 
-# if ("plot_hist" %in% names(common$meta)){
+---
+title: "Shinyscholar report"
+output:
+  html_document:
+    toc: false
+---
+```{r eval = TRUE, echo= FALSE}
+    map <- leaflet() %>%
+      addProviderTiles("Esri.WorldTopoMap") 
+```
+
+# {.tabset .tabset-pills}
+
+## Select
+
+```{r results='asis', echo = FALSE, eval = ("plot_hist" %in% names(common$meta))} 
+if ("select_user" %in% names(common$meta)){
+  cat("### Upload your own raster data")
+}
+```
+
+```{r select_user, echo=FALSE, fig.height=3.5, fig.align='center', eval = ("select_user" %in% names(common$meta))} 
+    ex <- as.vector(terra::ext(common$raster))
+    pal <- colorBin("YlOrRd", domain = terra::values(common$raster), bins = 9, na.color = "#00000000")
+    raster_name <- common$meta$select_user$name
+    map %>%
+      clearGroup(raster_name) %>%
+      addRasterImage(common$raster, colors = pal, group = raster_name) %>%
+      fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
+      addLegend(position = "bottomright", pal = pal, values = terra::values(common$raster),
+                group = raster_name, title = raster_name) %>%
+      addLayersControl(overlayGroups = raster_name, options = layersControlOptions(collapsed = FALSE))
+```
+
+## Plot 
+
+```{r results='asis', echo = FALSE, eval = ("plot_hist" %in% names(common$meta))} 
+if ("plot_hist" %in% names(common$meta)){
+  cat("### Plot data on a histogram")
+}
+```
+
+```{r plot_hist, echo=FALSE, fig.height=3.5, fig.align='center', eval = ("plot_hist" %in% names(common$meta))} 
   pal <- RColorBrewer::brewer.pal(9, common$meta$plot_hist$pal)
     pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
     bins <- common$meta$plot_hist$bins
     cols <- pal_ramp(bins)
 
     plot(common$histogram, freq = FALSE, main = "", xlab = common$meta$plot_hist$name, ylab = "Frequency (%)", col = cols)
-# }
 ```
 
+```{r results='asis', echo = FALSE, eval = ("plot_scatter" %in% names(common$meta))} 
+if ("plot_scatter" %in% names(common$meta)){
+  cat("### Plot data on a scatterplot")
+}
+```
 
-```{r plot, echo=FALSE, fig.height=3.5, fig.align='center', eval = ("plot_scatter" %in% names(common$meta)} 
+```{r plot_scat, echo=FALSE, fig.height=3.5, fig.align='center', eval = ("plot_scatter" %in% names(common$meta))} 
     plot(common$scatterplot[[1]], common$scatterplot[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
 ```
