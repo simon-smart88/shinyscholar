@@ -65,7 +65,6 @@ Creates a skeleton app containing empty modules with options
 controlling objects in \code{common} and whether to include a map, code and tables
 }
 \examples{
-\dontrun{
 modules <- data.frame(
 "component" = c("data", "data", "plot", "plot"),
 "long_component" = c("Load data", "Load data", "Plot data", "Plot data"),
@@ -82,7 +81,6 @@ create_template(path = tempdir(), name = "demo",
 common_objects = common_objects, modules = modules,
 author = "Simon E. H. Smart", include_map = TRUE, include_table = TRUE,
 include_code = TRUE, install = TRUE)
-}
 }
 \author{
 Simon E. H. Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
