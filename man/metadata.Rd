@@ -56,7 +56,7 @@ test_files <- list.files(
 module_directory <- file.path(td, "demo", "inst", "shiny", "modules")
 file.copy(test_files, module_directory, overwrite = TRUE)
 
-metadata(file.path(td, "demo"))
+metadata(file.path(td, "demo"), module = "test_test")
 
 }
 \author{

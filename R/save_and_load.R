@@ -33,7 +33,7 @@
 #' module_directory <- file.path(td, "demo", "inst", "shiny", "modules")
 #' file.copy(test_files, module_directory, overwrite = TRUE)
 #'
-#' save_and_load(file.path(td, "demo"))
+#' save_and_load(file.path(td, "demo"), module = "test_test")
 #'
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
