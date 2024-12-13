@@ -48,6 +48,7 @@ tidy_purl <- function(params){
 #' @param logger Stores all notification messages to be displayed in the Log
 #'   Window. Insert the logger reactive list here for running in
 #'   shiny, otherwise leave the default `NULL`
+#' @returns No return value, called for side effects
 #'
 #' @examples
 #' \dontrun{
@@ -61,9 +62,9 @@ tidy_purl <- function(params){
 #' "result" = c(FALSE, FALSE, TRUE, TRUE),
 #' "rmd" = c(TRUE, TRUE, TRUE, TRUE),
 #' "save" = c(TRUE, TRUE, TRUE, TRUE),
-#' "async = c("TRUE, FALSE, FALSE, FALSE))
+#' "async" = c(TRUE, FALSE, FALSE, FALSE))
 #' common_objects = c("raster", "histogram", "scatter")
-#' create_template(path = file.path("~", "Documents"), name = "demo",
+#' create_template(path = tempdir(), name = "demo",
 #' common_objects = common_objects, modules = modules,
 #' author = "Simon E. H. Smart", include_map = TRUE, include_table = TRUE,
 #' include_code = TRUE, install = TRUE)

@@ -11,6 +11,9 @@ printVecAsis(x, asChar = FALSE)
 
 \item{asChar}{exclude c notation at the beginning of string}
 }
+\value{
+character. The vector formatted as a string
+}
 \description{
 For internal use. Print vector as character string
 }

@@ -9,6 +9,9 @@ show_loading_modal(message)
 \arguments{
 \item{message}{The message to be displayed to the user}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 For internal use. Show a modal when something is loading
 }

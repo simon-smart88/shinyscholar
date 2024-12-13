@@ -11,6 +11,9 @@ metadata(folder_path, module = NULL)
 
 \item{module}{character. (optional) Name of a single module to edit}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Adds lines to modules and their associated rmarkdown files to
 semi-automate reproducibility. By default all the modules in the application

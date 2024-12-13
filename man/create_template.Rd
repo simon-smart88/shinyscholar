@@ -57,6 +57,9 @@ code. Default \code{TRUE}}
 Window. Insert the logger reactive list here for running in
 shiny, otherwise leave the default \code{NULL}}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Creates a skeleton app containing empty modules with options
 controlling objects in \code{common} and whether to include a map, code and tables
@@ -73,9 +76,9 @@ modules <- data.frame(
 "result" = c(FALSE, FALSE, TRUE, TRUE),
 "rmd" = c(TRUE, TRUE, TRUE, TRUE),
 "save" = c(TRUE, TRUE, TRUE, TRUE),
-"async = c("TRUE, FALSE, FALSE, FALSE))
+"async" = c(TRUE, FALSE, FALSE, FALSE))
 common_objects = c("raster", "histogram", "scatter")
-create_template(path = file.path("~", "Documents"), name = "demo",
+create_template(path = tempdir(), name = "demo",
 common_objects = common_objects, modules = modules,
 author = "Simon E. H. Smart", include_map = TRUE, include_table = TRUE,
 include_code = TRUE, install = TRUE)

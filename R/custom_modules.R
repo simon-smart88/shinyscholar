@@ -4,6 +4,7 @@
 #' shinyscholar.
 #' @param config_file The path to a YAML file that contains the information about
 #' one or more modules.
+#' @returns No return value, called for side effects
 #' @seealso \code{\link[shinyscholar]{create_module}}
 #' @export
 register_module <- function(config_file) {
@@ -36,6 +37,7 @@ register_module <- function(config_file) {
 #' user saves the current session.
 #' @param async logical. Whether or not the module will operate asynchronously.
 #' @param init logical. Whether or not the function is being used inside of the init function
+#' @returns No return value, called for side effects
 #' @seealso \code{\link[shinyscholar]{register_module}}
 #' @export
 create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, save = FALSE, async = FALSE, init = FALSE) {

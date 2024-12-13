@@ -35,6 +35,9 @@ user saves the current session.}
 
 \item{init}{logical. Whether or not the function is being used inside of the init function}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Create the template of a new shinyscholar module.
 }

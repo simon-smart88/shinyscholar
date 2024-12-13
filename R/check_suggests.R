@@ -4,6 +4,9 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @param testing logical. For use in testing.
 #' @param example logical. For use in examples.
+#' @returns No return value, called for side effects unless example is `TRUE`
+#' in which case `FALSE` is returned if the Suggests are not installed or `TRUE`
+#' if they are installed.
 #' @keywords internal
 #' @export
 check_suggests <- function(testing = FALSE, example = FALSE){

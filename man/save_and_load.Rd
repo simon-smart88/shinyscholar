@@ -11,6 +11,9 @@ save_and_load(folder_path, module = NULL)
 
 \item{module}{character. (optional) Name of a single module to edit}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Converts 'shiny' \verb{*Input} functions to lines of code required
 to store and reload the values when the app is saved or loaded. By default

@@ -14,6 +14,7 @@
 #'  }
 #' @param folder_path character. Path to the parent directory containing the application
 #' @param module character. (optional) Name of a single module to edit
+#' @returns No return value, called for side effects
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 
