@@ -51,7 +51,6 @@ tidy_purl <- function(params){
 #' @returns No return value, called for side effects
 #'
 #' @examples
-#' \dontrun{
 #' modules <- data.frame(
 #' "component" = c("data", "data", "plot", "plot"),
 #' "long_component" = c("Load data", "Load data", "Plot data", "Plot data"),
@@ -68,7 +67,6 @@ tidy_purl <- function(params){
 #' common_objects = common_objects, modules = modules,
 #' author = "Simon E. H. Smart", include_map = TRUE, include_table = TRUE,
 #' include_code = TRUE, install = TRUE)
-#' }
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 
