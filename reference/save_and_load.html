@@ -74,11 +74,48 @@ functions from 'shiny' and <code><a href="https://dreamrs.github.io/shinyWidgets
 <dd><p>character. (optional) Name of a single module to edit</p></dd>
 
 </dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    <p>No return value, called for side effects</p>
+    </div>
     <div id="author">
     <h2>Author</h2>
     <p>Simon E. H. Smart <a href="mailto:simon.smart@cantab.net">simon.smart@cantab.net</a></p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">td</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">td</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">modules</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"component"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"long_component"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"module"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"long_module"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"map"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"result"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"rmd"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"save"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"async"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="create_template.html">create_template</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">td</span>, name <span class="op">=</span> <span class="st">"demo"</span>,</span></span>
+<span class="r-in"><span>                common_objects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"demo"</span><span class="op">)</span>, modules <span class="op">=</span> <span class="va">modules</span>,</span></span>
+<span class="r-in"><span>                author <span class="op">=</span> <span class="st">"demo"</span>, include_map <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>                include_table <span class="op">=</span> <span class="cn">FALSE</span>, include_code <span class="op">=</span> <span class="cn">FALSE</span>, install <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">test_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"shinyscholar"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  pattern <span class="op">=</span> <span class="st">"test_test*"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">module_directory</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">td</span>, <span class="st">"demo"</span>, <span class="st">"inst"</span>, <span class="st">"shiny"</span>, <span class="st">"modules"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="va">test_files</span>, <span class="va">module_directory</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE TRUE</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">save_and_load</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">td</span>, <span class="st">"demo"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
