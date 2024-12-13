@@ -29,6 +29,36 @@ line of code to generate them, for example those created inside a loop in a
 \item Use the objects in each \code{.Rmd} file to call the module's function.
 }
 }
+\examples{
+td <- tempfile()
+dir.create(td, recursive = TRUE)
+
+modules <- data.frame(
+  "component" = c("demo"),
+  "long_component" = c("demo"),
+  "module" = c("demo"),
+  "long_module" = c("demo"),
+  "map" = c(FALSE),
+  "result" = c(TRUE),
+  "rmd" = c(TRUE),
+  "save" = c(TRUE),
+  "async" = c(FALSE))
+
+create_template(path = td, name = "demo",
+                common_objects = c("demo"), modules = modules,
+                author = "demo", include_map = FALSE,
+                include_table = FALSE, include_code = FALSE, install = FALSE)
+
+test_files <- list.files(
+  system.file("extdata", package = "shinyscholar"),
+  pattern = "test_test*", full.names = TRUE)
+
+module_directory <- file.path(td, "demo", "inst", "shiny", "modules")
+file.copy(test_files, module_directory, overwrite = TRUE)
+
+metadata(file.path(td, "demo"))
+
+}
 \author{
 Simon E. H. Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }

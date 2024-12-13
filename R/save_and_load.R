@@ -6,6 +6,35 @@
 #' @param folder_path character. Path to the parent directory containing the application
 #' @param module character. (optional) Name of a single module to edit
 #' @returns No return value, called for side effects
+#' @examples
+#' td <- tempfile()
+#' dir.create(td, recursive = TRUE)
+#'
+#' modules <- data.frame(
+#'   "component" = c("demo"),
+#'   "long_component" = c("demo"),
+#'   "module" = c("demo"),
+#'   "long_module" = c("demo"),
+#'   "map" = c(FALSE),
+#'   "result" = c(TRUE),
+#'   "rmd" = c(TRUE),
+#'   "save" = c(TRUE),
+#'   "async" = c(FALSE))
+#'
+#' create_template(path = td, name = "demo",
+#'                 common_objects = c("demo"), modules = modules,
+#'                 author = "demo", include_map = FALSE,
+#'                 include_table = FALSE, include_code = FALSE, install = FALSE)
+#'
+#' test_files <- list.files(
+#'   system.file("extdata", package = "shinyscholar"),
+#'   pattern = "test_test*", full.names = TRUE)
+#'
+#' module_directory <- file.path(td, "demo", "inst", "shiny", "modules")
+#' file.copy(test_files, module_directory, overwrite = TRUE)
+#'
+#' save_and_load(file.path(td, "demo"))
+#'
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 
