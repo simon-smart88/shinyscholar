@@ -23,9 +23,9 @@ rerun_test <- function(test_function, args){
 }
 
 # flag to check whether --no-suggests is being used
-no_suggests <- !requireNamespace("shinyAce", quietly = TRUE)
+suggests <- check_suggests(example = TRUE)
 
-if (!no_suggests){
+if (suggests){
   poly_matrix <- matrix(c(0.5, 0.5, 1, 1, 0.5, 52, 52.5, 52.5, 52, 52), ncol = 2)
   colnames(poly_matrix) <- c('longitude', 'latitude')
 

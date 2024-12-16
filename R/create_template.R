@@ -66,7 +66,7 @@ tidy_purl <- function(params){
 #' create_template(path = tempdir(), name = "demo",
 #' common_objects = common_objects, modules = modules,
 #' author = "Simon E. H. Smart", include_map = TRUE, include_table = TRUE,
-#' include_code = TRUE, install = TRUE)
+#' include_code = TRUE, install = FALSE)
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 

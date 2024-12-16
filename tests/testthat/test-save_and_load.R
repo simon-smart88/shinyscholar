@@ -33,7 +33,7 @@ test_that("Check save_and_load function adds line as expected", {
   dir.create(module_directory, recursive = TRUE)
   file.copy(test_files, module_directory)
 
-  shinyscholar::save_and_load(td)
+  save_and_load(td)
 
   temp_file <- file.path(module_directory, "test_test.R")
   r_out <- readLines(temp_file)
@@ -90,7 +90,7 @@ test_that("Check save_and_load function keeps manually added lines", {
   dir.create(module_directory, recursive = TRUE)
   file.copy(test_files, module_directory)
 
-  shinyscholar::save_and_load(td)
+  save_and_load(td)
 
   temp_file <- file.path(module_directory, "test_test.R")
   r_out <- readLines(temp_file)
@@ -103,7 +103,7 @@ test_that("Check save_and_load function keeps manually added lines", {
 
   writeLines(r_out, temp_file)
 
-  shinyscholar::save_and_load(td)
+  save_and_load(td)
 
   r_out <- readLines(temp_file)
 
@@ -114,7 +114,7 @@ test_that("Check save_and_load function keeps manually added lines", {
   expect_true(grepl('*manual_load = TRUE,*', r_out[load_start_line + 1]))
 })
 
-if (!no_suggests){
+if (suggests){
   test_that("Check that lines added by save_and_load are functional", {
 
     modules <- data.frame(
@@ -141,7 +141,7 @@ if (!no_suggests){
     module_directory <- file.path(td, "shinyscholar", "inst", "shiny", "modules")
     file.copy(test_files, module_directory, overwrite = TRUE)
 
-    shinyscholar::save_and_load(file.path(td, "shinyscholar"))
+    save_and_load(file.path(td, "shinyscholar"))
 
     # edit to use newly created core_modules
     global_path <- file.path(td, "shinyscholar", "inst", "shiny", "global.R")

@@ -1,4 +1,4 @@
-if (!no_suggests){
+if (suggests){
   test_that("Check select_user function works as expected", {
     result <- select_user(raster_path)
     expect_is(result, "SpatRaster")

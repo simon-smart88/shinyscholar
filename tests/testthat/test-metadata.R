@@ -90,7 +90,7 @@ test_that("Check metadata function adds lines as expected", {
   expect_true(any(grepl("*\\{\\{test_test_switch\\}\\}*", rmd_out)))
 })
 
-if (!no_suggests){
+if (suggests){
   test_that("Check that lines added by metadata are functional", {
     upload_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),
                        pattern = ".tif$", full.names = TRUE)
