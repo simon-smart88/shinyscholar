@@ -69,7 +69,7 @@ tidy_purl <- function(params){
 #'                 common_objects = c("demo"), modules = modules,
 #'                 author = "demo", include_map = FALSE,
 #'                 include_table = FALSE, include_code = FALSE, install = FALSE)
-#' \donttest{
+#' \dontrun{
 #' td <- tempfile()
 #' dir.create(td, recursive = TRUE)
 #'
