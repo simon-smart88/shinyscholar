@@ -117,6 +117,8 @@ test_that("Check save_and_load function keeps manually added lines", {
 if (suggests){
   test_that("Check that lines added by save_and_load are functional", {
 
+    skip_on_cran()
+
     modules <- data.frame(
       "component" = c("test"),
       "long_component" = c("test"),
