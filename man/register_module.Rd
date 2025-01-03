@@ -10,9 +10,13 @@ register_module(config_file)
 \item{config_file}{The path to a YAML file that contains the information about
 one or more modules.}
 }
+\value{
+No return value, called for side effects
+}
 \description{
-Before running the shinyscholar application with \code{run_shinyscholar()}, you can
-register your own modules to be used in shinyscholar.
+Before running the shinyscholar application with
+\code{run_shinyscholar()}, you can register your own modules to be used in
+shinyscholar.
 }
 \seealso{
 \code{\link[shinyscholar]{create_module}}

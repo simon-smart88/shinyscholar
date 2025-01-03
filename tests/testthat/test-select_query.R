@@ -1,4 +1,4 @@
-if (!no_suggests){
+if (suggests){
   test_that("Check select_query function works as expected", {
     skip_on_ci()
     skip_on_cran()

@@ -2,7 +2,7 @@
 % Please edit documentation in R/select_query_f.R
 \name{get_nasa_token}
 \alias{get_nasa_token}
-\title{Fetch a token from the NASA API}
+\title{Fetch a token from the NASA Earthdata API}
 \usage{
 get_nasa_token(username, password)
 }
@@ -15,7 +15,8 @@ get_nasa_token(username, password)
 A character string containing the token
 }
 \description{
-Fetch a token from the NASA API
+Uses the Earthdata API to fetch a token using the user's
+username and password
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

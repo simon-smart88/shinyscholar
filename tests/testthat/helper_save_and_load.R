@@ -15,5 +15,6 @@ save_and_load_p1_test <- function(td, save_path){
   app$set_inputs("test_test-switch" = FALSE)
   app$set_inputs(main = "Save")
   app$get_download("core_save-save_session", filename = save_path)
-  app$stop()
+  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
+           finally = app$stop())
 }

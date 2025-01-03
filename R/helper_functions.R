@@ -5,6 +5,7 @@
 #' @description For internal use. Print vector as character string
 #' @param x vector
 #' @param asChar exclude c notation at the beginning of string
+#' @returns character. The vector formatted as a string
 #' @keywords internal
 #' @export
 printVecAsis <- function(x, asChar = FALSE) {
@@ -45,7 +46,7 @@ printVecAsis <- function(x, asChar = FALSE) {
 #' @title check_url
 #' @description For internal use. Checks whether a URL is live
 #' @param url character. The URL to check
-#' @return An httr2 response if the URL is live or NULL if it is not
+#' @returns An httr2 response if the URL is live
 #' @keywords internal
 #' @export
 check_url <- function(url){
@@ -66,6 +67,7 @@ check_url <- function(url){
 #' @title Spurious package call to avoid note of functions outside R folder
 #' @description For internal use.
 #' @param x x
+#' @returns No return value, called for side effects
 #' @keywords internal
 #' @export
 spurious <- function(x) {
@@ -98,9 +100,10 @@ spurious <- function(x) {
 
 #' @title writeLog
 #' @description For internal use. Add text to a logger
-#' @param logger The logger to write the text to. Can be NULL or a function
+#' @param logger The logger to write the text to. Can be `NULL` or a function
 #' @param ... Messages to write to the logger
-#' @param type One of "default", "info", "error", "warning"
+#' @param type One of `default`, `info`, `error`, `warning`
+#' @returns No return value, called for side effects
 #' @keywords internal
 #' @export
 writeLog <- function(logger, ..., type = "default") {
@@ -160,7 +163,8 @@ writeLog <- function(logger, ..., type = "default") {
 #' functions
 #' @param async Whether the function is being used asynchronously
 #' @param ... Messages to write to the logger
-#' @param type One of "default", "info", "error", "warning"
+#' @param type One of `default`, `info`, `error`, `warning`
+#' @returns No return value, called for side effects
 #' @keywords internal
 #' @export
 asyncLog <- function(async, ..., type = "default"){
@@ -184,6 +188,7 @@ asyncLog <- function(async, ..., type = "default"){
 #' @title show_loading_modal
 #' @description For internal use. Show a modal when something is loading
 #' @param message The message to be displayed to the user
+#' @returns No return value, called for side effects
 #' @keywords internal
 #' @export
 
@@ -197,6 +202,7 @@ show_loading_modal <- function(message){
 #' @title close_loading_modal
 #' @description For internal use. Close the modal once loading is complete
 #' @param session The session object passed to function given to shinyServer.
+#' @returns No return value, called for side effects
 #' @keywords internal
 #' @export
 
@@ -212,6 +218,7 @@ close_loading_modal <- function (session = getDefaultReactiveDomain())
 #' @title show_map
 #' @description For internal use. Switches the view to the Map tab
 #' @param parent_session Session object of the main server function
+#' @returns No return value, called for side effects
 #' @keywords internal
 #' @export
 show_map <- function(parent_session){
@@ -221,6 +228,7 @@ show_map <- function(parent_session){
 #' @title show_results
 #' @description For internal use. Switches the view to the Results tab
 #' @param parent_session Session object of the main server function
+#' @returns No return value, called for side effects
 #' @keywords internal
 #' @export
 show_results <- function(parent_session){
@@ -230,6 +238,7 @@ show_results <- function(parent_session){
 #' @title show_table
 #' @description For internal use. Switches the view to the Table panel
 #' @param parent_session Session object of the main server function
+#' @returns No return value, called for side effects
 #' @keywords internal
 #' @export
 show_table <- function(parent_session){

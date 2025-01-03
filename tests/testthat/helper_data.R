@@ -23,9 +23,9 @@ rerun_test <- function(test_function, args){
 }
 
 # flag to check whether --no-suggests is being used
-no_suggests <- !requireNamespace("shinyAce", quietly = TRUE)
+suggests <- check_suggests(example = TRUE)
 
-if (!no_suggests){
+if (suggests){
   poly_matrix <- matrix(c(0.5, 0.5, 1, 1, 0.5, 52, 52.5, 52.5, 52, 52), ncol = 2)
   colnames(poly_matrix) <- c('longitude', 'latitude')
 
@@ -34,9 +34,10 @@ if (!no_suggests){
   poly_matrix_sea <- matrix(c(-20, -20, -19.5, -19.5, -20, 52, 52.5, 52.5, 52, 52), ncol=2)
   colnames(poly_matrix_sea) <- c('longitude', 'latitude')
 
-  check_live <- suppressWarnings(check_url("https://ladsweb.modaps.eosdis.nasa.gov/api/v2/content/archives"))
-
-  token <- get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
+  if (is_local){
+    check_live <- suppressWarnings(check_url("https://ladsweb.modaps.eosdis.nasa.gov/api/v2/content/archives"))
+    token <- get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
+  }
 
   raster_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),
                      full.names = TRUE)

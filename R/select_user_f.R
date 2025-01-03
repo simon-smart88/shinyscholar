@@ -1,8 +1,6 @@
-#' @title select_user
-#' @description
-#' This function is called by the select_user module and loads a
+#' @title Load a raster image
+#' @description Called by the select_user module in the example app and loads a
 #'  .tif file as a SpatRaster
-#'
 #' @param raster_path character. Path to file to be loaded
 #' @param logger Stores all notification messages to be displayed in the Log
 #'   Window. Insert the logger reactive list here for running in

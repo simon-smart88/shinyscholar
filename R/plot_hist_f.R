@@ -1,7 +1,6 @@
-#' @title plot_hist
-#' @description This function is called by the plot_hist module and extracts
-#'  values from a raster image, returning a histogram of density
-#'
+#' @title Extract values from a raster to produce a histogram
+#' @description Called by the plot_hist module in the example app
+#' and extracts values from a raster image, returning a histogram of density
 #' @param raster SpatRaster object
 #' @param bins The number of breaks in the histogram
 #' @param logger Stores all notification messages to be displayed in the Log

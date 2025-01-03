@@ -1,4 +1,4 @@
-if (!no_suggests){
+if (suggests){
   bins <- 20
 
   test_that("Check plot_hist function works as expected", {

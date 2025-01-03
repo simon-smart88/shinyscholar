@@ -1,4 +1,4 @@
-#' @title metadata
+#' @title Add metadata lines to modules
 #' @description Adds lines to modules and their associated rmarkdown files to
 #' semi-automate reproducibility. By default all the modules in the application
 #' are edited or you can specify a single module. If metadata lines are already
@@ -6,14 +6,44 @@
 #' and only semi-automates the process. To ensure that the code is functional
 #' complete the following steps:
 #' \itemize{
-#'  \item Check that any inputs created by packages other than `{shiny}` are included
+#'  \item Check that any inputs created by packages other than 'shiny' are included
 #'  \item Add any inputs created dynamically i.e. those without an explicit
 #'  line of code to generate them, for example those created inside a loop in a
-#'  `renderUI` or from a `{leaflet}` or `{DT}` object.
+#'  `renderUI` or from a 'leaflet' or 'DT' object.
 #'  \item Use the objects in each `.Rmd` file to call the module's function.
 #'  }
 #' @param folder_path character. Path to the parent directory containing the application
 #' @param module character. (optional) Name of a single module to edit
+#' @returns No return value, called for side effects
+#' @examples
+#' td <- tempfile()
+#' dir.create(td, recursive = TRUE)
+#'
+#' modules <- data.frame(
+#'   "component" = c("demo"),
+#'   "long_component" = c("demo"),
+#'   "module" = c("demo"),
+#'   "long_module" = c("demo"),
+#'   "map" = c(FALSE),
+#'   "result" = c(TRUE),
+#'   "rmd" = c(TRUE),
+#'   "save" = c(TRUE),
+#'   "async" = c(FALSE))
+#'
+#' create_template(path = td, name = "demo",
+#'                 common_objects = c("demo"), modules = modules,
+#'                 author = "demo", include_map = FALSE,
+#'                 include_table = FALSE, include_code = FALSE, install = FALSE)
+#'
+#' test_files <- list.files(
+#'   system.file("extdata", package = "shinyscholar"),
+#'   pattern = "test_test*", full.names = TRUE)
+#'
+#' module_directory <- file.path(td, "demo", "inst", "shiny", "modules")
+#' file.copy(test_files, module_directory, overwrite = TRUE)
+#'
+#' metadata(file.path(td, "demo"), module = "test_test")
+#'
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 

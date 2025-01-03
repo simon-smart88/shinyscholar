@@ -1,20 +1,21 @@
 Package: shinyscholar
 Version: 0.2.2
 Date: 2024-12-10
-Title: A template for creating reproducible 'shiny' applications
-Description: Create a skeleton shiny application with create_template() that is 
-    reproducible, can be saved and meets academic standards for attribution. 
+Title: A Template for Creating Reproducible 'shiny' Applications
+Description: Create a skeleton 'shiny' application with create_template() that is
+    reproducible, can be saved and meets academic standards for attribution.
     Forked from 'wallace'. Code is split into modules that are loaded and linked
-    together automatically and each call one function. Guidance pages explain 
-    modules to users and flexible logging informs them of any errors. Options 
+    together automatically and each call one function. Guidance pages explain
+    modules to users and flexible logging informs them of any errors. Options
     enable asynchronous operations, viewing of source code, interactive maps and
-    data tables. Use to create complex analytical applications, following best 
+    data tables. Use to create complex analytical applications, following best
     practices in open science and software development. Includes functions for
-    automating repetitive development tasks and an example application at 
-    run_shinyscholar() that requires 
+    automating repetitive development tasks and an example application at
+    run_shinyscholar() that requires
     install.packages("shinyscholar", dependencies = TRUE).
 Authors@R: 
     c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut", "cre", "cph")),
+      person("Tim", "Lucas", email =  "timcdlucas@gmail.com", role = c("aut"), comment = c(ORCID = "0000-0003-4694-8107")),
       person("Jamie M.", "Kass", email = "jamie.kass@oist.jp", role = "ctb"),
       person("Gonzalo E.", "Pinilla-Buitrago", email = "gpinillabuitrago@gradcenter.cuny.edu", role = "ctb"),
       person("Andrea", "Paz", email = "paz.andreita@gmail.com", role = "ctb"),

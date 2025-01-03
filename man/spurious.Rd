@@ -9,6 +9,9 @@ spurious(x)
 \arguments{
 \item{x}{x}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 For internal use.
 }

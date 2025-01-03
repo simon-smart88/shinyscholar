@@ -1,10 +1,10 @@
-#' Register a shinyscholar module
-#'
-#' Before running the shinyscholar application with \code{run_shinyscholar()}, you can
-#' register your own modules to be used in shinyscholar.
-#'
+#' @title Register a shinyscholar module
+#' @description Before running the shinyscholar application with
+#' \code{run_shinyscholar()}, you can register your own modules to be used in
+#' shinyscholar.
 #' @param config_file The path to a YAML file that contains the information about
 #' one or more modules.
+#' @returns No return value, called for side effects
 #' @seealso \code{\link[shinyscholar]{create_module}}
 #' @export
 register_module <- function(config_file) {
@@ -24,10 +24,8 @@ register_module <- function(config_file) {
   options("shinyscholar_module_configs" = new_paths)
 }
 
-#' Create a shinyscholar module
-#'
-#' Create the template of a new shinyscholar module.
-#'
+#' @title Create a shinyscholar module
+#' @description Create the template of a new shinyscholar module.
 #' @param id character. The id of the module.
 #' @param dir character. A directory where the new module should be created.
 #' @param map logical. Whether or not the module should support modifying the map.
@@ -39,6 +37,7 @@ register_module <- function(config_file) {
 #' user saves the current session.
 #' @param async logical. Whether or not the module will operate asynchronously.
 #' @param init logical. Whether or not the function is being used inside of the init function
+#' @returns No return value, called for side effects
 #' @seealso \code{\link[shinyscholar]{register_module}}
 #' @export
 create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, save = FALSE, async = FALSE, init = FALSE) {
@@ -54,7 +53,7 @@ create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, sav
   # Copy the simple skeleton files to the new module directory
   dir.create(dir, showWarnings = FALSE, recursive = TRUE)
 
-  "only create the yml when not created with init() which otherwise creates it"
+  # only create the yml when not created with init() which otherwise creates it
   if (!init){
   file.copy(system.file("module_skeleton", "skeleton.yml", package = "shinyscholar"),
             file.path(dir, glue::glue("{id}.yml")), overwrite = TRUE)

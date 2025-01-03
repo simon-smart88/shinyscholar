@@ -5,6 +5,6 @@ select_async_test <- function(save_path){
   app$click(selector = "#select_async-run")
   app$wait_for_value(input = "select_async-complete")
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  app$stop()
+  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
+           finally = app$stop())
 }
