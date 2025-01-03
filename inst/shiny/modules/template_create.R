@@ -83,7 +83,12 @@ template_create_module_server <- function(id, common, parent_session, map) {
       df
     })
 
-    module_list <- reactive(paste(modules()$component, modules()$module, sep= '_'))
+    module_list <- reactive({
+      req(input$mod1)
+      req(input$long_mod1)
+      validate(need(length(split_and_clean(input$comps)) == length(split_and_clean(input$long_comps)),
+                    "Components and Long components must have the same number of entries"))
+      paste(modules()$component, modules()$module, sep= '_')})
 
     output$module_options <- renderUI({
 
@@ -102,7 +107,7 @@ template_create_module_server <- function(id, common, parent_session, map) {
       module_options <- reactive({
         df <- t(as.data.frame(lapply(module_list(), function(x){
           c("Map", "Results", "Rmd", "Save", "Async") %in% input[[x]]})))
-        colnames(df) <- c("map", "results", "rmd", "save", "async")
+        colnames(df) <- c("map", "result", "rmd", "save", "async")
         df
       })
 
@@ -114,7 +119,8 @@ template_create_module_server <- function(id, common, parent_session, map) {
 
         common_objects = split_and_clean(input$common)
 
-        tmpdir <- tempdir()
+        tmpdir <- tempfile()
+        dir.create(tmpdir, recursive = TRUE)
 
         module_df <- cbind(modules(), module_options())
 
