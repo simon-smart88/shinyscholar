@@ -51,7 +51,6 @@ tidy_purl <- function(params){
 #' @returns No return value, called for side effects
 #'
 #' @examples
-#' @examples
 #' td <- tempfile()
 #' dir.create(td, recursive = TRUE)
 #'
