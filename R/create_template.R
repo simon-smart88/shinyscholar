@@ -55,25 +55,6 @@ tidy_purl <- function(params){
 #' dir.create(td, recursive = TRUE)
 #'
 #' modules <- data.frame(
-#'   "component" = c("demo"),
-#'   "long_component" = c("demo"),
-#'   "module" = c("demo"),
-#'   "long_module" = c("demo"),
-#'   "map" = c(FALSE),
-#'   "result" = c(TRUE),
-#'   "rmd" = c(TRUE),
-#'   "save" = c(TRUE),
-#'   "async" = c(FALSE))
-#'
-#' create_template(path = td, name = "demo",
-#'                 common_objects = c("demo"), modules = modules,
-#'                 author = "demo", include_map = FALSE,
-#'                 include_table = FALSE, include_code = FALSE, install = FALSE)
-#' \dontrun{
-#' td <- tempfile()
-#' dir.create(td, recursive = TRUE)
-#'
-#' modules <- data.frame(
 #' "component" = c("data", "data", "plot", "plot"),
 #' "long_component" = c("Load data", "Load data", "Plot data", "Plot data"),
 #' "module" = c("user", "database", "histogram", "scatter"),
@@ -91,7 +72,6 @@ tidy_purl <- function(params){
 #' common_objects = common_objects, modules = modules,
 #' author = "Simon E. H. Smart", include_map = TRUE, include_table = TRUE,
 #' include_code = TRUE, install = FALSE)
-#' }
 #'
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
