@@ -65,6 +65,9 @@ Creates a skeleton app containing empty modules with options
 controlling objects in \code{common} and whether to include a map, code and tables
 }
 \examples{
+td <- tempfile()
+dir.create(td, recursive = TRUE)
+
 modules <- data.frame(
 "component" = c("data", "data", "plot", "plot"),
 "long_component" = c("Load data", "Load data", "Plot data", "Plot data"),
@@ -76,11 +79,14 @@ modules <- data.frame(
 "rmd" = c(TRUE, TRUE, TRUE, TRUE),
 "save" = c(TRUE, TRUE, TRUE, TRUE),
 "async" = c(TRUE, FALSE, FALSE, FALSE))
+
 common_objects = c("raster", "histogram", "scatter")
-create_template(path = tempdir(), name = "demo",
+
+create_template(path = td, name = "demo",
 common_objects = common_objects, modules = modules,
 author = "Simon E. H. Smart", include_map = TRUE, include_table = TRUE,
-include_code = TRUE, install = TRUE)
+include_code = TRUE, install = FALSE)
+
 }
 \author{
 Simon E. H. Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
