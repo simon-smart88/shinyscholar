@@ -2,7 +2,7 @@
 title: "A guide to developing applications with Shinyscholar"
 author: "Simon Smart"
 date: "
-2024-12-11
+2025-01-16
 "
 output: rmarkdown::html_vignette
 vignette: >
@@ -11,7 +11,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# shinyscholar (v0.2.2)
+# shinyscholar (v0.2.3)
 
 <img src="https://raw.githubusercontent.com/simon-smart88/shinyscholar/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;">
 

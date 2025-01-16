@@ -110,7 +110,7 @@ create_template <- function(path, name, common_objects, modules, author,
   online <- curl::has_internet()
 
   if (online) {
-    if (name %in% tools::CRAN_package_db()[, c("Package")]) {
+    if ((name != "shinyscholar") && (name %in% tools::CRAN_package_db()[, c("Package")])) {
       logger %>% writeLog(type = "error", "A package on CRAN already uses that name")
       return()
     }
@@ -304,8 +304,8 @@ create_template <- function(path, name, common_objects, modules, author,
   global_lines <- tidy_purl(global_params)
 
   global_yaml_target <- grep("*base_module_configs <-*", global_lines)
-  for (m in 1:nrow(modules)){
-    global_lines <- append(global_lines, glue::glue('"modules/{modules$component[m]}_{modules$module[m]}.yml",'), global_yaml_target)
+  for (m in nrow(modules):1){
+    global_lines <- append(global_lines, glue::glue('  "modules/{modules$component[m]}_{modules$module[m]}.yml",'), global_yaml_target)
   }
 
   writeLines(global_lines, file.path(path, "inst", "shiny", "global.R"))

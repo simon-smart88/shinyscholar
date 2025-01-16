@@ -1,6 +1,5 @@
 Package: shinyscholar
-Version: 0.2.2
-Date: 2025-01-14
+Version: 0.2.3
 Title: A Template for Creating Reproducible 'shiny' Applications
 Description: Create a skeleton 'shiny' application with create_template() that is
     reproducible, can be saved and meets academic standards for attribution.
@@ -71,9 +70,11 @@ Suggests:
     terra,
     testthat,
     xml2
+SystemRequirements: pandoc is required for generating reproducible reports
 License: GPL-3
 URL: https://simon-smart88.github.io/shinyscholar/
 BugReports: https://github.com/simon-smart88/shinyscholar/issues
 Encoding: UTF-8
+VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)

@@ -26,7 +26,7 @@ COMPONENTS <- {{component_list}}
 # Information about modules that various parts of the app need access to
 COMPONENT_MODULES <- list()
 
-# Loadbase modules
+# Load base modules
 base_module_configs <- c(
   "modules/rep_markdown.yml",
   "modules/rep_renv.yml",

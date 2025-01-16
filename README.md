@@ -1,4 +1,4 @@
-# shinyscholar (v0.2.2)
+# shinyscholar (v0.2.3)
 
 <img src="https://raw.githubusercontent.com/simon-smart88/shinyscholar/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;">
 
