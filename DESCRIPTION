@@ -11,7 +11,8 @@ Description: Create a skeleton 'shiny' application with create_template() that i
     practices in open science and software development. Includes functions for
     automating repetitive development tasks and an example application at
     run_shinyscholar() that requires
-    install.packages("shinyscholar", dependencies = TRUE).
+    install.packages("shinyscholar", dependencies = TRUE). A guide to developing
+    applications can be found on the package website.
 Authors@R: 
     c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut", "cre", "cph")),
       person("Tim", "Lucas", email =  "timcdlucas@gmail.com", role = c("aut"), comment = c(ORCID = "0000-0003-4694-8107")),
@@ -75,6 +76,5 @@ License: GPL-3
 URL: https://simon-smart88.github.io/shinyscholar/
 BugReports: https://github.com/simon-smart88/shinyscholar/issues
 Encoding: UTF-8
-VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
