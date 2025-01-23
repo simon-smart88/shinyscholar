@@ -9,6 +9,9 @@ show_results(parent_session)
 \arguments{
 \item{parent_session}{Session object of the main server function}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 For internal use. Switches the view to the Results tab
 }

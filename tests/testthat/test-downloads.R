@@ -1,5 +1,8 @@
-if (!no_suggests){
+if (suggests){
   test_that("{shinytest2} recording: e2e_markdown", {
+
+    skip_if(Sys.which("pandoc") == "")
+
     app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_markdown")
     app$set_inputs(tabs = "select")
     app$set_inputs(selectSel = "select_user")

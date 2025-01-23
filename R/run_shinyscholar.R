@@ -6,7 +6,7 @@
 #' random available port.
 #' @param load_file Path to a saved session file which will be loaded when the
 #' app is opened
-#'
+#' @returns No return value, called for side effects
 #' @examples
 #' if(interactive()) {
 #' run_shinyscholar()
@@ -33,7 +33,7 @@ run_shinyscholar <- function(launch.browser = TRUE, port = getOption("shiny.port
   options("citation_format" = "pandoc")
   preexisting_objects <- ls(envir = .GlobalEnv)
   on.exit(rm(list = setdiff(ls(envir = .GlobalEnv), preexisting_objects), envir = .GlobalEnv))
-  return(shiny::runApp(app_path, launch.browser = launch.browser, port = port))
+  shiny::runApp(app_path, launch.browser = launch.browser, port = port)
 }
 
 

@@ -6,6 +6,6 @@ select_user_test <- function(raster_path, save_path){
   app$set_inputs("select_user-name" = "test")
   app$click("select_user-run")
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  app$stop()
+  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
+           finally = app$stop())
 }

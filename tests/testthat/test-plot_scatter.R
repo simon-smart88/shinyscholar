@@ -1,4 +1,4 @@
-if (!no_suggests){
+if (suggests){
   sample <- 1000
   axis <- "y"
 

@@ -1,5 +1,6 @@
-#' @title Fetch a token from the NASA API
-#'
+#' @title Fetch a token from the NASA Earthdata API
+#' @description Uses the Earthdata API to fetch a token using the user's
+#' username and password
 #' @param username character. NASA Earthdata username
 #' @param password character. NASA Earthdata password
 #' @return A character string containing the token
@@ -7,33 +8,33 @@
 #' @export
 
 get_nasa_token <- function(username, password) {
-  check_suggests()
+
+  stopifnot("username must be a character string" = inherits(username, "character"))
+  stopifnot("password must be a character string" = inherits(password, "character"))
+
   token_url <- "https://urs.earthdata.nasa.gov/api/users/find_or_create_token"
   req <- httr2::request(token_url)
 
   response <- tryCatch(
-    req |>
-      httr2::req_auth_basic(username, password) |>
-      httr2::req_method("POST") |>
+    req %>%
+      httr2::req_auth_basic(username, password) %>%
+      httr2::req_method("POST") %>%
       httr2::req_perform(),
-    httr2_http_401 = function(cnd){NULL}
+    httr2_http_401 = function(cnd){stop("Incorrect username or password", call. = FALSE)}
   )
 
-  if (!is.null(response) && (response$status_code == 200)) {
+  if (httr2::resp_status(response) == 200){
     body <- response %>% httr2::resp_body_json()
     token <- body$access_token
     return(token)
   } else {
-    return()
+    stop("Something went wrong when trying to retrieve the token")
   }
-
 }
 
-#' @title select_query
-#' @description
-#' This function is called by the select_query module and loads an
-#'  FAPAR raster for the selected area.
-#'
+#' @title Load FAPAR data from NASA
+#' @description Called by the select_query module in the example app and loads an
+#'  FAPAR raster for the selected area via the Earthdata API.
 #' @param poly matrix. Coordinates of area to load
 #' @param date character.  Date of image to load in `YYYY-MM-DD` format.
 #' @param token character. NASA Earthdata API token.

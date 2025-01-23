@@ -148,7 +148,7 @@ test_that("Check create template function works as expected", {
   expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.yml")))
   expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.md")))
 
-  if (!no_suggests){
+  if (suggests){
     #there is not much to test when running the app, but this confirms that it runs
     test_that("{shinytest2} recording: testing_create_template", {
       app <- shinytest2::AppDriver$new(app_dir = file.path(directory, "shinyscholar", "inst", "shiny"), name = "create_test")
@@ -191,7 +191,7 @@ test_that("Check create template function works with false settings", {
   expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.yml")))
   expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.md")))
 
-  if (!no_suggests){
+  if (suggests){
     #there is not much to test when running the app, but this confirms that it runs
     test_that("{shinytest2} recording: testing_create_template", {
       app <- shinytest2::AppDriver$new(app_dir = file.path(directory, "shinyscholar", "inst", "shiny"), name = "create_test")

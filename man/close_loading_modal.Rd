@@ -9,6 +9,9 @@ close_loading_modal(session = getDefaultReactiveDomain())
 \arguments{
 \item{session}{The session object passed to function given to shinyServer.}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 For internal use. Close the modal once loading is complete
 }

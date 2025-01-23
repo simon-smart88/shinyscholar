@@ -7,11 +7,14 @@
 writeLog(logger, ..., type = "default")
 }
 \arguments{
-\item{logger}{The logger to write the text to. Can be NULL or a function}
+\item{logger}{The logger to write the text to. Can be \code{NULL} or a function}
 
 \item{...}{Messages to write to the logger}
 
-\item{type}{One of "default", "info", "error", "warning"}
+\item{type}{One of \code{default}, \code{info}, \code{error}, \code{warning}}
+}
+\value{
+No return value, called for side effects
 }
 \description{
 For internal use. Add text to a logger

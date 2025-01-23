@@ -51,3 +51,9 @@ shinyscholar 0.2.2
 - Updated `run_<app name>()` to take a load file as an argument which is loaded automatically.
 - Creating `load_file` containing the path to a save file will attempt to load it on app start up.
 - Made `create_template()`, `metadata()` and `save_and_load()` more robust.
+
+shinyscholar 0.2.3
+=============
+- Fixed bug caused by being on CRAN
+- Fixed bug in module ordering in `global.R`
+

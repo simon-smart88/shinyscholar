@@ -5,7 +5,6 @@
 #' and a list containing any objects to be knitted into the file.
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @keywords internal
-#' @export
 
 tidy_purl <- function(params){
   rmd <- do.call(knitr::knit_expand, params)
@@ -17,8 +16,9 @@ tidy_purl <- function(params){
   return(lines)
 }
 
-#' @title create_template
-#' @description Creates a skeleton app containing empty modules
+#' @title Create a skeleton application containing empty modules
+#' @description Creates a skeleton app containing empty modules with options
+#' controlling objects in `common` and whether to include a map, code and tables
 #' @param path character. Path to where the app should be created
 #' @param name character. Name of the app which will be used as the package name.
 #' Must be only characters and numbers and not start with a number.
@@ -48,9 +48,12 @@ tidy_purl <- function(params){
 #' @param logger Stores all notification messages to be displayed in the Log
 #'   Window. Insert the logger reactive list here for running in
 #'   shiny, otherwise leave the default `NULL`
+#' @returns No return value, called for side effects
 #'
 #' @examples
-#' \dontrun{
+#' td <- tempfile()
+#' dir.create(td, recursive = TRUE)
+#'
 #' modules <- data.frame(
 #' "component" = c("data", "data", "plot", "plot"),
 #' "long_component" = c("Load data", "Load data", "Plot data", "Plot data"),
@@ -61,13 +64,15 @@ tidy_purl <- function(params){
 #' "result" = c(FALSE, FALSE, TRUE, TRUE),
 #' "rmd" = c(TRUE, TRUE, TRUE, TRUE),
 #' "save" = c(TRUE, TRUE, TRUE, TRUE),
-#' "async = c("TRUE, FALSE, FALSE, FALSE))
+#' "async" = c(TRUE, FALSE, FALSE, FALSE))
+#'
 #' common_objects = c("raster", "histogram", "scatter")
-#' create_template(path = file.path("~", "Documents"), name = "demo",
+#'
+#' create_template(path = td, name = "demo",
 #' common_objects = common_objects, modules = modules,
 #' author = "Simon E. H. Smart", include_map = TRUE, include_table = TRUE,
-#' include_code = TRUE, install = TRUE)
-#' }
+#' include_code = TRUE, install = FALSE)
+#'
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 
@@ -105,7 +110,7 @@ create_template <- function(path, name, common_objects, modules, author,
   online <- curl::has_internet()
 
   if (online) {
-    if (name %in% tools::CRAN_package_db()[, c("Package")]) {
+    if ((name != "shinyscholar") && (name %in% tools::CRAN_package_db()[, c("Package")])) {
       logger %>% writeLog(type = "error", "A package on CRAN already uses that name")
       return()
     }
@@ -299,8 +304,8 @@ create_template <- function(path, name, common_objects, modules, author,
   global_lines <- tidy_purl(global_params)
 
   global_yaml_target <- grep("*base_module_configs <-*", global_lines)
-  for (m in 1:nrow(modules)){
-    global_lines <- append(global_lines, glue::glue('"modules/{modules$component[m]}_{modules$module[m]}.yml",'), global_yaml_target)
+  for (m in nrow(modules):1){
+    global_lines <- append(global_lines, glue::glue('  "modules/{modules$component[m]}_{modules$module[m]}.yml",'), global_yaml_target)
   }
 
   writeLines(global_lines, file.path(path, "inst", "shiny", "global.R"))

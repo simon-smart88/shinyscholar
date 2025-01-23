@@ -10,7 +10,7 @@ check_url(url)
 \item{url}{character. The URL to check}
 }
 \value{
-An httr2 response if the URL is live or NULL if it is not
+An httr2 response if the URL is live
 }
 \description{
 For internal use. Checks whether a URL is live

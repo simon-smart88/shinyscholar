@@ -1,8 +1,7 @@
-#' @title plot_scatter
-#' @description
-#' This function is called by the plot_scatter module and samples
-#'  values from a raster along with either the x or y coordinates
-#'  of the points sampled
+#' @title Extract values from a raster to produce a scatterplot
+#' @description Called by the plot_scatter module in the example app and samples
+#'  values from a raster along with either the x or y coordinates of the points
+#'  sampled
 #' @param raster SpatRaster. Raster to be sampled
 #' @param sample numeric. Number of points to sample
 #' @param axis character. Which axis coordinates of the raster to return
