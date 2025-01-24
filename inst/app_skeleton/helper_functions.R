@@ -22,8 +22,6 @@ printVecAsis <- function(x) {
 #' @export
 spurious <- function(x) {
   DT::renderDataTable(x)
-  RColorBrewer::brewer.pal(x)
-  leaflet.extras::removeDrawToolbar(x)
   rmarkdown::github_document(x)
   shinyWidgets::pickerInput(x)
   shinyjs::disable(x)

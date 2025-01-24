@@ -78,6 +78,12 @@ create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, sav
     r_file <- readLines(system.file("module_skeleton", "skeleton_async.R", package = "shinyscholar"))
   }
 
+  if (!map && async){
+    target <- grep("*explicitly call the mapping function*", r_file)
+    r_file <- r_file[-c(target:(target + 3))]
+    r_file <- gsub("*parent_session, map*", "parent_session", r_file)
+  }
+
   r_file <- paste(r_file, collapse = "\n")
   if (!map) {
     r_file <- gsub("\n\\{\\{id}}_module_map <- function.*?}\n", "", r_file)

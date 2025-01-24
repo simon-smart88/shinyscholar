@@ -110,10 +110,14 @@ for (module_config_file in all_module_configs) {
   if (exists(result_function, envir = temp_env) && is.function(get(result_function, envir = temp_env))) {
     module_config$result_function <- result_function
   }
+```
+```{r renv.ignore = TRUE, purl = {{include_map}}}
   map_function <- glue("{id}_module_map")
   if (exists(map_function, envir = temp_env) && is.function(get(map_function, envir = temp_env))) {
     module_config$map_function <- map_function
   }
+```
+```{r renv.ignore = TRUE}
   rmd_function <- glue("{id}_module_rmd")
   if (exists(rmd_function, envir = temp_env) && is.function(get(rmd_function, envir = temp_env))) {
     module_config$rmd_function <- rmd_function

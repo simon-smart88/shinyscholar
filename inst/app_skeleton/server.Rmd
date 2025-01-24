@@ -145,7 +145,7 @@ function(input, output, session) {
     core_code_module_server("core_code", common, module)
   })
 ```
-```{r renv.ignore = TRUE , purl = {{!async}}}
+```{r renv.ignore = TRUE , purl = {{!async || !include_map}}}
   ####################
   ### INITIALISATION ####
   ###################
@@ -170,7 +170,7 @@ function(input, output, session) {
     })
   })
 ```
-```{r renv.ignore = TRUE , purl = {{async}}}
+```{r renv.ignore = TRUE , purl = {{async && include_map}}}
   ####################
   ### INITIALISATION ####
   ###################
@@ -201,8 +201,14 @@ function(input, output, session) {
   ################################
 
   core_save_module_server("core_save", common, modules, COMPONENTS, input)
+```
+```{r renv.ignore = TRUE, purl = {{include_map}}}  
   core_load_module_server("core_load", common, modules, map, COMPONENT_MODULES, parent_session = session)
-  
+```
+```{r renv.ignore = TRUE, purl = {{!include_map}}}  
+  core_load_module_server("core_load", common, modules, COMPONENT_MODULES, parent_session = session)
+```
+```{r renv.ignore = TRUE}
   ################################
   ### EXPORT TEST VALUES ####
   ################################
