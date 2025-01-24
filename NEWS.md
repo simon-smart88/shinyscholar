@@ -41,7 +41,7 @@ shinyscholar 0.2.0
 
 shinyscholar 0.2.1
 =============
-- The `select_query` and `select_async` modules in the demonstration have been re-written to use a different API.
+- The `select_query` and `select_async` modules in the demonstration app have been re-written to use a different API.
 
 shinyscholar 0.2.2
 =============
@@ -57,3 +57,9 @@ shinyscholar 0.2.3
 - Fixed bug caused by being on CRAN
 - Fixed bug in module ordering in `global.R`
 
+shinyscholar 0.2.4
+=============
+- Simplified and improved `printVecAsis()` by using `dput` to support improved reproducibility e.g. by including dataframes directly
+- Removed all remnants of map when `include_map` is `FALSE` in `create_template()`
+- Install packages created by `create_template()` in tests
+- Only run markdown tests when pandoc is installed

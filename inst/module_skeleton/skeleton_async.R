@@ -24,7 +24,7 @@
       common$logger %>% writeLog(type = "starting", "Starting to run {{id}}")
       # invoke the async task
       common$tasks${{id}}$invoke()
-      # reactive the results observer if it has already been used
+      # reactivate the results observer if it has already been used
       results$resume()
 
       # METADATA ####
@@ -35,9 +35,9 @@
     results <- observe({
       # LOAD INTO COMMON ####
 
-      #fetch the result
+      # fetch the result
       result <- common$tasks${{id}}$result()
-      #suspend the observer
+      # suspend the observer
       results$suspend()
 
       # check the class of the result is the class when the function runs successfully

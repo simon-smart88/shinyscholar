@@ -4,17 +4,15 @@
 \alias{printVecAsis}
 \title{printVecAsis}
 \usage{
-printVecAsis(x, asChar = FALSE)
+printVecAsis(x)
 }
 \arguments{
-\item{x}{vector}
-
-\item{asChar}{exclude c notation at the beginning of string}
+\item{x}{object to print}
 }
 \value{
-character. The vector formatted as a string
+A character string to reproduce the object
 }
 \description{
-For internal use. Print vector as character string
+For internal use. Print objects as character string
 }
 \keyword{internal}

@@ -92,78 +92,79 @@ test_that("Check metadata function adds lines as expected", {
 
 if (suggests){
   test_that("Check that lines added by metadata are functional", {
-    upload_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),
-                       pattern = ".tif$", full.names = TRUE)
+    skip_if(Sys.which("pandoc") == "")
+    withr::with_temp_libpaths({
+      upload_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),
+                         pattern = ".tif$", full.names = TRUE)
 
-    modules <- data.frame(
-      "component" = c("test"),
-      "long_component" = c("test"),
-      "module" = c("test"),
-      "long_module" = c("test"),
-      "map" = c(TRUE),
-      "result" = c(TRUE),
-      "rmd" = c(TRUE),
-      "save" = c(TRUE),
-      "async" = c(FALSE))
+      modules <- data.frame(
+        "component" = c("test"),
+        "long_component" = c("test"),
+        "module" = c("test"),
+        "long_module" = c("test"),
+        "map" = c(TRUE),
+        "result" = c(TRUE),
+        "rmd" = c(TRUE),
+        "save" = c(TRUE),
+        "async" = c(FALSE))
 
-    td <- tempfile()
-    dir.create(td, recursive = TRUE)
-    #the name must be shinyscholar so that the calls to package files work
-    create_template(path = td, name = "shinyscholar",
-                    common_objects = c("test"), modules = modules,
-                    author = "Simon E. H. Smart", include_map = FALSE,
-                    include_table = FALSE, include_code = FALSE, install = FALSE)
+      td <- tempfile()
+      dir.create(td, recursive = TRUE)
+      name <- "shinyscholara"
 
-    test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
-    shiny_path <- file.path(td, "shinyscholar", "inst", "shiny")
-    file.copy(test_files, file.path(shiny_path, "modules"), overwrite = TRUE)
+      create_template(path = td, name = name,
+                      common_objects = c("test"), modules = modules,
+                      author = "Simon E. H. Smart", include_map = FALSE,
+                      include_table = FALSE, include_code = FALSE, install = FALSE)
 
-    metadata(file.path(td, "shinyscholar"))
+      devtools::document(file.path(td, name))
+      devtools::install(file.path(td, name), force = TRUE, quick = TRUE, dependencies = FALSE)
 
-    # edit to use newly created core_modules
-    global_lines <- readLines(file.path(shiny_path, "global.R"))
-    core_target <- grep("*core_modules <-*", global_lines)
-    global_lines[core_target] <- 'core_modules <- c(file.path("modules", "core_intro.R"), file.path("modules", "core_load.R"), file.path("modules", "core_mapping.R"), file.path("modules", "core_save.R"))'
-    writeLines(global_lines, file.path(shiny_path, "global.R"))
+      test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
+      shiny_path <- file.path(td, name, "inst", "shiny")
+      file.copy(test_files, file.path(shiny_path, "modules"), overwrite = TRUE)
 
-    app <- shinytest2::AppDriver$new(app_dir = shiny_path, name = "e2e_metadata_test")
-    app$set_inputs(tabs = "test")
-    app$set_inputs(testSel = "test_test")
-    app$set_inputs("test_test-checkbox" = TRUE)
-    app$set_inputs("test_test-checkboxgroup" = "A")
-    app$set_inputs("test_test-date" = "2024-01-01")
-    app$set_inputs("test_test-daterange" = c("2024-01-01", "2024-01-02"))
-    app$set_inputs("test_test-numeric" = 4)
-    app$set_inputs("test_test-radio" = "B")
-    app$set_inputs("test_test-select" = "C")
-    app$set_inputs("test_test-slider" = 6)
-    app$set_inputs("test_test-text" = "test1")
-    app$set_inputs("test_test-single_quote" = "test2")
-    app$set_inputs("test_test-inputid" = "test3")
-    app$set_inputs("test_test-switch" = FALSE)
-    #upload for file
-    app$upload_file("test_test-file" = upload_path)
-    app$click("test_test-run")
-    app$set_inputs(tabs = "rep")
-    app$set_inputs(repSel = "rep_markdown")
-    sess_file <- app$get_download("rep_markdown-dlRMD")
-    app$stop()
+      metadata(file.path(td, name))
 
-    expect_false(is.null(sess_file))
-    lines <- readLines(sess_file)
-    start_line <- grep("```\\{r\\}", lines)[2]
-    expect_equal(lines[start_line + 1], "TRUE")
-    expect_equal(lines[start_line + 2], "\"A\"")
-    expect_equal(lines[start_line + 3], "as.Date(\"2024-01-01\")")
-    expect_equal(lines[start_line + 4], "c(as.Date(\"2024-01-01\"), as.Date(\"2024-01-02\"))")
-    expect_equal(lines[start_line + 5], "\"bio05.tif\"")
-    expect_equal(lines[start_line + 6], "4")
-    expect_equal(lines[start_line + 7], "\"C\"")
-    expect_equal(lines[start_line + 8], "6")
-    expect_equal(lines[start_line + 9], "\"test1\"")
-    expect_equal(lines[start_line + 10], "\"test2\"")
-    expect_equal(lines[start_line + 11], "\"test3\"")
-    expect_equal(lines[start_line + 12], "\"B\"")
-    expect_equal(lines[start_line + 13], "FALSE")
+      app <- shinytest2::AppDriver$new(app_dir = shiny_path, name = "e2e_metadata_test")
+      app$set_inputs(tabs = "test")
+      app$set_inputs(testSel = "test_test")
+      app$set_inputs("test_test-checkbox" = TRUE)
+      app$set_inputs("test_test-checkboxgroup" = "A")
+      app$set_inputs("test_test-date" = "2024-01-01")
+      app$set_inputs("test_test-daterange" = c("2024-01-01", "2024-01-02"))
+      app$set_inputs("test_test-numeric" = 4)
+      app$set_inputs("test_test-radio" = "B")
+      app$set_inputs("test_test-select" = "C")
+      app$set_inputs("test_test-slider" = 6)
+      app$set_inputs("test_test-text" = "test1")
+      app$set_inputs("test_test-single_quote" = "test2")
+      app$set_inputs("test_test-inputid" = "test3")
+      app$set_inputs("test_test-switch" = FALSE)
+      #upload for file
+      app$upload_file("test_test-file" = upload_path)
+      app$click("test_test-run")
+      app$set_inputs(tabs = "rep")
+      app$set_inputs(repSel = "rep_markdown")
+      sess_file <- app$get_download("rep_markdown-dlRMD")
+      app$stop()
+
+      expect_false(is.null(sess_file))
+      lines <- readLines(sess_file)
+      start_line <- grep("```\\{r\\}", lines)[2]
+      expect_equal(lines[start_line + 1], "TRUE")
+      expect_equal(lines[start_line + 2], "\"A\"")
+      expect_equal(lines[start_line + 3], "structure(19723, class = \"Date\")")
+      expect_equal(lines[start_line + 4], "structure(c(19723, 19724), class = \"Date\")")
+      expect_equal(lines[start_line + 5], "\"bio05.tif\"")
+      expect_equal(lines[start_line + 6], "4")
+      expect_equal(lines[start_line + 7], "\"C\"")
+      expect_equal(lines[start_line + 8], "6")
+      expect_equal(lines[start_line + 9], "\"test1\"")
+      expect_equal(lines[start_line + 10], "\"test2\"")
+      expect_equal(lines[start_line + 11], "\"test3\"")
+      expect_equal(lines[start_line + 12], "\"B\"")
+      expect_equal(lines[start_line + 13], "FALSE")
+    })
   })
 }
