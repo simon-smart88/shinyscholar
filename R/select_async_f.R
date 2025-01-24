@@ -60,11 +60,11 @@ select_async <- function(poly, date, token, async = FALSE) {
   check <- check_url(search_url)
 
   if (!is.null(check)){
-    image_req <- httr2::request(search_url ) |>
-      httr2::req_auth_bearer_token(token) |>
+    image_req <- httr2::request(search_url ) %>%
+      httr2::req_auth_bearer_token(token) %>%
       httr2::req_perform()
 
-    image_resp <- image_req |> httr2::resp_body_html()
+    image_resp <- image_req %>% httr2::resp_body_html()
 
     image_links <- xml2::xml_find_all(image_resp, "//a")
     image_urls <- xml2::xml_attr(image_links, "href")
@@ -76,8 +76,8 @@ select_async <- function(poly, date, token, async = FALSE) {
   raster <- NULL
   for (file in image_urls){
     if (tools::file_ext(file) == "hdf"){
-      req <- httr2::request(file) |>
-        httr2::req_auth_bearer_token(token) |>
+      req <- httr2::request(file) %>%
+        httr2::req_auth_bearer_token(token) %>%
         httr2::req_perform()
 
       temp <- tempfile(fileext = ".hdf")
