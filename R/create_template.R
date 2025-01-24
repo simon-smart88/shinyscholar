@@ -424,7 +424,7 @@ create_template <- function(path, name, common_objects, modules, author,
   rmd_intro_lines <- rmd_intro_lines[-terra_line]
 
   rmd_intro_lines <- gsub("shinyscholar", name, rmd_intro_lines)
-  rmd_intro_lines <- gsub("v0\\.2\\.3", "v0.0.1", rmd_intro_lines)
+  rmd_intro_lines <- gsub("v\\d+\\.\\d+\\.\\d+", "v0.0.1", rmd_intro_lines)
 
   if (!include_map){
     leaflet_line <- grep("*library\\(leaflet)*", rmd_intro_lines)
