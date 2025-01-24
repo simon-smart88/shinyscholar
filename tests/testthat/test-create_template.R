@@ -140,6 +140,7 @@ test_that("Check create template function works as expected", {
          common_objects = common_objects, modules = modules,
          author = "Simon E. H. Smart", install = FALSE)
 
+    devtools::document(file.path(directory, name))
     devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
 
     expect_true(file.exists(file.path(directory, name, "inst", "shiny", "server.R")))
@@ -178,6 +179,7 @@ test_that("Check create template function works with false settings", {
                     author = "Simon E. H. Smart", include_map = FALSE,
                     include_table = FALSE, include_code = FALSE, install = FALSE)
 
+    devtools::document(file.path(directory, name))
     devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
 
     expect_true(file.exists(file.path(directory, name, "inst", "shiny", "server.R")))
@@ -219,6 +221,7 @@ test_that("Check async, no map runs correctly", {
                   author = "Simon E. H. Smart", include_map = FALSE,
                   include_table = FALSE, include_code = FALSE, install = FALSE)
 
+      devtools::document(file.path(directory, name))
       devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
 
       app <- shinytest2::AppDriver$new(app_dir = file.path(directory, name, "inst", "shiny"), name = "create_test")
@@ -246,6 +249,7 @@ test_that("Check async, with map runs correctly", {
                     author = "Simon E. H. Smart", include_map = TRUE,
                     include_table = FALSE, include_code = TRUE, install = FALSE)
 
+    devtools::document(file.path(directory, name))
     devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
 
     app <- shinytest2::AppDriver$new(app_dir = file.path(directory, name, "inst", "shiny"), name = "create_test")

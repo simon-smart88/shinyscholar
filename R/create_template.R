@@ -531,9 +531,6 @@ create_template <- function(path, name, common_objects, modules, author,
   writeLines(test_lines, file.path(path, "tests", "testthat", paste0("test-", module_name, ".R")))
   }
 
-  # Document ====
-  devtools::document(path)
-
   # Install package ====
   if (install){
   devtools::install_local(path = path, force = TRUE)
