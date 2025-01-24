@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shinyscholar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.4</span>
       </span>
     </div>
 
@@ -44,7 +44,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href="https://github.com/simon-smart88/shinyscholar/blob/v0.2.3/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/simon-smart88/shinyscholar/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
@@ -93,7 +93,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.1" id="shinyscholar-021">shinyscholar 0.2.1<a class="anchor" aria-label="anchor" href="#shinyscholar-021"></a></h2>
-<ul><li>The <code>select_query</code> and <code>select_async</code> modules in the demonstration have been re-written to use a different API.</li>
+<ul><li>The <code>select_query</code> and <code>select_async</code> modules in the demonstration app have been re-written to use a different API.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.2" id="shinyscholar-022">shinyscholar 0.2.2<small>2025-01-15</small><a class="anchor" aria-label="anchor" href="#shinyscholar-022"></a></h2>
@@ -105,10 +105,18 @@
 <li>Made <code><a href="../reference/create_template.html">create_template()</a></code>, <code><a href="../reference/metadata.html">metadata()</a></code> and <code><a href="../reference/save_and_load.html">save_and_load()</a></code> more robust.</li>
 </ul></div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.3" id="shinyscholar-023">shinyscholar 0.2.3<a class="anchor" aria-label="anchor" href="#shinyscholar-023"></a></h2>
+<h2 class="page-header" data-toc-text="0.2.3" id="shinyscholar-023">shinyscholar 0.2.3<small>2025-01-17</small><a class="anchor" aria-label="anchor" href="#shinyscholar-023"></a></h2>
 <ul><li>Fixed bug caused by being on CRAN</li>
 <li>Fixed bug in module ordering in <code>global.R</code>
 </li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.4" id="shinyscholar-024">shinyscholar 0.2.4<a class="anchor" aria-label="anchor" href="#shinyscholar-024"></a></h2>
+<ul><li>Simplified and improved <code><a href="../reference/printVecAsis.html">printVecAsis()</a></code> by using <code>dput</code> to support improved reproducibility e.g. by including dataframes directly</li>
+<li>Removed all remnants of map when <code>include_map</code> is <code>FALSE</code> in <code><a href="../reference/create_template.html">create_template()</a></code>
+</li>
+<li>Install packages created by <code><a href="../reference/create_template.html">create_template()</a></code> in tests</li>
+<li>Only run markdown tests when pandoc is installed</li>
 </ul></div>
   </div>
 
