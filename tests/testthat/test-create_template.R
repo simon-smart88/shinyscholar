@@ -140,9 +140,6 @@ test_that("Check create template function works as expected", {
          common_objects = common_objects, modules = modules,
          author = "Simon E. H. Smart", install = FALSE)
 
-    devtools::document(file.path(directory, name))
-    devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
-
     expect_true(file.exists(file.path(directory, name, "inst", "shiny", "server.R")))
     expect_true(file.exists(file.path(directory, name, "inst", "shiny", "ui.R")))
     expect_true(file.exists(file.path(directory, name, "inst", "shiny", "global.R")))
@@ -154,6 +151,9 @@ test_that("Check create template function works as expected", {
     expect_true(file.exists(file.path(directory, name, "inst", "shiny", "modules", "select_user.md")))
 
     if (suggests){
+      devtools::document(file.path(directory, name))
+      devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
+
       app <- shinytest2::AppDriver$new(app_dir = file.path(directory, name, "inst", "shiny"), name = "create_test")
       common <- app$get_value(export = "common")
       expect_true(is.null(common$raster))
@@ -179,8 +179,7 @@ test_that("Check create template function works with false settings", {
                     author = "Simon E. H. Smart", include_map = FALSE,
                     include_table = FALSE, include_code = FALSE, install = FALSE)
 
-    devtools::document(file.path(directory, name))
-    devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
+
 
     expect_true(file.exists(file.path(directory, name, "inst", "shiny", "server.R")))
     expect_true(file.exists(file.path(directory, name, "inst", "shiny", "ui.R")))
@@ -195,6 +194,9 @@ test_that("Check create template function works with false settings", {
     expect_false(file.exists(file.path(directory, name, "inst", "shiny", "modules", "core_code.R")))
 
     if (suggests){
+      devtools::document(file.path(directory, name))
+      devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
+
       app <- shinytest2::AppDriver$new(app_dir = file.path(directory, name, "inst", "shiny"), name = "create_test")
       common <- app$get_value(export = "common")
       expect_true(is.null(common$raster))
