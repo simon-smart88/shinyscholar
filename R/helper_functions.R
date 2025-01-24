@@ -11,7 +11,7 @@ printVecAsis <- function(x) {
   if (is.numeric(x) && length(x) == 1){
     return(x)
   } else {
-    capture.output(dput(x))
+    utils::capture.output(dput(x))
   }
 }
 

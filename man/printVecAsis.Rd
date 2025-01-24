@@ -12,9 +12,6 @@ printVecAsis(x)
 \value{
 A character string to reproduce the object
 }
-\value{
-character. The vector formatted as a string
-}
 \description{
 For internal use. Print objects as character string
 }
