@@ -12,7 +12,7 @@ shinyscholar 0.1.0
 2. Due to objects inside `common` not being inherently reactive, event triggers have been added using `{gargoyle}`
 3. A Code tab has been added to the Visualization panel to allow the code for each module and the function that each module calls to be viewed.
 4. Unit tests for each module have been created using `{shinytest2}` in addition to unit tests for the function that the module calls.
-5. ~~Added a new function `run_module()` which can be used to run a single module.~~ Removed in 0.2.2 use `run_<app name>()` or `load_file`
+5. ~~Added a new function `run_module()` which can be used to run a single module.~~ Removed in 0.2.2 use `run_<app name>()` or `load_file_path`
 6. Added a new function `create_template()` which can be used to create a skeleton app.
 7. Added a Dockerfile which can be used to run the app on a shiny-server.
 8. Added `show_loading_modal()` which uses `{shinybusy}` to display a modal whilst slow functions are running.
@@ -49,7 +49,7 @@ shinyscholar 0.2.2
 - Moved all packages to Suggests unless they are required for development of new applications.
 - Added `asyncLog()` to improve logging from inside async functions.
 - Updated `run_<app name>()` to take a load file as an argument which is loaded automatically.
-- Creating `load_file` containing the path to a save file will attempt to load it on app start up.
+- Creating `load_file_path` containing the path to a save file will attempt to load it on app start up.
 - Made `create_template()`, `metadata()` and `save_and_load()` more robust.
 
 shinyscholar 0.2.3
