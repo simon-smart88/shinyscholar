@@ -19,7 +19,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
   # pick a random location over land, but fail safely in case the API is broken
   observeEvent(input$random, {
     random_land <- httr2::request("https://api.3geonames.org/?randomland=yes") |> httr2::req_perform()
-    if (random_land$status_code == 200){
+    if (httr2::resp_status(random_land) == 200){
       content_type <- httr2::resp_content_type(random_land)
       if (grepl("application/xml|text/xml", content_type)) {
         random_land <- httr2::resp_body_xml(random_land) |> xml2::as_list()
@@ -150,19 +150,23 @@ select_async_module_server <- function(id, common, parent_session, map) {
 }
 
 select_async_module_map <- function(map, common) {
+
   ex <- as.vector(terra::ext(common$raster))
-  pal <- colorBin("Greens", domain = terra::values(common$raster), bins = 9, na.color = "pink")
+  pal <- RColorBrewer::brewer.pal(9, "Greens")
+  custom_greens <- colorRampPalette(pal)(10)
+  color_bins <- colorBin(custom_greens, domain = terra::values(common$raster), bins = 10, na.color = "pink")
   name <- common$meta$select_async$name
+
   map %>%
     leaflet.extras::removeDrawToolbar(clearFeatures = TRUE) %>%
     leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE, markerOptions = FALSE,
-                   circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE) %>%
+                                   circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE) %>%
     clearGroup(name) %>%
     removeControl(name) %>%
-    addRasterImage(common$raster, colors = pal, group = name) %>%
+    addRasterImage(common$raster, colors = color_bins, group = name) %>%
     addTiles(urlTemplate = "", attribution = "MODIS data via LAADS DAAC") %>%
     fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-    addLegend(position = "bottomright", pal = pal, values = terra::values(common$raster),
+    addLegend(position = "bottomright", pal = color_bins, values = terra::values(common$raster),
               group = name, title = name, layer = name) %>%
     addLayersControl(overlayGroups = name, options = layersControlOptions(collapsed = FALSE))
 }

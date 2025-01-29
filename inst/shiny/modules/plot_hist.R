@@ -49,7 +49,7 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
     content = function(file) {
       png(file, width = 1000, height = 500)
       pal <- RColorBrewer::brewer.pal(9, common$meta$plot_hist$pal)
-      pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
+      pal_ramp <- colorRampPalette(pal)
       bins <- common$meta$plot_hist$bins
       cols <- pal_ramp(bins)
       plot(common$histogram, freq = FALSE, main = "", xlab = common$meta$plot_hist$name, ylab = "Frequency (%)", col = cols)
