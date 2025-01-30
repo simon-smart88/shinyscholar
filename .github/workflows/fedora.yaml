@@ -28,7 +28,7 @@ jobs:
           libcurl-devel openssl-devel libxml2-devel \
           bzip2-devel zlib-devel xz-devel pcre2-devel readline-devel libicu-devel \
           libjpeg-turbo-devel libpng-devel libtiff-devel cairo-devel pango-devel \
-          texlive-latex texlive-fonts-extra
+          texlive-latex
 
       - name: Install R package dependencies
         run: |
