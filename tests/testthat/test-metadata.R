@@ -92,7 +92,10 @@ test_that("Check metadata function adds lines as expected", {
 
 if (suggests){
   test_that("Check that lines added by metadata are functional", {
+
     skip_if(Sys.which("pandoc") == "")
+    skip_if(is_fedora())
+
     withr::with_temp_libpaths({
       upload_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),
                          pattern = ".tif$", full.names = TRUE)

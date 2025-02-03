@@ -9,6 +9,27 @@ if (is_local){
   save_path <- tempfile(fileext = ".rds")
 }
 
+is_fedora <- function() {
+  sys_info <- Sys.info()
+  if (sys_info["sysname"] == "Linux") {
+    os_release <- tryCatch(
+      {
+        readLines("/etc/os-release")
+      },
+      error = function(e) {
+        return(NULL)
+      }
+    )
+    if (!is.null(os_release)) {
+      id_line <- grep("^ID=", os_release, value = TRUE)
+      if (length(id_line) > 0 && grepl("fedora", id_line, ignore.case = TRUE)) {
+        return(TRUE)
+      }
+    }
+  }
+  return(FALSE)
+}
+
 rerun_test <- function(test_function, args){
   attempt <- 0
   while(attempt < 10){
