@@ -144,6 +144,15 @@ function(input, output, session) {
     core_code_module_server("core_code", common, module)
   })
 
+  ############################################# #
+  ### RUN MODULE ON ENTER ####
+  ############################################# #
+
+  observeEvent(input$run_module, {
+    req(module())
+    shinyjs::runjs(glue::glue("document.getElementById('{module()}-run').click();"))
+  })
+
   ####################
   ### INITIALISATION ####
   ###################

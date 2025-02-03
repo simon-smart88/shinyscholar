@@ -35,8 +35,10 @@ select_user_module_server <- function(id, common, parent_session, map) {
     # TRIGGER ####
     gargoyle::trigger("select_user")
     show_map(parent_session)
-  })
+    # only required for testing enter key input
+    shinyjs::runjs("Shiny.setInputValue('select_user-complete', 'complete');")
 
+  })
   return(list(
     save = function() {list(
       ### Manual save start
