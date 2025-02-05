@@ -72,7 +72,7 @@ Imports:
     xml2
 Suggests:
     shinytest2,
-    testthat
+    testthat,
     withr
 SystemRequirements: pandoc is required for generating reproducible reports
 License: GPL-3
