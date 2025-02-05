@@ -236,27 +236,30 @@ test_that("Check async, no map runs correctly", {
 
 test_that("Check async, with map runs correctly", {
   if (suggests){
-    modules$map <- c(TRUE, FALSE, FALSE, FALSE)
-    modules$result <- c(TRUE, FALSE, FALSE, FALSE)
-    modules$rmd = c(FALSE, FALSE, FALSE, FALSE)
-    modules$save = c(FALSE, FALSE, FALSE, FALSE)
-    modules$async = c(TRUE, FALSE, FALSE, FALSE)
+    withr::with_temp_libpaths({
+      modules$map <- c(TRUE, FALSE, FALSE, FALSE)
+      modules$result <- c(TRUE, FALSE, FALSE, FALSE)
+      modules$rmd = c(FALSE, FALSE, FALSE, FALSE)
+      modules$save = c(FALSE, FALSE, FALSE, FALSE)
+      modules$async = c(TRUE, FALSE, FALSE, FALSE)
 
-    directory <- tempfile()
-    dir.create(directory, recursive = TRUE)
-    name <- "shinyscholard"
+      directory <- tempfile()
+      dir.create(directory, recursive = TRUE)
+      name <- "shinyscholard"
 
-    create_template(path = directory, name = name,
-                    common_objects = common_objects, modules = modules,
-                    author = "Simon E. H. Smart", include_map = TRUE,
-                    include_table = FALSE, include_code = TRUE, install = FALSE)
+      create_template(path = directory, name = name,
+                      common_objects = common_objects, modules = modules,
+                      author = "Simon E. H. Smart", include_map = TRUE,
+                      include_table = FALSE, include_code = TRUE, install = FALSE)
 
-    devtools::document(file.path(directory, name))
-    devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
+      devtools::document(file.path(directory, name))
+      devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
 
-    app <- shinytest2::AppDriver$new(app_dir = file.path(directory, name, "inst", "shiny"), name = "create_test")
-    common <- app$get_value(export = "common")
-    expect_true(is.null(common$raster))
-    app$stop()
+      app <- shinytest2::AppDriver$new(app_dir = file.path(directory, name, "inst", "shiny"), name = "create_test")
+      common <- app$get_value(export = "common")
+      expect_true(is.null(common$raster))
+      app$stop()
+    })
   }
 })
+
