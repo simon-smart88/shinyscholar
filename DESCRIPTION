@@ -1,5 +1,5 @@
 Package: shinyscholar
-Version: 0.2.4
+Version: 0.2.5
 Title: A Template for Creating Reproducible 'shiny' Applications
 Description: Create a skeleton 'shiny' application with create_template() that is
     reproducible, can be saved and meets academic standards for attribution.

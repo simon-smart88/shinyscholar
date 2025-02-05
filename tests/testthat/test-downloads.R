@@ -2,6 +2,7 @@ if (suggests){
   test_that("{shinytest2} recording: e2e_markdown", {
 
     skip_if(Sys.which("pandoc") == "")
+    skip_if(is_fedora())
 
     app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_markdown")
     app$set_inputs(tabs = "select")
@@ -33,6 +34,9 @@ if (suggests){
     })
 
   test_that("{shinytest2} recording: e2e_table_download", {
+
+    skip_if(is_fedora())
+
     app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_table_download")
     app$set_inputs(tabs = "select")
     app$set_inputs(selectSel = "select_user")
@@ -47,6 +51,9 @@ if (suggests){
     })
 
   test_that("{shinytest2} recording: e2e_plot_downloads", {
+
+    skip_if(is_fedora())
+
     app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_plot_downloads")
     app$set_inputs(tabs = "select")
     app$set_inputs(selectSel = "select_user")

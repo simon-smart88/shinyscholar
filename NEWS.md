@@ -63,3 +63,9 @@ shinyscholar 0.2.4
 - Removed all remnants of map when `include_map` is `FALSE` in `create_template()`
 - Install packages created by `create_template()` in tests
 - Only run markdown tests when pandoc is installed
+
+shinyscholar 0.2.5
+=============
+- Fix bug in writeLog when `type = warning`
+- Skip tests that download files on Fedora systems
+- Module `run` buttons can be pressed using the Enter key

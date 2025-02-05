@@ -17,7 +17,7 @@ core_intro_module_server <- function(id, common, parent_session) {
                                                                                          $('input[value=\"select_query\"]').trigger('click');"),
                         c("#select_queryHelp", "Click on the question mark to view instructions for the module", "bottom", "$('a[data-value=\"Module Guidance\"]').trigger('click');"),
                         c("#select_query-date", "Choose from the list of options", "right", "$('a[data-value=\"Map\"]').trigger('click');"),
-                        c("#select_query-run", "Click the button to run the module", "bottom", NA),
+                        c("#select_query-run", "Click the button or press the Enter key to run the module", "bottom", NA),
                         c("a[data-value=\"Map\"]", "Outputs will be loaded onto the Map...", "bottom", NA),
                         c("a[data-value=\"Table\"]", "or the Table...", "bottom", "$('a[data-value=\"Table\"]').trigger('click');"),
                         c("a[data-value=\"Results\"]", "or the Results tabs depending on the module", "bottom", "$('a[data-value=\"Results\"]').trigger('click');"),

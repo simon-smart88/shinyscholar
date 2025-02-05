@@ -10,9 +10,23 @@ if (suggests){
   })
 
   test_that("{shinytest2} recording: e2e_select_user", {
+
+    skip_if(is_fedora())
+
     rerun_test("select_user_test", list(raster_path = raster_path, save_path = save_path))
     common <- readRDS(save_path)
     common$raster <- terra::unwrap(common$raster)
     expect_is(common$raster, "SpatRaster")
   })
+
+  test_that("{shinytest2} recording: e2e_select_user_enter", {
+
+    skip_if(is_fedora())
+
+    rerun_test("select_user_test_enter", list(raster_path = raster_path, save_path = save_path))
+    common <- readRDS(save_path)
+    common$raster <- terra::unwrap(common$raster)
+    expect_is(common$raster, "SpatRaster")
+  })
+
 }
