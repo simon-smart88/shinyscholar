@@ -14,8 +14,14 @@ tagList(
     id = "tabs",
     collapsible = TRUE,
     header = tagList(
-      tags$head(tags$link(href = "css/styles.css", rel = "stylesheet"))
-    ),
+      tags$head(tags$link(href = "css/styles.css", rel = "stylesheet"),
+                # run current module on enter key press
+                tags$script(HTML("$(document).on('keydown', function(e) {
+                                    if (e.keyCode == 13) {
+                                      Shiny.onInputChange('run_module', new Date().getTime());
+                                    }
+      });"))
+    )),
     title = img(src = "logo.png", height = "50", width = "50",
                 style = "margin-top: -15px"),
     windowTitle = "shinyscholar",

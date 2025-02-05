@@ -2,44 +2,16 @@
 # MISC #
 ####################### #
 #' @title printVecAsis
-#' @description For internal use. Print vector as character string
-#' @param x vector
-#' @param asChar exclude c notation at the beginning of string
-#' @returns character. The vector formatted as a string
+#' @description For internal use. Print objects as character string
+#' @param x object to print
+#' @return A character string to reproduce the object
 #' @keywords internal
 #' @export
-printVecAsis <- function(x, asChar = FALSE) {
-  if (is.null(x)){
-    return("NULL")
-  }
-  if (is.character(x)) {
-    if (length(x) == 1) {
-      return(paste0("\"", x, "\""))
-    } else {
-      if (asChar == FALSE) {
-        return(paste0("c(", paste(sapply(x, function(a) paste0("\"", a, "\"")),
-                                  collapse = ", "), ")"))
-      } else {
-        return(paste0("(", paste(sapply(x, function(a) paste0("\"", a, "\"")),
-                                 collapse = ", "), ")"))
-      }
-    }
-  } else if ("Date" %in% class(x)){
-    if (length(x) == 1) {
-      return(paste0("as.Date(\"", x ,"\")"))
-    } else {
-      return(paste0("c(", paste(paste0("as.Date(\"", x ,"\")"), collapse = ", "), ")"))
-    }
+printVecAsis <- function(x) {
+  if (is.numeric(x) && length(x) == 1){
+    return(x)
   } else {
-    if (length(x) == 1) {
-      return(x)
-    } else {
-      if (asChar == FALSE) {
-        return(paste0("c(", paste(x, collapse = ", "), ")"))
-      } else {
-        return(paste0("(", paste(x, collapse = ", "), ")"))
-      }
-    }
+    utils::capture.output(dput(x))
   }
 }
 
@@ -52,7 +24,7 @@ printVecAsis <- function(x, asChar = FALSE) {
 check_url <- function(url){
   req <- httr2::request(url)
   resp <- tryCatch(
-    req |> httr2::req_perform(),
+    req %>% httr2::req_perform(),
     httr2_http_404 = function(cnd){NULL},
     httr2_failure = function(cnd){NULL},
     httr2_error = function(cnd){NULL}
@@ -147,8 +119,8 @@ writeLog <- function(logger, ..., type = "default") {
         shinyalert::shinyalert("Please, check Log window for more information ",
                                type = "warning")
 
-        pre <- paste0(icon("triangle-exclamation", class = "log_warn"), " ")
       }
+      pre <- paste0(icon("triangle-exclamation", class = "log_warn"), " ")
     }
     newEntries <- paste0("<br>", pre, ..., collapse = "")
     logger(paste0(logger(), newEntries))

@@ -18,12 +18,12 @@ test_that("Check create template returns expected errors", {
   dir.create(directory, recursive = TRUE)
   dir.create(file.path(directory, "existing"))
 
-  expect_error(create_template(path = 123, name = "shinyscholar",
+  expect_error(create_template(path = 123, name = "shinyscholara",
                common_objects = common_objects, modules = modules,
                author = "Simon E. H. Smart", install = FALSE, logger = NULL),
                "path must be a character string")
 
-  expect_error(create_template(path = "~/a_faulty_path", name = "shinyscholar",
+  expect_error(create_template(path = "~/a_faulty_path", name = "shinyscholara",
                common_objects = common_objects, modules = modules,
                author = "Simon E. H. Smart", install = FALSE, logger = NULL),
                "The specified path does not exist")
@@ -128,73 +128,105 @@ test_that("Check create template returns expected errors", {
 })
 
 test_that("Check create template function works as expected", {
+  withr::with_temp_libpaths({
+    modules$map <- c(TRUE, TRUE, FALSE, FALSE)
 
-  modules$map <- c(TRUE, TRUE, FALSE, FALSE)
+    directory <- tempfile()
+    dir.create(directory, recursive = TRUE)
 
-  directory <- tempfile()
-  dir.create(directory, recursive = TRUE)
-  #the name must be shinyscholar so that the calls to package files work
-  create_template(path = directory, name = "shinyscholar",
-       common_objects = common_objects, modules = modules,
-       author = "Simon E. H. Smart", install = FALSE)
+    name <- "shinyscholara"
 
-  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "server.R")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "ui.R")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "global.R")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "R", "select_user_f.R")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "R", "run_shinyscholar.R")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.R")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.Rmd")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.yml")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.md")))
+    create_template(path = directory, name = name,
+         common_objects = common_objects, modules = modules,
+         author = "Simon E. H. Smart", install = FALSE)
 
-  if (suggests){
-    #there is not much to test when running the app, but this confirms that it runs
-    test_that("{shinytest2} recording: testing_create_template", {
-      app <- shinytest2::AppDriver$new(app_dir = file.path(directory, "shinyscholar", "inst", "shiny"), name = "create_test")
+    expect_true(file.exists(file.path(directory, name, "inst", "shiny", "server.R")))
+    expect_true(file.exists(file.path(directory, name, "inst", "shiny", "ui.R")))
+    expect_true(file.exists(file.path(directory, name, "inst", "shiny", "global.R")))
+    expect_true(file.exists(file.path(directory, name, "R", "select_user_f.R")))
+    expect_true(file.exists(file.path(directory, name, "R", paste0("run_", name, ".R"))))
+    expect_true(file.exists(file.path(directory, name, "inst", "shiny", "modules", "select_user.R")))
+    expect_true(file.exists(file.path(directory, name, "inst", "shiny", "modules", "select_user.Rmd")))
+    expect_true(file.exists(file.path(directory, name, "inst", "shiny", "modules", "select_user.yml")))
+    expect_true(file.exists(file.path(directory, name, "inst", "shiny", "modules", "select_user.md")))
+
+    if (suggests){
+      devtools::document(file.path(directory, name))
+      devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
+
+      app <- shinytest2::AppDriver$new(app_dir = file.path(directory, name, "inst", "shiny"), name = "create_test")
       common <- app$get_value(export = "common")
       expect_true(is.null(common$raster))
       app$stop()
-    })
-  }
-
+    }
+  })
 })
 
 test_that("Check create template function works with false settings", {
+  withr::with_temp_libpaths({
+    modules$map <- c(FALSE, FALSE, FALSE, FALSE)
+    modules$result <- c(TRUE, FALSE, FALSE, FALSE)
+    modules$rmd = c(FALSE, FALSE, FALSE, FALSE)
+    modules$save = c(FALSE, FALSE, FALSE, FALSE)
+    modules$async = c(FALSE, FALSE, FALSE, FALSE)
 
-  modules$map <- c(FALSE, FALSE, FALSE, FALSE)
-  modules$result <- c(TRUE, FALSE, FALSE, FALSE)
-  modules$rmd = c(FALSE, FALSE, FALSE, FALSE)
-  modules$save = c(FALSE, FALSE, FALSE, FALSE)
-  modules$async = c(FALSE, FALSE, FALSE, FALSE)
+    directory <- tempfile()
+    dir.create(directory, recursive = TRUE)
+    name <- "shinyscholarb"
 
-  directory <- tempfile()
-  dir.create(directory, recursive = TRUE)
-  #the name must be shinyscholar so that the calls to package files work
-  create_template(path = directory, name = "shinyscholar",
+    create_template(path = directory, name = name,
+                    common_objects = common_objects, modules = modules,
+                    author = "Simon E. H. Smart", include_map = FALSE,
+                    include_table = FALSE, include_code = FALSE, install = FALSE)
+
+
+
+    expect_true(file.exists(file.path(directory, name, "inst", "shiny", "server.R")))
+    expect_true(file.exists(file.path(directory, name, "inst", "shiny", "ui.R")))
+    expect_true(file.exists(file.path(directory, name, "inst", "shiny", "global.R")))
+    expect_true(file.exists(file.path(directory, name, "R", "select_user_f.R")))
+    expect_true(file.exists(file.path(directory, name, "R", paste0("run_", name, ".R"))))
+    expect_true(file.exists(file.path(directory, name, "inst", "shiny", "modules", "select_user.R")))
+    expect_true(file.exists(file.path(directory, name, "inst", "shiny", "modules", "select_user.yml")))
+    expect_true(file.exists(file.path(directory, name, "inst", "shiny", "modules", "select_user.md")))
+    expect_false(file.exists(file.path(directory, name, "inst", "shiny", "modules", "select_user.Rmd")))
+    expect_false(file.exists(file.path(directory, name, "inst", "shiny", "modules", "core_mapping.R")))
+    expect_false(file.exists(file.path(directory, name, "inst", "shiny", "modules", "core_code.R")))
+
+    if (suggests){
+      devtools::document(file.path(directory, name))
+      devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
+
+      app <- shinytest2::AppDriver$new(app_dir = file.path(directory, name, "inst", "shiny"), name = "create_test")
+      common <- app$get_value(export = "common")
+      expect_true(is.null(common$raster))
+      app$stop()
+    }
+  })
+})
+
+test_that("Check async, no map runs correctly", {
+  if (suggests){
+    withr::with_temp_libpaths({
+      modules$map <- c(FALSE, FALSE, FALSE, FALSE)
+      modules$result <- c(TRUE, FALSE, FALSE, FALSE)
+      modules$rmd = c(FALSE, FALSE, FALSE, FALSE)
+      modules$save = c(FALSE, FALSE, FALSE, FALSE)
+      modules$async = c(TRUE, FALSE, FALSE, FALSE)
+
+      directory <- tempfile()
+      dir.create(directory, recursive = TRUE)
+      name <- "shinyscholarc"
+
+      create_template(path = directory, name = name,
                   common_objects = common_objects, modules = modules,
                   author = "Simon E. H. Smart", include_map = FALSE,
                   include_table = FALSE, include_code = FALSE, install = FALSE)
 
-  global <- readLines(file.path(directory, "shinyscholar", "inst", "shiny", "global.R"))
-  core_target <- grep("core_modules <-", global)
-  global[core_target] <- 'core_modules <- c(file.path("modules", "core_intro.R"), file.path("modules", "core_load.R"), file.path("modules", "core_save.R"))'
-  writeLines(global, file.path(directory, "shinyscholar", "inst", "shiny", "global.R"))
+      devtools::document(file.path(directory, name))
+      devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
 
-  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "server.R")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "ui.R")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "global.R")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "R", "select_user_f.R")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "R", "run_shinyscholar.R")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.R")))
-  expect_false(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.Rmd")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.yml")))
-  expect_true(file.exists(file.path(directory, "shinyscholar", "inst", "shiny", "modules", "select_user.md")))
-
-  if (suggests){
-    #there is not much to test when running the app, but this confirms that it runs
-    test_that("{shinytest2} recording: testing_create_template", {
-      app <- shinytest2::AppDriver$new(app_dir = file.path(directory, "shinyscholar", "inst", "shiny"), name = "create_test")
+      app <- shinytest2::AppDriver$new(app_dir = file.path(directory, name, "inst", "shiny"), name = "create_test")
       common <- app$get_value(export = "common")
       expect_true(is.null(common$raster))
       app$stop()
@@ -202,3 +234,29 @@ test_that("Check create template function works with false settings", {
   }
 })
 
+test_that("Check async, with map runs correctly", {
+  if (suggests){
+    modules$map <- c(TRUE, FALSE, FALSE, FALSE)
+    modules$result <- c(TRUE, FALSE, FALSE, FALSE)
+    modules$rmd = c(FALSE, FALSE, FALSE, FALSE)
+    modules$save = c(FALSE, FALSE, FALSE, FALSE)
+    modules$async = c(TRUE, FALSE, FALSE, FALSE)
+
+    directory <- tempfile()
+    dir.create(directory, recursive = TRUE)
+    name <- "shinyscholard"
+
+    create_template(path = directory, name = name,
+                    common_objects = common_objects, modules = modules,
+                    author = "Simon E. H. Smart", include_map = TRUE,
+                    include_table = FALSE, include_code = TRUE, install = FALSE)
+
+    devtools::document(file.path(directory, name))
+    devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
+
+    app <- shinytest2::AppDriver$new(app_dir = file.path(directory, name, "inst", "shiny"), name = "create_test")
+    common <- app$get_value(export = "common")
+    expect_true(is.null(common$raster))
+    app$stop()
+  }
+})

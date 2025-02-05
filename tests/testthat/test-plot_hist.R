@@ -12,6 +12,9 @@ if (suggests){
   })
 
   test_that("{shinytest2} recording: e2e_plot_hist", {
+
+    skip_if(is_fedora())
+
     rerun_test("plot_hist_test", list(raster_path = raster_path, save_path = save_path))
     common <- readRDS(save_path)
     expect_is(common$histogram, "histogram")

@@ -105,22 +105,22 @@ function(input, output, session) {
   ############################################# #
 
   sample_table <- reactive({
-  req(common$raster)
   gargoyle::watch("select_user")
   gargoyle::watch("select_query")
+  gargoyle::watch("select_async")
+  req(common$raster)
   set.seed(12345)
   sample_table <- terra::spatSample(common$raster, 100, method = "random", xy = TRUE, as.df = TRUE)
   colnames(sample_table) <- c("Longitude", "Latitude", "Value")
   sample_table %>%
     dplyr::mutate(Longitude = round(as.numeric(Longitude), digits = 4),
-                  Latitude = round(as.numeric(Latitude), digits = 4))
-  sample_table
+                  Latitude = round(as.numeric(Latitude), digits = 4),
+                  Value = round(as.numeric(Latitude), digits = 4))
   })
 
   # TABLE
   output$table <- DT::renderDataTable({
-    # check that a raster exists
-    req(common$raster)
+    req(sample_table())
     sample_table()
   }, rownames = FALSE, options = list(scrollX = TRUE))
 
@@ -142,6 +142,15 @@ function(input, output, session) {
   req(module())
     module <- module()
     core_code_module_server("core_code", common, module)
+  })
+
+  ############################################# #
+  ### RUN MODULE ON ENTER ####
+  ############################################# #
+
+  observeEvent(input$run_module, {
+    req(module())
+    shinyjs::runjs(glue::glue("document.getElementById('{module()}-run').click();"))
   })
 
   ####################
