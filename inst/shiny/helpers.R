@@ -32,9 +32,9 @@ uiBottom <- function(mod_INFO) {
       "references", br(),
       div(paste(pkgTitl[i]), class = "pkgTitl"),
       div(paste('Package Developers:', pkgAuts[i]), class = "pkgDes"),
-      a("CRAN", href = file.path("http://cran.r-project.org/web/packages",
+      tags$a("CRAN", href = file.path("http://cran.r-project.org/web/packages",
                                  pkgName[i], "index.html"), target = "_blank"), " | ",
-      a("documentation", href = file.path("https://cran.r-project.org/web/packages",
+      tags$a("documentation", href = file.path("https://cran.r-project.org/web/packages",
                                           pkgName[i], paste0(pkgName[i], ".pdf")), target = "_blank"), br()
     ))
   }

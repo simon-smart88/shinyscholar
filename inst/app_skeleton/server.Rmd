@@ -1,7 +1,4 @@
 ```{r renv.ignore = TRUE}
-library({{app_library}})
-library(shinyscholar)
-
 function(input, output, session) {
  
   ########################## #

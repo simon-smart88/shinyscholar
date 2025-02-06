@@ -1,5 +1,3 @@
-library(shinyscholar)
-
 function(input, output, session) {
 
   ########################## #

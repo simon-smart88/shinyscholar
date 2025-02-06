@@ -493,8 +493,8 @@ create_template <- function(path, name, common_objects, modules, author,
   }
 
   if (include_map){
-    magrittr_line <- grep("*magrittr*", description_lines)
-    description_lines <- append(description_lines, "    leaflet (>= 2.0.2),", magrittr_line - 1)
+    shiny_line <- grep("*shiny (>= 1.8.1)*", description_lines)
+    description_lines <- append(description_lines, "    leaflet (>= 2.0.2),", shiny_line - 1)
   }
 
   if (include_code){
