@@ -17,11 +17,14 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
 
     load_session <- function(temp){
 
-      if (!("common" %in% class(temp))){
+      if (!inherits(temp, "common") || temp$state$main$app != "shinyscholar"){
         close_loading_modal()
         common$logger %>% writeLog(type = "error", "That is not a valid Shinyscholar save file")
         return()
       }
+
+      # reload old logs, minus header
+      common$logger %>% writeLog(strsplit(temp$logger(), "-----<br>")[[1]][3])
 
       if (temp$state$main$version != as.character(packageVersion("shinyscholar"))){
         current_version <- as.character(packageVersion("shinyscholar"))
@@ -77,10 +80,15 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
 
     load_on_start <- observe({
       req(load_file_path())
+      if (!file.exists(load_file_path())){
+        common$logger %>% writeLog(type = "error", "The specified load file cannot be found - please check the path")
+        load_on_start$destroy()
+        return()
+      }
       show_loading_modal("Loading previous session")
       load_session(readRDS(load_file_path()))
       close_loading_modal()
-      common$logger %>% writeLog(type="info", "The previous session has been loaded successfully")
+      common$logger %>% writeLog(type = "info", "The previous session has been loaded successfully")
       load_on_start$destroy()
     })
 
