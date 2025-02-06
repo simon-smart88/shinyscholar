@@ -73,6 +73,15 @@ rep_markdown_module_server <- function(id, common, parent_session, map, COMPONEN
         result_file <- tempfile(pattern = "result_", fileext = input$rmdFileType)
         if (input$rmdFileType == ".Rmd") {
           combined_rmd <- gsub("``` r", "```{r}", combined_md)
+
+          # fix any very long lines
+          long_lines <- which(nchar(combined_rmd) > 4000)
+          for (l in long_lines){
+            split_lines <- strwrap(combined_rmd[l], 4000)
+            combined_rmd <- combined_rmd[-l]
+            combined_rmd <- append(combined_rmd, split_lines, l-1)
+          }
+
           writeLines(combined_rmd, result_file, useBytes = TRUE)
         } else {
           combined_md_file <- tempfile(pattern = "combined_", fileext = ".md")
