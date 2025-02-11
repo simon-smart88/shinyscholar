@@ -69,3 +69,10 @@ shinyscholar 0.2.5
 - Fix bug in writeLog when `type = warning`
 - Skip tests that download files on Fedora systems
 - Module `run` buttons can be pressed using the Enter key
+
+shinyscholar 0.2.6
+=============
+- Entries in the logger are now restored on load
+- Made the loading process more robust by adding the app name 
+- Tidied up `library()` calls
+- Break up very long lines in the markdown so that they can be read in again
