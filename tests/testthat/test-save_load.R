@@ -43,4 +43,32 @@ if (suggests){
     expect_is(common$raster, "SpatRaster")
     app$stop()
   })
+
+  test_that("load can handle old common objects", {
+
+    skip_if(is_fedora())
+
+    common_class <- R6::R6Class(
+      classname = "common",
+      public = list(
+        old_data = "old_data",
+        raster = terra::wrap(raster),
+        state = NULL
+      )
+    )
+
+    common <- common_class$new()
+    common$state$main$version <- as.character(packageVersion("shinyscholar"))
+    common$state$main$app <- "shinyscholar"
+    saveRDS(common, save_path)
+
+    app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_load")
+    app$set_inputs(introTabs = "Load Prior Session")
+    app$upload_file("core_load-load_session" = save_path)
+    app$click("core_load-goLoad_session")
+    common <- app$get_value(export = "common")
+    expect_is(common$raster, "SpatRaster")
+    app$stop()
+  })
+
 }
