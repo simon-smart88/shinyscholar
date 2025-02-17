@@ -33,10 +33,14 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
     show_results(parent_session)
   })
 
+  plot_function <- function(){
+    plot(common$scatterplot[[1]], common$scatterplot[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
+  }
+
   output$result <- renderPlot({
     gargoyle::watch("plot_scatter")
     req(common$scatterplot)
-    plot(common$scatterplot[[1]], common$scatterplot[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
+    plot_function()
   })
 
   output$dl <- downloadHandler(
@@ -45,7 +49,7 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
     },
     content = function(file) {
       png(file, width = 1000, height = 500)
-      plot(common$scatterplot[[1]], common$scatterplot[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
+      plot_function()
       dev.off()
     })
 

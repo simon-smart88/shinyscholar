@@ -17,6 +17,7 @@ output: html_document
 **2.** *Plot Data*  
 - Plot data as a histogram
 - Plot data as a scatter plot
+- Automatically plot a histogram
 
 **3.** *Reproduce*  
 - Download session code  

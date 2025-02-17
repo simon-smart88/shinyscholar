@@ -1,0 +1,12 @@
+```{asis, echo = {{plot_auto_knit}}, eval = {{plot_auto_knit}}, include = {{plot_auto_knit}}}
+Plots the data as a histogram
+```
+
+```{r, echo = {{plot_auto_knit}}, include = {{plot_auto_knit}}}
+histogram <- plot_auto(raster, {{plot_auto_bins}})
+pal <- RColorBrewer::brewer.pal(9, {{plot_auto_pal}})
+pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
+hist_cols <- pal_ramp({{plot_auto_bins}})
+
+plot(histogram, freq = F, main = "", xlab = {{plot_auto_name}}, ylab = "Frequency (%)", col = hist_cols)
+```

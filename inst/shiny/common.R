@@ -4,6 +4,7 @@ common_class <- R6::R6Class(
   public = list(
     raster = NULL,
     histogram = NULL,
+    histogram_auto = NULL,
     scatterplot = NULL,
     tasks = list(),
     meta = NULL,

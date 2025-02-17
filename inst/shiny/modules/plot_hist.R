@@ -31,15 +31,18 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
     show_results(parent_session)
   })
 
-  output$hist <- renderPlot({
-    gargoyle::watch("plot_hist")
-    req(common$histogram)
+  plot_function <- function(){
     pal <- RColorBrewer::brewer.pal(9, common$meta$plot_hist$pal)
     pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
     bins <- common$meta$plot_hist$bins
     cols <- pal_ramp(bins)
-
     plot(common$histogram, freq = FALSE, main = "", xlab = common$meta$plot_hist$name, ylab = "Frequency (%)", col = cols)
+  }
+
+  output$hist <- renderPlot({
+    gargoyle::watch("plot_hist")
+    req(common$histogram)
+    plot_function()
   })
 
   output$dl <- downloadHandler(
@@ -48,11 +51,7 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
     },
     content = function(file) {
       png(file, width = 1000, height = 500)
-      pal <- RColorBrewer::brewer.pal(9, common$meta$plot_hist$pal)
-      pal_ramp <- colorRampPalette(pal)
-      bins <- common$meta$plot_hist$bins
-      cols <- pal_ramp(bins)
-      plot(common$histogram, freq = FALSE, main = "", xlab = common$meta$plot_hist$name, ylab = "Frequency (%)", col = cols)
+      plot_function()
       dev.off()
     })
 
@@ -83,7 +82,7 @@ plot_hist_module_result <- function(id) {
 plot_hist_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    plot_hist_knit = !is.null(common$histogram),
+    plot_hist_knit = !is.null(common$meta$plot_hist$bins),
     plot_hist_bins = common$meta$plot_hist$bins,
     plot_hist_pal = common$meta$plot_hist$pal,
     plot_hist_name = common$meta$plot_hist$name
