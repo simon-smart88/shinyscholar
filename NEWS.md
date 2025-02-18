@@ -72,7 +72,9 @@ shinyscholar 0.2.5
 
 shinyscholar 0.2.6
 =============
-- Entries in the logger are now restored on load
-- Made the loading process more robust by adding the app name 
+- Entries in the logger are now restored on load and made available in testing
+- Made loading process more robust by adding the app name 
+- Made loading fault-tolerant if deprecated `common` objects exist
 - Tidied up `library()` calls
 - Break up very long lines in the markdown so that they can be read in again
+- Added `plot_auto` module to the demonstration app that runs automatically
