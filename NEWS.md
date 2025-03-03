@@ -78,3 +78,4 @@ shinyscholar 0.2.6
 - Tidied up `library()` calls
 - Break up very long lines in the markdown so that they can be read in again
 - Added `plot_auto` module to the demonstration app that runs automatically
+- Added ability to control generated markdown chunks using asis chunks and example to plot_hist.Rmd

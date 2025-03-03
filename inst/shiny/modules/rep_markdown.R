@@ -74,6 +74,16 @@ rep_markdown_module_server <- function(id, common, parent_session, map, COMPONEN
         if (input$rmdFileType == ".Rmd") {
           combined_rmd <- gsub("``` r", "```{r}", combined_md)
 
+          # convert chunk control lines
+          chunk_control_lines <- grep("\\{r,", combined_rmd)
+          chunk_starts <- grep("```\\{r\\}", combined_rmd)
+          chunks_to_remove <- NA
+          for (i in seq_along(chunk_control_lines)) {
+            chunks_to_remove[i] <- min(chunk_starts[chunk_starts > chunk_control_lines[i]])
+          }
+          combined_rmd <- combined_rmd[-chunks_to_remove]
+          combined_rmd <- gsub("\\{r,", "```{r,", combined_rmd)
+
           # fix any very long lines
           long_lines <- which(nchar(combined_rmd) > 4000)
           for (l in long_lines){
