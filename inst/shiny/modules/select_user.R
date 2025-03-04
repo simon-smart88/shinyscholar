@@ -33,7 +33,7 @@ select_user_module_server <- function(id, common, parent_session, map) {
     common$meta$select_user$path <- input$raster$name
     common$meta$select_user$used <- TRUE
     # TRIGGER ####
-    gargoyle::trigger("select_user")
+    trigger("select_user")
     show_map(parent_session)
     # only required for testing enter key input
     shinyjs::runjs("Shiny.setInputValue('select_user-complete', 'complete');")

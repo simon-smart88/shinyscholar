@@ -35,7 +35,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     })
 
     # Capture coordinates of polygons
-    gargoyle::init("change_poly")
+    init("change_poly")
     observe({
       coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
       xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
@@ -43,7 +43,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
       #convert any longitudes drawn outside of the original map
       xy[,1] <- ((xy[,1] + 180) %% 360) - 180
       common$poly <- xy
-      gargoyle::trigger("change_poly")
+      trigger("change_poly")
     }) %>% bindEvent(input$map_draw_new_feature)
 
     component <- reactive({
@@ -58,7 +58,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     observe({
       req(module())
       current_mod <- module()
-      gargoyle::on(current_mod, {
+      on(current_mod, {
         map_fx <- COMPONENT_MODULES[[component()]][[module()]]$map_function
         if (!is.null(map_fx)) {
           do.call(map_fx, list(map, common = common))

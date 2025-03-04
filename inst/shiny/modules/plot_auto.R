@@ -31,7 +31,7 @@ plot_auto_module_server <- function(id, common, parent_session, map) {
     common$meta$plot_auto$pal <- input$pal
     common$meta$plot_auto$name <- c(common$meta$select_query$name, common$meta$select_async$name, common$meta$select_user$name)
     # TRIGGER ####
-    gargoyle::trigger("plot_auto")
+    trigger("plot_auto")
   })
 
   plot_function <- function(){
@@ -43,7 +43,7 @@ plot_auto_module_server <- function(id, common, parent_session, map) {
   }
 
   output$hist <- renderPlot({
-    gargoyle::watch("plot_auto")
+    watch("plot_auto")
     req(common$histogram_auto)
     # Included here so that the module is only 'used' if the results are rendered
     common$meta$plot_auto$used <- TRUE

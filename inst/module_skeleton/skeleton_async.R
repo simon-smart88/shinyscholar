@@ -46,7 +46,7 @@
         common$logger %>% writeLog(type = "complete", "{{id}} has completed")
 
         # TRIGGER
-        gargoyle::trigger("{{id}}")
+        trigger("{{id}}")
 
         # explicitly call the mapping function
         do.call("{{id}}_module_map", list(map, common))
@@ -60,7 +60,7 @@
     })
 
     output$result <- renderText({
-      gargoyle::watch("{{id}}")
+      watch("{{id}}")
       # Result
     })
 

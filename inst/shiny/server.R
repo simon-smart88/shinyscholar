@@ -103,9 +103,9 @@ function(input, output, session) {
   ############################################# #
 
   sample_table <- reactive({
-  gargoyle::watch("select_user")
-  gargoyle::watch("select_query")
-  gargoyle::watch("select_async")
+  watch("select_user")
+  watch("select_query")
+  watch("select_async")
   req(common$raster)
   set.seed(12345)
   sample_table <- terra::spatSample(common$raster, 100, method = "random", xy = TRUE, as.df = TRUE)
@@ -156,12 +156,12 @@ function(input, output, session) {
   ###################
 
   # Initialize all modules
-  gargoyle::init("intro")
+  init("intro")
   modules <- list()
   lapply(names(COMPONENT_MODULES), function(component) {
     lapply(COMPONENT_MODULES[[component]], function(module) {
       # Initialize event triggers for each module
-      gargoyle::init(module$id)
+      init(module$id)
       if (module$id == "rep_markdown"){
         return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, map = map, COMPONENT_MODULES))
       } else {

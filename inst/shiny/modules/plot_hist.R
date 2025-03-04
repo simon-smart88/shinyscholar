@@ -27,7 +27,7 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
     common$meta$plot_hist$pal <- input$pal
     common$meta$plot_hist$name <- c(common$meta$select_query$name, common$meta$select_async$name, common$meta$select_user$name)
     # TRIGGER ####
-    gargoyle::trigger("plot_hist")
+    trigger("plot_hist")
     show_results(parent_session)
   })
 
@@ -40,7 +40,7 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
   }
 
   output$hist <- renderPlot({
-    gargoyle::watch("plot_hist")
+    watch("plot_hist")
     req(common$histogram)
     plot_function()
   })

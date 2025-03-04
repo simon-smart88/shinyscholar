@@ -119,7 +119,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
       common$logger %>% writeLog(result$message)
 
       # TRIGGER
-      gargoyle::trigger("select_async")
+      trigger("select_async")
 
       # explicitly call the mapping function
       do.call("select_async_module_map", list(map, common))

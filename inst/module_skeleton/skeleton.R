@@ -20,11 +20,11 @@
     # Populate using metadata()
 
     # TRIGGER
-    gargoyle::trigger("{{id}}")
+    trigger("{{id}}")
   })
 
   output$result <- renderText({
-    gargoyle::watch("{{id}}")
+    watch("{{id}}")
     # Result
   })
 

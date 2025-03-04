@@ -29,7 +29,7 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
     common$meta$plot_scatter$sample <- input$sample
     common$meta$plot_scatter$name <-  c(common$meta$select_query$name, common$meta$select_async$name, common$meta$select_user$name)
     # TRIGGER ####
-    gargoyle::trigger("plot_scatter")
+    trigger("plot_scatter")
     show_results(parent_session)
   })
 
@@ -38,7 +38,7 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
   }
 
   output$result <- renderPlot({
-    gargoyle::watch("plot_scatter")
+    watch("plot_scatter")
     req(common$scatterplot)
     plot_function()
   })

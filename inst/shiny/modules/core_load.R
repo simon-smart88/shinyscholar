@@ -61,7 +61,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
 
       #restore map and results for used modules
       for (used_module in names(common$meta)){
-        gargoyle::trigger(used_module) # to replot results
+        trigger(used_module) # to replot results
         component <- strsplit(used_module, "_")[[1]][1]
         map_fx <- COMPONENT_MODULES[[component]][[used_module]]$map_function
         if (!is.null(map_fx)) {
