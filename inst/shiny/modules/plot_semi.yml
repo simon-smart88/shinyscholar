@@ -1,0 +1,5 @@
+component: "plot"
+short_name: "Semi-automatic histogram"
+long_name: "Plot data on a histogram semi-automatically"
+authors: "Simon E. H. Smart"
+package: [graphics, RColorBrewer]
