@@ -12,6 +12,8 @@ plot_hist_module_ui <- function(id) {
 plot_hist_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
+  shinyjs::hide("dl")
+
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$raster)) {
@@ -29,6 +31,7 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
     # TRIGGER ####
     trigger("plot_hist")
     show_results(parent_session)
+    shinyjs::show("dl")
   })
 
   plot_function <- function(){

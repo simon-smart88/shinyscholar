@@ -10,6 +10,8 @@ plot_auto_module_ui <- function(id) {
 plot_auto_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
+  shinyjs::hide("dl")
+
   # List of objects that will trigger the module to run
   triggers <- reactive({
     list(watch("select_async"),
@@ -32,6 +34,7 @@ plot_auto_module_server <- function(id, common, parent_session, map) {
     common$meta$plot_auto$name <- c(common$meta$select_query$name, common$meta$select_async$name, common$meta$select_user$name)
     # TRIGGER ####
     trigger("plot_auto")
+    shinyjs::show("dl")
   })
 
   plot_function <- function(){

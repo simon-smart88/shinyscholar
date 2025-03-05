@@ -12,6 +12,8 @@ plot_scatter_module_ui <- function(id) {
 plot_scatter_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
+  shinyjs::hide("dl")
+
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$raster)) {
@@ -31,6 +33,7 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
     # TRIGGER ####
     trigger("plot_scatter")
     show_results(parent_session)
+    shinyjs::show("dl")
   })
 
   plot_function <- function(){
