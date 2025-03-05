@@ -55,15 +55,19 @@ select_user_module_server <- function(id, common, parent_session, map) {
 }
 
 select_user_module_map <- function(map, common) {
-    req(common$raster)
     ex <- as.vector(terra::ext(common$raster))
-    pal <- colorBin("YlOrRd", domain = terra::values(common$raster), bins = 9, na.color = "#00000000")
+    pal <- RColorBrewer::brewer.pal(9, "YlOrRd")
+    custom_reds <- colorRampPalette(pal)(10)
+    color_bins <- colorBin(custom_reds, domain = terra::values(common$raster), bins = 10, na.color = "#00000000")
+
     raster_name <- common$meta$select_user$name
     map %>%
       clearGroup(raster_name) %>%
-      addRasterImage(common$raster, colors = pal, group = raster_name) %>%
+      clearControls() %>%
+      removeControl(raster_name) %>%
+      addRasterImage(common$raster, colors = color_bins, group = raster_name) %>%
       fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-      addLegend(position = "bottomright", pal = pal, values = terra::values(common$raster),
+      addLegend(position = "bottomright", pal = color_bins, values = terra::values(common$raster),
                 group = raster_name, title = raster_name) %>%
       addLayersControl(overlayGroups = raster_name, options = layersControlOptions(collapsed = FALSE))
 }
