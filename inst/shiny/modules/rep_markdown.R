@@ -5,15 +5,14 @@ rep_markdown_module_ui <- function(id) {
     strong("Select download file type"),
     selectInput(ns("rmdFileType"), label = "",
                 choices = c("Rmd" = ".Rmd", "PDF" = ".pdf", "HTML" = ".html", "Word" = ".docx")),
-    downloadButton(ns("dlRMD"), 'Download Session Code')
+    downloadButton(ns("download"), 'Download Session Code')
   )
 }
 
 rep_markdown_module_server <- function(id, common, parent_session, map, COMPONENT_MODULES) {
   moduleServer(id, function(input, output, session) {
 
-    # handler for R Markdown download
-    output$dlRMD <- downloadHandler(
+    output$downloadRMD <- downloadHandler(
       filename = function() {
         paste0("shinyscholar-session-", Sys.Date(), input$rmdFileType)
       },

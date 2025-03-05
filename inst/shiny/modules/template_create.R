@@ -43,7 +43,7 @@ template_create_module_server <- function(id, common, parent_session, map) {
       validate(need(length(split_and_clean(input[[paste0("mod",c)]])) == length(split_and_clean(input[[paste0("long_mod",c)]])),
                     glue::glue("Modules and Long modules for component {components[c]} are different lengths")))
       }
-      downloadButton(session$ns("dl"), "Download!")
+      downloadButton(session$ns("download"), "Download!")
     })
 
     #split strings into vectors and remove whitespace
@@ -111,7 +111,7 @@ template_create_module_server <- function(id, common, parent_session, map) {
         df
       })
 
-    output$dl <- downloadHandler(
+    output$download <- downloadHandler(
       filename = function() {
         paste0(input$name, ".zip")
       },

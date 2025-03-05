@@ -4,7 +4,7 @@ plot_scatter_module_ui <- function(id) {
     sliderInput(ns("sample"), "Number of pixels", min = 100, max = 10000, value = 1000),
     radioButtons(ns("axis"), "x axis", choices = c("Longitude", "Latitude")),
     actionButton(ns("run"), "Plot scatterplot"),
-    downloadButton(ns("dl"), "Download plot")
+    downloadButton(ns("download"), "Download plot")
   )
 }
 
@@ -12,7 +12,7 @@ plot_scatter_module_ui <- function(id) {
 plot_scatter_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
-  shinyjs::hide("dl")
+  shinyjs::hide("download")
 
   observeEvent(input$run, {
     # WARNING ####
@@ -33,7 +33,7 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
     # TRIGGER ####
     trigger("plot_scatter")
     show_results(parent_session)
-    shinyjs::show("dl")
+    shinyjs::show("download")
   })
 
   plot_function <- function(){
@@ -46,7 +46,7 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
     plot_function()
   })
 
-  output$dl <- downloadHandler(
+  output$download <- downloadHandler(
     filename = function() {
       "shinyscholar_scatterplot.png"
     },

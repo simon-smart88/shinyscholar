@@ -5,14 +5,14 @@ plot_hist_module_ui <- function(id) {
     selectInput(ns("bins"), "Number of bins", choices = c(10, 20, 50, 100)),
     selectInput(ns("pal"), "Colour palette", choices = c("Greens", "YlOrRd", "Greys", "Blues")),
     actionButton(ns("run"), "Plot histogram"),
-    downloadButton(ns("dl"), "Download plot")
+    downloadButton(ns("download"), "Download plot")
   )
 }
 
 plot_hist_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
-  shinyjs::hide("dl")
+  shinyjs::hide("download")
 
   observeEvent(input$run, {
     # WARNING ####
@@ -31,7 +31,7 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
     # TRIGGER ####
     trigger("plot_hist")
     show_results(parent_session)
-    shinyjs::show("dl")
+    shinyjs::show("download")
   })
 
   plot_function <- function(){
@@ -48,7 +48,7 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
     plot_function()
   })
 
-  output$dl <- downloadHandler(
+  output$download <- downloadHandler(
     filename = function() {
       "shinyscholar_histogram.png"
     },
