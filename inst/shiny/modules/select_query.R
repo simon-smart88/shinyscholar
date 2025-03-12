@@ -111,7 +111,7 @@ select_query_module_server <- function(id, common, parent_session, map) {
 }
 
 select_query_module_map <- function(map, common) {
-
+  req(common$raster)
   ex <- as.vector(terra::ext(common$raster))
   pal <- RColorBrewer::brewer.pal(9, "Greens")
   custom_greens <- colorRampPalette(pal)(10)

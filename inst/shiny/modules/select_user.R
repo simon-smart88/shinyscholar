@@ -55,6 +55,7 @@ select_user_module_server <- function(id, common, parent_session, map) {
 }
 
 select_user_module_map <- function(map, common) {
+    req(common$raster)
     ex <- as.vector(terra::ext(common$raster))
     pal <- RColorBrewer::brewer.pal(9, "YlOrRd")
     custom_reds <- colorRampPalette(pal)(10)
