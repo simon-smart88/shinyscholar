@@ -104,8 +104,13 @@ tagList(
           "input.tabs != 'intro' & input.tabs != 'rep'",
           fixedRow(
             column(
+              4,
+              strong("Global settings"),
+              br(),
+              actionButton("reset", "Delete data"),
+            ),
+            column(
               2,
-              offset = 1,
               align = "left",
               div(style = "margin-top: -10px"),
               strong("Log window"),
@@ -113,14 +118,14 @@ tagList(
               div(
                 id = "messageLog",
                 div(id = "logHeader", div(id = "logContent"))
-              )
+              ),
             )
           )
           ,
           fixedRow(
             column(
               10,
-              offset = 1,
+              offset = 4,
               br(),
               textOutput("running_tasks")
             )

@@ -1,7 +1,7 @@
 core_mapping_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    leaflet::leafletOutput(ns("map"), height = 700),
+    leafletOutput(ns("map"), height = 700),
     tags$div(
       style = "display: flex; gap: 10px;",
       selectInput(ns("bmap"), "Background map:",
@@ -17,14 +17,18 @@ core_mapping_module_ui <- function(id) {
 
 core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES) {
   moduleServer(id, function(input, output, session) {
+
+    init("clear_map")
+
     # create map
-    output$map <- renderLeaflet(
+    output$map <- renderLeaflet({
+      watch("clear_map")
       leaflet() %>%
         setView(0, 0, zoom = 2) %>%
         addProviderTiles("Esri.WorldTopoMap") %>%
         leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                        markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE)
-    )
+    })
 
     # create map proxy to make further changes to existing map
     map <- leafletProxy("map")

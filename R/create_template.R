@@ -130,7 +130,7 @@ create_template <- function(path, name, common_objects, modules, author,
   }
 
   if (any(common_objects %in% c("meta", "logger", "state", "poly", "tasks"))){
-    conflicts <- common_objects[common_objects %in% c("meta", "logger", "state", "poly", "tasks")]
+    conflicts <- common_objects[common_objects %in% c("meta", "logger", "state", "poly", "tasks", "reset")]
     conflicts <- paste(conflicts, collapse = ",")
     logger %>% writeLog(type = "error", glue::glue("common_objects contains {conflicts} which are included
                                         in common by default. Please choose a different name."))
@@ -219,7 +219,18 @@ create_template <- function(path, name, common_objects, modules, author,
   }
 
   # convert common_objects to list string
-  common_objects_list <- paste0("list(", paste(sapply(common_objects_internal, function(a) paste0(a, " = NULL")), collapse = ",\n "), ")")
+  common_objects_list <- paste0("list(", paste(sapply(common_objects_internal, function(a) paste0(a, " = NULL")), collapse = ",\n "))
+
+  # make tasks a list
+  if (async){
+    common_objects_list <- gsub("tasks = NULL", "tasks = list()", common_objects_list)
+    common_objects_list <- gsub("tasks <- NULL", "tasks <- list()", common_objects_list)
+  }
+
+  # create reset function
+  objects_to_reset <- common_objects_internal[common_objects_internal != c("logger")]
+  reset_object <- paste(sapply(objects_to_reset, function(a) paste0("self$", a, " <- NULL")), collapse = "\n ")
+  common_objects_list <- paste0(common_objects_list, ",\n reset = function(){\n", reset_object, "\n invisible(self)})")
 
   common_params <- c(
     file = system.file("app_skeleton", "common.Rmd", package = "shinyscholar"),
@@ -473,11 +484,11 @@ create_template <- function(path, name, common_objects, modules, author,
   helper_file <- system.file("shiny", "helpers.R", package = "shinyscholar")
   file.copy(helper_file, file.path(path, "inst", "shiny"))
 
-  helper_function_lines <- readLines(system.file("app_skeleton", "helper_functions.R", package = "shinyscholar"))
-  if (!include_map){
-    show_map_line <- grep("*title show_map*", helper_function_lines)
-    helper_function_lines <- helper_function_lines[-c(show_map_line:(show_map_line + 7) )]
-  }
+  helper_function_params <- c(
+    file = system.file("app_skeleton", "helper_functions.Rmd", package = "shinyscholar"),
+    list(include_map = include_map)
+  )
+  helper_function_lines <- tidy_purl(helper_function_params)
   writeLines(helper_function_lines, file.path(path, "R", "helper_functions.R"))
 
   # package DESCRIPTION ====

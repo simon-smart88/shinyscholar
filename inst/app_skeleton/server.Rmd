@@ -217,6 +217,14 @@ function(input, output, session) {
 ```
 ```{r renv.ignore = TRUE}
   ################################
+  ### RESET ####
+  ################################
+
+  observeEvent(input$reset, {
+    reset_data(common)
+  })
+
+  ################################
   ### EXPORT TEST VALUES ####
   ################################
   exportTestValues(common = common,

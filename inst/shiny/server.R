@@ -183,6 +183,14 @@ function(input, output, session) {
   core_load_module_server("core_load", common, modules, map, COMPONENT_MODULES, parent_session = session)
 
   ################################
+  ### RESET ####
+  ################################
+
+  observeEvent(input$reset, {
+    reset_data(common)
+  })
+
+  ################################
   ### EXPORT TEST VALUES ####
   ################################
   exportTestValues(common = common,
