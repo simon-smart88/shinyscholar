@@ -40,6 +40,8 @@ if (suggests){
     app$upload_file("core_load-load_session" = save_path)
     app$click("core_load-goLoad_session")
     common <- app$get_value(export = "common")
+    loaded_values <- app$get_values()
+    expect_equal(loaded_values$input[["plot_hist-bins"]], "100")
     expect_is(common$raster, "SpatRaster")
     app$stop()
   })

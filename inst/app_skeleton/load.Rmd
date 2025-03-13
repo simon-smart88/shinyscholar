@@ -38,7 +38,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       
       temp_names <- names(temp)
       #exclude the non-public and function objects
-      temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "logger")]
+      temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "logger", "reset")]
       common_names <- names(common)
       for (name in temp_names){
         if (name %in% common_names){

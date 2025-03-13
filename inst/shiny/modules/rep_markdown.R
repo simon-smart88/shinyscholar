@@ -12,7 +12,7 @@ rep_markdown_module_ui <- function(id) {
 rep_markdown_module_server <- function(id, common, parent_session, map, COMPONENT_MODULES) {
   moduleServer(id, function(input, output, session) {
 
-    output$downloadRMD <- downloadHandler(
+    output$download <- downloadHandler(
       filename = function() {
         paste0("shinyscholar-session-", Sys.Date(), input$rmdFileType)
       },

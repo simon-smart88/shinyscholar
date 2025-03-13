@@ -18,7 +18,6 @@ common_class <- R6::R6Class(
       self$histogram_auto = NULL
       self$histogram_semi = NULL
       self$scatterplot = NULL
-      self$tasks = list()
       self$meta = NULL
       self$state = NULL
       self$poly = NULL

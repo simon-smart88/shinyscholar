@@ -14,7 +14,8 @@ test_test_module_ui <- function(id){
     textInput(ns("text"), "Text"),
     textInput(ns('single_quote'), 'Text'),
     shinyWidgets::materialSwitch(ns("switch"), "Switch", TRUE),
-    textInput(inputId = ns("inputid"), "InputId")
+    textInput(inputId = ns("inputid"), "InputId"),
+    textOutput(ns("out"))
   )
 }
 
@@ -25,7 +26,7 @@ test_test_module_server <- function(id, common, parent_session, map) {
       # METADATA ####
     })
 
-
+  output$out <- renderText(input$radio)
 
 
   return(list(

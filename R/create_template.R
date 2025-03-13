@@ -224,11 +224,10 @@ create_template <- function(path, name, common_objects, modules, author,
   # make tasks a list
   if (async){
     common_objects_list <- gsub("tasks = NULL", "tasks = list()", common_objects_list)
-    common_objects_list <- gsub("tasks <- NULL", "tasks <- list()", common_objects_list)
   }
 
   # create reset function
-  objects_to_reset <- common_objects_internal[common_objects_internal != c("logger")]
+  objects_to_reset <- common_objects_internal[common_objects_internal != c("logger", "tasks")]
   reset_object <- paste(sapply(objects_to_reset, function(a) paste0("self$", a, " <- NULL")), collapse = "\n ")
   common_objects_list <- paste0(common_objects_list, ",\n reset = function(){\n", reset_object, "\n invisible(self)})")
 

@@ -1,5 +1,5 @@
 save_and_load_p1_test <- function(td, save_path){
-  app <- shinytest2::AppDriver$new(app_dir = file.path(td, "shinyscholar", "inst", "shiny"), name = "save_and_load_test")
+  app <- shinytest2::AppDriver$new(app_dir = file.path(td, "shinyscholara", "inst", "shiny"), name = "save_and_load_test")
   app$set_inputs(tabs = "test")
   app$set_inputs(testSel = "test_test")
   app$set_inputs("test_test-checkbox" = FALSE)
@@ -14,7 +14,8 @@ save_and_load_p1_test <- function(td, save_path){
   app$set_inputs("test_test-single_quote" = "test")
   app$set_inputs("test_test-switch" = FALSE)
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
+  common <- app$get_value(export = "common")
   tryCatch({app$get_download("core_save-save_session", filename = save_path)},
            finally = app$stop())
 }
+

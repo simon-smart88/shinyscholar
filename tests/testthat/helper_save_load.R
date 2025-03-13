@@ -15,6 +15,7 @@ save_hist_test <- function(path, save_path){
   app$click("select_user-run")
   app$set_inputs(tabs = "plot")
   app$set_inputs(plotSel = "plot_hist")
+  app$set_inputs("plot_hist-bins" = 100)
   app$click("plot_hist-run")
   app$set_inputs(main = "Save")
   tryCatch({app$get_download("core_save-save_session", filename = save_path)},

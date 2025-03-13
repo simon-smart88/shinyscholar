@@ -119,73 +119,74 @@ if (suggests){
 
     skip_on_ci()
     skip_on_cran()
+    withr::with_temp_libpaths({
+      modules <- data.frame(
+        "component" = c("test"),
+        "long_component" = c("test"),
+        "module" = c("test"),
+        "long_module" = c("test"),
+        "map" = c(FALSE),
+        "result" = c(TRUE),
+        "rmd" = c(TRUE),
+        "save" = c(TRUE),
+        "async" = c(FALSE))
 
-    modules <- data.frame(
-      "component" = c("test"),
-      "long_component" = c("test"),
-      "module" = c("test"),
-      "long_module" = c("test"),
-      "map" = c(FALSE),
-      "result" = c(TRUE),
-      "rmd" = c(TRUE),
-      "save" = c(TRUE),
-      "async" = c(FALSE))
+      td <- tempfile()
+      dir.create(td, recursive = TRUE)
+      create_template(path = td, name = "shinyscholara",
+                      common_objects = c("test"), modules = modules,
+                      author = "Simon E. H. Smart", include_map = FALSE,
+                      include_table = FALSE, include_code = FALSE, install = TRUE)
 
-    td <- tempfile()
-    dir.create(td, recursive = TRUE)
-    #the name must be shinyscholar so that the calls to package files work
-    create_template(path = td, name = "shinyscholar",
-                    common_objects = c("test"), modules = modules,
-                    author = "Simon E. H. Smart", include_map = FALSE,
-                    include_table = FALSE, include_code = FALSE, install = FALSE)
+      test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
 
-    test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
+      module_directory <- file.path(td, "shinyscholara", "inst", "shiny", "modules")
+      file.copy(test_files, module_directory, overwrite = TRUE)
 
-    module_directory <- file.path(td, "shinyscholar", "inst", "shiny", "modules")
-    file.copy(test_files, module_directory, overwrite = TRUE)
+      save_and_load(file.path(td, "shinyscholara"))
 
-    save_and_load(file.path(td, "shinyscholar"))
+      # edit to use newly created core_modules
+      global_path <- file.path(td, "shinyscholara", "inst", "shiny", "global.R")
+      global_lines <- readLines(global_path)
+      core_target <- grep("*core_modules <-*", global_lines)
+      global_lines[core_target] <- 'core_modules <- c(file.path("modules", "core_intro.R"), file.path("modules", "core_load.R"), file.path("modules", "core_save.R"))'
+      writeLines(global_lines, global_path)
 
-    # edit to use newly created core_modules
-    global_path <- file.path(td, "shinyscholar", "inst", "shiny", "global.R")
-    global_lines <- readLines(global_path)
-    core_target <- grep("*core_modules <-*", global_lines)
-    global_lines[core_target] <- 'core_modules <- c(file.path("modules", "core_intro.R"), file.path("modules", "core_load.R"), file.path("modules", "core_save.R"))'
-    writeLines(global_lines, global_path)
+      rerun_test("save_and_load_p1_test", list(td = td, save_path = save_path))
 
-    rerun_test("save_and_load_p1_test", list(td = td, save_path = save_path))
+      common <- readRDS(save_path)
 
-    common <- readRDS(save_path)
+      expect_equal(common$state$test_test$checkbox, FALSE)
+      expect_equal(common$state$test_test$checkboxgroup, "B")
+      expect_equal(common$state$test_test$date, as.Date("2024-01-01"))
+      expect_equal(common$state$test_test$daterange, c(as.Date("2024-01-01"), as.Date("2024-01-02")))
+      expect_equal(common$state$test_test$numeric, 6)
+      expect_equal(common$state$test_test$radio, "B")
+      expect_equal(common$state$test_test$select, "B")
+      expect_equal(common$state$test_test$slider, 6)
+      expect_equal(common$state$test_test$text, "test")
+      expect_equal(common$state$test_test$single_quote, "test")
+      expect_equal(common$state$test_test$switch, FALSE)
 
-    expect_equal(common$state$test_test$checkbox, FALSE)
-    expect_equal(common$state$test_test$checkboxgroup, "B")
-    expect_equal(common$state$test_test$date, as.Date("2024-01-01"))
-    expect_equal(common$state$test_test$daterange, c(as.Date("2024-01-01"), as.Date("2024-01-02")))
-    expect_equal(common$state$test_test$numeric, 6)
-    expect_equal(common$state$test_test$radio, "B")
-    expect_equal(common$state$test_test$select, "B")
-    expect_equal(common$state$test_test$slider, 6)
-    expect_equal(common$state$test_test$text, "test")
-    expect_equal(common$state$test_test$single_quote, "test")
-    expect_equal(common$state$test_test$switch, FALSE)
+      app <- shinytest2::AppDriver$new(app_dir = file.path(td, "shinyscholara", "inst", "shiny"), name = "save_and_load_test", timeout = 15000)
+      app$set_inputs(introTabs = "Load Prior Session")
+      app$upload_file("core_load-load_session" = save_path)
+      app$click("core_load-goLoad_session")
+      common <- app$get_value(export = "common")
+      loaded_values <- app$get_values()
 
-    app <- shinytest2::AppDriver$new(app_dir = file.path(td, "shinyscholar", "inst", "shiny"), name = "save_and_load_test")
-    app$set_inputs(introTabs = "Load Prior Session")
-    app$upload_file("core_load-load_session" = save_path)
-    app$click("core_load-goLoad_session")
-    loaded_values <- app$get_values()
-
-    expect_equal(loaded_values$input[["test_test-checkbox"]], FALSE)
-    expect_equal(loaded_values$input[["test_test-checkboxgroup"]], "B")
-    expect_equal(loaded_values$input[["test_test-date"]], as.Date("2024-01-01"))
-    expect_equal(loaded_values$input[["test_test-daterange"]], c(as.Date("2024-01-01"), as.Date("2024-01-02")))
-    expect_equal(loaded_values$input[["test_test-numeric"]], 6)
-    expect_equal(loaded_values$input[["test_test-radio"]], "B")
-    expect_equal(loaded_values$input[["test_test-select"]], "B")
-    expect_equal(loaded_values$input[["test_test-slider"]], 6)
-    expect_equal(loaded_values$input[["test_test-text"]], "test")
-    expect_equal(loaded_values$input[["test_test-single_quote"]], "test")
-    expect_equal(loaded_values$input[["test_test-switch"]], FALSE)
-    app$stop()
+      expect_equal(loaded_values$input[["test_test-checkbox"]], FALSE)
+      expect_equal(loaded_values$input[["test_test-checkboxgroup"]], "B")
+      expect_equal(loaded_values$input[["test_test-date"]], as.Date("2024-01-01"))
+      expect_equal(loaded_values$input[["test_test-daterange"]], c(as.Date("2024-01-01"), as.Date("2024-01-02")))
+      expect_equal(loaded_values$input[["test_test-numeric"]], 6)
+      expect_equal(loaded_values$input[["test_test-radio"]], "B")
+      expect_equal(loaded_values$input[["test_test-select"]], "B")
+      expect_equal(loaded_values$input[["test_test-slider"]], 6)
+      expect_equal(loaded_values$input[["test_test-text"]], "test")
+      expect_equal(loaded_values$input[["test_test-single_quote"]], "test")
+      expect_equal(loaded_values$input[["test_test-switch"]], FALSE)
+      app$stop()
+    })
   })
 }
