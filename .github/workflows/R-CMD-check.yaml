@@ -54,4 +54,9 @@ jobs:
         run: |
           Rscript -e "remotes::install_github('rstudio/chromote')"
 
+      - name: Install specific version of Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: 133.0.6943.27
+
       - uses: r-lib/actions/check-r-package@v2
