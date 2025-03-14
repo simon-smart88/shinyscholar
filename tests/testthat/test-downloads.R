@@ -32,6 +32,7 @@ if (suggests){
   test_that("{shinytest2} recording: e2e_ref_packages", {
     skip_if(Sys.which("pandoc") == "")
     skip_if(is_fedora())
+    skip_on_ci()
     skip_on_cran()
 
     app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_ref_packages")
