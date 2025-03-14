@@ -70,12 +70,19 @@ shinyscholar 0.2.5
 - Skip tests that download files on Fedora systems
 - Module `run` buttons can be pressed using the Enter key
 
-shinyscholar 0.2.6
+shinyscholar 0.3.0
 =============
 - Entries in the logger are now restored on load and made available in testing
 - Made loading process more robust by adding the app name 
 - Made loading fault-tolerant if deprecated `common` objects exist
 - Tidied up `library()` calls
+- Removed unnecessary `gargoyle::` and `leaflet::` scoping 
 - Break up very long lines in the markdown so that they can be read in again
-- Added `plot_auto` module to the demonstration app that runs automatically
-- Added ability to control generated markdown chunks using asis chunks and example to plot_hist.Rmd
+- Added `plot_auto` and `plot_semi` modules to the example app that run automatically and semi-automatically respectively
+- Added ability to control generated markdown chunks using asis chunks and example to `plot_hist.Rmd`
+- Added `common$reset()` and `reset_data()` to reset the `common` object and remove all outputs
+- Added an area to the UI for including global options available inside all modules
+- Added an option to include a `downloadButton` and `downloadHandler` to modules that is only activated once the module runs successfully
+- Rewrote `create_template()` and `create_module()` so that `create_module()` creates the module function and tests
+- Disabled `register_module()` as it had not been refactored to work for created apps 
+- Switched to use `shinyWidgets::radioGroupButtons()` for module selection menu

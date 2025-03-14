@@ -1,10 +1,10 @@
-# shinyscholar (v0.2.5)
+# shinyscholar (v0.3.0)
 
 <img src="https://raw.githubusercontent.com/simon-smart88/shinyscholar/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;">
 
 Shinyscholar creates a skeleton R Shiny application that can be used to create complex applications that are modular, meet academic standards of attribution and are reproducible outside of the application. By using *shinyscholar*, to create a template application, developers will be encouraged to produce applications that are maintainable and run reliably without having to learn software development best-practices from scratch. *shinyscholar* was [forked](https://github.com/wallaceEcoMod/wallace/tree/51a3ebe10ffd797fc36ad2d2cf8245b014d11b41) from `{wallace}` v2.0.5 ([CRAN](https://cran.r-project.org/package=wallace), [website](https://wallaceecomod.github.io/wallace/index.html)) a modular platform for reproducible modelling of species distributions. Specifically, it harnesses the higher-level structure and core attributes of Wallace but removes its discipline-specific features, yielding a generic template for developers to make their own applications. We are very grateful to the contributors to `{wallace}` and the features retained from it and the new features added in *shinyscholar* are described in `NEWS`. 
 
-*Shinyscholar* also contains an example application with four components (Select, Plot, Reproduce, Template) each of which contain one or two modules (`select_query`, `select_async`, `select_user`, `plot_hist`, `plot_scatter`, `plot_auto`, `rep_markdown`, `rep_renv`, `rep_refPackages` and `template_create`) and their code is found in the `inst/shiny/modules` directory. Each of the modules in the Select and Plot components calls a function with the same name that is found in the `R` directory. The `select_query` module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used. The Reproduce component is used to generate an rmarkdown document that reproduces the analysis conducted in the application. The Template component can be used to produce and download a template version of an app with the same features.
+*Shinyscholar* also contains an example application with four components (Select, Plot, Reproduce, Template) each of which contain one or more modules (`select_query`, `select_async`, `select_user`, `plot_hist`, `plot_scatter`, `plot_auto`, `rep_markdown`, `rep_renv`, `rep_refPackages` and `template_create`) and their code is found in the `inst/shiny/modules` directory. Each of the modules in the Select and Plot components calls a function with the same name that is found in the `R` directory. The `select_query` module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used. The Reproduce component is used to generate an rmarkdown document that reproduces the analysis conducted in the application. The Template component can be used to produce and download a template version of an app with the same features.
 
 To use *shinyscholar* to create new applications you can install with the following R code:
 
@@ -54,7 +54,7 @@ The `create_template()` function can be used to create the template for a new ap
 
 You can also generate a template app using the Template component of the app either run locally with `run_shinyscholar()` or at https://simonsmart.shinyapps.io/shinyscholar/ 
 
-```
+```R
 modules <- data.frame(
 "component" = c("load", "load", "plot", "plot"),
 "long_component" = c("Load data", "Load data", "Plot data", "Plot data"),
@@ -64,11 +64,69 @@ modules <- data.frame(
 "result" = c(FALSE, FALSE, TRUE, TRUE),
 "rmd" = c(TRUE, TRUE, TRUE, TRUE),
 "save" = c(TRUE, TRUE, TRUE, TRUE),
+"download" = c(FALSE, FALSE, TRUE, TRUE),
 "async" = c(FALSE, TRUE, FALSE, FALSE))
 
 common_objects = c("raster", "histogram", "scatter")
 
 shinyscholar::create_template(path = file.path("~", "Documents"), name = "demo", author = "Simon E. H. Smart", common_objects = common_objects, modules = modules, install = TRUE)
+```
+
+This creates a directory with the following structure:
+
+```
+├── DESCRIPTION
+├── inst
+│   └── shiny
+│       ├── common.R
+│       ├── global.R
+│       ├── helpers.R
+│       ├── modules
+│       │   ├── core_code.R
+│       │   ├── core_intro.R
+│       │   ├── core_load.R
+│       │   ├── core_mapping.R
+│       │   ├── core_save.R
+│       │   ├── plot_histogram.md
+│       │   ├── plot_histogram.R
+│       │   ├── plot_histogram.Rmd
+│       │   ├── plot_histogram.yml
+│       │   ├── ... (repeated for other modules)
+│       ├── Rmd
+│       │   ├── gtext_plot.Rmd
+│       │   ├── gtext_rep.Rmd
+│       │   ├── gtext_select.Rmd
+│       │   ├── references.Rmd
+│       │   ├── text_about.Rmd
+│       │   ├── text_how_to_use.Rmd
+│       │   ├── text_intro_tab.Rmd
+│       │   ├── text_loadsesh.Rmd
+│       │   ├── text_team.Rmd
+│       │   ├── userReport_intro.Rmd
+│       │   └── userReport_module.Rmd
+│       ├── server.R
+│       ├── ui.R
+│       └── www
+│           ├── css
+│           │   └── styles.css
+│           ├── favicon.ico
+│           ├── js
+│           │   └── shinyjs-funcs.js
+│           └── logo.png
+├── R
+│   ├── helper_functions.R
+│   ├── plot_histogram_f.R
+│   ├── plot_scatter_f.R
+│   ├── run_demo.R
+│   ├── select_query_f.R
+│   └── select_user_f.R
+└── tests
+    └── testthat
+        ├── test-plot_histogram.R
+        ├── test-plot_scatter.R
+        ├── test-select_query.R
+        └── test-select_user.R
+
 ```
 
 ### Installation
@@ -83,7 +141,7 @@ After installing the initial version, the modules only contain skeleton code. Th
 
 This is the main module file and contains the UI and server components as well as any other functionality specified at initialisation. `<identifier>` is used as a placeholder for the identifier of the module e.g. load_user.
 
-The `<identifier>_module_ui` function can be developed just like a normal UI function inside a shiny app, but only contains \*Input elements and the input ids need wrapping inside `ns()` to create ids that are unique to the module. The template contains an `actionButton` which when clicked runs the code inside the `*_module_server` function. If the computations performed by the module are simple, then you could choose to remove the `actionButton()` in the UI and the `observeEvent()` so that the server runs reactively whenever the inputs are changed.
+The `<identifier>_module_ui` function can be developed just like a normal UI function inside a shiny app, but only contains \*Input elements and the input ids need wrapping inside `ns()` to create ids that are unique to the module. The template contains an `actionButton` which when clicked runs the code inside the `*_module_server` function. If the computations performed by the module are simple, then you could choose to remove the `actionButton()` so that the `observeEvent()` runs reactively whenever the inputs are changed. The `plot_auto` and `plot_semi` modules in the example app demonstrate how this can be achieved.
 
 The `<identifier>_module_server` function contains an `observeEvent()` which is run when the `actionButton()` in the UI is clicked. Inside the `observeEvent()` there is a consistent structure to the code:
 
@@ -137,11 +195,16 @@ Unit tests should be added for each function called by each module to ensure tha
 ##### End-to-end testing
 End-to-end testing is used to validate that the app itself functions and uses `{shinytest2}`. Tests can be recorded using `shinytest2::record_test()` but the snapshot functionality of the package does not work well with the architecture of this package. Recording tests is still a useful way to record the input names required to navigate through the app though. `common` is made available for use inside tests by using `common <- app$get_value(export = "common")` so you can check that objects are in the expected state after running a module. This method is quite flaky however and if it does not work, alternatively `common` can be accessed by using the save functionality:
 
-```
+```R
 app$set_inputs(main = "Save")
 save_file <- app$get_download("core_save-save_session", filename = save_path)
 common <- readRDS(save_file)
 ```
+
+Entries in the logger can be accessed using `logger <- app$get_value(export = "logger")` and you can check that messages are reaching it using `expect_true(grepl("*<message>*", logger))`.
+
+#### Automatic and semi-automatic modules
+The default behaviour of requiring an `actionButton` to be pressed every time a module is run may not always be appropriate or desirable. It is possible to alter the architecture of the modules to run either automatically when certain conditions are met (e.g. after another module runs) or semi-automatically so that pressing the button once is required, but afterwards any changes in inputs automatically rerun the module. Examples of how to achieve this were added in v0.2.6 in the `plot_auto` and `plot_semi` modules in the example app. In the case of the automatic module, the `common$meta$plot_auto$used` flag is set inside the `renderPlot` which ensures that while the module runs automatically, it will only be included in the reproducible version if the module's results have been viewed by the user.
 
 #### Adding extra modules
 Further modules can be added using `create_module()` which creates the four files for the module. The module configuration file then needs to be added to `base_module_configs` in `global.R` and should be placed in the relevant position for the analysis since this vector controls the order of chunks within the Rmarkdown output. Any extra data objects that the modules creates must be added to `common.R`. This does not currently create the testing files or function file so these must be added manually.
@@ -152,7 +215,7 @@ Support for asynchronous operations was added in v0.2.0 using the new `ExtendedT
 ##### Running tasks
 `common$tasks` is a list that stores details of all the asynchronous tasks. Each task is added to the list above the `observeEvent()` in the `<identifier>_module_server` function as `common$tasks$<identifier>`. The task contains the module's function wrapped by `promises::future_promise()` and bound to a `bslib::bind_task_button()` which disables the button when the task is running:
 
-```
+```R
 common$tasks$<identifier> <- ExtendedTask$new(function(...) {
     promises::future_promise({
       <identifer>(...)
