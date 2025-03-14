@@ -8,6 +8,7 @@ modules <- data.frame(
   "result" = c(TRUE, FALSE, FALSE, FALSE),
   "rmd" = c(TRUE, TRUE, TRUE, TRUE),
   "save" = c(TRUE, TRUE, TRUE, TRUE),
+  "download" = c(FALSE, FALSE, TRUE, TRUE),
   "async" = c(TRUE, FALSE, FALSE, FALSE))
 
 common_objects = c("raster", "histogram", "scatter")
@@ -168,6 +169,7 @@ test_that("Check create template function works with false settings", {
     modules$result <- c(TRUE, FALSE, FALSE, FALSE)
     modules$rmd = c(FALSE, FALSE, FALSE, FALSE)
     modules$save = c(FALSE, FALSE, FALSE, FALSE)
+    modules$download = c(FALSE, FALSE, FALSE, FALSE)
     modules$async = c(FALSE, FALSE, FALSE, FALSE)
 
     directory <- tempfile()
@@ -178,8 +180,6 @@ test_that("Check create template function works with false settings", {
                     common_objects = common_objects, modules = modules,
                     author = "Simon E. H. Smart", include_map = FALSE,
                     include_table = FALSE, include_code = FALSE, install = FALSE)
-
-
 
     expect_true(file.exists(file.path(directory, name, "inst", "shiny", "server.R")))
     expect_true(file.exists(file.path(directory, name, "inst", "shiny", "ui.R")))
@@ -212,6 +212,7 @@ test_that("Check async, no map runs correctly", {
       modules$result <- c(TRUE, FALSE, FALSE, FALSE)
       modules$rmd = c(FALSE, FALSE, FALSE, FALSE)
       modules$save = c(FALSE, FALSE, FALSE, FALSE)
+      modules$download = c(FALSE, FALSE, TRUE, TRUE)
       modules$async = c(TRUE, FALSE, FALSE, FALSE)
 
       directory <- tempfile()
@@ -241,6 +242,7 @@ test_that("Check async, with map runs correctly", {
       modules$result <- c(TRUE, FALSE, FALSE, FALSE)
       modules$rmd = c(FALSE, FALSE, FALSE, FALSE)
       modules$save = c(FALSE, FALSE, FALSE, FALSE)
+      modules$download = c(FALSE, FALSE, TRUE, TRUE)
       modules$async = c(TRUE, FALSE, FALSE, FALSE)
 
       directory <- tempfile()

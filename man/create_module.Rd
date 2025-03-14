@@ -11,6 +11,7 @@ create_module(
   result = FALSE,
   rmd = FALSE,
   save = FALSE,
+  download = FALSE,
   async = FALSE,
   init = FALSE
 )
@@ -18,7 +19,7 @@ create_module(
 \arguments{
 \item{id}{character. The id of the module.}
 
-\item{dir}{character. A directory where the new module should be created.}
+\item{dir}{character. Path to the parent directory containing the application}
 
 \item{map}{logical. Whether or not the module should support modifying the map.}
 
@@ -30,6 +31,9 @@ download.}
 
 \item{save}{logical. Whether or not the module has some custom data to save when the
 user saves the current session.}
+
+\item{download}{logical. Whether or not the module should add code to handle downloading
+a file.}
 
 \item{async}{logical. Whether or not the module will operate asynchronously.}
 

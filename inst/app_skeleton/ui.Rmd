@@ -82,8 +82,7 @@ tagList(
             )
           )
 ```
-
-```{r renv.ignore = TRUE, purl = {{async}}
+```{r renv.ignore = TRUE, purl = {{async}}}
           , fixedRow(
             column(
               10,
@@ -93,7 +92,6 @@ tagList(
             )
           )
 ```
-
 ```{r renv.ignore = TRUE}
 ),
         br(),

@@ -1,16 +1,28 @@
+```{r renv.ignore = TRUE}
 {{id}}_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     # UI
+```
+```{r renv.ignore = TRUE, purl = {{download}} }
+    bslib::input_task_button(ns("run"), "Run module {{id}}"),
+    downloadButton(ns("download"), "Download")
+```
+```{r renv.ignore = TRUE, purl = {{!download}} }
     bslib::input_task_button(ns("run"), "Run module {{id}}")
+```
+```{r renv.ignore = TRUE}
   )
 }
 
 {{id}}_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
-
-
-  #create the asynchronous task
+```
+```{r renv.ignore = TRUE, purl = {{download}} }
+  shinyjs::hide("download")
+```
+```{r renv.ignore = TRUE}
+  # create the asynchronous task
   common$tasks${{id}} <- ExtendedTask$new(function(...) {
     promises::future_promise({
       {{id}}(...)
@@ -47,23 +59,40 @@
 
         # TRIGGER
         trigger("{{id}}")
-
+```
+```{r renv.ignore = TRUE, purl = {{download}} }
+    shinyjs::show("download")
+```
+```{r renv.ignore = TRUE, purl = {{map}} }
         # explicitly call the mapping function
         do.call("{{id}}_module_map", list(map, common))
         show_map(parent_session)
-
+```
+```{r renv.ignore = TRUE}
         # set an input value to use in testing
         shinyjs::runjs("Shiny.setInputValue('{{id}}-complete', 'complete');")
       } else {
         common$logger %>% writeLog(type = "error", result)
       }
     })
+```
+```{r renv.ignore = TRUE, purl = {{result}} }
 
     output$result <- renderText({
       watch("{{id}}")
       # Result
     })
-
+```
+```{r renv.ignore = TRUE, purl = {{download}} }
+  output$download <- downloadHandler(
+    filename = function() {
+      "placeholder.ext"
+    },
+    content = function(file) {
+      # Download content
+    })
+```
+```{r renv.ignore = TRUE, purl = {{save}} }
     return(list(
       save = function() {
         # Save any values that should be saved when the current session is saved
@@ -74,22 +103,27 @@
         # Populate using save_and_load()
       }
     ))
+```
+```{r renv.ignore = TRUE}
   })
 }
 
+```{r renv.ignore = TRUE, purl = {{result}} }
 {{id}}_module_result <- function(id) {
   ns <- NS(id)
 
   # Result UI
   verbatimTextOutput(ns("result"))
 }
-
+```
+```{r renv.ignore = TRUE, purl = {{map}} }
 {{id}}_module_map <- function(map, common) {
   # Map logic
 }
-
+```
+```{r renv.ignore = TRUE, purl = {{rmd}} }
 {{id}}_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   # Populate using metadata()
 }
-
+```
