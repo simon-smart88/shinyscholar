@@ -33,6 +33,7 @@ modules <- data.frame(
   "result" = c(TRUE),
   "rmd" = c(TRUE),
   "save" = c(TRUE),
+  "download" = c(TRUE),
   "async" = c(FALSE))
 
 create_template(path = td, name = "demo",

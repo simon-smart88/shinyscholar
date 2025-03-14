@@ -129,6 +129,7 @@ if (suggests){
         "result" = c(TRUE),
         "rmd" = c(TRUE),
         "save" = c(TRUE),
+        "download" = c(TRUE),
         "async" = c(FALSE))
 
       td <- tempfile()
