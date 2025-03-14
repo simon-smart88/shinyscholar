@@ -47,10 +47,12 @@ tagList(
           conditionalPanel(
             "input.tabs == 'rep'",
             div("Component: Reproduce", class = "componentName"),
-            radioButtons(
+            shinyWidgets::radioGroupButtons(
               "repSel", "Modules Available:",
               choices = insert_modules_options("rep"),
-              selected = character(0)
+              direction = "vertical",
+              status = "outline-secondary",
+              width = "100%"
             ),
             tags$hr(),
             insert_modules_ui("rep")

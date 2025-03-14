@@ -51,10 +51,12 @@ tagList(
             "input.tabs == 'select'",
             div("Component: Select Data", class = "componentName"),
             help_comp_ui("selectHelp"),
-            radioButtons(
+            shinyWidgets::radioGroupButtons(
               "selectSel", "Modules Available:",
               choices = insert_modules_options("select"),
-              selected = character(0)
+              direction = "vertical",
+              status = "outline-secondary",
+              width = "100%"
             ),
             tags$hr(),
             insert_modules_ui("select")
@@ -64,10 +66,12 @@ tagList(
             "input.tabs == 'plot'",
             div("Component: Plot Data", class = "componentName"),
             help_comp_ui("plotHelp"),
-            radioButtons(
+            shinyWidgets::radioGroupButtons(
               "plotSel", "Modules Available:",
               choices = insert_modules_options("plot"),
-              selected = character(0)
+              direction = "vertical",
+              status = "outline-secondary",
+              width = "100%"
             ),
             tags$hr(),
             insert_modules_ui("plot")
@@ -76,10 +80,12 @@ tagList(
           conditionalPanel(
             "input.tabs == 'rep'",
             div("Component: Reproduce", class = "componentName"),
-            radioButtons(
+            shinyWidgets::radioGroupButtons(
               "repSel", "Modules Available:",
               choices = insert_modules_options("rep"),
-              selected = character(0)
+              direction = "vertical",
+              status = "outline-secondary",
+              width = "100%"
             ),
             tags$hr(),
             insert_modules_ui("rep")
@@ -88,9 +94,12 @@ tagList(
           conditionalPanel(
             "input.tabs == 'template'",
             div("Component: Template", class = "componentName"),
-            radioButtons(
+            shinyWidgets::radioGroupButtons(
               "templateSel", "Modules Available:",
-              choices = insert_modules_options("template")
+              choices = insert_modules_options("template"),
+              direction = "vertical",
+              status = "outline-secondary",
+              width = "100%"
             ),
             tags$hr(),
             insert_modules_ui("template")
