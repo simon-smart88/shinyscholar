@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shinyscholar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -44,7 +44,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create a shinyscholar module</h1>
-    <small class="dont-index">Source: <a href="https://github.com/simon-smart88/shinyscholar/blob/v0.2.5/R/custom_modules.R" class="external-link"><code>R/custom_modules.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/simon-smart88/shinyscholar/blob/master/R/custom_modules.R" class="external-link"><code>R/custom_modules.R</code></a></small>
     <div class="hidden name"><code>create_module.Rd</code></div>
     </div>
 
@@ -60,6 +60,7 @@
 <span>  result <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  rmd <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  save <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  download <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  async <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  init <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -74,7 +75,7 @@
 
 
 <dt id="arg-dir">dir<a class="anchor" aria-label="anchor" href="#arg-dir"></a></dt>
-<dd><p>character. A directory where the new module should be created.</p></dd>
+<dd><p>character. Path to the parent directory containing the application</p></dd>
 
 
 <dt id="arg-map">map<a class="anchor" aria-label="anchor" href="#arg-map"></a></dt>
@@ -94,6 +95,11 @@ download.</p></dd>
 <dt id="arg-save">save<a class="anchor" aria-label="anchor" href="#arg-save"></a></dt>
 <dd><p>logical. Whether or not the module has some custom data to save when the
 user saves the current session.</p></dd>
+
+
+<dt id="arg-download">download<a class="anchor" aria-label="anchor" href="#arg-download"></a></dt>
+<dd><p>logical. Whether or not the module should add code to handle downloading
+a file.</p></dd>
 
 
 <dt id="arg-async">async<a class="anchor" aria-label="anchor" href="#arg-async"></a></dt>

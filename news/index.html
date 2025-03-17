@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shinyscholar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -44,7 +44,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href="https://github.com/simon-smart88/shinyscholar/blob/v0.2.5/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/simon-smart88/shinyscholar/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
@@ -124,6 +124,24 @@
 </li>
 <li>Skip tests that download files on Fedora systems</li>
 <li>Module <code>run</code> buttons can be pressed using the Enter key</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.3.0" id="shinyscholar-030">shinyscholar 0.3.0<a class="anchor" aria-label="anchor" href="#shinyscholar-030"></a></h2>
+<ul><li>Entries in the logger are now restored on load and made available in testing</li>
+<li>Made loading process more robust by adding the app name</li>
+<li>Made loading fault-tolerant if deprecated <code>common</code> objects exist</li>
+<li>Tidied up <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> calls</li>
+<li>Removed unnecessary <code>gargoyle::</code> and <code>leaflet::</code> scoping</li>
+<li>Break up very long lines in the markdown so that they can be read in again</li>
+<li>Added <code>plot_auto</code> and <code>plot_semi</code> modules to the example app that run automatically and semi-automatically respectively</li>
+<li>Added ability to control generated markdown chunks using asis chunks and example to <code>plot_hist.Rmd</code>
+</li>
+<li>Added <code>common$reset()</code> and <code><a href="../reference/reset_data.html">reset_data()</a></code> to reset the <code>common</code> object and remove all outputs</li>
+<li>Added an area to the UI for including global options available inside all modules</li>
+<li>Added an option to include a <code>downloadButton</code> and <code>downloadHandler</code> to modules that is only activated once the module runs successfully</li>
+<li>Rewrote <code><a href="../reference/create_template.html">create_template()</a></code> and <code><a href="../reference/create_module.html">create_module()</a></code> so that <code><a href="../reference/create_module.html">create_module()</a></code> creates the module function and tests</li>
+<li>Disabled <code><a href="../reference/register_module.html">register_module()</a></code> as it had not been refactored to work for created apps</li>
+<li>Switched to use <code><a href="https://dreamrs.github.io/shinyWidgets/reference/radioGroupButtons.html" class="external-link">shinyWidgets::radioGroupButtons()</a></code> for module selection menu</li>
 </ul></div>
   </div>
 

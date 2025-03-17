@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">shinyscholar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -66,11 +66,11 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="shinyscholar-v025">shinyscholar (v0.2.5)<a class="anchor" aria-label="anchor" href="#shinyscholar-v025"></a>
+<div class="page-header"><h1 id="shinyscholar-v030">shinyscholar (v0.3.0)<a class="anchor" aria-label="anchor" href="#shinyscholar-v030"></a>
 </h1></div>
 <p><img src="https://raw.githubusercontent.com/simon-smart88/shinyscholar/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;"></p>
 <p>Shinyscholar creates a skeleton R Shiny application that can be used to create complex applications that are modular, meet academic standards of attribution and are reproducible outside of the application. By using <em>shinyscholar</em>, to create a template application, developers will be encouraged to produce applications that are maintainable and run reliably without having to learn software development best-practices from scratch. <em>shinyscholar</em> was <a href="https://github.com/wallaceEcoMod/wallace/tree/51a3ebe10ffd797fc36ad2d2cf8245b014d11b41" class="external-link">forked</a> from <a href="http://wallaceecomod.github.io/wallace/" class="external-link">wallace</a> v2.0.5 (<a href="https://cran.r-project.org/package=wallace" class="external-link">CRAN</a>, <a href="https://wallaceecomod.github.io/wallace/index.html" class="external-link">website</a>) a modular platform for reproducible modelling of species distributions. Specifically, it harnesses the higher-level structure and core attributes of Wallace but removes its discipline-specific features, yielding a generic template for developers to make their own applications. We are very grateful to the contributors to <a href="http://wallaceecomod.github.io/wallace/" class="external-link">wallace</a> and the features retained from it and the new features added in <em>shinyscholar</em> are described in <code>NEWS</code>.</p>
-<p><em>Shinyscholar</em> also contains an example application with four components (Select, Plot, Reproduce, Template) each of which contain one or two modules (<code>select_query</code>, <code>select_async</code>, <code>select_user</code>, <code>plot_hist</code>, <code>plot_scatter</code>, <code>rep_markdown</code>, <code>rep_renv</code>, <code>rep_refPackages</code> and <code>template_create</code>) and their code is found in the <code>inst/shiny/modules</code> directory. Each of the modules in the Select and Plot components calls a function with the same name that is found in the <code>R</code> directory. The <code>select_query</code> module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used. The Reproduce component is used to generate an rmarkdown document that reproduces the analysis conducted in the application. The Template component can be used to produce and download a template version of an app with the same features.</p>
+<p><em>Shinyscholar</em> also contains an example application with four components (Select, Plot, Reproduce, Template) each of which contain one or more modules (<code>select_query</code>, <code>select_async</code>, <code>select_user</code>, <code>plot_hist</code>, <code>plot_scatter</code>, <code>plot_auto</code>, <code>rep_markdown</code>, <code>rep_renv</code>, <code>rep_refPackages</code> and <code>template_create</code>) and their code is found in the <code>inst/shiny/modules</code> directory. Each of the modules in the Select and Plot components calls a function with the same name that is found in the <code>R</code> directory. The <code>select_query</code> module and underlying function is the most complex, containing various components for handling errors, both in the module and in the function. The other modules are very simple but included to demonstrate how multiple components and modules can be used. The Reproduce component is used to generate an rmarkdown document that reproduces the analysis conducted in the application. The Template component can be used to produce and download a template version of an app with the same features.</p>
 <p>To use <em>shinyscholar</em> to create new applications you can install with the following R code:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"shinyscholar"</span><span class="op">)</span></span></code></pre></div>
@@ -126,7 +126,8 @@
 </h3>
 <p>The <code><a href="reference/create_template.html">create_template()</a></code> function can be used to create the template for a new app. For example, the following call will produce a folder called <code>demo</code> in your Documents folder and create an app containing two components (load and plot) each containing two modules. You can choose whether certain features are included in the overall app by setting the <code>include_*</code> parameters and also whether each module contains mapping, result, rmarkdown and save functionality by setting the parameters inside the <code>modules</code> dataframe. <code>common_objects</code> contains the name of objects shared between modules and will be available inside all of the modules as e.g. <code>common$raster</code>. See <a href="#common.R">this section</a> for more details on the <code>common</code> data structure.</p>
 <p>You can also generate a template app using the Template component of the app either run locally with <code><a href="reference/run_shinyscholar.html">run_shinyscholar()</a></code> or at <a href="https://simonsmart.shinyapps.io/shinyscholar/" class="external-link uri">https://simonsmart.shinyapps.io/shinyscholar/</a></p>
-<pre><code><span><span class="va">modules</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">modules</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span><span class="st">"component"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"load"</span>, <span class="st">"load"</span>, <span class="st">"plot"</span>, <span class="st">"plot"</span><span class="op">)</span>,</span>
 <span><span class="st">"long_component"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Load data"</span>, <span class="st">"Load data"</span>, <span class="st">"Plot data"</span>, <span class="st">"Plot data"</span><span class="op">)</span>,</span>
 <span><span class="st">"module"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"user"</span>, <span class="st">"database"</span>, <span class="st">"histogram"</span>, <span class="st">"scatter"</span><span class="op">)</span>,</span>
@@ -135,11 +136,65 @@
 <span><span class="st">"result"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span><span class="st">"rmd"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span><span class="st">"save"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span><span class="st">"download"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span><span class="st">"async"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">common_objects</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raster"</span>, <span class="st">"histogram"</span>, <span class="st">"scatter"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">shinyscholar</span><span class="fu">::</span><span class="fu"><a href="reference/create_template.html">create_template</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~"</span>, <span class="st">"Documents"</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"demo"</span>, author <span class="op">=</span> <span class="st">"Simon E. H. Smart"</span>, common_objects <span class="op">=</span> <span class="va">common_objects</span>, modules <span class="op">=</span> <span class="va">modules</span>, install <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
+<span><span class="fu">shinyscholar</span><span class="fu">::</span><span class="fu"><a href="reference/create_template.html">create_template</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~"</span>, <span class="st">"Documents"</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"demo"</span>, author <span class="op">=</span> <span class="st">"Simon E. H. Smart"</span>, common_objects <span class="op">=</span> <span class="va">common_objects</span>, modules <span class="op">=</span> <span class="va">modules</span>, install <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>This creates a directory with the following structure:</p>
+<pre><code>├── DESCRIPTION
+├── inst
+│   └── shiny
+│       ├── common.R
+│       ├── global.R
+│       ├── helpers.R
+│       ├── modules
+│       │   ├── core_code.R
+│       │   ├── core_intro.R
+│       │   ├── core_load.R
+│       │   ├── core_mapping.R
+│       │   ├── core_save.R
+│       │   ├── plot_histogram.md
+│       │   ├── plot_histogram.R
+│       │   ├── plot_histogram.Rmd
+│       │   ├── plot_histogram.yml
+│       │   ├── ... (repeated for other modules)
+│       ├── Rmd
+│       │   ├── gtext_plot.Rmd
+│       │   ├── gtext_rep.Rmd
+│       │   ├── gtext_select.Rmd
+│       │   ├── references.Rmd
+│       │   ├── text_about.Rmd
+│       │   ├── text_how_to_use.Rmd
+│       │   ├── text_intro_tab.Rmd
+│       │   ├── text_loadsesh.Rmd
+│       │   ├── text_team.Rmd
+│       │   ├── userReport_intro.Rmd
+│       │   └── userReport_module.Rmd
+│       ├── server.R
+│       ├── ui.R
+│       └── www
+│           ├── css
+│           │   └── styles.css
+│           ├── favicon.ico
+│           ├── js
+│           │   └── shinyjs-funcs.js
+│           └── logo.png
+├── R
+│   ├── helper_functions.R
+│   ├── plot_histogram_f.R
+│   ├── plot_scatter_f.R
+│   ├── run_demo.R
+│   ├── select_query_f.R
+│   └── select_user_f.R
+└── tests
+    └── testthat
+        ├── test-plot_histogram.R
+        ├── test-plot_scatter.R
+        ├── test-select_query.R
+        └── test-select_user.R
+</code></pre>
 </div>
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -157,14 +212,14 @@
 <h5 id="r">.R<a class="anchor" aria-label="anchor" href="#r"></a>
 </h5>
 <p>This is the main module file and contains the UI and server components as well as any other functionality specified at initialisation. <code>&lt;identifier&gt;</code> is used as a placeholder for the identifier of the module e.g. load_user.</p>
-<p>The <code>&lt;identifier&gt;_module_ui</code> function can be developed just like a normal UI function inside a shiny app, but only contains *Input elements and the input ids need wrapping inside <code>ns()</code> to create ids that are unique to the module. The template contains an <code>actionButton</code> which when clicked runs the code inside the <code>*_module_server</code> function. If the computations performed by the module are simple, then you could choose to remove the <code><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton()</a></code> in the UI and the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> so that the server runs reactively whenever the inputs are changed.</p>
+<p>The <code>&lt;identifier&gt;_module_ui</code> function can be developed just like a normal UI function inside a shiny app, but only contains *Input elements and the input ids need wrapping inside <code>ns()</code> to create ids that are unique to the module. The template contains an <code>actionButton</code> which when clicked runs the code inside the <code>*_module_server</code> function. If the computations performed by the module are simple, then you could choose to remove the <code><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton()</a></code> so that the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> runs reactively whenever the inputs are changed. The <code>plot_auto</code> and <code>plot_semi</code> modules in the example app demonstrate how this can be achieved.</p>
 <p>The <code>&lt;identifier&gt;_module_server</code> function contains an <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> which is run when the <code><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton()</a></code> in the UI is clicked. Inside the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> there is a consistent structure to the code:</p>
 <ul>
 <li>In the <em>warning</em> block, examine inputs to check that they are as expected and issue warnings if not using <code>common$logger %&gt;% writeLog()</code> See the documentation of <code><a href="reference/writeLog.html">shinyscholar::writeLog()</a></code> for more details.</li>
 <li>In the <em>function call</em> block, pass the inputs to the module function.</li>
 <li>In the <em>load into common</em> block, store the result(s) of the function call in the relevant <code>common</code> object.</li>
 <li>In the <em>metadata</em> block, store any relevant input metadata which is required to reproduce the function call, or is used in the mapping function, in the <code>common$meta$&lt;identifier&gt;</code> object. This can be semi-automated using the <code><a href="reference/metadata.html">metadata()</a></code> function once you have finished developing the module.</li>
-<li>In the <em>trigger</em> block, <code><a href="https://rdrr.io/pkg/gargoyle/man/Event.html" class="external-link">gargoyle::trigger()</a></code> is called which can be used to trigger actions elsewhere in the module or app using <code><a href="https://rdrr.io/pkg/gargoyle/man/Event.html" class="external-link">gargoyle::watch()</a></code>. This should not need editing.</li>
+<li>In the <em>trigger</em> block, <code><a href="https://rdrr.io/pkg/gargoyle/man/Event.html" class="external-link">trigger()</a></code> is called which can be used to trigger actions elsewhere in the module or app using <code><a href="https://rdrr.io/pkg/gargoyle/man/Event.html" class="external-link">watch()</a></code>. This should not need editing.</li>
 <li>In the <em>result</em> block, use the relevant <code>input</code> values or <code>common</code> objects to produce <code>render*</code> objects which will be passed to the <code>_module_result</code> function.</li>
 <li>In the <em>return</em> block, the current <code>input</code> values can be stored as a <code>list</code> inside the <code>save</code> function e.g. <code>select_date = input$date</code> when the app is saved and then retrieved when the app is loaded using various <code>updateInput</code> functions inside the <code>load</code> function e.g. <code>updateSelectInput(session, "date", selected = state$select_date</code>). This can be done automatically by calling <code><a href="reference/save_and_load.html">save_and_load()</a></code> either for all the modules or a single module.</li>
 </ul>
@@ -231,10 +286,17 @@
 <h5 id="end-to-end-testing">End-to-end testing<a class="anchor" aria-label="anchor" href="#end-to-end-testing"></a>
 </h5>
 <p>End-to-end testing is used to validate that the app itself functions and uses <a href="https://rstudio.github.io/shinytest2/" class="external-link">shinytest2</a>. Tests can be recorded using <code><a href="https://rstudio.github.io/shinytest2/reference/record_test.html" class="external-link">shinytest2::record_test()</a></code> but the snapshot functionality of the package does not work well with the architecture of this package. Recording tests is still a useful way to record the input names required to navigate through the app though. <code>common</code> is made available for use inside tests by using <code>common &lt;- app$get_value(export = "common")</code> so you can check that objects are in the expected state after running a module. This method is quite flaky however and if it does not work, alternatively <code>common</code> can be accessed by using the save functionality:</p>
-<pre><code><span><span class="va">app</span><span class="op">$</span><span class="fu">set_inputs</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Save"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">app</span><span class="op">$</span><span class="fu">set_inputs</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Save"</span><span class="op">)</span></span>
 <span><span class="va">save_file</span> <span class="op">&lt;-</span> <span class="va">app</span><span class="op">$</span><span class="fu">get_download</span><span class="op">(</span><span class="st">"core_save-save_session"</span>, filename <span class="op">=</span> <span class="va">save_path</span><span class="op">)</span></span>
-<span><span class="va">common</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">save_file</span><span class="op">)</span></span></code></pre>
+<span><span class="va">common</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">save_file</span><span class="op">)</span></span></code></pre></div>
+<p>Entries in the logger can be accessed using <code>logger &lt;- app$get_value(export = "logger")</code> and you can check that messages are reaching it using <code>expect_true(grepl("*&lt;message&gt;*", logger))</code>.</p>
 </div>
+</div>
+<div class="section level4">
+<h4 id="automatic-and-semi-automatic-modules">Automatic and semi-automatic modules<a class="anchor" aria-label="anchor" href="#automatic-and-semi-automatic-modules"></a>
+</h4>
+<p>The default behaviour of requiring an <code>actionButton</code> to be pressed every time a module is run may not always be appropriate or desirable. It is possible to alter the architecture of the modules to run either automatically when certain conditions are met (e.g. after another module runs) or semi-automatically so that pressing the button once is required, but afterwards any changes in inputs automatically rerun the module. Examples of how to achieve this were added in v0.2.6 in the <code>plot_auto</code> and <code>plot_semi</code> modules in the example app. In the case of the automatic module, the <code>common$meta$plot_auto$used</code> flag is set inside the <code>renderPlot</code> which ensures that while the module runs automatically, it will only be included in the reproducible version if the module’s results have been viewed by the user.</p>
 </div>
 <div class="section level4">
 <h4 id="adding-extra-modules">Adding extra modules<a class="anchor" aria-label="anchor" href="#adding-extra-modules"></a>
@@ -249,11 +311,11 @@
 <h5 id="running-tasks">Running tasks<a class="anchor" aria-label="anchor" href="#running-tasks"></a>
 </h5>
 <p><code>common$tasks</code> is a list that stores details of all the asynchronous tasks. Each task is added to the list above the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> in the <code>&lt;identifier&gt;_module_server</code> function as <code>common$tasks$&lt;identifier&gt;</code>. The task contains the module’s function wrapped by <code><a href="https://rstudio.github.io/promises/reference/future_promise.html" class="external-link">promises::future_promise()</a></code> and bound to a <code><a href="https://rstudio.github.io/bslib/reference/bind_task_button.html" class="external-link">bslib::bind_task_button()</a></code> which disables the button when the task is running:</p>
-<pre><code>common$tasks$&lt;identifier&gt; &lt;- ExtendedTask$new(function(...) {
-    promises::future_promise({
-      &lt;identifer&gt;(...)
-    })
-  }) |&gt; bslib::bind_task_button("run")</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>common<span class="sc">$</span>tasks<span class="sc">$</span><span class="er">&lt;</span>identifier<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">-</span> ExtendedTask<span class="sc">$</span><span class="fu">new</span>(<span class="cf">function</span>(...) {</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>    promises<span class="sc">::</span><span class="fu">future_promise</span>({</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>      <span class="sc">&lt;</span>identifer<span class="sc">&gt;</span>(...)</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>    })</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  }) <span class="sc">|&gt;</span> bslib<span class="sc">::</span><span class="fu">bind_task_button</span>(<span class="st">"run"</span>)</span></code></pre></div>
 <p>The task is invoked inside the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> by calling <code>common$tasks$&lt;identifier&gt;$invoke()</code> with the arguments of the module’s function. As in the default implementation, metadata should be stored at this point when the function is called.</p>
 </div>
 <div class="section level5">
