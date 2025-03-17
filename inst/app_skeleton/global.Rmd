@@ -1,11 +1,7 @@
 ```{r renv.ignore = TRUE}
 library(glue)
-library(gargoyle)
+library({{app_library}})
 ```
-```{r renv.ignore = TRUE, purl = {{include_map}}}
-library(leaflet)
-```
-
 ```{r renv.ignore = TRUE, purl = {{async}}}
 future::plan(future::multisession)
 ```

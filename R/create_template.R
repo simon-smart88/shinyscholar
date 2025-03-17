@@ -37,6 +37,7 @@ tidy_purl <- function(params){
 #'  \item `result` logical. Whether or not the module produces results
 #'  \item `rmd` logical. Whether or not the module is included in the markdown
 #'  \item `save` logical. Whether or not the input values of the model should be saved
+#'  \item `download` logical. Whether or not the input values of the model should be saved
 #'  \item `async` logical. Whether or not the module will run asynchronously
 #' }
 #' @param author character. Name of the author(s)
@@ -64,6 +65,7 @@ tidy_purl <- function(params){
 #' "result" = c(FALSE, FALSE, TRUE, TRUE),
 #' "rmd" = c(TRUE, TRUE, TRUE, TRUE),
 #' "save" = c(TRUE, TRUE, TRUE, TRUE),
+#' "download" = c(FALSE, FALSE, TRUE, TRUE),
 #' "async" = c(TRUE, FALSE, FALSE, FALSE))
 #'
 #' common_objects = c("raster", "histogram", "scatter")
@@ -130,7 +132,7 @@ create_template <- function(path, name, common_objects, modules, author,
   }
 
   if (any(common_objects %in% c("meta", "logger", "state", "poly", "tasks"))){
-    conflicts <- common_objects[common_objects %in% c("meta", "logger", "state", "poly", "tasks")]
+    conflicts <- common_objects[common_objects %in% c("meta", "logger", "state", "poly", "tasks", "reset")]
     conflicts <- paste(conflicts, collapse = ",")
     logger %>% writeLog(type = "error", glue::glue("common_objects contains {conflicts} which are included
                                         in common by default. Please choose a different name."))
@@ -142,7 +144,7 @@ create_template <- function(path, name, common_objects, modules, author,
     return()
   }
 
-  module_columns <- c("component", "long_component", "module", "long_module", "map", "result", "rmd", "save", "async")
+  module_columns <- c("component", "long_component", "module", "long_module", "map", "result", "rmd", "save", "download", "async")
 
   if (!all(module_columns %in% colnames(modules))){
     missing_column <- module_columns[!(module_columns %in% colnames(modules))]
@@ -207,6 +209,30 @@ create_template <- function(path, name, common_objects, modules, author,
   dir.create(file.path(path, "inst", "shiny", "www"))
   dir.create(file.path(path, "tests", "testthat"), recursive = TRUE)
 
+  # package DESCRIPTION ====
+  description_template <- system.file("app_skeleton", "DESCRIPTION", package = "shinyscholar")
+  description_lines <- readLines(description_template)
+  description_lines[1] <- glue::glue("Package: {name}")
+
+  if (async){
+    import_line <- grep("*Imports*", description_lines)
+    description_lines <- append(description_lines, "    bslib,", import_line)
+    description_lines <- append(description_lines, "    future,", import_line + 2)
+    description_lines <- append(description_lines, "    promises,", import_line + 7)
+  }
+
+  if (include_map){
+    shiny_line <- grep("*shiny (>= 1.8.1)*", description_lines)
+    description_lines <- append(description_lines, "    leaflet (>= 2.0.2),", shiny_line - 1)
+  }
+
+  if (include_code){
+    shinyalert_line <- grep("*shinyalert*", description_lines)
+    description_lines <- append(description_lines, "    shinyAce,", shinyalert_line - 1)
+  }
+
+  writeLines(description_lines, file.path(path, "DESCRIPTION"))
+
   # Create common list ====
   # add always present objects to common
   common_objects_internal <- c(common_objects, c("meta", "logger", "state"))
@@ -219,7 +245,17 @@ create_template <- function(path, name, common_objects, modules, author,
   }
 
   # convert common_objects to list string
-  common_objects_list <- paste0("list(", paste(sapply(common_objects_internal, function(a) paste0(a, " = NULL")), collapse = ",\n "), ")")
+  common_objects_list <- paste0("list(", paste(sapply(common_objects_internal, function(a) paste0(a, " = NULL")), collapse = ",\n "))
+
+  # make tasks a list
+  if (async){
+    common_objects_list <- gsub("tasks = NULL", "tasks = list()", common_objects_list)
+  }
+
+  # create reset function
+  objects_to_reset <- common_objects_internal[!common_objects_internal %in% c("logger", "tasks")]
+  reset_object <- paste(sapply(objects_to_reset, function(a) paste0("self$", a, " <- NULL")), collapse = "\n ")
+  common_objects_list <- paste0(common_objects_list, ",\n reset = function(){\n", reset_object, "\n invisible(self)})")
 
   common_params <- c(
     file = system.file("app_skeleton", "common.Rmd", package = "shinyscholar"),
@@ -275,10 +311,12 @@ create_template <- function(path, name, common_objects, modules, author,
                                       glue::glue('          "input.tabs == \'{components$component[i]}\'",'),
                                       glue::glue('          div("Component: {components$long_component[i]}", class = "componentName"),'),
                                       glue::glue('          help_comp_ui("{components$component[i]}Help"),'),
-                                                 '          radioButtons(',
+                                                 '          shinyWidgets::radioGroupButtons(',
                                       glue::glue('          "{components$component[i]}Sel", "Modules Available:",'),
                                       glue::glue('          choices = insert_modules_options("{components$component[i]}"),'),
-                                                 '          selected = character(0)',
+                                                 '          direction = "vertical",',
+                                                 '          status = "outline-secondary",',
+                                                 '          width = "100%"',
                                                  '          ),',
                                                  '          tags$hr(),',
                                       glue::glue('          insert_modules_ui("{components$component[i]}")'),
@@ -343,8 +381,6 @@ create_template <- function(path, name, common_objects, modules, author,
     writeLines(core_lines, file.path(path, "inst", "shiny", "modules", paste0("core_",c,".R")))
   }
 
-
-
   # Create modules ====
 
   for (m in 1:nrow(modules)){
@@ -352,11 +388,12 @@ create_template <- function(path, name, common_objects, modules, author,
 
     # create files for each module
     shinyscholar::create_module(id = module_name,
-                        dir = file.path(path, "inst", "shiny", "modules"),
+                        dir = path,
                         map = modules$map[m],
                         result = modules$result[m],
                         rmd = modules$rmd[m],
                         save = modules$save[m],
+                        download = modules$download[m],
                         async = modules$async[m],
                         init = TRUE)
 
@@ -367,10 +404,6 @@ create_template <- function(path, name, common_objects, modules, author,
       module_lines <- gsub("id, common, parent_session", "id, common, parent_session, map", module_lines)
       writeLines(module_lines, module_file)
     }
-
-    # create function for each module
-    empty_function <- paste0(module_name," <- function(x){return(NULL)}")
-    writeLines(empty_function, file.path(path, "R", paste0(module_name, "_f.R")))
 
     # edit yaml configs
     yml_lines <- rep(NA,5)
@@ -473,36 +506,12 @@ create_template <- function(path, name, common_objects, modules, author,
   helper_file <- system.file("shiny", "helpers.R", package = "shinyscholar")
   file.copy(helper_file, file.path(path, "inst", "shiny"))
 
-  helper_function_lines <- readLines(system.file("app_skeleton", "helper_functions.R", package = "shinyscholar"))
-  if (!include_map){
-    show_map_line <- grep("*title show_map*", helper_function_lines)
-    helper_function_lines <- helper_function_lines[-c(show_map_line:(show_map_line + 7) )]
-  }
+  helper_function_params <- c(
+    file = system.file("app_skeleton", "helper_functions.Rmd", package = "shinyscholar"),
+    list(include_map = include_map)
+  )
+  helper_function_lines <- tidy_purl(helper_function_params)
   writeLines(helper_function_lines, file.path(path, "R", "helper_functions.R"))
-
-  # package DESCRIPTION ====
-  description_template <- system.file("app_skeleton", "DESCRIPTION", package = "shinyscholar")
-  description_lines <- readLines(description_template)
-  description_lines[1] <- glue::glue("Package: {name}")
-
-  if (async){
-    import_line <- grep("*Imports*", description_lines)
-    description_lines <- append(description_lines, "    bslib,", import_line)
-    description_lines <- append(description_lines, "    future,", import_line + 2)
-    description_lines <- append(description_lines, "    promises,", import_line + 7)
-  }
-
-  if (include_map){
-    magrittr_line <- grep("*magrittr*", description_lines)
-    description_lines <- append(description_lines, "    leaflet (>= 2.0.2),", magrittr_line - 1)
-  }
-
-  if (include_code){
-    shinyalert_line <- grep("*shinyalert*", description_lines)
-    description_lines <- append(description_lines, "    shinyAce,", shinyalert_line - 1)
-  }
-
-  writeLines(description_lines, file.path(path, "DESCRIPTION"))
 
   # Create run_app ====
 
@@ -515,27 +524,12 @@ create_template <- function(path, name, common_objects, modules, author,
   run_app_lines <- tidy_purl(run_app_params)
   writeLines(run_app_lines, file.path(path, "R", paste0("run_", name, ".R")))
 
-  # Create tests ====
-  for (m in 1:nrow(modules)){
-    module_name <- glue::glue("{modules$component[m]}_{modules$module[m]}")
-
-  test_params <- c(
-    file = system.file("app_skeleton", "test.Rmd", package = "shinyscholar"),
-    list(app_library = name,
-         component = modules$component[m],
-         module = module_name,
-         common_object = common_objects[1])
-  )
-
-  test_lines <- tidy_purl(test_params)
-  writeLines(test_lines, file.path(path, "tests", "testthat", paste0("test-", module_name, ".R")))
-  }
-
   # Install package ====
   if (install){
   devtools::install_local(path = path, force = TRUE)
   }
 
+  invisible()
 }
 
 

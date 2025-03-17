@@ -39,6 +39,7 @@ to be included and with the following column names:
 \item \code{result} logical. Whether or not the module produces results
 \item \code{rmd} logical. Whether or not the module is included in the markdown
 \item \code{save} logical. Whether or not the input values of the model should be saved
+\item \code{download} logical. Whether or not the input values of the model should be saved
 \item \code{async} logical. Whether or not the module will run asynchronously
 }}
 
@@ -78,6 +79,7 @@ modules <- data.frame(
 "result" = c(FALSE, FALSE, TRUE, TRUE),
 "rmd" = c(TRUE, TRUE, TRUE, TRUE),
 "save" = c(TRUE, TRUE, TRUE, TRUE),
+"download" = c(FALSE, FALSE, TRUE, TRUE),
 "async" = c(TRUE, FALSE, FALSE, FALSE))
 
 common_objects = c("raster", "histogram", "scatter")

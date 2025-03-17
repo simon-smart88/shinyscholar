@@ -14,6 +14,7 @@ one or more modules.}
 No return value, called for side effects
 }
 \description{
+Currently disabled as cannot be used with apps created by shinyscholar.
 Before running the shinyscholar application with
 \code{run_shinyscholar()}, you can register your own modules to be used in
 shinyscholar.

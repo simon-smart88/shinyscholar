@@ -1,7 +1,4 @@
 ```{r renv.ignore = TRUE}
-library({{app_library}})
-library(shinyscholar)
-
 function(input, output, session) {
  
   ########################## #
@@ -161,12 +158,12 @@ function(input, output, session) {
   ###################
 
   # Initialize all modules
-  gargoyle::init("intro")
+  init("intro")
   modules <- list()
   lapply(names(COMPONENT_MODULES), function(component) {
     lapply(COMPONENT_MODULES[[component]], function(module) {
       # Initialize event triggers for each module
-      gargoyle::init(module$id)
+      init(module$id)
        if (module$id == "rep_markdown"){
         return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, COMPONENT_MODULES))
       } else {
@@ -186,12 +183,12 @@ function(input, output, session) {
   ###################
 
   # Initialize all modules
-  gargoyle::init("intro")
+  init("intro")
   modules <- list()
   lapply(names(COMPONENT_MODULES), function(component) {
     lapply(COMPONENT_MODULES[[component]], function(module) {
       # Initialize event triggers for each module
-      gargoyle::init(module$id)
+      init(module$id)
        if (module$id == "rep_markdown"){
         return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, map = map, COMPONENT_MODULES))
       } else {
@@ -220,8 +217,17 @@ function(input, output, session) {
 ```
 ```{r renv.ignore = TRUE}
   ################################
+  ### RESET ####
+  ################################
+
+  observeEvent(input$reset, {
+    reset_data(common)
+  })
+
+  ################################
   ### EXPORT TEST VALUES ####
   ################################
-  exportTestValues(common = common)
+  exportTestValues(common = common,
+                   logger = common$logger())
 }
 ```

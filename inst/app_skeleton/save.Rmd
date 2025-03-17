@@ -41,6 +41,7 @@ core_save_module_server <- function(id, common, modules, COMPONENTS, main_input)
 
         # Store app version
         common$state$main$version <- as.character(packageVersion("{{app_library}}"))
+        common$state$main$app <- "{{app_library}}"
         
         # Ask each module to save whatever data it wants
         for (module_id in names(modules)) {

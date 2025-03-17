@@ -5,12 +5,14 @@ plot_hist_module_ui <- function(id) {
     selectInput(ns("bins"), "Number of bins", choices = c(10, 20, 50, 100)),
     selectInput(ns("pal"), "Colour palette", choices = c("Greens", "YlOrRd", "Greys", "Blues")),
     actionButton(ns("run"), "Plot histogram"),
-    downloadButton(ns("dl"), "Download plot")
+    downloadButton(ns("download"), "Download plot")
   )
 }
 
 plot_hist_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
+
+  shinyjs::hide("download")
 
   observeEvent(input$run, {
     # WARNING ####
@@ -27,32 +29,32 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
     common$meta$plot_hist$pal <- input$pal
     common$meta$plot_hist$name <- c(common$meta$select_query$name, common$meta$select_async$name, common$meta$select_user$name)
     # TRIGGER ####
-    gargoyle::trigger("plot_hist")
+    trigger("plot_hist")
     show_results(parent_session)
+    shinyjs::show("download")
   })
 
-  output$hist <- renderPlot({
-    gargoyle::watch("plot_hist")
-    req(common$histogram)
+  plot_function <- function(){
     pal <- RColorBrewer::brewer.pal(9, common$meta$plot_hist$pal)
     pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
     bins <- common$meta$plot_hist$bins
     cols <- pal_ramp(bins)
-
     plot(common$histogram, freq = FALSE, main = "", xlab = common$meta$plot_hist$name, ylab = "Frequency (%)", col = cols)
+  }
+
+  output$hist <- renderPlot({
+    watch("plot_hist")
+    req(common$histogram)
+    plot_function()
   })
 
-  output$dl <- downloadHandler(
+  output$download <- downloadHandler(
     filename = function() {
       "shinyscholar_histogram.png"
     },
     content = function(file) {
       png(file, width = 1000, height = 500)
-      pal <- RColorBrewer::brewer.pal(9, common$meta$plot_hist$pal)
-      pal_ramp <- colorRampPalette(pal)
-      bins <- common$meta$plot_hist$bins
-      cols <- pal_ramp(bins)
-      plot(common$histogram, freq = FALSE, main = "", xlab = common$meta$plot_hist$name, ylab = "Frequency (%)", col = cols)
+      plot_function()
       dev.off()
     })
 
@@ -83,7 +85,7 @@ plot_hist_module_result <- function(id) {
 plot_hist_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    plot_hist_knit = !is.null(common$histogram),
+    plot_hist_knit = !is.null(common$meta$plot_hist$bins),
     plot_hist_bins = common$meta$plot_hist$bins,
     plot_hist_pal = common$meta$plot_hist$pal,
     plot_hist_name = common$meta$plot_hist$name

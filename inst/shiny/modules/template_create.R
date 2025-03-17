@@ -1,6 +1,18 @@
 template_create_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
+    tags$head(
+      tags$style(HTML("
+      .checkbox-group-container .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+      .checkbox-group-container .btn {
+        flex: 0 0 auto;
+      }
+    "))
+    ),
     textInput(ns("name"), "Name"),
     textInput(ns("comps"), "Components"),
     textInput(ns("long_comps"), "Long components"),
@@ -8,10 +20,12 @@ template_create_module_ui <- function(id) {
     shinyWidgets::materialSwitch(ns("include_map"), "Include map tab?", TRUE, status = "success"),
     shinyWidgets::materialSwitch(ns("include_table"), "Include table tab?", TRUE, status = "success"),
     shinyWidgets::materialSwitch(ns("include_code"), "Include code tab?", TRUE, status = "success"),
-    uiOutput(ns("module_options")),
+    div(class = "checkbox-group-container",
+      uiOutput(ns("module_options"))
+    ),
     textInput(ns("common"), "Common objects"),
     textInput(ns("author"), "Author"),
-    uiOutput(ns("download"))
+    uiOutput(ns("download_out"))
   )
 }
 
@@ -30,7 +44,7 @@ template_create_module_server <- function(id, common, parent_session, map) {
     })
 
     #Render download button after checking inputs
-    output$download <- renderUI({
+    output$download_out <- renderUI({
       req(input$name)
       req(input$comps)
       req(input$long_comps)
@@ -43,7 +57,7 @@ template_create_module_server <- function(id, common, parent_session, map) {
       validate(need(length(split_and_clean(input[[paste0("mod",c)]])) == length(split_and_clean(input[[paste0("long_mod",c)]])),
                     glue::glue("Modules and Long modules for component {components[c]} are different lengths")))
       }
-      downloadButton(session$ns("dl"), "Download!")
+      downloadButton(session$ns("download"), "Download!")
     })
 
     #split strings into vectors and remove whitespace
@@ -93,9 +107,9 @@ template_create_module_server <- function(id, common, parent_session, map) {
     output$module_options <- renderUI({
 
       if (input$include_map){
-        choices <- c("Map", "Results", "Rmd", "Save", "Async")
+        choices <- c("Map", "Results", "Rmd", "Save", "Download", "Async")
       } else {
-        choices <- c("Results", "Rmd", "Save", "Async")
+        choices <- c("Results", "Rmd", "Save", "Download", "Async")
       }
 
       lapply(module_list(), function(id){shinyWidgets::checkboxGroupButtons(
@@ -106,16 +120,18 @@ template_create_module_server <- function(id, common, parent_session, map) {
 
       module_options <- reactive({
         df <- t(as.data.frame(lapply(module_list(), function(x){
-          c("Map", "Results", "Rmd", "Save", "Async") %in% input[[x]]})))
-        colnames(df) <- c("map", "result", "rmd", "save", "async")
+          c("Map", "Results", "Rmd", "Save", "Download", "Async") %in% input[[x]]})))
+        colnames(df) <- c("map", "result", "rmd", "save", "download", "async")
         df
       })
 
-    output$dl <- downloadHandler(
+    output$download <- downloadHandler(
       filename = function() {
         paste0(input$name, ".zip")
       },
       content = function(file) {
+
+        show_loading_modal("Preparing download...")
 
         common_objects = split_and_clean(input$common)
 
@@ -138,7 +154,7 @@ template_create_module_server <- function(id, common, parent_session, map) {
         on.exit(setwd(owd))
 
         files <- list.files(".", recursive = TRUE)
-
+        close_loading_modal()
         zip::zipr(zipfile = file,
                   files = files,
                   mode = "mirror",

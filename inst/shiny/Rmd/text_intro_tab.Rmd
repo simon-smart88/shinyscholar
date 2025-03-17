@@ -5,7 +5,7 @@ output: html_document
 
 #### WORKFLOW
 
-*shinyscholar* (v0.2.5) includes four components, or steps of a possible workflow. Each component includes one or more modules, which are possible analyses for that step.  
+*shinyscholar* (v0.3.0) includes four components, or steps of a possible workflow. Each component includes one or more modules, which are possible analyses for that step.  
 
 **Components:**  
 
@@ -17,6 +17,8 @@ output: html_document
 **2.** *Plot Data*  
 - Plot data as a histogram
 - Plot data as a scatter plot
+- Automatically plot a histogram
+- Semi-automatically plot a histogram
 
 **3.** *Reproduce*  
 - Download session code  

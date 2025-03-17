@@ -19,9 +19,13 @@ core_code_module_server <- function(id, common, module) {
         code <- readLines(system.file(glue("shiny/modules/{module}.R"), package = "shinyscholar"))
       }
       if (input$code_choice == "Function"){
-        func <- getFromNamespace(module, ns = "shinyscholar")
-        code <- deparse(func)
-        if (length(code) == 0){
+        code <- tryCatch({
+          func <- getFromNamespace(module, ns = "shinyscholar")
+          code <- deparse(func)
+        }, error = function(e) {
+          NULL
+        })
+        if (is.null(code)){
           code <- "There is no function for this module"
         } else {
           code[1] <- gsub("function", paste0(module, " <- function"), code[1])
