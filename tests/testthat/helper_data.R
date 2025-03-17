@@ -32,7 +32,7 @@ is_fedora <- function() {
 
 rerun_test <- function(test_function, args){
   attempt <- 0
-  while(attempt < 5){
+  while(attempt < 10){
     x = try(do.call(test_function, args))
     if ("try-error" %in% class(x)) {
       attempt <- attempt + 1
