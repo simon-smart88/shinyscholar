@@ -485,8 +485,9 @@ create_template <- function(path, name, common_objects, modules, author,
     intro_lines <- append(intro_lines,"")
   }
   intro_lines <- append(intro_lines, glue::glue("**{c+1}.** *Reproduce*"))
-  intro_lines <- append(intro_lines, "- Download Session Code")
-  intro_lines <- append(intro_lines, "- Download Package References")
+  intro_lines <- append(intro_lines, "- Download session code")
+  intro_lines <- append(intro_lines, "- Download dependencies")
+  intro_lines <- append(intro_lines, "- Download package references")
   writeLines(intro_lines, file.path(path, "inst", "shiny", "Rmd", "text_intro_tab.Rmd"))
 
   # guidance rmds for components ====

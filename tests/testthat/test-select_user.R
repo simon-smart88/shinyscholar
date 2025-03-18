@@ -29,4 +29,16 @@ if (suggests){
     expect_is(common$raster, "SpatRaster")
   })
 
+  test_that("Error messages reach logger and can be retrieved", {
+
+    skip_if(is_fedora())
+    app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_select_user")
+    app$set_inputs(tabs = "select")
+    app$set_inputs(selectSel = "select_user")
+    app$click("select_user-run")
+    logger <- app$get_value(export = "logger")
+    expect_true(grepl("*Please upload a raster file*", logger))
+
+  })
+
 }

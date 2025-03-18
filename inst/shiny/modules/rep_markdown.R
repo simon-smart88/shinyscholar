@@ -72,6 +72,12 @@ rep_markdown_module_server <- function(id, common, parent_session, map, COMPONEN
         result_file <- tempfile(pattern = "result_", fileext = input$rmdFileType)
         if (input$rmdFileType == ".Rmd") {
           combined_rmd <- gsub("``` r", "```{r}", combined_md)
+          combined_rmd <- unlist(strsplit(combined_rmd , "\n"))
+
+          # add title section
+          header <- c("---", paste0("title: ", combined_rmd[1]), "---")
+          combined_rmd <- append(combined_rmd, header, after = 0)
+          combined_rmd <- combined_rmd[-c(4, 5)]
 
           # convert chunk control lines
           chunk_control_lines <- grep("\\{r,", combined_rmd)

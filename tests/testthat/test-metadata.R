@@ -119,7 +119,7 @@ if (suggests){
       create_template(path = td, name = name,
                       common_objects = c("test"), modules = modules,
                       author = "Simon E. H. Smart", include_map = FALSE,
-                      include_table = FALSE, include_code = FALSE, install = TRUE)
+                      include_table = FALSE, include_code = FALSE, install = FALSE)
 
       devtools::document(file.path(td, name))
       devtools::install(file.path(td, name), force = TRUE, quick = TRUE, dependencies = FALSE)
