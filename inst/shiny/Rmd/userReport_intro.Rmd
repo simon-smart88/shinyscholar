@@ -1,5 +1,5 @@
 ---
-title: shinyscholar Session `r Sys.Date()`
+title: shinyscholar session `r Sys.Date()`
 ---
 
 ```{r, include=FALSE}
