@@ -75,37 +75,37 @@ shinyscholar::create_template(path = file.path("~", "Documents"), name = "demo",
 This creates a directory with the following structure:
 
 ```
-├── DESCRIPTION
+├── DESCRIPTION                                                 Define dependencies
 ├── inst
 │   └── shiny
-│       ├── common.R
-│       ├── global.R
-│       ├── helpers.R
-│       ├── modules
-│       │   ├── core_code.R
-│       │   ├── core_intro.R
-│       │   ├── core_load.R
-│       │   ├── core_mapping.R
-│       │   ├── core_save.R
-│       │   ├── plot_histogram.md
-│       │   ├── plot_histogram.R
-│       │   ├── plot_histogram.Rmd
-│       │   ├── plot_histogram.yml
+│       ├── common.R                                            Data objects shared between modules
+│       ├── global.R                                            Loads package and modules
+│       ├── helpers.R                                           Functions to create module UI
+│       ├── server.R                                            App server
+│       ├── ui.R                                                App UI
+│       ├── modules 
+│       │   ├── core_code.R                                     Displays code
+│       │   ├── core_intro.R                                    Produces introductory walkthrough
+│       │   ├── core_load.R                                     Loads app
+│       │   ├── core_mapping.R                                  Creates map
+│       │   ├── core_save.R                                     Saves app
+│       │   ├── plot_histogram.md                               Module guidance 
+│       │   ├── plot_histogram.R                                Module UI and server
+│       │   ├── plot_histogram.Rmd                              Reproduces the module
+│       │   ├── plot_histogram.yml                              Module configuration
 │       │   ├── ... (repeated for other modules)
 │       ├── Rmd
-│       │   ├── gtext_plot.Rmd
+│       │   ├── gtext_plot.Rmd                                  Guidance text for each component
 │       │   ├── gtext_rep.Rmd
 │       │   ├── gtext_select.Rmd
-│       │   ├── references.Rmd
-│       │   ├── text_about.Rmd
-│       │   ├── text_how_to_use.Rmd
-│       │   ├── text_intro_tab.Rmd
-│       │   ├── text_loadsesh.Rmd
-│       │   ├── text_team.Rmd
-│       │   ├── userReport_intro.Rmd
-│       │   └── userReport_module.Rmd
-│       ├── server.R
-│       ├── ui.R
+│       │   ├── references.Rmd                                  Template for rep_refPackages
+│       │   ├── text_about.Rmd                                  Main panel on intro tab
+│       │   ├── text_how_to_use.Rmd                             Detailed instructions
+│       │   ├── text_intro_tab.Rmd                              Sidebar on intro tab
+│       │   ├── text_loadsesh.Rmd                               Guidance for loading
+│       │   ├── text_team.Rmd                                   Lists developers
+│       │   ├── userReport_intro.Rmd                            Introduction to markdown
+│       │   └── userReport_module.Rmd                           
 │       └── www
 │           ├── css
 │           │   └── styles.css
@@ -114,15 +114,15 @@ This creates a directory with the following structure:
 │           │   └── shinyjs-funcs.js
 │           └── logo.png
 ├── R
-│   ├── helper_functions.R
-│   ├── plot_histogram_f.R
+│   ├── helper_functions.R                                      Various utility functions
+│   ├── run_demo.R                                              Function to run app
+│   ├── plot_histogram_f.R                                      Function for each module
 │   ├── plot_scatter_f.R
-│   ├── run_demo.R
 │   ├── select_query_f.R
 │   └── select_user_f.R
 └── tests
     └── testthat
-        ├── test-plot_histogram.R
+        ├── test-plot_histogram.R                               Tests for each module
         ├── test-plot_scatter.R
         ├── test-select_query.R
         └── test-select_user.R
