@@ -1,4 +1,8 @@
 # shinyscholar (v0.3.0)
+[![R CMD check](https://github.com/simon-smart88/shinyscholar/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/simon-smart88/shinyscholar/actions/workflows/R-CMD-check.yaml)
+[![CRAN Status](https://www.r-pkg.org/badges/version/shinyscholar)](https://cran.r-project.org/package=shinyscholar)
+[![CRAN Downloads](https://cranlogs.r-pkg.org/badges/shinyscholar)](https://cran.r-project.org/package=shinyscholar)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15078704.svg)](https://doi.org/10.5281/zenodo.15078704)
 
 <img src="https://raw.githubusercontent.com/simon-smart88/shinyscholar/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;">
 
