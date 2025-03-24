@@ -4,18 +4,18 @@ rep_refPackages_module_ui <- function(id) {
     # UI
     strong("Download List of References"), br(), br(),
     strong("Select download file type"),
-    selectInput(ns('refFileType'), label = "",
+    selectInput(ns("file_type"), label = "",
                 choices = c("PDF" = ".pdf", "HTML" = ".html", "Word" = ".docx")),
-    downloadButton(ns("dlrefPackages"), "Download References")
+    downloadButton(ns("download"), "Download References")
   )
 }
 
 rep_refPackages_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
-    output$dlrefPackages <- downloadHandler(
+    output$download <- downloadHandler(
       filename = function() {
-        paste0("ref-packages-", Sys.Date(), input$refFileType)
+        paste0("ref-packages-", Sys.Date(), input$file_type)
         },
       content = function(file) {
         # Create BIB file
@@ -40,7 +40,7 @@ rep_refPackages_module_server <- function(id, common, parent_session, map) {
         rmarkdown::render("Rmd/references.Rmd",
                           output_format =
                             switch(
-                              input$refFileType,
+                              input$file_type,
                               ".pdf" = rmarkdown::pdf_document(),
                               ".html" = rmarkdown::html_document(),
                               ".docx" = rmarkdown::word_document()

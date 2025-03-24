@@ -6,6 +6,6 @@ output: html_document
 ### **Component: Plot data**
 
 **ORIENTATION**
-This module enables you to plot values from the raster, either as a histogram or as a scatterplot.
-
-
+This module enables you to plot values from the raster, either as a histogram or as a scatterplot. The first two modules require the user
+to decide on input values and run the module before the plot appears. The third module demonstrates how it is possible to make a module
+run automatically, both after any module in the select component is used or whenever the input values are updated. 

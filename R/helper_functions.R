@@ -67,6 +67,25 @@ spurious <- function(x) {
 }
 
 ####################### #
+# RESET DATA #
+####################### #
+
+#' @title reset_data
+#' @description For internal use. Clears the common structure of data, resets the map and any plots
+#' @keywords internal
+#' @param common The common data structure
+#' @export
+reset_data <- function(common){
+  modules <- names(common$meta)
+  common$reset()
+  trigger("clear_map")
+  for (module in modules){
+    trigger(module)
+    shinyjs::hide(paste0(module, "-download"), asis = TRUE)
+  }
+}
+
+####################### #
 # SHINY LOG #
 ####################### #
 

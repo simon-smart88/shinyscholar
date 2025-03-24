@@ -1,14 +1,27 @@
+```{r renv.ignore = TRUE}
 {{id}}_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     # UI
+```
+```{r renv.ignore = TRUE, purl = {{download}} }
+    actionButton(ns("run"), "Run module {{id}}"),
+    downloadButton(ns("download"), "Download")
+```
+```{r renv.ignore = TRUE, purl = {{!download}} }
     actionButton(ns("run"), "Run module {{id}}")
+```
+```{r renv.ignore = TRUE}
   )
 }
 
 {{id}}_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
-
+```
+```{r renv.ignore = TRUE, purl = {{download}} }
+  shinyjs::hide("download")
+```
+```{r renv.ignore = TRUE}
   observeEvent(input$run, {
     # WARNING ####
 
@@ -20,14 +33,29 @@
     # Populate using metadata()
 
     # TRIGGER
-    gargoyle::trigger("{{id}}")
+    trigger("{{id}}")
+```
+```{r renv.ignore = TRUE, purl = {{download}} }
+    shinyjs::show("download")
+```
+```{r renv.ignore = TRUE}
   })
-
+```{r renv.ignore = TRUE, purl = {{result}} }
   output$result <- renderText({
-    gargoyle::watch("{{id}}")
+    watch("{{id}}")
     # Result
   })
-
+```
+```{r renv.ignore = TRUE, purl = {{download}} }
+  output$download <- downloadHandler(
+    filename = function() {
+      "placeholder.ext"
+    },
+    content = function(file) {
+      # Download content
+    })
+```
+```{r renv.ignore = TRUE, purl = {{save}} }
   return(list(
     save = function() {
       # Save any values that should be saved when the current session is saved
@@ -38,22 +66,27 @@
       # Populate using save_and_load()
     }
   ))
+```
+```{r renv.ignore = TRUE}
 })
 }
 
+```{r renv.ignore = TRUE, purl = {{result}} }
 {{id}}_module_result <- function(id) {
   ns <- NS(id)
 
   # Result UI
   verbatimTextOutput(ns("result"))
 }
-
+```
+```{r renv.ignore = TRUE, purl = {{map}} }
 {{id}}_module_map <- function(map, common) {
   # Map logic
 }
-
+```
+```{r renv.ignore = TRUE, purl = {{rmd}} }
 {{id}}_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   # Populate using metadata()
 }
-
+```

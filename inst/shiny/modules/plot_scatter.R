@@ -4,13 +4,15 @@ plot_scatter_module_ui <- function(id) {
     sliderInput(ns("sample"), "Number of pixels", min = 100, max = 10000, value = 1000),
     radioButtons(ns("axis"), "x axis", choices = c("Longitude", "Latitude")),
     actionButton(ns("run"), "Plot scatterplot"),
-    downloadButton(ns("dl"), "Download plot")
+    downloadButton(ns("download"), "Download plot")
   )
 }
 
 
 plot_scatter_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
+
+  shinyjs::hide("download")
 
   observeEvent(input$run, {
     # WARNING ####
@@ -29,23 +31,28 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
     common$meta$plot_scatter$sample <- input$sample
     common$meta$plot_scatter$name <-  c(common$meta$select_query$name, common$meta$select_async$name, common$meta$select_user$name)
     # TRIGGER ####
-    gargoyle::trigger("plot_scatter")
+    trigger("plot_scatter")
     show_results(parent_session)
+    shinyjs::show("download")
   })
+
+  plot_function <- function(){
+    plot(common$scatterplot[[1]], common$scatterplot[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
+  }
 
   output$result <- renderPlot({
-    gargoyle::watch("plot_scatter")
+    watch("plot_scatter")
     req(common$scatterplot)
-    plot(common$scatterplot[[1]], common$scatterplot[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
+    plot_function()
   })
 
-  output$dl <- downloadHandler(
+  output$download <- downloadHandler(
     filename = function() {
       "shinyscholar_scatterplot.png"
     },
     content = function(file) {
       png(file, width = 1000, height = 500)
-      plot(common$scatterplot[[1]], common$scatterplot[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
+      plot_function()
       dev.off()
     })
 

@@ -15,7 +15,7 @@ This module allows you to create and download a template for your own applicatio
 * Include map tab? - Whether to include the map tab in the results panel.
 * Include table tab? - Whether to include the table tab in the results panel.
 * Include code tab? - Whether to include the code tab in the results panel.
-* Options for each module - Whether each module should have map, results, rmarkdown (Rmd) and save functionality and whether the module should run asynchronously (Async).
+* Options for each module - Whether each module should have map, results, rmarkdown (Rmd), save and download functionality and whether the module should run asynchronously (Async).
 * Common objects - These are the names of data structures that are shared between modules. The structures: meta, logger, state, and poly and used internally and an error will be returned if you try to use these again
 * Author - your name.
 

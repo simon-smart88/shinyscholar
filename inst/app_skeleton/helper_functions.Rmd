@@ -1,3 +1,4 @@
+```{r renv.ignore = TRUE}
 ####################### #
 # MISC #
 ####################### #
@@ -114,6 +115,30 @@ asyncLog <- function(async, message, type = "default"){
 }
 
 ####################### #
+# RESET DATA #
+####################### #
+
+#' @title reset_data
+#' @description For internal use. Clears the common structure of data, resets the map and any plots
+#' @keywords internal
+#' @param common The common data structure
+#' @export
+reset_data <- function(common){
+  modules <- names(common$meta)
+  common$reset()
+```
+```{r, renv.ignore = TRUE, purl = {{include_map}}}
+  trigger("clear_map")
+```
+```{r renv.ignore = TRUE}
+  for (module in modules){
+    trigger(module)
+    shinyjs::hide(paste0(module, "-download"), asis = TRUE)
+  }
+}
+
+
+####################### #
 # LOADING MODAL #
 ####################### #
 
@@ -145,6 +170,8 @@ close_loading_modal <- function (session = getDefaultReactiveDomain())
 # CHANGING TABS #
 ####################### #
 
+```
+```{r, renv.ignore = TRUE, purl = {{include_map}}}
 #' @title show_map
 #' @description For internal use. Switches the view to the Map tab
 #' @param parent_session Session object of the main server function
@@ -153,7 +180,8 @@ close_loading_modal <- function (session = getDefaultReactiveDomain())
 show_map <- function(parent_session){
   updateTabsetPanel(parent_session, "main", selected = "Map")
 }
-
+```
+```{r renv.ignore = TRUE}
 #' @title show_results
 #' @description For internal use. Switches the view to the Results tab
 #' @param parent_session Session object of the main server function
@@ -171,3 +199,4 @@ show_results <- function(parent_session){
 show_table <- function(parent_session){
   updateTabsetPanel(parent_session, "main", selected = "Table")
 }
+```

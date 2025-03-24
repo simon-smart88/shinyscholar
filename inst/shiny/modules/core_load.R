@@ -17,10 +17,15 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
 
     load_session <- function(temp){
 
-      if (!("common" %in% class(temp))){
+      if (!inherits(temp, "common") || temp$state$main$app != "shinyscholar"){
         close_loading_modal()
         common$logger %>% writeLog(type = "error", "That is not a valid Shinyscholar save file")
         return()
+      }
+
+      # reload old logs, minus header. if required for testing
+      if ("logger" %in% names(temp)){
+        common$logger %>% writeLog(strsplit(temp$logger(), "-----<br>")[[1]][3])
       }
 
       if (temp$state$main$version != as.character(packageVersion("shinyscholar"))){
@@ -32,9 +37,12 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
 
       temp_names <- names(temp)
       #exclude the non-public and function objects
-      temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "logger")]
+      temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "logger", "reset")]
+      common_names <- names(common)
       for (name in temp_names){
-        common[[name]] <- temp[[name]]
+        if (name %in% common_names){
+          common[[name]] <- temp[[name]]
+        }
       }
 
       # Ask each module to load its own data
@@ -53,7 +61,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
 
       #restore map and results for used modules
       for (used_module in names(common$meta)){
-        gargoyle::trigger(used_module) # to replot results
+        trigger(used_module) # to replot results
         component <- strsplit(used_module, "_")[[1]][1]
         map_fx <- COMPONENT_MODULES[[component]][[used_module]]$map_function
         if (!is.null(map_fx)) {
@@ -77,10 +85,15 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
 
     load_on_start <- observe({
       req(load_file_path())
+      if (!file.exists(load_file_path())){
+        common$logger %>% writeLog(type = "error", "The specified load file cannot be found - please check the path")
+        load_on_start$destroy()
+        return()
+      }
       show_loading_modal("Loading previous session")
       load_session(readRDS(load_file_path()))
       close_loading_modal()
-      common$logger %>% writeLog(type="info", "The previous session has been loaded successfully")
+      common$logger %>% writeLog(type = "info", "The previous session has been loaded successfully")
       load_on_start$destroy()
     })
 

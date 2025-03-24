@@ -15,7 +15,7 @@ if (suggests){
     app$click("plot_scatter-run")
     app$set_inputs(tabs = "rep")
     app$set_inputs(repSel = "rep_markdown")
-    sess_file <- app$get_download("rep_markdown-dlRMD")
+    sess_file <- app$get_download("rep_markdown-download")
     expect_false(is.null(sess_file))
     lines <- readLines(sess_file)
     chunks <- sum(grepl("```\\{r", lines))
@@ -26,12 +26,24 @@ if (suggests){
     rmarkdown::render(sess_file)
     html_file <- gsub("Rmd", "html", sess_file)
     expect_gt(file.info(html_file)$size, 100000)
-    app$set_inputs(repSel = "rep_refPackages")
-    app$set_inputs(refFileType = "HTML")
-    ref_file <- app$get_download("rep_markdown-dlrefPackages")
-    expect_gt(file.info(ref_file)$size, 10000)
     app$stop()
     })
+
+  test_that("{shinytest2} recording: e2e_ref_packages", {
+    skip_if(Sys.which("pandoc") == "")
+    skip_if(is_fedora())
+    skip_on_ci()
+    skip_on_cran()
+
+    app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_ref_packages")
+    app$set_inputs(tabs = "rep")
+    app$set_inputs(repSel = "rep_refPackages")
+    app$set_inputs("rep_refPackages-file_type" = "HTML")
+    ref_file <- app$get_download("rep_refPackages-download")
+    expect_gt(file.info(ref_file)$size, 10000)
+    app$stop()
+  })
+
 
   test_that("{shinytest2} recording: e2e_table_download", {
 
@@ -44,6 +56,7 @@ if (suggests){
     app$set_inputs("select_user-name" = "bio")
     app$click("select_user-run")
     app$set_inputs(main = "Table")
+    common <- app$get_value(export = "common")
     table_file <- app$get_download("dl_table")
     df <- read.csv(table_file)
     expect_equal(nrow(df),100)
@@ -64,13 +77,13 @@ if (suggests){
     app$set_inputs(plotSel = "plot_scatter")
     app$click("plot_scatter-run")
     app$set_inputs(main = "Save")
-    scatter_file <- app$get_download("dl_scatter")
+    scatter_file <- app$get_download("plot_scatter-download")
 
     app$set_inputs(plotSel = "plot_hist")
     app$set_inputs(`plot_hist-pal` = "YlOrRd")
     app$click("plot_hist-run")
     app$set_inputs(main = "Save")
-    hist_file <- app$get_download("dl_hist")
+    hist_file <- app$get_download("plot_hist-download")
     app$stop()
     expect_gt(file.info(scatter_file)$size, 1000)
     expect_gt(file.info(hist_file)$size, 1000)

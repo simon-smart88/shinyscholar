@@ -1,5 +1,6 @@
 #' @title Register a shinyscholar module
-#' @description Before running the shinyscholar application with
+#' @description Currently disabled as cannot be used with apps created by shinyscholar.
+#' Before running the shinyscholar application with
 #' \code{run_shinyscholar()}, you can register your own modules to be used in
 #' shinyscholar.
 #' @param config_file The path to a YAML file that contains the information about
@@ -8,6 +9,9 @@
 #' @seealso \code{\link[shinyscholar]{create_module}}
 #' @export
 register_module <- function(config_file) {
+
+  stop("This function is not yet developed for use with apps created by shinyscholar")
+
   full_path <- NULL
   tryCatch({
     full_path <- normalizePath(path = config_file, mustWork = TRUE)
@@ -27,7 +31,7 @@ register_module <- function(config_file) {
 #' @title Create a shinyscholar module
 #' @description Create the template of a new shinyscholar module.
 #' @param id character. The id of the module.
-#' @param dir character. A directory where the new module should be created.
+#' @param dir character. Path to the parent directory containing the application
 #' @param map logical. Whether or not the module should support modifying the map.
 #' @param result logical. Whether or not the module should support showing information in
 #' the Result tab.
@@ -35,12 +39,14 @@ register_module <- function(config_file) {
 #' download.
 #' @param save logical. Whether or not the module has some custom data to save when the
 #' user saves the current session.
+#' @param download logical. Whether or not the module should add code to handle downloading
+#' a file.
 #' @param async logical. Whether or not the module will operate asynchronously.
 #' @param init logical. Whether or not the function is being used inside of the init function
 #' @returns No return value, called for side effects
 #' @seealso \code{\link[shinyscholar]{register_module}}
 #' @export
-create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, save = FALSE, async = FALSE, init = FALSE) {
+create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, save = FALSE, download = FALSE, async = FALSE, init = FALSE) {
   if (!grepl("^[A-Za-z0-9_]+$", id)) {
     stop("The id can only contain English characters, digits, and underscores",
          call. = FALSE)
@@ -50,63 +56,70 @@ create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, sav
     stop("A module with that name already exists", call. = FALSE)
   }
 
-  # Copy the simple skeleton files to the new module directory
-  dir.create(dir, showWarnings = FALSE, recursive = TRUE)
+  module_dir <- file.path(dir, "inst", "shiny", "modules")
+
+  if (!dir.exists(module_dir)){
+    stop("No modules could be found in the specified folder")
+  }
 
   # only create the yml when not created with init() which otherwise creates it
   if (!init){
   file.copy(system.file("module_skeleton", "skeleton.yml", package = "shinyscholar"),
-            file.path(dir, glue::glue("{id}.yml")), overwrite = TRUE)
+            file.path(module_dir, glue::glue("{id}.yml")), overwrite = TRUE)
   }
   file.copy(system.file("module_skeleton", "skeleton.md", package = "shinyscholar"),
-            file.path(dir, glue::glue("{id}.md")), overwrite = TRUE)
+            file.path(module_dir, glue::glue("{id}.md")), overwrite = TRUE)
 
   if (rmd) {
     file.copy(system.file("module_skeleton", "skeleton.Rmd", package = "shinyscholar"),
-              file.path(dir, glue::glue("{id}.Rmd")), overwrite = TRUE)
-    #add the module ID
-    rmd_file <- readLines(file.path(dir, glue::glue("{id}.Rmd")))
+              file.path(module_dir, glue::glue("{id}.Rmd")), overwrite = TRUE)
+    # add the module ID
+    rmd_file <- readLines(file.path(module_dir, glue::glue("{id}.Rmd")))
     rmd_file <- gsub("moduleID_knit", glue::glue("{id}_knit"), rmd_file)
-    writeLines(rmd_file, file.path(dir, glue::glue("{id}.Rmd")))
+    writeLines(rmd_file, file.path(module_dir, glue::glue("{id}.Rmd")))
   }
 
-  # Copy the R code file, use the correct ID in all functions, and remove any
-  # functions that the user doesn't want to use in this module
+  # create the main module file with the custom options
   if (!async){
-    r_file <- readLines(system.file("module_skeleton", "skeleton.R", package = "shinyscholar"))
+    r_file <- system.file("module_skeleton", "skeletonR.Rmd", package = "shinyscholar")
   } else {
-    r_file <- readLines(system.file("module_skeleton", "skeleton_async.R", package = "shinyscholar"))
+    r_file <- system.file("module_skeleton", "skeleton_asyncR.Rmd", package = "shinyscholar")
   }
 
-  if (!map && async){
-    target <- grep("*explicitly call the mapping function*", r_file)
-    r_file <- r_file[-c(target:(target + 3))]
-    r_file <- gsub("*parent_session, map*", "parent_session", r_file)
-  }
+  module_params <- c(file = r_file,
+                     list(id = id,
+                          map = map,
+                          result = result,
+                          rmd = rmd,
+                          save = save,
+                          download = download))
+  module_lines <- tidy_purl(module_params)
+  writeLines(module_lines, file.path(module_dir, glue::glue("{id}.R")))
 
-  r_file <- paste(r_file, collapse = "\n")
-  if (!map) {
-    r_file <- gsub("\n\\{\\{id}}_module_map <- function.*?}\n", "", r_file)
-  }
-  if (!result) {
-    r_file <- gsub("\n\\{\\{id}}_module_result <- function.*?}\n", "", r_file)
-    r_file <- gsub("\n *output\\$.*?})\n", "", r_file)
-  }
-  if (!rmd) {
-    r_file <- gsub("\n\\{\\{id}}_module_rmd <- function.*?)\n}", "", r_file)
+  # create empty function
+  empty_function <- paste0(id," <- function(x){return(NULL)}")
+  writeLines(empty_function, file.path(dir, "R", paste0(id, "_f.R")))
 
-  }
-  if (!save) {
-    r_file <- gsub("\n *return\\(list\\(.*?))\n", "", r_file)
-  }
-  r_file <- gsub("\\{\\{id}}", id, r_file)
-  writeLines(r_file, file.path(dir, glue::glue("{id}.R")))
+  # create test
+  desc <- readLines(file.path(dir, "DESCRIPTION"))
+  app_library <- sub("Package: ", "", desc[1])
+  common <- readLines(file.path(dir, "inst", "shiny", "common.R"))
+  common_object <- sub("\\s*(\\w+)\\s*=.*", "\\1", common[5])
+
+  test_params <- c(
+    file = system.file("app_skeleton", "test.Rmd", package = "shinyscholar"),
+    list(app_library = app_library,
+         component = sub("_.*", "", id),
+         module = id,
+         common_object = common_object)
+  )
+
+  test_lines <- tidy_purl(test_params)
+  writeLines(test_lines, file.path(dir, "tests", "testthat", paste0("test-", id, ".R")))
 
   if (!init){
   message(glue::glue("Template for module `{id}` successfully created at ",
-                     "`{normalizePath(dir)}`.\nDon't forget to call ",
-                     "`shinyscholar::register_module(\"{dir}/{id}.yml\")` before running ",
-                     "the app to add your module to shinyscholar."))
+                     "`{normalizePath(module_dir)}`."))
   }
   invisible()
 }

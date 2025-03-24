@@ -1,7 +1,7 @@
 core_mapping_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    leaflet::leafletOutput(ns("map"), height = 700),
+    leafletOutput(ns("map"), height = 700),
     tags$div(
       style = "display: flex; gap: 10px;",
       selectInput(ns("bmap"), "Background map:",
@@ -17,14 +17,18 @@ core_mapping_module_ui <- function(id) {
 
 core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES) {
   moduleServer(id, function(input, output, session) {
+
+    init("clear_map")
+
     # create map
-    output$map <- renderLeaflet(
+    output$map <- renderLeaflet({
+      watch("clear_map")
       leaflet() %>%
         setView(0, 0, zoom = 2) %>%
         addProviderTiles("Esri.WorldTopoMap") %>%
         leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                        markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE)
-    )
+    })
 
     # create map proxy to make further changes to existing map
     map <- leafletProxy("map")
@@ -35,7 +39,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     })
 
     # Capture coordinates of polygons
-    gargoyle::init("change_poly")
+    init("change_poly")
     observe({
       coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
       xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
@@ -43,7 +47,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
       #convert any longitudes drawn outside of the original map
       xy[,1] <- ((xy[,1] + 180) %% 360) - 180
       common$poly <- xy
-      gargoyle::trigger("change_poly")
+      trigger("change_poly")
     }) %>% bindEvent(input$map_draw_new_feature)
 
     component <- reactive({
@@ -58,7 +62,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     observe({
       req(module())
       current_mod <- module()
-      gargoyle::on(current_mod, {
+      on(current_mod, {
         map_fx <- COMPONENT_MODULES[[component()]][[module()]]$map_function
         if (!is.null(map_fx)) {
           do.call(map_fx, list(map, common = common))

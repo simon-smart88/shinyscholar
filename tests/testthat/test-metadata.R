@@ -109,6 +109,7 @@ if (suggests){
         "result" = c(TRUE),
         "rmd" = c(TRUE),
         "save" = c(TRUE),
+        "download" = c(TRUE),
         "async" = c(FALSE))
 
       td <- tempfile()
@@ -149,7 +150,7 @@ if (suggests){
       app$click("test_test-run")
       app$set_inputs(tabs = "rep")
       app$set_inputs(repSel = "rep_markdown")
-      sess_file <- app$get_download("rep_markdown-dlRMD")
+      sess_file <- app$get_download("rep_markdown-download")
       app$stop()
 
       expect_false(is.null(sess_file))

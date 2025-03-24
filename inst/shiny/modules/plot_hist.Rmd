@@ -2,6 +2,9 @@
 Plots the data as a histogram
 ```
 
+```{asis, echo = {{plot_hist_knit}}, eval = {{plot_hist_knit}}, include = {{plot_hist_knit}}}
+{r, fig.width = 8, fig.height = 5}
+```
 ```{r, echo = {{plot_hist_knit}}, include = {{plot_hist_knit}}}
 
 histogram <- plot_hist(raster, {{plot_hist_bins}})
