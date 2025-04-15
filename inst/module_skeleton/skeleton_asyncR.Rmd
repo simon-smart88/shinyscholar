@@ -23,10 +23,8 @@
 ```
 ```{r renv.ignore = TRUE}
   # create the asynchronous task
-  common$tasks${{id}} <- ExtendedTask$new(function(...) {
-    promises::future_promise({
-      {{id}}(...)
-    })
+  common$tasks${{id}} <- ExtendedTask$new(function(run, ...) {
+    mirai::mirai(run(...), environment())
   }) |> bslib::bind_task_button("run")
 
     observeEvent(input$run, {
@@ -35,7 +33,7 @@
       # FUNCTION CALL ####
       common$logger %>% writeLog(type = "starting", "Starting to run {{id}}")
       # invoke the async task
-      common$tasks${{id}}$invoke()
+      common$tasks${{id}}$invoke({{id}})
       # reactivate the results observer if it has already been used
       results$resume()
 

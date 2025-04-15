@@ -3,7 +3,7 @@ library(glue)
 library({{app_library}})
 ```
 ```{r renv.ignore = TRUE, purl = {{async}}}
-future::plan(future::multisession)
+mirai::daemons(2)
 ```
 
 ```{r renv.ignore = TRUE}

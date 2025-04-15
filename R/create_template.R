@@ -217,8 +217,7 @@ create_template <- function(path, name, common_objects, modules, author,
   if (async){
     import_line <- grep("*Imports*", description_lines)
     description_lines <- append(description_lines, "    bslib,", import_line)
-    description_lines <- append(description_lines, "    future,", import_line + 2)
-    description_lines <- append(description_lines, "    promises,", import_line + 7)
+    description_lines <- append(description_lines, "    mirai,", import_line + 7)
   }
 
   if (include_map){

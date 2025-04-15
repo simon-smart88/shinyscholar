@@ -2,4 +2,4 @@ component: "select"
 short_name: "Query API asynchronously"
 long_name: "Obtain vegetation cover data through an API asynchronously"
 authors: "Simon E. H. Smart"
-package: [terra, promises, future]
+package: [terra, mirai]

@@ -2,8 +2,8 @@ shinyscholar::check_suggests()
 
 library(glue)
 library(shinyscholar)
-
-future::plan(future::multisession)
+mirai::daemons(2)
+onStop(function() mirai::daemons(0))
 
 MB <- 1024^2
 UPLOAD_SIZE_MB <- 5000

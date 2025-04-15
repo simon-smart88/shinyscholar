@@ -48,10 +48,8 @@ select_async_module_server <- function(id, common, parent_session, map) {
   })
 
   #create the asynchronous task
-  common$tasks$select_async <- ExtendedTask$new(function(...) {
-    promises::future_promise({
-      select_async(...)
-    })
+  common$tasks$select_async <- ExtendedTask$new(function(run, ...) {
+    mirai::mirai(run(...), environment())
   }) |> bslib::bind_task_button("run")
 
   observeEvent(input$run, {
@@ -89,7 +87,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
     # FUNCTION CALL ####
     common$logger %>% writeLog(type = "starting", "Starting to download FAPAR data")
     # invoke the async task
-    common$tasks$select_async$invoke(common$poly, as.character(input$date), token(), TRUE)
+    common$tasks$select_async$invoke(select_async, common$poly, as.character(input$date), token(), TRUE)
     # reactivate the results observer if it has already been used
     results$resume()
 
