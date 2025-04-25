@@ -158,15 +158,15 @@
 │       │   ├── core_load.R                                     Loads app
 │       │   ├── core_mapping.R                                  Creates map
 │       │   ├── core_save.R                                     Saves app
-│       │   ├── plot_histogram.md                               Module guidance
-│       │   ├── plot_histogram.R                                Module UI and server
-│       │   ├── plot_histogram.Rmd                              Reproduces the module
-│       │   ├── plot_histogram.yml                              Module configuration
+│       │   ├── load_database.md                                Module guidance
+│       │   ├── load_database.R                                 Module UI and server
+│       │   ├── load_database.Rmd                               Reproduces the module
+│       │   ├── load_database.yml                               Module configuration
 │       │   ├── ... (repeated for other modules)
 │       ├── Rmd
-│       │   ├── gtext_plot.Rmd                                  Guidance text for each component
+│       │   ├── gtext_load.Rmd                                  Guidance text for each component
+│       │   ├── gtext_plot.Rmd
 │       │   ├── gtext_rep.Rmd
-│       │   ├── gtext_select.Rmd
 │       │   ├── references.Rmd                                  Template for rep_refPackages
 │       │   ├── text_about.Rmd                                  Main panel on intro tab
 │       │   ├── text_how_to_use.Rmd                             Detailed instructions
@@ -185,16 +185,16 @@
 ├── R
 │   ├── helper_functions.R                                      Various utility functions
 │   ├── run_demo.R                                              Function to run app
-│   ├── plot_histogram_f.R                                      Function for each module
-│   ├── plot_scatter_f.R
-│   ├── select_query_f.R
-│   └── select_user_f.R
+│   ├── load_database_f.R                                       Function for each module
+│   ├── load_user_f.R
+│   ├── plot_histogram_f.R
+│   └── plot_scatter_f.R
 └── tests
     └── testthat
-        ├── test-plot_histogram.R                               Tests for each module
-        ├── test-plot_scatter.R
-        ├── test-select_query.R
-        └── test-select_user.R
+        ├── test-load_user.R                                    Tests for each module
+        ├── test-load_database.R
+        ├── test-plot_histogram.R
+        └── test-plot_scatter.R
 </code></pre>
 </div>
 <div class="section level3">
@@ -224,9 +224,9 @@
 <li>In the <em>result</em> block, use the relevant <code>input</code> values or <code>common</code> objects to produce <code>render*</code> objects which will be passed to the <code>_module_result</code> function.</li>
 <li>In the <em>return</em> block, the current <code>input</code> values can be stored as a <code>list</code> inside the <code>save</code> function e.g. <code>select_date = input$date</code> when the app is saved and then retrieved when the app is loaded using various <code>updateInput</code> functions inside the <code>load</code> function e.g. <code>updateSelectInput(session, "date", selected = state$select_date</code>). This can be done automatically by calling <code><a href="reference/save_and_load.html">save_and_load()</a></code> either for all the modules or a single module.</li>
 </ul>
-<p>The <code>&lt;identifier&gt;_module_result</code> function contains the <code>*Output()</code> functions which would normally be included in the UI function. As in the <code>*_module_ui</code> function, the object ids need wrapping inside <code>ns()</code>.</p>
+<p>The <code>&lt;identifier&gt;_module_result</code> function contains the <code>*Output()</code> functions which would normally be included in the UI function. As in the <code>&lt;identifier&gt;_module_ui</code> function, the object ids need wrapping inside <code>ns()</code>.</p>
 <p>The <code>&lt;identifier&gt;_module_map</code> function updates the <a href="https://rstudio.github.io/leaflet/" class="external-link">leaflet</a> map. <code>map</code> is a <code><a href="https://rstudio.github.io/leaflet/reference/leafletProxy.html" class="external-link">leafletProxy()</a></code> object created in the main server function so leaflet functions can be piped to it e.g. <code>map &amp;&gt;&amp; addRasterImage()</code></p>
-<p>The <code>*_module_rmd</code> function creates a list of objects which are passed to the module’s .Rmd file to reproduce the analysis. The first <code>*_knit</code> object is a boolean used to control whether or not the module has been used and therefore whether the markdown should be included in the user’s markdown. Writing this code can be semi-automated using the <code><a href="reference/metadata.html">metadata()</a></code> function once you have finished developing the module.</p>
+<p>The <code>&lt;identifier&gt;_module_rmd</code> function creates a list of objects which are passed to the module’s .Rmd file to reproduce the analysis. The first <code>&lt;identifier&gt;_knit</code> object is a boolean used to control whether or not the module has been used and therefore whether the markdown should be included in the user’s markdown. Writing this code can be semi-automated using the <code><a href="reference/metadata.html">metadata()</a></code> function once you have finished developing the module.</p>
 </div>
 <div class="section level5">
 <h5 id="rmd">.Rmd<a class="anchor" aria-label="anchor" href="#rmd"></a>
