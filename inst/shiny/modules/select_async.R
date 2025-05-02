@@ -67,7 +67,6 @@ select_async_module_server <- function(id, common, parent_session, map) {
       return()
     }
 
-
     # WARNING ####
     if (is.null(common$poly)) {
       common$logger %>% writeLog(type = "error", "Please draw a rectangle on the map")
@@ -114,8 +113,8 @@ select_async_module_server <- function(id, common, parent_session, map) {
       raster <- terra::unwrap(result$raster)
       common$raster <- raster
 
-      common$logger %>% writeLog(type = "complete", "FAPAR data has been downloaded")
-      common$logger %>% writeLog(result$message)
+      common$logger |> writeLog(type = "complete", "FAPAR data has been downloaded")
+      common$logger |> writeLog(result$message)
 
       # TRIGGER
       trigger("select_async")
@@ -149,7 +148,6 @@ select_async_module_server <- function(id, common, parent_session, map) {
 }
 
 select_async_module_map <- function(map, common) {
-  req(common$raster)
   ex <- as.vector(terra::ext(common$raster))
   pal <- RColorBrewer::brewer.pal(9, "Greens")
   custom_greens <- colorRampPalette(pal)(10)

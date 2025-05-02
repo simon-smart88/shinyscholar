@@ -93,7 +93,7 @@ select_query <- function(poly, date, token, logger = NULL) {
 
   bbox <- c(min(poly[,1]), max(poly[,2]), max(poly[,1]), min(poly[,2]))
 
-  search_url <- glue::glue("https://ladsweb.modaps.eosdis.nasa.gov/api/v2/content/archives?products=MCD15A2H&temporalRanges={date}&regions=[BBOX]W{bbox[1]}%20N{bbox[2]}%20E{bbox[3]}%20S{bbox[4]}")
+  search_url <- glue::glue("https://ladsweb.modaps.eosdis.nasa.gov/api/v2/content/archives?products=MCD15A2H&temporalRanges={date}&regions=[BBOX]W{bbox[1]}%20N{bbox[2]}%20E{bbox[3]}%20S{bbox[4]}&archiveSets=61")
   check <- check_url(search_url)
 
   if (!is.null(check)){
