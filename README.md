@@ -213,14 +213,12 @@ Further modules can be added using `create_module()` which creates the four file
 Support for asynchronous operations was added in v0.2.0 using the new `ExtendedTask` feature added in `{shiny}` v1.8.1. This has the advantage of allowing long-running operations to run in the background whilst the app remains responsive to the user and any other users connected to the same instance. Running modules asynchronously increases complexity however and requires several changes to structure of modules and the app itself. The `select_async` module contains an implementation that is functionally identical to `select_query` but runs asynchronously. 
 
 ##### Running tasks
-`common$tasks` is a list that stores details of all the asynchronous tasks. Each task is added to the list above the `observeEvent()` in the `<identifier>_module_server` function as `common$tasks$<identifier>`. The task contains the module's function wrapped by `promises::future_promise()` and bound to a `bslib::bind_task_button()` which disables the button when the task is running:
+`common$tasks` is a list that stores details of all the asynchronous tasks. Each task is added to the list above the `observeEvent()` in the `<identifier>_module_server` function as `common$tasks$<identifier>`. The task contains the module's function wrapped by `mirai::mirai()` and bound to a `bslib::bind_task_button()` which disables the button when the task is running:
 
 ```R
 common$tasks$<identifier> <- ExtendedTask$new(function(...) {
-    promises::future_promise({
-      <identifer>(...)
-    })
-  }) |> bslib::bind_task_button("run")
+  mirai::mirai(run(...), environment(), .args = list(run = <identifier>))
+}) |> bslib::bind_task_button("run")
 ```
 
 The task is invoked inside the `observeEvent()` by calling `common$tasks$<identifier>$invoke()` with the arguments of the module's function. As in the default implementation, metadata should be stored at this point when the function is called.
