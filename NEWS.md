@@ -95,3 +95,12 @@ shinyscholar 0.3.0
 - Switched to use `shinyWidgets::radioGroupButtons()` for module selection menu
 - Added a description of the package structure to the README
 
+shinyscholar 0.4.0
+=============
+
+### Bug fixes
+- Fixed API calls in `select_query()` and `select_async()`
+
+### Changes
+- Stopped running {shinytest2} tests on CRAN 
+- Migrated from {promises} to {mirai} for running async tasks
