@@ -22,8 +22,7 @@ tagList(
                                     }
       });"))
     )),
-    title = img(src = "logo.png", height = "50", width = "50",
-                style = "margin-top: -15px"),
+    title = img(src = "logo.png", height = "50", width = "50"),
     windowTitle = "shinyscholar",
 
     tabPanel("Intro", value = "intro"),

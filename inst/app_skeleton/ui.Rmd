@@ -23,8 +23,7 @@ tagList(
                                     }
       });"))
     )),
-    title = img(src = "logo.png", height = "50", width = "50",
-                style = "margin-top: -15px"),
+    title = img(src = "logo.png", height = "50", width = "50"),
     windowTitle = "{{app_library}}",
     tabPanel("Intro", value = "intro"),
     tabPanel("Reproduce", value = "rep"),
