@@ -18,11 +18,11 @@ select_async_module_server <- function(id, common, parent_session, map) {
 
   # pick a random location over land, but fail safely in case the API is broken
   observeEvent(input$random, {
-    random_land <- httr2::request("https://api.3geonames.org/?randomland=yes") |> httr2::req_perform()
+    random_land <- httr2::request("https://api.3geonames.org/?randomland=yes") %>% httr2::req_perform()
     if (httr2::resp_status(random_land) == 200){
       content_type <- httr2::resp_content_type(random_land)
       if (grepl("application/xml|text/xml", content_type)) {
-        random_land <- httr2::resp_body_xml(random_land) |> xml2::as_list()
+        random_land <- httr2::resp_body_xml(random_land) %>% xml2::as_list()
         map %>% setView(random_land$geodata$nearest$longt, random_land$geodata$nearest$latt, zoom = 7)
       } else {
         common$logger %>% writeLog(type = "error", "Something went wrong requesting a random location")
@@ -50,7 +50,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
   #create the asynchronous task
   common$tasks$select_async <- ExtendedTask$new(function(...) {
     mirai::mirai(run(...), environment(), .args = list(run = select_async))
-  }) |> bslib::bind_task_button("run")
+  }) %>% bslib::bind_task_button("run")
 
   observeEvent(input$run, {
     # TEST MODE - required due to the polygon not being able to be tested correctly.
@@ -113,8 +113,8 @@ select_async_module_server <- function(id, common, parent_session, map) {
       raster <- terra::unwrap(result$raster)
       common$raster <- raster
 
-      common$logger |> writeLog(type = "complete", "FAPAR data has been downloaded")
-      common$logger |> writeLog(result$message)
+      common$logger %>% writeLog(type = "complete", "FAPAR data has been downloaded")
+      common$logger %>% writeLog(result$message)
 
       # TRIGGER
       trigger("select_async")
@@ -126,7 +126,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
       # set an input value to use in testing
       shinyjs::runjs("Shiny.setInputValue('select_async-complete', 'complete');")
     } else {
-      common$logger |> writeLog(type = "error", result)
+      common$logger %>% writeLog(type = "error", result)
     }
   })
 

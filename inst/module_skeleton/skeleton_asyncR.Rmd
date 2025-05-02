@@ -25,7 +25,7 @@
   # create the asynchronous task
   common$tasks${{id}} <- ExtendedTask$new(function(...) {
     mirai::mirai(run(...), environment(), .args = list(run = {{id}}))
-  }) |> bslib::bind_task_button("run")
+  }) %>% bslib::bind_task_button("run")
 
     observeEvent(input$run, {
       # WARNING ####

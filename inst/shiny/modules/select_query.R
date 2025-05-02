@@ -18,11 +18,11 @@ select_query_module_server <- function(id, common, parent_session, map) {
 
   # pick a random location over land, but fail safely in case the API is broken
   observeEvent(input$random, {
-    random_land <- httr2::request("https://api.3geonames.org/?randomland=yes") |> httr2::req_perform()
+    random_land <- httr2::request("https://api.3geonames.org/?randomland=yes") %>% httr2::req_perform()
     if (httr2::resp_status(random_land) == 200){
       content_type <- httr2::resp_content_type(random_land)
       if (grepl("application/xml|text/xml", content_type)) {
-        random_land <- httr2::resp_body_xml(random_land) |> xml2::as_list()
+        random_land <- httr2::resp_body_xml(random_land) %>% xml2::as_list()
         map %>% setView(random_land$geodata$nearest$longt, random_land$geodata$nearest$latt, zoom = 7)
       } else {
         common$logger %>% writeLog(type = "error", "Something went wrong requesting a random location")
