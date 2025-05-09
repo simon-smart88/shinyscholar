@@ -235,7 +235,7 @@ create_template <- function(path, name, common_objects, modules, author,
   # Package info ====
 
   package_params <- c(
-    file = system.file("app_skeleton", "server.Rmd", package = "shinyscholar"),
+    file = system.file("app_skeleton", "package.Rmd", package = "shinyscholar"),
     list(name = name)
   )
 
