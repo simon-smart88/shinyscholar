@@ -38,8 +38,8 @@ to be included and with the following column names:
 \item \code{map} logical. Whether or not the module interacts with the map
 \item \code{result} logical. Whether or not the module produces results
 \item \code{rmd} logical. Whether or not the module is included in the markdown
-\item \code{save} logical. Whether or not the input values of the model should be saved
-\item \code{download} logical. Whether or not the input values of the model should be saved
+\item \code{save} logical. Whether or not the input values of the module should be saved
+\item \code{download} logical. Whether or not the module should include a downloadHandler
 \item \code{async} logical. Whether or not the module will run asynchronously
 }}
 

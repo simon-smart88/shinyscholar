@@ -36,8 +36,8 @@ tidy_purl <- function(params){
 #'  \item `map` logical. Whether or not the module interacts with the map
 #'  \item `result` logical. Whether or not the module produces results
 #'  \item `rmd` logical. Whether or not the module is included in the markdown
-#'  \item `save` logical. Whether or not the input values of the model should be saved
-#'  \item `download` logical. Whether or not the input values of the model should be saved
+#'  \item `save` logical. Whether or not the input values of the module should be saved
+#'  \item `download` logical. Whether or not the module should include a downloadHandler
 #'  \item `async` logical. Whether or not the module will run asynchronously
 #' }
 #' @param author character. Name of the author(s)
