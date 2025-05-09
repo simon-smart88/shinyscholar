@@ -320,23 +320,25 @@ create_template <- function(path, name, common_objects, modules, author,
 
   component_interface_target <- grep("*Rmd/text_intro_tab.Rmd*", ui_lines) + 1
   for (i in 1:nrow(components)){
-    ui_lines <- append(ui_lines, c(glue::glue('          # {toupper(components$long_component[i])} ####'),
-                                                 '           conditionalPanel(',
-                                      glue::glue('          "input.tabs == \'{components$component[i]}\'",'),
-                                      glue::glue('          div("Component: {components$long_component[i]}", class = "componentName"),'),
-                                      glue::glue('          help_comp_ui("{components$component[i]}Help"),'),
-                                                 '          shinyWidgets::radioGroupButtons(',
-                                      glue::glue('          "{components$component[i]}Sel", "Modules Available:",'),
-                                      glue::glue('          choices = insert_modules_options("{components$component[i]}"),'),
-                                                 '          direction = "vertical",',
-                                                 '          status = "outline-secondary",',
-                                                 '          width = "100%"',
-                                                 '          ),',
-                                                 '          tags$hr(),',
-                                      glue::glue('          insert_modules_ui("{components$component[i]}")'),
-                                                 '          ),'),
-                                                 component_interface_target)
-    component_interface_target <- component_interface_target + 13
+
+    comp_ui <- c(glue::glue('          # {toupper(components$long_component[i])} ####'),
+                  '           conditionalPanel(',
+                  glue::glue('          "input.tabs == \'{components$component[i]}\'",'),
+                  glue::glue('          div("Component: {components$long_component[i]}", class = "componentName"),'),
+                  glue::glue('          help_comp_ui("{components$component[i]}Help"),'),
+                  '          shinyWidgets::radioGroupButtons(',
+                  glue::glue('          "{components$component[i]}Sel", "Modules Available:",'),
+                  glue::glue('          choices = insert_modules_options("{components$component[i]}"),'),
+                  '          direction = "vertical",',
+                  '          status = "outline-secondary",',
+                  '          width = "100%"',
+                  '          ),',
+                  '          tags$hr(),',
+                  glue::glue('          insert_modules_ui("{components$component[i]}")'),
+                  '          ),')
+
+    ui_lines <- append(ui_lines, comp_ui, component_interface_target)
+    component_interface_target <- component_interface_target + length(comp_ui)
   }
   writeLines(ui_lines, file.path(path, "inst", "shiny", "ui.R"))
 
