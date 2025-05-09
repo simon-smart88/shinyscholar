@@ -4,6 +4,7 @@ library({{app_library}})
 ```
 ```{r renv.ignore = TRUE, purl = {{async}}}
 mirai::daemons(2)
+onStop(function() mirai::daemons(0))
 ```
 
 ```{r renv.ignore = TRUE}
