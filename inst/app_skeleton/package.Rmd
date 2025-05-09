@@ -1,0 +1,11 @@
+```{r}
+"_PACKAGE"
+#' @name {{name}}-package
+#' @aliases {{name}}
+#' @title {{name}}
+#' @description {{name}}
+#' @import shiny leaflet gargoyle
+#' @importFrom magrittr "%>%"
+NULL
+```
+

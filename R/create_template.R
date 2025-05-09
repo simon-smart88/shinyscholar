@@ -232,6 +232,21 @@ create_template <- function(path, name, common_objects, modules, author,
 
   writeLines(description_lines, file.path(path, "DESCRIPTION"))
 
+  # Package info ====
+
+  package_params <- c(
+    file = system.file("app_skeleton", "server.Rmd", package = "shinyscholar"),
+    list(name = name)
+  )
+
+  package_lines <- tidy_purl(package_params)
+
+  if (!include_map){
+    package_lines <- gsub("leaflet ", "", package_lines)
+  }
+
+  writeLines(package_lines, file.path(path, "R", paste0(name,"-package.R")))
+
   # Create common list ====
   # add always present objects to common
   common_objects_internal <- c(common_objects, c("meta", "logger", "state"))
