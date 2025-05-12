@@ -36,6 +36,7 @@ Authors@R:
       person("Robert", "Muscarella", email = "bob.muscarella@gmail.com", role = "ctb"))
 Depends:
     R (>= 3.5.0),
+    bslib,
     gargoyle,
     leaflet (>= 2.0.2),
     shiny (>= 1.8.1)
@@ -48,7 +49,6 @@ Imports:
     tools,
     zip
 Suggests:
-    bslib,
     DT (>= 0.5),
     dplyr (>= 1.0.2),
     httr2,

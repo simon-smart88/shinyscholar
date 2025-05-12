@@ -4,7 +4,7 @@ plot_hist_module_ui <- function(id) {
     # UI
     selectInput(ns("bins"), "Number of bins", choices = c(10, 20, 50, 100)),
     selectInput(ns("pal"), "Colour palette", choices = c("Greens", "YlOrRd", "Greys", "Blues")),
-    actionButton(ns("run"), "Plot histogram"),
+    actionButton(ns("run"), "Plot histogram", icon = icon("arrow-turn-down")),
     downloadButton(ns("download"), "Download plot")
   )
 }

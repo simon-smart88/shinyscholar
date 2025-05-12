@@ -7,9 +7,8 @@ select_async_module_ui <- function(id) {
               max = as.character(Sys.Date()-20),
               value = as.character(Sys.Date()-20)),
     uiOutput(ns("token_out")),
-    actionButton(ns("random"), "Pick a random location"),
-    br(),br(),
-    bslib::input_task_button(ns("run"), "Load imagery")
+    actionButton(ns("random"), "Pick a random location", icon = icon("random")),
+    input_task_button(ns("run"), "Load imagery", type = "default", icon = icon("arrow-turn-down"))
   )
 }
 
@@ -50,7 +49,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
   #create the asynchronous task
   common$tasks$select_async <- ExtendedTask$new(function(...) {
     mirai::mirai(run(...), environment(), .args = list(run = select_async))
-  }) %>% bslib::bind_task_button("run")
+  }) %>% bind_task_button("run")
 
   observeEvent(input$run, {
     # TEST MODE - required due to the polygon not being able to be tested correctly.

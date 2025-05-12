@@ -7,9 +7,8 @@ select_query_module_ui <- function(id) {
               max = as.character(Sys.Date()-20),
               value = as.character(Sys.Date()-20)),
     uiOutput(ns("token_out")),
-    actionButton(ns("random"), "Pick a random location"),
-    br(),br(),
-    actionButton(ns("run"), "Load imagery")
+    actionButton(ns("random"), "Pick a random location", icon = icon("random")),
+    actionButton(ns("run"), "Load imagery", icon = icon("arrow-turn-down")),
   )
 }
 

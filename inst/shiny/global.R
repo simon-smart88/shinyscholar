@@ -11,7 +11,7 @@ options(shiny.maxRequestSize = UPLOAD_SIZE_MB*MB)
 
 SAVE_SESSION_SIZE_MB_WARNING <- 100
 
-source("helpers.R")
+source("ui_helpers.R")
 
 # The components that have modules. These names must match the values of the
 # tabs of the components in the UI.

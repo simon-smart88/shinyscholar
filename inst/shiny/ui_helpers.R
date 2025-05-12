@@ -3,17 +3,18 @@ uiTop <- function(mod_INFO) {
   modName <- mod_INFO$modName
   pkgName <- mod_INFO$pkgName
 
-  ls <- list(div(paste("Module: ", modName), class = "mod"),
+  ls <- list(span(div(paste("Module: ", modName), class = "mod"),
              actionLink(paste0(modID, "Help"),
                         label = "", icon = icon("circle-question"),
-                        class = "modHelpButton"),
-             br())
+                        class = "modHelpButton")
+             ))
 
-  ls <- c(ls, list(shiny::span("R packages:", class = "rpkg"),
-                   shiny::span(paste(pkgName, collapse = ", "), class = "pkgDes"),
-                   br()))
+  ls <- c(ls,
+          list(span(span("R packages:", class = "rpkg"),
+                        span(paste(pkgName, collapse = ", "), class = "pkgDes")))
+        )
 
-  ls <- c(ls, list(HTML('<hr>')))
+
   ls
 }
 
@@ -23,19 +24,22 @@ uiBottom <- function(mod_INFO) {
   pkgAuts <- mod_INFO$pkgAuts
   pkgTitl <- mod_INFO$pkgTitl
 
-  ls <- list(shiny::span('Module Developers:', class = "rpkg"),
-             shiny::span(modAuts, class = "pkgDes"), br(), br())
+  ls <- list(span(span('Module developers:', class = "rpkg"),
+                  span(modAuts, class = "pkgDes")))
 
   for (i in seq_along(pkgName)) {
     ls <- c(ls, list(
-      shiny::span(pkgName[i], class = "rpkg"),
-      "references", br(),
-      div(paste(pkgTitl[i]), class = "pkgTitl"),
+      span(
+        span(paste0(pkgName[i], ":"), class = "rpkg"),
+        span(span(pkgTitl[i], class = "pkgTitl"))
+      ),
       div(paste('Package Developers:', pkgAuts[i]), class = "pkgDes"),
-      tags$a("CRAN", href = file.path("http://cran.r-project.org/web/packages",
+      span(
+        a("CRAN", href = file.path("http://cran.r-project.org/web/packages",
                                  pkgName[i], "index.html"), target = "_blank"), " | ",
-      tags$a("documentation", href = file.path("https://cran.r-project.org/web/packages",
-                                          pkgName[i], paste0(pkgName[i], ".pdf")), target = "_blank"), br()
+        a("documentation", href = file.path("https://cran.r-project.org/web/packages",
+                                            pkgName[i], paste0(pkgName[i], ".pdf")), target = "_blank"), br()
+      )
     ))
   }
   ls
@@ -70,34 +74,56 @@ infoGenerator <- function(pkgName, modName, modAuts, modID) {
 join <- function(v) paste(v, collapse = ", ")
 
 # Add radio buttons for all modules in a component
-insert_modules_options <- function(component) {
+insert_modules_options <- function(component, exclude = NULL) {
+  modules <- COMPONENT_MODULES[[component]]
+  modules <- modules[!names(modules) %in% exclude]
   unlist(setNames(
-    lapply(COMPONENT_MODULES[[component]], `[[`, "id"),
-    lapply(COMPONENT_MODULES[[component]], `[[`, "short_name")
+    lapply(modules, `[[`, "id"),
+    lapply(modules, `[[`, "short_name")
   ))
 }
 
 # Add the UI for a module
-insert_modules_ui <- function(component) {
-  lapply(COMPONENT_MODULES[[component]], function(module) {
+insert_modules_ui <- function(component, long_component, exclude = NULL) {
+  modules <- COMPONENT_MODULES[[component]]
+  modules <- modules[!names(modules) %in% exclude]
+  tagList(
     conditionalPanel(
-      glue("input.{component}Sel == '{module$id}'"),
-      ui_top(
-        modID = module$id,
-        modName = module$long_name,
-        modAuts = module$authors,
-        pkgName = module$package
+      glue("input.tabs == '{component}'"),
+      div(glue("Component: {long_component}"), help_comp_ui(glue("{component}Help")), class = "componentName"),
+      shinyWidgets::radioGroupButtons(
+        glue("{component}Sel"), "",
+        choices = insert_modules_options(component),
+        direction = "vertical",
+        status = "outline-secondary",
+        width = "100%"
       ),
-      do.call(module$ui_function, list(module$id)),
-      tags$hr(),
-      ui_bottom(
-        modID = module$id,
-        modName = module$long_name,
-        modAuts = module$authors,
-        pkgName = module$package
-      )
+      lapply(modules, function(module) {
+        conditionalPanel(
+          glue("input.{component}Sel == '{module$id}'"),
+          card(
+            ui_top(
+              modID = module$id,
+              modName = module$long_name,
+              modAuts = module$authors,
+              pkgName = module$package
+            ),
+            do.call(module$ui_function, list(module$id)),
+            class = "sidebar_card"
+          ),
+          card(
+            ui_bottom(
+              modID = module$id,
+              modName = module$long_name,
+              modAuts = module$authors,
+              pkgName = module$package
+            ),
+            class = "sidebar_card package_info"
+          )
+        )
+      })
     )
-  })
+  )
 }
 
 # Add the results section UI of all modules in a component

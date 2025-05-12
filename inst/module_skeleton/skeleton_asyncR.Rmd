@@ -5,11 +5,11 @@
     # UI
 ```
 ```{r renv.ignore = TRUE, purl = {{download}} }
-    bslib::input_task_button(ns("run"), "Run module {{id}}"),
+    input_task_button(ns("run"), "Run module {{id}}", type = "default", icon = icon("arrow-turn-down")),
     downloadButton(ns("download"), "Download")
 ```
 ```{r renv.ignore = TRUE, purl = {{!download}} }
-    bslib::input_task_button(ns("run"), "Run module {{id}}")
+    input_task_button(ns("run"), "Run module {{id}}", type = "default", icon = icon("arrow-turn-down"))
 ```
 ```{r renv.ignore = TRUE}
   )
@@ -25,7 +25,7 @@
   # create the asynchronous task
   common$tasks${{id}} <- ExtendedTask$new(function(...) {
     mirai::mirai(run(...), environment(), .args = list(run = {{id}}))
-  }) %>% bslib::bind_task_button("run")
+  }) %>% bind_task_button("run")
 
     observeEvent(input$run, {
       # WARNING ####

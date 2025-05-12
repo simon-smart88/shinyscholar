@@ -6,6 +6,7 @@ Authors@R:
     c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut","cre")))
 Depends:
     R (>= 3.5.0),
+    bslib,
     gargoyle,
     shiny (>= 1.8.1)
 Imports:

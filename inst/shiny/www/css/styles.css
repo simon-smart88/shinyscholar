@@ -42,13 +42,7 @@ hr {
     color: #333; /* old IE */
     background-color: #333; /* Modern Browsers */
 }
-.shiny-progress .bar {
-  background-color:#FF0000;
-  opacity:0.8;
-}
-.shiny-progress .progress {
-  height:7px;
-}
+
 .componentName {
   display:inline-block;
   font-size:16pt;
@@ -80,6 +74,11 @@ hr {
 .modHelpButton:focus {
   color:#699FA1;
 }
+
+.sidebar_card {
+  background-color: var(--bs-light);
+}
+
 .pkgTitl {
   font-size:10pt;
   font-weight:bold;
@@ -138,4 +137,26 @@ hr {
 .mod_icon {
   color:#699FA1;
   margin:0px;
+}
+
+/* hide empty panels created by bslib::nav_panel */
+.container-fluid.html-fill-item.html-fill-container {
+  display: none !important;
+}
+
+.bslib-sidebar-layout>.sidebar>.sidebar-content {
+  gap: 0.5rem !important;
+}
+
+.bslib-sidebar-layout>.sidebar>.sidebar-content .package_info {
+  gap: 0.2rem !important;
+}
+
+.fa-arrow-turn-down {
+  transform: rotate(90deg) translate(2px, 2px);
+  display: inline-block;
+}
+
+.radio-group-buttons {
+  padding-bottom: 15px;
 }

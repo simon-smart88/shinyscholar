@@ -1,13 +1,9 @@
 select_user_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    # UI
-    fileInput(inputId = ns("raster"),
-              label = "Upload raster",
-              multiple = FALSE,
-              accept = c(".tif")),
+    fileInput(ns("raster"), "Upload raster", multiple = FALSE, accept = c(".tif")),
     textInput(ns("name"), "Raster name", value = ""),
-    actionButton(ns("run"), "Plot raster")
+    actionButton(ns("run"), "Plot raster", icon = icon("arrow-turn-down"))
   )
 }
 
@@ -25,7 +21,7 @@ select_user_module_server <- function(id, common, parent_session, map) {
       return()
     }
     # FUNCTION CALL ####
-    raster <- select_user(input$raster$datapath)
+    raster <- select_user(input$raster$datapath, common$logger)
     # LOAD INTO COMMON ####
     common$raster <- raster
     # METADATA ####
@@ -37,8 +33,8 @@ select_user_module_server <- function(id, common, parent_session, map) {
     show_map(parent_session)
     # only required for testing enter key input
     shinyjs::runjs("Shiny.setInputValue('select_user-complete', 'complete');")
-
   })
+
   return(list(
     save = function() {list(
       ### Manual save start
@@ -55,7 +51,6 @@ select_user_module_server <- function(id, common, parent_session, map) {
 }
 
 select_user_module_map <- function(map, common) {
-    # req(common$raster)
     ex <- as.vector(terra::ext(common$raster))
     pal <- RColorBrewer::brewer.pal(9, "YlOrRd")
     custom_reds <- colorRampPalette(pal)(10)
