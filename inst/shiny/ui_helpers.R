@@ -118,7 +118,7 @@ insert_modules_ui <- function(component, long_component, exclude = NULL) {
               modAuts = module$authors,
               pkgName = module$package
             ),
-            class = "sidebar_card package_info"
+            class = "sidebar_card"
           )
         )
       })

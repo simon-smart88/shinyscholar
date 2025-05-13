@@ -148,10 +148,6 @@ hr {
   gap: 0.5rem !important;
 }
 
-.bslib-sidebar-layout>.sidebar>.sidebar-content .package_info {
-  gap: 0.2rem !important;
-}
-
 .fa-arrow-turn-down {
   transform: rotate(90deg) translate(2px, 2px);
   display: inline-block;
@@ -160,3 +156,9 @@ hr {
 .radio-group-buttons {
   padding-bottom: 15px;
 }
+
+/* Allow selectinput dropdowns to escape cards */
+.card, .card-body {
+  overflow: visible !important;
+}
+
