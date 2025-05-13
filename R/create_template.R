@@ -240,11 +240,6 @@ create_template <- function(path, name, common_objects, modules, author,
   )
 
   package_lines <- tidy_purl(package_params)
-
-  if (!include_map){
-    package_lines <- gsub("leaflet ", "", package_lines)
-  }
-
   writeLines(package_lines, file.path(path, "R", paste0(name,"-package.R")))
 
   # Create common list ====

@@ -4,7 +4,6 @@
 #' @aliases {{name}}
 #' @title {{name}}
 #' @description {{name}}
-#' @import shiny leaflet gargoyle
 #' @importFrom magrittr "%>%"
 #' @export %>%
 NULL
