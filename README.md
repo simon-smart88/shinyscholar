@@ -1,5 +1,10 @@
 # shinyscholar (v0.4.0)
 
+[![R CMD check](https://github.com/simon-smart88/shinyscholar/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/simon-smart88/shinyscholar/actions/workflows/R-CMD-check.yaml)
+[![CRAN Status](https://www.r-pkg.org/badges/version/shinyscholar)](https://cran.r-project.org/package=shinyscholar)
+[![CRAN Downloads](https://cranlogs.r-pkg.org/badges/shinyscholar)](https://cran.r-project.org/package=shinyscholar)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15078704.svg)](https://doi.org/10.5281/zenodo.15078704)
+
 <img src="https://raw.githubusercontent.com/simon-smart88/shinyscholar/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;">
 
 Shinyscholar creates a skeleton R Shiny application that can be used to create complex applications that are modular, meet academic standards of attribution and are reproducible outside of the application. By using *shinyscholar*, to create a template application, developers will be encouraged to produce applications that are maintainable and run reliably without having to learn software development best-practices from scratch. *shinyscholar* was [forked](https://github.com/wallaceEcoMod/wallace/tree/51a3ebe10ffd797fc36ad2d2cf8245b014d11b41) from `{wallace}` v2.0.5 ([CRAN](https://cran.r-project.org/package=wallace), [website](https://wallaceecomod.github.io/wallace/index.html)) a modular platform for reproducible modelling of species distributions. Specifically, it harnesses the higher-level structure and core attributes of Wallace but removes its discipline-specific features, yielding a generic template for developers to make their own applications. We are very grateful to the contributors to `{wallace}` and the features retained from it and the new features added in *shinyscholar* are described in `NEWS`. 
@@ -89,15 +94,15 @@ This creates a directory with the following structure:
 │       │   ├── core_load.R                                     Loads app
 │       │   ├── core_mapping.R                                  Creates map
 │       │   ├── core_save.R                                     Saves app
-│       │   ├── plot_histogram.md                               Module guidance 
-│       │   ├── plot_histogram.R                                Module UI and server
-│       │   ├── plot_histogram.Rmd                              Reproduces the module
-│       │   ├── plot_histogram.yml                              Module configuration
+│       │   ├── load_database.md                                Module guidance 
+│       │   ├── load_database.R                                 Module UI and server
+│       │   ├── load_database.Rmd                               Reproduces the module
+│       │   ├── load_database.yml                               Module configuration
 │       │   ├── ... (repeated for other modules)
 │       ├── Rmd
-│       │   ├── gtext_plot.Rmd                                  Guidance text for each component
+│       │   ├── gtext_load.Rmd                                  Guidance text for each component
+│       │   ├── gtext_plot.Rmd
 │       │   ├── gtext_rep.Rmd
-│       │   ├── gtext_select.Rmd
 │       │   ├── references.Rmd                                  Template for rep_refPackages
 │       │   ├── text_about.Rmd                                  Main panel on intro tab
 │       │   ├── text_how_to_use.Rmd                             Detailed instructions
@@ -116,16 +121,16 @@ This creates a directory with the following structure:
 ├── R
 │   ├── helper_functions.R                                      Various utility functions
 │   ├── run_demo.R                                              Function to run app
-│   ├── plot_histogram_f.R                                      Function for each module
-│   ├── plot_scatter_f.R
-│   ├── select_query_f.R
-│   └── select_user_f.R
+│   ├── load_database_f.R                                       Function for each module
+│   ├── load_user_f.R
+│   ├── plot_histogram_f.R
+│   └── plot_scatter_f.R
 └── tests
     └── testthat
-        ├── test-plot_histogram.R                               Tests for each module
-        ├── test-plot_scatter.R
-        ├── test-select_query.R
-        └── test-select_user.R
+        ├── test-load_user.R                                    Tests for each module
+        ├── test-load_database.R
+        ├── test-plot_histogram.R
+        └── test-plot_scatter.R
 
 ```
 
@@ -153,11 +158,11 @@ The `<identifier>_module_server` function contains an `observeEvent()` which is 
 * In the *result* block, use the relevant `input` values or `common` objects to produce `render*` objects which will be passed to the `_module_result` function.
 * In the *return* block, the current `input` values can be stored as a `list` inside the `save` function e.g. `select_date = input$date` when the app is saved and then retrieved when the app is loaded using various `updateInput` functions inside the `load` function e.g. `updateSelectInput(session, "date", selected = state$select_date`). This can be done automatically by calling `save_and_load()` either for all the modules or a single module.
 
-The `<identifier>_module_result` function contains the `*Output()` functions which would normally be included in the UI function. As in the `*_module_ui` function, the object ids need wrapping inside `ns()`.
+The `<identifier>_module_result` function contains the `*Output()` functions which would normally be included in the UI function. As in the `<identifier>_module_ui` function, the object ids need wrapping inside `ns()`.
 
 The `<identifier>_module_map` function updates the `{leaflet}` map. `map` is a `leafletProxy()` object created in the main server function so leaflet functions can be piped to it e.g. `map &>& addRasterImage()` 
 
-The `*_module_rmd` function creates a list of objects which are passed to the module's .Rmd file to reproduce the analysis. The first `*_knit` object is a boolean used to control whether or not the module has been used and therefore whether the markdown should be included in the user's markdown. Writing this code can be semi-automated using the `metadata()` function once you have finished developing the module.
+The `<identifier>_module_rmd` function creates a list of objects which are passed to the module's .Rmd file to reproduce the analysis. The first `<identifier>_knit` object is a boolean used to control whether or not the module has been used and therefore whether the markdown should be included in the user's markdown. Writing this code can be semi-automated using the `metadata()` function once you have finished developing the module.
 
 ##### .Rmd
 This is a template for the rmarkdown that can be used to reproduce the module. Objects from `*_module_rmd` are passed into this template when the user downloads the rmarkdown. Objects from the `*_module_rmd` function are passed into the template when the document is knitted. If `module_setting` is added to the list in `*_module_rmd` then the value will be substituted for `{{module_setting}}` inside the .Rmd. If `module_setting` is a character string, then you need to use `"{{module_setting}}"` inside the .Rmd.
