@@ -164,3 +164,10 @@ hr {
   overflow: visible !important;
 }
 
+.ss_footer {
+  position: absolute;
+  bottom: 10px;
+  font-size: 0.8rem;
+}
+
+

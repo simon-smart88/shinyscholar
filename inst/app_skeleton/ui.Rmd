@@ -33,7 +33,11 @@ tagList(
         "input.tabs == 'intro'",
         includeMarkdown("Rmd/text_intro_tab.Rmd")
       ),
-      insert_modules_ui("rep", "Reproduce")
+      insert_modules_ui("rep", "Reproduce"),
+      div(class = "ss_footer",
+        "This app was built with ",
+        tags$a(href = "https://cran.r-project.org/package=shinyscholar", target = "_blank", "shinyscholar")
+      )
     ),
   # --- RESULTS WINDOW ---
   conditionalPanel(
@@ -70,24 +74,24 @@ tagList(
   conditionalPanel(
     "input.tabs != 'intro' & input.tabs != 'rep'",
     navset_tab(
-      id = 'main',
+      id = "main",
 ```
 ```{r, renv.ignore = TRUE, purl = {{include_map}}}
     nav_panel(
-      'Map',
+      "Map",
       core_mapping_module_ui("core_mapping")
     ),
 ```
 ```{r, renv.ignore = TRUE, purl = {{include_table}}}
     nav_panel(
-      'Table', br(),
-      DT::dataTableOutput('table'),
+      "Table", br(),
+      DT::dataTableOutput("table"),
       downloadButton('dl_table', "CSV file")
     ),
 ```
 ```{r renv.ignore = TRUE}
     nav_panel(
-      'Results',
+      "Results",
       lapply(COMPONENTS, function(component) {
         conditionalPanel(
           glue::glue("input.tabs == '{component}'"),

@@ -38,7 +38,11 @@ tagList(
       insert_modules_ui("select", "Select Data"),
       insert_modules_ui("plot", "Plot Data"),
       insert_modules_ui("rep", "Reproduce"),
-      insert_modules_ui("template", "Template")
+      insert_modules_ui("template", "Template"),
+      div(class = "ss_footer",
+        "This app was built with ",
+        tags$a(href = "https://cran.r-project.org/package=shinyscholar", target = "_blank", "shinyscholar")
+      )
     ),
   # --- RESULTS WINDOW ---
   conditionalPanel(
