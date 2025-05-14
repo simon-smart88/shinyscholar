@@ -87,11 +87,11 @@ tagList(
         ),
         nav_panel(
           'Component Guidance', icon = icon("circle-info"),
-          uiOutput('gtext_component')
+          flex_wrap(uiOutput('gtext_component'))
         ),
         nav_panel(
           'Module Guidance', icon = icon("circle-info", class = "mod_icon"),
-          uiOutput('gtext_module')
+          flex_wrap(uiOutput('gtext_module'))
         ),
         nav_panel(
           'Code',
@@ -99,67 +99,53 @@ tagList(
         ),
         nav_panel(
           'Save', icon = icon("floppy-disk", class = "save_icon"),
-          core_save_module_ui("core_save")
+          flex_wrap(core_save_module_ui("core_save"))
           )
       )
     ),
     conditionalPanel(
       "input.tabs == 'rep' & input.repSel == null",
-      column(8,
-             includeMarkdown("Rmd/gtext_rep.Rmd")
-      )
+      flex_wrap(includeMarkdown("Rmd/gtext_rep.Rmd"))
     ),
     conditionalPanel(
       "input.tabs == 'rep' & input.repSel == 'rep_renv'",
-      column(8,
-             includeMarkdown("modules/rep_renv.md")
-      )
+      flex_wrap(includeMarkdown("modules/rep_renv.md"))
     ),
     conditionalPanel(
       "input.tabs == 'rep' & input.repSel == 'rep_markdown'",
-      column(8,
-             includeMarkdown("modules/rep_markdown.md")
-      )
+      flex_wrap(includeMarkdown("modules/rep_markdown.md"))
     ),
     conditionalPanel(
       "input.tabs == 'rep' & input.repSel == 'rep_refPackages'",
-      column(8,
-             includeMarkdown("modules/rep_refPackages.md")
-      )
+      flex_wrap(includeMarkdown("modules/rep_refPackages.md"))
     ),
     conditionalPanel(
       "input.tabs == 'template'",
-      column(8,
-             includeMarkdown("modules/template_create.md")
-      )
+      flex_wrap(includeMarkdown("modules/template_create.md"))
     ),
     conditionalPanel(
       "input.tabs == 'intro'",
-      navset_tab(
-        id = 'introTabs',
-        nav_panel(
-          'About',
-          br(),
-          tags$div(
-            style="text-align: center;",
-            core_intro_module_ui("core_intro")
+      flex_wrap(
+        navset_tab(
+          id = 'introTabs',
+          nav_panel(
+            'About',
+            core_intro_module_ui("core_intro"),
+            # suppress logo path warning
+            suppressWarnings(includeMarkdown("Rmd/text_about.Rmd"))
           ),
-          includeMarkdown("Rmd/text_about.Rmd")
-        ),
-        nav_panel(
-          'Team',
-          fluidRow(
-            column(8, includeMarkdown("Rmd/text_team.Rmd")
-            )
+          nav_panel(
+            'Team',
+            includeMarkdown("Rmd/text_team.Rmd")
+          ),
+          nav_panel(
+            'How To Use',
+            includeMarkdown("Rmd/text_how_to_use.Rmd")
+          ),
+          nav_panel(
+            'Load Prior Session',
+            core_load_module_ui("core_load")
           )
-        ),
-        nav_panel(
-          'How To Use',
-          includeMarkdown("Rmd/text_how_to_use.Rmd")
-        ),
-        nav_panel(
-          'Load Prior Session',
-          core_load_module_ui("core_load")
         )
       )
     )

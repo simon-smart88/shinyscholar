@@ -74,11 +74,13 @@ hr {
 .modHelpButton:focus {
   color:#699FA1;
 }
-
 .sidebar_card {
-  background-color: var(--bs-light);
+  background-color: var(--bs-light-bg-subtle);
 }
-
+/* colour of radio buttons for module selection*/
+.btn.btn-outline-secondary{
+  background-color: var(--bs-light-bg-subtle);
+}
 .pkgTitl {
   font-size:10pt;
   font-weight:bold;

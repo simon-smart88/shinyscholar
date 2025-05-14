@@ -1,7 +1,10 @@
 core_intro_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    actionButton(ns("intro"), "Start a guided tour", icon = icon("person-hiking", lib = "font-awesome"), width = "400px", style = "font-size: 2rem;")
+    tags$div(
+      style="text-align: center; padding: 20px;",
+      actionButton(ns("intro"), "Start a guided tour", icon = icon("person-hiking", lib = "font-awesome"), width = "400px", style = "font-size: 2rem;")
+    )
   )
 }
 

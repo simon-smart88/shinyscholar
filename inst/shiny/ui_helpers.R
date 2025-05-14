@@ -70,9 +70,6 @@ infoGenerator <- function(pkgName, modName, modAuts, modID) {
        pkgAuts = pkgAuts)
 }
 
-# Join a string vector into a single string separated by commas
-join <- function(v) paste(v, collapse = ", ")
-
 # Add radio buttons for all modules in a component
 insert_modules_options <- function(component, exclude = NULL) {
   modules <- COMPONENT_MODULES[[component]]
@@ -146,4 +143,16 @@ insert_modules_results <- function(component) {
 help_comp_ui <- function(name) {
   actionLink(name, label = "", icon = icon("circle-question"),
              class = "compHelpButton")
+}
+
+# adjust layout width depending on screen size
+flex_wrap <- function(content) {
+  layout_columns(
+    col_widths = breakpoints(sm = c(12),
+                             md = c(-1, 10, -1),
+                             lg = c(-2, 8, -2),
+                             xl = c(-2, 8, -2),
+                             xxl = c(-3, 6, -3)),
+    content,
+  )
 }
