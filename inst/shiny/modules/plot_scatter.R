@@ -3,7 +3,7 @@ plot_scatter_module_ui <- function(id) {
   tagList(
     sliderInput(ns("sample"), "Number of pixels", min = 100, max = 10000, value = 1000),
     radioButtons(ns("axis"), "x axis", choices = c("Longitude", "Latitude")),
-    actionButton(ns("run"), "Plot scatterplot"),
+    actionButton(ns("run"), "Plot scatterplot", icon = icon("arrow-turn-down")),
     downloadButton(ns("download"), "Download plot")
   )
 }

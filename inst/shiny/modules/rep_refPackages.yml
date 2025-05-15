@@ -1,5 +1,5 @@
 component: "rep"
 short_name: "Reference Packages"
-long_name: "List Reference Packages"
+long_name: "Download list of package references"
 authors: "Gonzalo E. Pinilla-Buitrago, Bethany Johnson, Robert P. Anderson, Simon Smart"
 package: [RefManageR, knitcitations]
