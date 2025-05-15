@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">shinyscholar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -66,7 +66,7 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="shinyscholar-v030">shinyscholar (v0.3.0)<a class="anchor" aria-label="anchor" href="#shinyscholar-v030"></a>
+<div class="page-header"><h1 id="shinyscholar-v040">shinyscholar (v0.4.0)<a class="anchor" aria-label="anchor" href="#shinyscholar-v040"></a>
 </h1></div>
 <p><a href="https://github.com/simon-smart88/shinyscholar/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/simon-smart88/shinyscholar/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R CMD check"></a> <a href="https://cran.r-project.org/package=shinyscholar" class="external-link"><img src="https://www.r-pkg.org/badges/version/shinyscholar" alt="CRAN Status"></a> <a href="https://cran.r-project.org/package=shinyscholar" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/shinyscholar" alt="CRAN Downloads"></a> <a href="https://doi.org/10.5281/zenodo.15078704" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.15078704.svg" alt="DOI"></a></p>
 <p><img src="https://raw.githubusercontent.com/simon-smart88/shinyscholar/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;"></p>
@@ -311,12 +311,10 @@
 <div class="section level5">
 <h5 id="running-tasks">Running tasks<a class="anchor" aria-label="anchor" href="#running-tasks"></a>
 </h5>
-<p><code>common$tasks</code> is a list that stores details of all the asynchronous tasks. Each task is added to the list above the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> in the <code>&lt;identifier&gt;_module_server</code> function as <code>common$tasks$&lt;identifier&gt;</code>. The task contains the module’s function wrapped by <code><a href="https://rstudio.github.io/promises/reference/future_promise.html" class="external-link">promises::future_promise()</a></code> and bound to a <code><a href="https://rstudio.github.io/bslib/reference/bind_task_button.html" class="external-link">bslib::bind_task_button()</a></code> which disables the button when the task is running:</p>
+<p><code>common$tasks</code> is a list that stores details of all the asynchronous tasks. Each task is added to the list above the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> in the <code>&lt;identifier&gt;_module_server</code> function as <code>common$tasks$&lt;identifier&gt;</code>. The task contains the module’s function wrapped by <code><a href="https://rdrr.io/pkg/mirai/man/mirai.html" class="external-link">mirai::mirai()</a></code> and bound to a <code><a href="https://rstudio.github.io/bslib/reference/bind_task_button.html" class="external-link">bslib::bind_task_button()</a></code> which disables the button when the task is running:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>common<span class="sc">$</span>tasks<span class="sc">$</span><span class="er">&lt;</span>identifier<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">-</span> ExtendedTask<span class="sc">$</span><span class="fu">new</span>(<span class="cf">function</span>(...) {</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>    promises<span class="sc">::</span><span class="fu">future_promise</span>({</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>      <span class="sc">&lt;</span>identifer<span class="sc">&gt;</span>(...)</span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>    })</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  }) <span class="sc">|&gt;</span> bslib<span class="sc">::</span><span class="fu">bind_task_button</span>(<span class="st">"run"</span>)</span></code></pre></div>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  mirai<span class="sc">::</span><span class="fu">mirai</span>(<span class="fu">run</span>(...), <span class="fu">environment</span>(), <span class="at">.args =</span> <span class="fu">list</span>(<span class="at">run =</span> <span class="sc">&lt;</span>identifier<span class="sc">&gt;</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>}) <span class="sc">|&gt;</span> bslib<span class="sc">::</span><span class="fu">bind_task_button</span>(<span class="st">"run"</span>)</span></code></pre></div>
 <p>The task is invoked inside the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> by calling <code>common$tasks$&lt;identifier&gt;$invoke()</code> with the arguments of the module’s function. As in the default implementation, metadata should be stored at this point when the function is called.</p>
 </div>
 <div class="section level5">
@@ -393,8 +391,8 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Simon E. H. Smart <br><small class="roles"> Author, maintainer, copyright holder </small>  </li>
-<li>Tim Lucas <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-4694-8107" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Simon E. H. Smart <br><small class="roles"> Author, maintainer, copyright holder </small>   </li>
+<li>Tim Lucas <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-4694-8107" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
@@ -412,7 +410,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
       </footer>
