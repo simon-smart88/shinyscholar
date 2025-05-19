@@ -313,7 +313,7 @@ create_template <- function(path, name, common_objects, modules, author,
 
   component_tab_target <- grep("*value = \"intro\"*", ui_lines)
   for (i in 1:nrow(components)){
-    ui_lines <- append(ui_lines, glue::glue('    tabPanel("{components$long_component[i]}", value = "{components$component[i]}"),'), component_tab_target)
+    ui_lines <- append(ui_lines, glue::glue('    nav_panel("{components$long_component[i]}", value = "{components$component[i]}"),'), component_tab_target)
     # increment target as order matters in UI
     component_tab_target <- component_tab_target + 1
   }
