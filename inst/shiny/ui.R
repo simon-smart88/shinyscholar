@@ -1,244 +1,154 @@
 resourcePath <- system.file("shiny", "www", package = "shinyscholar")
-shiny::addResourcePath("resources", resourcePath)
+addResourcePath("resources", resourcePath)
 
 tagList(
-  rintrojs::introjsUI(),
-  shinyjs::useShinyjs(),
-  shinyjs::extendShinyjs(
-    script = file.path("resources", "js", "shinyjs-funcs.js"),
-    functions = c("scrollLogger", "disableModule", "enableModule")
-  ),
-  navbarPage(
-    theme = bslib::bs_theme(version = 5,
+  page_navbar(
+    theme = bs_theme(version = 5,
                             bootswatch = "spacelab"),
     id = "tabs",
-    collapsible = TRUE,
     header = tagList(
+      rintrojs::introjsUI(),
+      shinyjs::useShinyjs(),
+      shinyjs::extendShinyjs(
+        script = file.path("resources", "js", "shinyjs-funcs.js"),
+        functions = c("scrollLogger", "disableModule", "enableModule", "runOnEnter")
+      ),
       tags$head(tags$link(href = "css/styles.css", rel = "stylesheet"),
-                # run current module on enter key press
-                tags$script(HTML("$(document).on('keydown', function(e) {
-                                    if (e.keyCode == 13) {
-                                      Shiny.onInputChange('run_module', new Date().getTime());
-                                    }
-      });"))
     )),
-    title = img(src = "logo.png", height = "50", width = "50",
-                style = "margin-top: -15px"),
-    windowTitle = "shinyscholar",
-
-    tabPanel("Intro", value = "intro"),
-    tabPanel("Select data", value = "select"),
-    tabPanel("Plot data", value = "plot"),
-    tabPanel("Reproduce", value = "rep"),
-    tabPanel("Template", value = "template"),
-    navbarMenu("Support", icon = icon("life-ring"),
+    title = img(src = "logo.png", height = "50", width = "50"),
+    window_title = "shinyscholar",
+    nav_panel("Intro", value = "intro"),
+    nav_panel("Select data", value = "select"),
+    nav_panel("Plot data", value = "plot"),
+    nav_panel("Reproduce", value = "rep"),
+    nav_panel("Template", value = "template"),
+    nav_menu("Support", icon = icon("life-ring"),
                HTML('<a href="https://github.com/simon-smart88/shinyscholar/issues" target="_blank">GitHub Issues</a>'),
                HTML('<a href="mailto: simon.smart@cantab.net" target="_blank">Send Email</a>')),
-    tabPanel(NULL, icon = icon("power-off"), value = "_stopapp")
+    nav_panel(NULL, icon = icon("power-off"), value = "_stopapp")
   ),
-  tags$div(
-    class = "container-fluid",
-    fluidRow(
-      column(
-        4,
-        wellPanel(
-          conditionalPanel(
-            "input.tabs == 'intro'",
-            includeMarkdown("Rmd/text_intro_tab.Rmd")
-          ),
-          # SELECT DATA ####
-          conditionalPanel(
-            "input.tabs == 'select'",
-            div("Component: Select Data", class = "componentName"),
-            help_comp_ui("selectHelp"),
-            shinyWidgets::radioGroupButtons(
-              "selectSel", "Modules Available:",
-              choices = insert_modules_options("select"),
-              direction = "vertical",
-              status = "outline-secondary",
-              width = "100%"
-            ),
-            tags$hr(),
-            insert_modules_ui("select")
-          ),
-          # PLOT DATA ####
-          conditionalPanel(
-            "input.tabs == 'plot'",
-            div("Component: Plot Data", class = "componentName"),
-            help_comp_ui("plotHelp"),
-            shinyWidgets::radioGroupButtons(
-              "plotSel", "Modules Available:",
-              choices = insert_modules_options("plot"),
-              direction = "vertical",
-              status = "outline-secondary",
-              width = "100%"
-            ),
-            tags$hr(),
-            insert_modules_ui("plot")
-          ),
-          # REPRODUCIBILITY
-          conditionalPanel(
-            "input.tabs == 'rep'",
-            div("Component: Reproduce", class = "componentName"),
-            shinyWidgets::radioGroupButtons(
-              "repSel", "Modules Available:",
-              choices = insert_modules_options("rep"),
-              direction = "vertical",
-              status = "outline-secondary",
-              width = "100%"
-            ),
-            tags$hr(),
-            insert_modules_ui("rep")
-          ),
-          # TEMPLATE
-          conditionalPanel(
-            "input.tabs == 'template'",
-            div("Component: Template", class = "componentName"),
-            shinyWidgets::radioGroupButtons(
-              "templateSel", "Modules Available:",
-              choices = insert_modules_options("template"),
-              direction = "vertical",
-              status = "outline-secondary",
-              width = "100%"
-            ),
-            tags$hr(),
-            insert_modules_ui("template")
-          )
-        )
+  layout_sidebar(
+    sidebar = sidebar(
+      width = 400,
+      open = "always",
+      conditionalPanel(
+        "input.tabs == 'intro'",
+        includeMarkdown("Rmd/text_intro_tab.Rmd")
       ),
-      # --- RESULTS WINDOW ---
-      column(
-        8,
-        conditionalPanel(
-          "input.tabs != 'intro' & input.tabs != 'rep'",
-          fixedRow(
-            column(
-              4,
-              strong("Global settings"),
-              br(),
-              actionButton("reset", "Delete data"),
-            ),
-            column(
-              2,
-              align = "left",
-              div(style = "margin-top: -10px"),
-              strong("Log window"),
-              div(style = "margin-top: 5px"),
-              div(
-                id = "messageLog",
-                div(id = "logHeader", div(id = "logContent"))
-              ),
+      insert_modules_ui("select", "Select Data"),
+      insert_modules_ui("plot", "Plot Data"),
+      insert_modules_ui("rep", "Reproduce"),
+      insert_modules_ui("template", "Template"),
+      div(class = "ss_footer",
+        "This app was built with ",
+        tags$a(href = "https://cran.r-project.org/package=shinyscholar", target = "_blank", "shinyscholar")
+      )
+    ),
+  # --- RESULTS WINDOW ---
+  conditionalPanel(
+    "input.tabs != 'intro' & input.tabs != 'rep'",
+    layout_columns(
+      col_widths = c(4, 8),
+        div(
+          strong("Global settings"),
+          br(),
+          actionButton("reset", "Delete data", icon = icon("trash")),
+        ),
+        div(
+          div(style = "margin-top: -10px"),
+          strong("Log window"),
+          div(style = "margin-top: 5px"),
+          div(
+            id = "messageLog",
+            div(id = "logHeader", div(id = "logContent"))
+          ),
+          br(),
+          textOutput("running_tasks")
+        )
+      )
+    ),
+    conditionalPanel(
+      "input.tabs != 'intro' & input.tabs != 'rep' & input.tabs != 'template'",
+      navset_tab(
+        id = 'main',
+        nav_panel(
+          'Map',
+          core_mapping_module_ui("core_mapping")
+        ),
+        nav_panel(
+          'Table', br(),
+          DT::dataTableOutput('table'),
+          downloadButton('dl_table', "CSV file")
+        ),
+        nav_panel(
+          'Results',
+          lapply(COMPONENTS, function(component) {
+            conditionalPanel(
+              glue::glue("input.tabs == '{component}'"),
+              insert_modules_results(component)
             )
-          )
-          ,
-          fixedRow(
-            column(
-              10,
-              offset = 4,
-              br(),
-              textOutput("running_tasks")
-            )
-          )
+          })
         ),
-        br(),
-        conditionalPanel(
-          "input.tabs != 'intro' & input.tabs != 'rep' & input.tabs != 'template'",
-          tabsetPanel(
-            id = 'main',
-            tabPanel(
-              'Map',
-              core_mapping_module_ui("core_mapping")
-            ),
-            tabPanel(
-              'Table', br(),
-              DT::dataTableOutput('table'),
-              downloadButton('dl_table', "CSV file")
-            ),
-            tabPanel(
-              'Results',
-              lapply(COMPONENTS, function(component) {
-                conditionalPanel(
-                  glue::glue("input.tabs == '{component}'"),
-                  insert_modules_results(component)
-                )
-              })
-            ),
-            tabPanel(
-              'Component Guidance', icon = icon("circle-info"),
-              uiOutput('gtext_component')
-            ),
-            tabPanel(
-              'Module Guidance', icon = icon("circle-info", class = "mod_icon"),
-              uiOutput('gtext_module')
-            ),
-            tabPanel(
-              'Code',
-              core_code_module_ui("core_code")
-            ),
-            tabPanel(
-              'Save', icon = icon("floppy-disk", class = "save_icon"),
-              core_save_module_ui("core_save")
-              )
-          )
+        nav_panel(
+          'Component Guidance', icon = icon("circle-info"),
+          flex_wrap(uiOutput('gtext_component'))
         ),
-        conditionalPanel(
-          "input.tabs == 'rep' & input.repSel == null",
-          column(8,
-                 includeMarkdown("Rmd/gtext_rep.Rmd")
-          )
+        nav_panel(
+          'Module Guidance', icon = icon("circle-info", class = "mod_icon"),
+          flex_wrap(uiOutput('gtext_module'))
         ),
-        conditionalPanel(
-          "input.tabs == 'rep' & input.repSel == 'rep_renv'",
-          column(8,
-                 includeMarkdown("modules/rep_renv.md")
-          )
+        nav_panel(
+          'Code',
+          core_code_module_ui("core_code")
         ),
-        conditionalPanel(
-          "input.tabs == 'rep' & input.repSel == 'rep_markdown'",
-          column(8,
-                 includeMarkdown("modules/rep_markdown.md")
+        nav_panel(
+          'Save', icon = icon("floppy-disk", class = "save_icon"),
+          flex_wrap(core_save_module_ui("core_save"))
           )
-        ),
-        conditionalPanel(
-          "input.tabs == 'rep' & input.repSel == 'rep_refPackages'",
-          column(8,
-                 includeMarkdown("modules/rep_refPackages.md")
-          )
-        ),
-        conditionalPanel(
-          "input.tabs == 'template'",
-          column(8,
-                 includeMarkdown("modules/template_create.md")
-          )
-        ),
-        conditionalPanel(
-          "input.tabs == 'intro'",
-          tabsetPanel(
-            id = 'introTabs',
-            tabPanel(
-              'About',
-              br(),
-              tags$div(
-                style="text-align: center;",
-                core_intro_module_ui("core_intro")
-              ),
-              includeMarkdown("Rmd/text_about.Rmd")
-            ),
-            tabPanel(
-              'Team',
-              fluidRow(
-                column(8, includeMarkdown("Rmd/text_team.Rmd")
-                )
-              )
-            ),
-            tabPanel(
-              'How To Use',
-              includeMarkdown("Rmd/text_how_to_use.Rmd")
-            ),
-            tabPanel(
-              'Load Prior Session',
-              core_load_module_ui("core_load")
-            )
+      )
+    ),
+    conditionalPanel(
+      "input.tabs == 'rep' & input.repSel == null",
+      flex_wrap(includeMarkdown("Rmd/gtext_rep.Rmd"))
+    ),
+    conditionalPanel(
+      "input.tabs == 'rep' & input.repSel == 'rep_renv'",
+      flex_wrap(includeMarkdown("modules/rep_renv.md"))
+    ),
+    conditionalPanel(
+      "input.tabs == 'rep' & input.repSel == 'rep_markdown'",
+      flex_wrap(includeMarkdown("modules/rep_markdown.md"))
+    ),
+    conditionalPanel(
+      "input.tabs == 'rep' & input.repSel == 'rep_refPackages'",
+      flex_wrap(includeMarkdown("modules/rep_refPackages.md"))
+    ),
+    conditionalPanel(
+      "input.tabs == 'template'",
+      flex_wrap(includeMarkdown("modules/template_create.md"))
+    ),
+    conditionalPanel(
+      "input.tabs == 'intro'",
+      flex_wrap(
+        navset_tab(
+          id = 'introTabs',
+          nav_panel(
+            'About',
+            core_intro_module_ui("core_intro"),
+            # suppress logo path warning
+            suppressWarnings(includeMarkdown("Rmd/text_about.Rmd"))
+          ),
+          nav_panel(
+            'Team',
+            includeMarkdown("Rmd/text_team.Rmd")
+          ),
+          nav_panel(
+            'How To Use',
+            includeMarkdown("Rmd/text_how_to_use.Rmd")
+          ),
+          nav_panel(
+            'Load Prior Session',
+            core_load_module_ui("core_load")
           )
         )
       )

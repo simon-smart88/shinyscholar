@@ -5,11 +5,11 @@
     # UI
 ```
 ```{r renv.ignore = TRUE, purl = {{download}} }
-    actionButton(ns("run"), "Run module {{id}}"),
+    actionButton(ns("run"), "Run module {{id}}", icon = icon("arrow-turn-down")),
     downloadButton(ns("download"), "Download")
 ```
 ```{r renv.ignore = TRUE, purl = {{!download}} }
-    actionButton(ns("run"), "Run module {{id}}")
+    actionButton(ns("run"), "Run module {{id}}", icon = icon("arrow-turn-down"))
 ```
 ```{r renv.ignore = TRUE}
   )

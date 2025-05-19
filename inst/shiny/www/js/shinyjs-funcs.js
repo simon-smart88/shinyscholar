@@ -39,3 +39,18 @@ shinyjs.enableModule = function(params) {
   $radio.closest(".radio").removeClass("disabled");
 }
 
+shinyjs.runOnEnter = function(params) {
+  $(document).off('keydown.runOnEnter');
+  $(document).on('keydown.runOnEnter', function(e) {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      // Check if a shinyalert modal is open
+      const isModalOpen = $('.sweet-alert:visible').length > 0;
+      if (!isModalOpen) {
+        const button = document.getElementById(`${params}-run`)
+        if (button) {
+          button.click();
+        }
+      }
+    }
+  });
+}

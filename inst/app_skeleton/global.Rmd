@@ -3,7 +3,8 @@ library(glue)
 library({{app_library}})
 ```
 ```{r renv.ignore = TRUE, purl = {{async}}}
-future::plan(future::multisession)
+mirai::daemons(2)
+onStop(function() mirai::daemons(0))
 ```
 
 ```{r renv.ignore = TRUE}
@@ -13,7 +14,7 @@ options(shiny.maxRequestSize = UPLOAD_SIZE_MB*MB)
 
 SAVE_SESSION_SIZE_MB_WARNING <- 100
 
-source("helpers.R")
+source("ui_helpers.R")
 
 # The components that have modules. These names must match the values of the
 # tabs of the components in the UI.

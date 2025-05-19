@@ -7,9 +7,8 @@ select_async_module_ui <- function(id) {
               max = as.character(Sys.Date()-20),
               value = as.character(Sys.Date()-20)),
     uiOutput(ns("token_out")),
-    actionButton(ns("random"), "Pick a random location"),
-    br(),br(),
-    bslib::input_task_button(ns("run"), "Load imagery")
+    actionButton(ns("random"), "Pick a random location", icon = icon("random")),
+    input_task_button(ns("run"), "Load imagery", type = "default", icon = icon("arrow-turn-down"))
   )
 }
 
@@ -18,11 +17,11 @@ select_async_module_server <- function(id, common, parent_session, map) {
 
   # pick a random location over land, but fail safely in case the API is broken
   observeEvent(input$random, {
-    random_land <- httr2::request("https://api.3geonames.org/?randomland=yes") |> httr2::req_perform()
+    random_land <- httr2::request("https://api.3geonames.org/?randomland=yes") %>% httr2::req_perform()
     if (httr2::resp_status(random_land) == 200){
       content_type <- httr2::resp_content_type(random_land)
       if (grepl("application/xml|text/xml", content_type)) {
-        random_land <- httr2::resp_body_xml(random_land) |> xml2::as_list()
+        random_land <- httr2::resp_body_xml(random_land) %>% xml2::as_list()
         map %>% setView(random_land$geodata$nearest$longt, random_land$geodata$nearest$latt, zoom = 7)
       } else {
         common$logger %>% writeLog(type = "error", "Something went wrong requesting a random location")
@@ -49,10 +48,8 @@ select_async_module_server <- function(id, common, parent_session, map) {
 
   #create the asynchronous task
   common$tasks$select_async <- ExtendedTask$new(function(...) {
-    promises::future_promise({
-      select_async(...)
-    })
-  }) |> bslib::bind_task_button("run")
+    mirai::mirai(run(...), environment(), .args = list(run = select_async))
+  }) %>% bind_task_button("run")
 
   observeEvent(input$run, {
     # TEST MODE - required due to the polygon not being able to be tested correctly.
@@ -68,7 +65,6 @@ select_async_module_server <- function(id, common, parent_session, map) {
                                  package to run this module.")
       return()
     }
-
 
     # WARNING ####
     if (is.null(common$poly)) {
@@ -88,6 +84,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
 
     # FUNCTION CALL ####
     common$logger %>% writeLog(type = "starting", "Starting to download FAPAR data")
+
     # invoke the async task
     common$tasks$select_async$invoke(common$poly, as.character(input$date), token(), TRUE)
     # reactivate the results observer if it has already been used
@@ -128,7 +125,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
       # set an input value to use in testing
       shinyjs::runjs("Shiny.setInputValue('select_async-complete', 'complete');")
     } else {
-      common$logger |> writeLog(type = "error", result)
+      common$logger %>% writeLog(type = "error", result)
     }
   })
 
@@ -150,7 +147,6 @@ select_async_module_server <- function(id, common, parent_session, map) {
 }
 
 select_async_module_map <- function(map, common) {
-  req(common$raster)
   ex <- as.vector(terra::ext(common$raster))
   pal <- RColorBrewer::brewer.pal(9, "Greens")
   custom_greens <- colorRampPalette(pal)(10)

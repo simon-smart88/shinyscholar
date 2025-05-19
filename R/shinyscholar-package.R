@@ -14,6 +14,6 @@
 #'   function \code{\link{run_shinyscholar}} and requires
 #'   \code{install.packages("shinyscholar", dependencies = TRUE)}.
 #'
-#' @import shiny leaflet gargoyle
 #' @importFrom magrittr "%>%"
+#' @import bslib gargoyle leaflet shiny
 NULL

@@ -1,10 +1,7 @@
 rep_refPackages_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    # UI
-    strong("Download List of References"), br(), br(),
-    strong("Select download file type"),
-    selectInput(ns("file_type"), label = "",
+    selectInput(ns("file_type"), label = "Select download file type",
                 choices = c("PDF" = ".pdf", "HTML" = ".html", "Word" = ".docx")),
     downloadButton(ns("download"), "Download References")
   )

@@ -36,8 +36,8 @@ tidy_purl <- function(params){
 #'  \item `map` logical. Whether or not the module interacts with the map
 #'  \item `result` logical. Whether or not the module produces results
 #'  \item `rmd` logical. Whether or not the module is included in the markdown
-#'  \item `save` logical. Whether or not the input values of the model should be saved
-#'  \item `download` logical. Whether or not the input values of the model should be saved
+#'  \item `save` logical. Whether or not the input values of the module should be saved
+#'  \item `download` logical. Whether or not the module should include a downloadHandler
 #'  \item `async` logical. Whether or not the module will run asynchronously
 #' }
 #' @param author character. Name of the author(s)
@@ -217,8 +217,7 @@ create_template <- function(path, name, common_objects, modules, author,
   if (async){
     import_line <- grep("*Imports*", description_lines)
     description_lines <- append(description_lines, "    bslib,", import_line)
-    description_lines <- append(description_lines, "    future,", import_line + 2)
-    description_lines <- append(description_lines, "    promises,", import_line + 7)
+    description_lines <- append(description_lines, "    mirai,", import_line + 7)
   }
 
   if (include_map){
@@ -232,6 +231,21 @@ create_template <- function(path, name, common_objects, modules, author,
   }
 
   writeLines(description_lines, file.path(path, "DESCRIPTION"))
+
+  # Package info ====
+
+  package_params <- c(
+    file = system.file("app_skeleton", "package.Rmd", package = "shinyscholar"),
+    list(name = name)
+  )
+
+  package_lines <- tidy_purl(package_params)
+
+  if (!include_map){
+    package_lines <- gsub("leaflet ", "", package_lines)
+  }
+
+  writeLines(package_lines, file.path(path, "R", paste0(name,"-package.R")))
 
   # Create common list ====
   # add always present objects to common
@@ -306,23 +320,9 @@ create_template <- function(path, name, common_objects, modules, author,
 
   component_interface_target <- grep("*Rmd/text_intro_tab.Rmd*", ui_lines) + 1
   for (i in 1:nrow(components)){
-    ui_lines <- append(ui_lines, c(glue::glue('          # {toupper(components$long_component[i])} ####'),
-                                                 '           conditionalPanel(',
-                                      glue::glue('          "input.tabs == \'{components$component[i]}\'",'),
-                                      glue::glue('          div("Component: {components$long_component[i]}", class = "componentName"),'),
-                                      glue::glue('          help_comp_ui("{components$component[i]}Help"),'),
-                                                 '          shinyWidgets::radioGroupButtons(',
-                                      glue::glue('          "{components$component[i]}Sel", "Modules Available:",'),
-                                      glue::glue('          choices = insert_modules_options("{components$component[i]}"),'),
-                                                 '          direction = "vertical",',
-                                                 '          status = "outline-secondary",',
-                                                 '          width = "100%"',
-                                                 '          ),',
-                                                 '          tags$hr(),',
-                                      glue::glue('          insert_modules_ui("{components$component[i]}")'),
-                                                 '          ),'),
-                                                 component_interface_target)
-    component_interface_target <- component_interface_target + 13
+    comp_ui <- glue::glue('          insert_modules_ui("{components$component[i]}", "{components$long_component[i]}"),')
+    ui_lines <- append(ui_lines, comp_ui, component_interface_target)
+    component_interface_target <- component_interface_target + 1
   }
   writeLines(ui_lines, file.path(path, "inst", "shiny", "ui.R"))
 
@@ -504,7 +504,7 @@ create_template <- function(path, name, common_objects, modules, author,
   file.copy(www_files, file.path(path, "inst", "shiny"), recursive = TRUE)
 
   # copy helpers ====
-  helper_file <- system.file("shiny", "helpers.R", package = "shinyscholar")
+  helper_file <- system.file("shiny", "ui_helpers.R", package = "shinyscholar")
   file.copy(helper_file, file.path(path, "inst", "shiny"))
 
   helper_function_params <- c(

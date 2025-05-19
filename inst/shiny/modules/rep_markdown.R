@@ -1,11 +1,9 @@
 rep_markdown_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    # UI
-    strong("Select download file type"),
-    selectInput(ns("rmdFileType"), label = "",
+    selectInput(ns("rmdFileType"), label = "Select download file type",
                 choices = c("Rmd" = ".Rmd", "PDF" = ".pdf", "HTML" = ".html", "Word" = ".docx")),
-    downloadButton(ns("download"), 'Download Session Code')
+    downloadButton(ns("download"), "Download session code")
   )
 }
 
