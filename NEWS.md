@@ -108,3 +108,10 @@ shinyscholar 0.4.0
 - Migrated from {promises} to {mirai} for running async tasks
 - Migrated to {bslib} layout functions and various UI tweaks
 - Added a small footer linking to the CRAN package to generated apps
+
+shinyscholar 0.4.1
+=============
+- Fix half-baked bslib migration
+- Further UI tweaks
+
+
