@@ -18,25 +18,27 @@ tagList(
     )),
     title = img(src = "logo.png", height = "50", width = "50"),
     window_title = "{{app_library}}",
-    tabPanel("Intro", value = "intro"),
-    tabPanel("Reproduce", value = "rep"),
-    navbarMenu("Support", icon = icon("life-ring"),
+    nav_panel("Intro", value = "intro"),
+    nav_panel("Reproduce", value = "rep"),
+    nav_menu("Support", icon = icon("life-ring"),
                HTML('<a href="https://github.com/simon-smart88/shinyscholar/issues" target="_blank">GitHub Issues</a>'),
                HTML('<a href="mailto: simon.smart@cantab.net" target="_blank">Send Email</a>')),
-    tabPanel(NULL, icon = icon("power-off"), value = "_stopapp")
+    nav_panel(NULL, icon = icon("power-off"), value = "_stopapp")
   ),
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
       open = "always",
-      conditionalPanel(
-        "input.tabs == 'intro'",
-        includeMarkdown("Rmd/text_intro_tab.Rmd")
-      ),
-      insert_modules_ui("rep", "Reproduce"),
-      div(class = "ss_footer",
-        "This app was built with ",
-        tags$a(href = "https://cran.r-project.org/package=shinyscholar", target = "_blank", "shinyscholar")
+      div(class = "sidebar_container",
+        conditionalPanel(
+          "input.tabs == 'intro'",
+          includeMarkdown("Rmd/text_intro_tab.Rmd")
+        ),
+        insert_modules_ui("rep", "Reproduce"),
+        div(class = "ss_footer",
+          "Built with ",
+          tags$a(href = "https://cran.r-project.org/package=shinyscholar", target = "_blank", "shinyscholar")
+        )
       )
     ),
   # --- RESULTS WINDOW ---
@@ -126,7 +128,7 @@ tagList(
       flex_wrap(includeMarkdown("Rmd/gtext_rep.Rmd"))
     ),
     conditionalPanel(
-      "input.tabs == 'rep' & input.repSel == rep_renv",
+      "input.tabs == 'rep' & input.repSel == 'rep_renv'",
       flex_wrap(includeMarkdown("modules/rep_renv.md"))
     ),
     conditionalPanel(
@@ -150,10 +152,7 @@ tagList(
           ),
           nav_panel(
             'Team',
-            fluidRow(
-              column(8, includeMarkdown("Rmd/text_team.Rmd")
-              )
-            )
+            includeMarkdown("Rmd/text_team.Rmd")
           ),
           nav_panel(
             'How To Use',
