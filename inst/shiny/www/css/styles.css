@@ -90,6 +90,12 @@ hr {
   font-size:10pt;
   font-style:italic;
 }
+.package_info {
+  gap: 0.01rem;
+}
+.package_spacer {
+  padding-top: 0.8rem;
+}
 .step {
   color: #DD8627;
   font-weight:bold;
@@ -164,10 +170,20 @@ hr {
   overflow: visible !important;
 }
 
-.ss_footer {
-  position: absolute;
-  bottom: 10px;
-  font-size: 0.8rem;
+/* Ensure footer is displayed below the sidebar */
+
+.sidebar_container {
+  display: flex;
+  flex-direction: column;
+  min-height: 91.5vh;
 }
+
+.ss_footer {
+  margin-top: auto;
+  font-size: 0.8rem
+}
+
+
+
 
 

@@ -29,16 +29,18 @@ uiBottom <- function(mod_INFO) {
 
   for (i in seq_along(pkgName)) {
     ls <- c(ls, list(
-      span(
-        span(paste0(pkgName[i], ":"), class = "rpkg"),
-        span(span(pkgTitl[i], class = "pkgTitl"))
-      ),
-      div(paste('Package Developers:', pkgAuts[i]), class = "pkgDes"),
-      span(
-        a("CRAN", href = file.path("http://cran.r-project.org/web/packages",
-                                 pkgName[i], "index.html"), target = "_blank"), " | ",
-        a("documentation", href = file.path("https://cran.r-project.org/web/packages",
-                                            pkgName[i], paste0(pkgName[i], ".pdf")), target = "_blank"), br()
+      div(class = "package_spacer",
+        span(
+          span(paste0(pkgName[i], ":"), class = "rpkg"),
+          span(span(pkgTitl[i], class = "pkgTitl"))
+        ),
+        div(paste('Package Developers:', pkgAuts[i]), class = "pkgDes"),
+        span(
+          a("CRAN", href = file.path("http://cran.r-project.org/web/packages",
+                                   pkgName[i], "index.html"), target = "_blank"), " | ",
+          a("documentation", href = file.path("https://cran.r-project.org/web/packages",
+                                              pkgName[i], paste0(pkgName[i], ".pdf")), target = "_blank"), br()
+        )
       )
     ))
   }
@@ -109,11 +111,14 @@ insert_modules_ui <- function(component, long_component, exclude = NULL) {
             class = "sidebar_card"
           ),
           card(
-            ui_bottom(
-              modID = module$id,
-              modName = module$long_name,
-              modAuts = module$authors,
-              pkgName = module$package
+            card_body(
+              ui_bottom(
+                modID = module$id,
+                modName = module$long_name,
+                modAuts = module$authors,
+                pkgName = module$package
+              ),
+              class = "package_info"
             ),
             class = "sidebar_card"
           )
