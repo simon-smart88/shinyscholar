@@ -104,9 +104,9 @@ shinyscholar 0.4.0
 - Fixed API calls in `select_query()` and `select_async()`
 
 ### Changes
-- Stopped running {shinytest2} tests on CRAN 
-- Migrated from {promises} to {mirai} for running async tasks
-- Migrated to {bslib} layout functions and various UI tweaks
+- Stopped running `{shinytest2}` tests on CRAN 
+- Migrated from `{promises}` to `{mirai}` for running async tasks
+- Migrated to `{bslib}` layout functions and various UI tweaks
 - Added a small footer linking to the CRAN package to generated apps
 
 shinyscholar 0.4.1
@@ -114,4 +114,8 @@ shinyscholar 0.4.1
 - Fix half-baked bslib migration
 - Further UI tweaks
 
-
+shinyscholar 0.4.2
+=============
+- Various tweaks to ensure that created apps pass `R CMD check`
+- Removed `{magrittr}` dependency and migrated to native pipes, increasing R dependency to v4.1.0
+- `create_module()` now creates skeleton functions that include `{roxygen2}` tags
