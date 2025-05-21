@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">shinyscholar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
       </span>
     </div>
 
@@ -66,7 +66,7 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="shinyscholar-v041">shinyscholar (v0.4.1)<a class="anchor" aria-label="anchor" href="#shinyscholar-v041"></a>
+<div class="page-header"><h1 id="shinyscholar-v042">shinyscholar (v0.4.2)<a class="anchor" aria-label="anchor" href="#shinyscholar-v042"></a>
 </h1></div>
 <p><a href="https://github.com/simon-smart88/shinyscholar/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/simon-smart88/shinyscholar/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R CMD check"></a> <a href="https://cran.r-project.org/package=shinyscholar" class="external-link"><img src="https://www.r-pkg.org/badges/version/shinyscholar" alt="CRAN Status"></a> <a href="https://cran.r-project.org/package=shinyscholar" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/shinyscholar" alt="CRAN Downloads"></a> <a href="https://doi.org/10.5281/zenodo.15078704" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.15078704.svg" alt="DOI"></a></p>
 <p><img src="https://raw.githubusercontent.com/simon-smart88/shinyscholar/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;"></p>
@@ -216,7 +216,7 @@
 <p>The <code>&lt;identifier&gt;_module_ui</code> function can be developed just like a normal UI function inside a shiny app, but only contains *Input elements and the input ids need wrapping inside <code>ns()</code> to create ids that are unique to the module. The template contains an <code>actionButton</code> which when clicked runs the code inside the <code>*_module_server</code> function. If the computations performed by the module are simple, then you could choose to remove the <code><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton()</a></code> so that the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> runs reactively whenever the inputs are changed. The <code>plot_auto</code> and <code>plot_semi</code> modules in the example app demonstrate how this can be achieved.</p>
 <p>The <code>&lt;identifier&gt;_module_server</code> function contains an <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> which is run when the <code><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton()</a></code> in the UI is clicked. Inside the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> there is a consistent structure to the code:</p>
 <ul>
-<li>In the <em>warning</em> block, examine inputs to check that they are as expected and issue warnings if not using <code>common$logger %&gt;% writeLog()</code> See the documentation of <code><a href="reference/writeLog.html">shinyscholar::writeLog()</a></code> for more details.</li>
+<li>In the <em>warning</em> block, examine inputs to check that they are as expected and issue warnings if not using <code>common$logger |&gt; writeLog()</code> See the documentation of <code><a href="reference/writeLog.html">shinyscholar::writeLog()</a></code> for more details.</li>
 <li>In the <em>function call</em> block, pass the inputs to the module function.</li>
 <li>In the <em>load into common</em> block, store the result(s) of the function call in the relevant <code>common</code> object.</li>
 <li>In the <em>metadata</em> block, store any relevant input metadata which is required to reproduce the function call, or is used in the mapping function, in the <code>common$meta$&lt;identifier&gt;</code> object. This can be semi-automated using the <code><a href="reference/metadata.html">metadata()</a></code> function once you have finished developing the module.</li>
@@ -320,7 +320,7 @@
 <div class="section level5">
 <h5 id="logging">Logging<a class="anchor" aria-label="anchor" href="#logging"></a>
 </h5>
-<p>Because the asynchronous tasks are run in a different R session, <code>common$logger</code> is no longer accessible from inside the module’s function and therefore cannot be used to send messages to the logger directly. Instead, an <code>async</code> parameter needs to be added to the function and error messages can be passed to <code>return(async %&gt;% asyncLog("message", type = "error"))</code> which returns the error when used asynchronously or passes the message to <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> when not used asynchronously, for example in the .Rmd.</p>
+<p>Because the asynchronous tasks are run in a different R session, <code>common$logger</code> is no longer accessible from inside the module’s function and therefore cannot be used to send messages to the logger directly. Instead, an <code>async</code> parameter needs to be added to the function and error messages can be passed to <code>return(async |&gt; asyncLog("message", type = "error"))</code> which returns the error when used asynchronously or passes the message to <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> when not used asynchronously, for example in the .Rmd.</p>
 </div>
 <div class="section level5">
 <h5 id="receiving-results">Receiving results<a class="anchor" aria-label="anchor" href="#receiving-results"></a>

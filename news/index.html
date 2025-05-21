@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shinyscholar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
       </span>
     </div>
 
@@ -44,7 +44,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href="https://github.com/simon-smart88/shinyscholar/blob/v0.4.1/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/simon-smart88/shinyscholar/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
@@ -166,16 +166,24 @@
 </ul></div>
 <div class="section level4">
 <h4 id="changes-0-4-0">Changes<a class="anchor" aria-label="anchor" href="#changes-0-4-0"></a></h4>
-<ul><li>Stopped running {shinytest2} tests on CRAN</li>
-<li>Migrated from {promises} to {mirai} for running async tasks</li>
-<li>Migrated to {bslib} layout functions and various UI tweaks</li>
+<ul><li>Stopped running <a href="https://rstudio.github.io/shinytest2/" class="external-link">shinytest2</a> tests on CRAN</li>
+<li>Migrated from <a href="https://rstudio.github.io/promises/" class="external-link">promises</a> to <a href="https://shikokuchuo.net/mirai/" class="external-link">mirai</a> for running async tasks</li>
+<li>Migrated to <a href="https://rstudio.github.io/bslib/" class="external-link">bslib</a> layout functions and various UI tweaks</li>
 <li>Added a small footer linking to the CRAN package to generated apps</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.4.1" id="shinyscholar-041">shinyscholar 0.4.1<a class="anchor" aria-label="anchor" href="#shinyscholar-041"></a></h2>
+<h2 class="page-header" data-toc-text="0.4.1" id="shinyscholar-041">shinyscholar 0.4.1<small>2025-05-19</small><a class="anchor" aria-label="anchor" href="#shinyscholar-041"></a></h2>
 <ul><li>Fix half-baked bslib migration</li>
 <li>Further UI tweaks</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.2" id="shinyscholar-042">shinyscholar 0.4.2<a class="anchor" aria-label="anchor" href="#shinyscholar-042"></a></h2>
+<ul><li>Various tweaks to ensure that created apps pass <code>R CMD check</code>
+</li>
+<li>Removed <a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a> dependency and migrated to native pipes, increasing R dependency to v4.1.0</li>
+<li>
+<code><a href="../reference/create_module.html">create_module()</a></code> now creates skeleton functions that include <a href="https://roxygen2.r-lib.org/" class="external-link">roxygen2</a> tags</li>
 </ul></div>
   </div>
 
