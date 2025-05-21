@@ -85,27 +85,27 @@ create_template <- function(path, name, common_objects, modules, author,
   # Check inputs ====
 
   if (!is.character(path)){
-    logger %>% writeLog(type = "error", "path must be a character string")
+    logger |> writeLog(type = "error", "path must be a character string")
     return()
   }
 
   if (!dir.exists(path)){
-    logger %>% writeLog(type = "error", "The specified path does not exist")
+    logger |> writeLog(type = "error", "The specified path does not exist")
     return()
   }
 
   if (!is.character(name)){
-    logger %>% writeLog(type = "error", "name must be a character string")
+    logger |> writeLog(type = "error", "name must be a character string")
     return()
   }
 
   if (grepl("^[A-Za-z0-9]+$", name, perl = TRUE) == FALSE){
-    logger %>% writeLog(type = "error", "Package names can only contain letters and numbers")
+    logger |> writeLog(type = "error", "Package names can only contain letters and numbers")
     return()
   }
 
   if (grepl("^[0-9]+$", substr(name, 1, 1), perl = TRUE) == TRUE){
-    logger %>% writeLog(type = "error", "Package names cannot start with numbers")
+    logger |> writeLog(type = "error", "Package names cannot start with numbers")
     return()
   }
 
@@ -113,34 +113,34 @@ create_template <- function(path, name, common_objects, modules, author,
 
   if (online) {
     if (name %in% tools::CRAN_package_db()[, c("Package")]) {
-      logger %>% writeLog(type = "error", "A package on CRAN already uses that name")
+      logger |> writeLog(type = "error", "A package on CRAN already uses that name")
       return()
     }
   } else {
-    logger %>% writeLog(type = "warning", "You are not online so your package name could
+    logger |> writeLog(type = "warning", "You are not online so your package name could
                         not be checked against existing CRAN packages")
   }
 
   if (dir.exists(file.path(path, name))){
-    logger %>% writeLog(type = "error", "The specified app directory already exists")
+    logger |> writeLog(type = "error", "The specified app directory already exists")
     return()
   }
 
   if (!is.vector(common_objects) || !is.character(common_objects)){
-    logger %>% writeLog(type = "error", "common_objects must be a vector of character strings")
+    logger |> writeLog(type = "error", "common_objects must be a vector of character strings")
     return()
   }
 
   if (any(common_objects %in% c("meta", "logger", "state", "poly", "tasks"))){
     conflicts <- common_objects[common_objects %in% c("meta", "logger", "state", "poly", "tasks", "reset")]
     conflicts <- paste(conflicts, collapse = ",")
-    logger %>% writeLog(type = "error", glue::glue("common_objects contains {conflicts} which are included
+    logger |> writeLog(type = "error", glue::glue("common_objects contains {conflicts} which are included
                                         in common by default. Please choose a different name."))
     return()
   }
 
   if (!is.data.frame(modules)){
-    logger %>% writeLog(type = "error", "modules must be a dataframe")
+    logger |> writeLog(type = "error", "modules must be a dataframe")
     return()
   }
 
@@ -150,10 +150,10 @@ create_template <- function(path, name, common_objects, modules, author,
     missing_column <- module_columns[!(module_columns %in% colnames(modules))]
     missing_column <- paste(missing_column, collapse = ",")
     if (missing_column == "async"){
-      logger %>% writeLog(type = "warning", glue::glue("As of v0.2.0 the modules dataframe should also contain an async column"))
+      logger |> writeLog(type = "warning", glue::glue("As of v0.2.0 the modules dataframe should also contain an async column"))
       modules <- cbind(modules, data.frame("async" = rep(FALSE, nrow(modules))))
     } else {
-      logger %>% writeLog(type = "error", glue::glue("The modules dataframe must contain the column(s): {missing_column}"))
+      logger |> writeLog(type = "error", glue::glue("The modules dataframe must contain the column(s): {missing_column}"))
       return()
     }
   }
@@ -161,22 +161,22 @@ create_template <- function(path, name, common_objects, modules, author,
   if (!all(colnames(modules) %in% module_columns)){
     invalid_column <- colnames(modules)[!colnames(modules) %in% module_columns]
     invalid_column <- paste(invalid_column, collapse = ",")
-    logger %>% writeLog(type = "error", glue::glue("The modules dataframe contains {invalid_column} which is/are not valid column names"))
+    logger |> writeLog(type = "error", glue::glue("The modules dataframe contains {invalid_column} which is/are not valid column names"))
     return()
   }
 
   if (any(modules$map) == TRUE && include_map == FALSE){
-    logger %>% writeLog(type = "info", "Your modules use a map but you had not included it so changing include_map to TRUE")
+    logger |> writeLog(type = "info", "Your modules use a map but you had not included it so changing include_map to TRUE")
     include_map <- TRUE
   }
 
   if (any(modules$map) == FALSE && include_map == TRUE){
-    logger %>% writeLog(type = "error", "You have included a map but none of your modules use it")
+    logger |> writeLog(type = "error", "You have included a map but none of your modules use it")
     return()
   }
 
   if (any(modules$result) == FALSE){
-    logger %>% writeLog(type = "error", "At least one module must return results")
+    logger |> writeLog(type = "error", "At least one module must return results")
     return()
   }
 
@@ -187,12 +187,12 @@ create_template <- function(path, name, common_objects, modules, author,
   }
 
   if (!is.character(author)){
-    logger %>% writeLog(type = "error", "author must be a character string")
+    logger |> writeLog(type = "error", "author must be a character string")
     return()
   }
 
   if (!is.logical(c(include_map, include_table, include_code, install))){
-    logger %>% writeLog(type = "error", "include_map, include_table,
+    logger |> writeLog(type = "error", "include_map, include_table,
                         include_code & install must be TRUE or FALSE")
     return()
   }
@@ -216,8 +216,7 @@ create_template <- function(path, name, common_objects, modules, author,
 
   if (async){
     import_line <- grep("*Imports*", description_lines)
-    description_lines <- append(description_lines, "    bslib,", import_line)
-    description_lines <- append(description_lines, "    mirai,", import_line + 7)
+    description_lines <- append(description_lines, "    mirai,", import_line + 6)
   }
 
   if (include_map){
@@ -509,7 +508,9 @@ create_template <- function(path, name, common_objects, modules, author,
 
   helper_function_params <- c(
     file = system.file("app_skeleton", "helper_functions.Rmd", package = "shinyscholar"),
-    list(include_map = include_map)
+    list(include_code = include_code,
+         include_map = include_map,
+         async = async)
   )
   helper_function_lines <- tidy_purl(helper_function_params)
   writeLines(helper_function_lines, file.path(path, "R", "helper_functions.R"))
@@ -527,6 +528,7 @@ create_template <- function(path, name, common_objects, modules, author,
 
   # Install package ====
   if (install){
+  devtools::document(path)
   devtools::install_local(path = path, force = TRUE)
   }
 

@@ -1,4 +1,4 @@
-# shinyscholar (v0.4.1)
+# shinyscholar (v0.4.2)
 
 [![R CMD check](https://github.com/simon-smart88/shinyscholar/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/simon-smart88/shinyscholar/actions/workflows/R-CMD-check.yaml)
 [![CRAN Status](https://www.r-pkg.org/badges/version/shinyscholar)](https://cran.r-project.org/package=shinyscholar)
@@ -150,7 +150,7 @@ The `<identifier>_module_ui` function can be developed just like a normal UI fun
 
 The `<identifier>_module_server` function contains an `observeEvent()` which is run when the `actionButton()` in the UI is clicked. Inside the `observeEvent()` there is a consistent structure to the code:
 
-* In the *warning* block, examine inputs to check that they are as expected and issue warnings if not using `common$logger %>% writeLog()` See the documentation of `shinyscholar::writeLog()` for more details.
+* In the *warning* block, examine inputs to check that they are as expected and issue warnings if not using `common$logger |> writeLog()` See the documentation of `shinyscholar::writeLog()` for more details.
 * In the *function call* block, pass the inputs to the module function.
 * In the *load into common* block, store the result(s) of the function call in the relevant `common` object.
 * In the *metadata* block, store any relevant input metadata which is required to reproduce the function call, or is used in the mapping function, in the `common$meta$<identifier>` object. This can be semi-automated using the `metadata()` function once you have finished developing the module.
@@ -229,7 +229,7 @@ common$tasks$<identifier> <- ExtendedTask$new(function(...) {
 The task is invoked inside the `observeEvent()` by calling `common$tasks$<identifier>$invoke()` with the arguments of the module's function. As in the default implementation, metadata should be stored at this point when the function is called.
 
 ##### Logging
-Because the asynchronous tasks are run in a different R session, `common$logger` is no longer accessible from inside the module's function and therefore cannot be used to send messages to the logger directly. Instead, an `async` parameter needs to be added to the function and error messages can be passed to `return(async %>% asyncLog("message", type = "error"))` which returns the error when used asynchronously or passes the message to `stop()` when not used asynchronously, for example in the .Rmd.
+Because the asynchronous tasks are run in a different R session, `common$logger` is no longer accessible from inside the module's function and therefore cannot be used to send messages to the logger directly. Instead, an `async` parameter needs to be added to the function and error messages can be passed to `return(async |> asyncLog("message", type = "error"))` which returns the error when used asynchronously or passes the message to `stop()` when not used asynchronously, for example in the .Rmd.
 
 ##### Receiving results
 A separate `observe()` named `results` is required to listen for the result of the task available at `common$tasks$<identifier>$result()` but to prevent endless loops, we must stop the observer from functioning once the results are calculated by calling `results$suspend()` and reactivate it prior to the task being invoked using `results$resume()`. Inside `results`, the class of the object returned by the function should be checked and either passed to `common$logger` if it is an error message or stored in `common` as in the default implementation. 

@@ -26,17 +26,17 @@ plot_scatter <- function(raster, sample, axis, logger = NULL) {
   check_suggests()
 
   if (!("SpatRaster" %in% class(raster))){
-    logger %>% writeLog(type = "error", "The raster must be a SpatRaster")
+    logger |> writeLog(type = "error", "The raster must be a SpatRaster")
     return()
   }
 
   if (!is.numeric(sample)){
-    logger %>% writeLog(type = "error", "sample must be numeric")
+    logger |> writeLog(type = "error", "sample must be numeric")
     return()
   }
 
   if (!(axis %in% c("x", "y"))){
-    logger %>% writeLog(type = "error", "axis must be either x or y")
+    logger |> writeLog(type = "error", "axis must be either x or y")
     return()
   }
 

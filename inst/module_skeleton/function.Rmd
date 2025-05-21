@@ -1,0 +1,30 @@
+```{r purl = {{!async}}}
+#' @title {{id}}
+#' @description Does x
+#' @param x x
+#' @param logger Stores all notification messages to be displayed in the Log
+#'   Window. Insert the logger reactive list here for running in
+#'   shiny, otherwise leave the default NULL
+#' @return NULL
+#' @examples {
+#' y <- {{id}}(1)  
+#' }
+#' @export
+{{id}} <- function(x, logger = NULL){
+  NULL
+}
+```
+```{r purl = {{async}}}
+#' @title {{id}}
+#' @description Does x
+#' @param x x
+#' @param async logical. Whether the function is being run asynchronously
+#' @return NULL
+#' @examples {
+#' y <- {{id}}(1)  
+#' }
+#' @export
+{{id}} <- function(x, async = FALSE){
+  NULL
+}
+```

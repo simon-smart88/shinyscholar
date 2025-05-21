@@ -16,15 +16,15 @@ get_nasa_token <- function(username, password) {
   req <- httr2::request(token_url)
 
   response <- tryCatch(
-    req %>%
-      httr2::req_auth_basic(username, password) %>%
-      httr2::req_method("POST") %>%
+    req |>
+      httr2::req_auth_basic(username, password) |>
+      httr2::req_method("POST") |>
       httr2::req_perform(),
     httr2_http_401 = function(cnd){stop("Incorrect username or password", call. = FALSE)}
   )
 
   if (httr2::resp_status(response) == 200){
-    body <- response %>% httr2::resp_body_json()
+    body <- response |> httr2::resp_body_json()
     token <- body$access_token
     return(token)
   } else {
@@ -68,17 +68,17 @@ select_query <- function(poly, date, token, logger = NULL) {
   check_suggests()
 
   if (!("matrix" %in% class(poly))){
-    logger %>% writeLog(type = "error","poly must be a matrix")
+    logger |> writeLog(type = "error","poly must be a matrix")
     return()
   }
 
   if (!is.character(date) || is.na(as.Date(date, format = "%Y-%m-%d"))) {
-    logger %>% writeLog(type = "error","date must be a string with the format YYYY-MM-DD")
+    logger |> writeLog(type = "error","date must be a string with the format YYYY-MM-DD")
     return()
   }
 
   if (nchar(token) < 200 || is.null(token)){
-    logger %>% writeLog(type = "error", "This function requires a NASA token - see the documentation")
+    logger |> writeLog(type = "error", "This function requires a NASA token - see the documentation")
     return()
   }
 
@@ -86,7 +86,7 @@ select_query <- function(poly, date, token, logger = NULL) {
   terra_poly <- terra::vect(poly, crs = "EPSG:4326", type = "polygons")
   area <- terra::expanse(terra_poly, unit = "km")
   if (area > 1000000) {
-    logger %>% writeLog(type = "error", paste0("Your selected area is too large (",round(area,0)," km2)",
+    logger |> writeLog(type = "error", paste0("Your selected area is too large (",round(area,0)," km2)",
                                               " when the maximum is 1m km2. Please select a smaller area"))
     return()
   }
@@ -97,16 +97,16 @@ select_query <- function(poly, date, token, logger = NULL) {
   check <- check_url(search_url)
 
   if (!is.null(check)){
-    image_req <- httr2::request(search_url ) %>%
-                  httr2::req_auth_bearer_token(token) %>%
+    image_req <- httr2::request(search_url ) |>
+                  httr2::req_auth_bearer_token(token) |>
                   httr2::req_perform()
 
-    image_resp <- image_req %>% httr2::resp_body_html()
+    image_resp <- image_req |> httr2::resp_body_html()
 
     image_links <- xml2::xml_find_all(image_resp, "//a")
     image_urls <- xml2::xml_attr(image_links, "href")
   } else {
-    logger %>% writeLog(type = "error", "The FAPAR API is currently offline")
+    logger |> writeLog(type = "error", "The FAPAR API is currently offline")
     return()
   }
 
@@ -114,8 +114,8 @@ select_query <- function(poly, date, token, logger = NULL) {
   raster <- NULL
   for (file in image_urls){
     if (tools::file_ext(file) == "hdf"){
-      req <- httr2::request(file) %>%
-        httr2::req_auth_bearer_token(token) %>%
+      req <- httr2::request(file) |>
+        httr2::req_auth_bearer_token(token) |>
         httr2::req_perform()
 
       temp <- tempfile(fileext = ".hdf")
@@ -131,7 +131,7 @@ select_query <- function(poly, date, token, logger = NULL) {
   }
 
   if (is.null(raster)){
-    logger %>% writeLog(type = "error", paste0("No data was found for your selected area. ",
+    logger |> writeLog(type = "error", paste0("No data was found for your selected area. ",
                                                "This could be due to cloud coverage or because the area is not over land."))
     return()
   }
@@ -146,7 +146,7 @@ select_query <- function(poly, date, token, logger = NULL) {
   water <- length(terra::values(raster)[terra::values(raster) == 2.54])
 
   if (missing_values == terra::ncell(raster)) {
-    logger %>% writeLog(type = "error", paste0("No data was found for your selected area. ",
+    logger |> writeLog(type = "error", paste0("No data was found for your selected area. ",
                                                "This could be due to cloud coverage or because the area is not over land."))
     return()
   }
@@ -158,7 +158,7 @@ select_query <- function(poly, date, token, logger = NULL) {
     if (water > 0) {
       message <- paste(message, glue::glue("{water} pixels were removed due to water coverage."), sep = " ")
     }
-    logger %>% writeLog(message)
+    logger |> writeLog(message)
   }
 
   # remove missing values and rescale data to 0 - 100 %

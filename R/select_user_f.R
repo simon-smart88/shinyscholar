@@ -23,12 +23,12 @@ select_user <- function(raster_path, logger = NULL) {
   check_suggests()
 
   if (!file.exists(raster_path)) {
-    logger %>% writeLog(type = "error", "The specified raster does not exist")
+    logger |> writeLog(type = "error", "The specified raster does not exist")
     return()
   }
 
   if (tools::file_ext(raster_path) != "tif") {
-    logger %>% writeLog(type = "error", "The raster must be a .tif")
+    logger |> writeLog(type = "error", "The raster must be a .tif")
     return()
   }
 

@@ -25,12 +25,12 @@ plot_hist <- function(raster, bins, logger = NULL) {
   check_suggests()
 
   if (!("SpatRaster" %in% class(raster))){
-    logger %>% writeLog(type = "error", "The raster must be a SpatRaster")
+    logger |> writeLog(type = "error", "The raster must be a SpatRaster")
     return()
   }
 
   if (!is.numeric(bins)){
-    logger %>% writeLog(type = "error", "bins must be numeric")
+    logger |> writeLog(type = "error", "bins must be numeric")
     return()
   }
 

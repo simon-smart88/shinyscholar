@@ -17,7 +17,7 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$raster)) {
-      common$logger %>% writeLog(type = "error", "Please load a raster file")
+      common$logger |> writeLog(type = "error", "Please load a raster file")
       return()
     }
     # FUNCTION CALL ####
