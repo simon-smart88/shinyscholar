@@ -161,10 +161,6 @@ hr {
   display: inline-block;
 }
 
-.radio-group-buttons {
-  padding-bottom: 15px;
-}
-
 /* Allow selectinput dropdowns to escape cards */
 .card, .card-body {
   overflow: visible !important;
