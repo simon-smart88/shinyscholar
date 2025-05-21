@@ -11,11 +11,11 @@ raster_name <- {{select_query_name}}
 raster_extent <- as.vector(terra::ext(raster))
 map_pal <- colorBin("Greens", domain = values(raster), bins = 9, na.color = "#00000000")
 
-leaflet() %>%
-  addProviderTiles("Esri.WorldTopoMap") %>%
-  addRasterImage(raster, colors = map_pal) %>%
-  addTiles(urlTemplate = "", attribution = "MODIS data via LAADS DAAC") %>%
-  fitBounds(lng1 = raster_extent[[1]], lng2 = raster_extent[[2]], lat1 = raster_extent[[3]], lat2 = raster_extent[[4]]) %>%
+leaflet() |>
+  addProviderTiles("Esri.WorldTopoMap") |>
+  addRasterImage(raster, colors = map_pal) |>
+  addTiles(urlTemplate = "", attribution = "MODIS data via LAADS DAAC") |>
+  fitBounds(lng1 = raster_extent[[1]], lng2 = raster_extent[[2]], lat1 = raster_extent[[3]], lat2 = raster_extent[[4]]) |>
   addLegend(position = "bottomright", pal = map_pal, values = values(raster),
             title = raster_name) 
 ```

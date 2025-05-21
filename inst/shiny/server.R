@@ -110,7 +110,7 @@ function(input, output, session) {
   set.seed(12345)
   sample_table <- terra::spatSample(common$raster, 100, method = "random", xy = TRUE, as.df = TRUE)
   colnames(sample_table) <- c("Longitude", "Latitude", "Value")
-  sample_table %>%
+  sample_table |>
     dplyr::mutate(Longitude = round(as.numeric(Longitude), digits = 4),
                   Latitude = round(as.numeric(Latitude), digits = 4),
                   Value = round(as.numeric(Latitude), digits = 4))

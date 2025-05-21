@@ -17,17 +17,17 @@ select_async_module_server <- function(id, common, parent_session, map) {
 
   # pick a random location over land, but fail safely in case the API is broken
   observeEvent(input$random, {
-    random_land <- httr2::request("https://api.3geonames.org/?randomland=yes") %>% httr2::req_perform()
+    random_land <- httr2::request("https://api.3geonames.org/?randomland=yes") |> httr2::req_perform()
     if (httr2::resp_status(random_land) == 200){
       content_type <- httr2::resp_content_type(random_land)
       if (grepl("application/xml|text/xml", content_type)) {
-        random_land <- httr2::resp_body_xml(random_land) %>% xml2::as_list()
-        map %>% setView(random_land$geodata$nearest$longt, random_land$geodata$nearest$latt, zoom = 7)
+        random_land <- httr2::resp_body_xml(random_land) |> xml2::as_list()
+        map |> setView(random_land$geodata$nearest$longt, random_land$geodata$nearest$latt, zoom = 7)
       } else {
-        common$logger %>% writeLog(type = "error", "Something went wrong requesting a random location")
+        common$logger |> writeLog(type = "error", "Something went wrong requesting a random location")
       }
     } else {
-      common$logger %>% writeLog(type = "error", "Something went wrong requesting a random location")
+      common$logger |> writeLog(type = "error", "Something went wrong requesting a random location")
     }
   })
 
@@ -49,7 +49,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
   #create the asynchronous task
   common$tasks$select_async <- ExtendedTask$new(function(...) {
     mirai::mirai(run(...), environment(), .args = list(run = select_async))
-  }) %>% bind_task_button("run")
+  }) |> bind_task_button("run")
 
   observeEvent(input$run, {
     # TEST MODE - required due to the polygon not being able to be tested correctly.
@@ -60,7 +60,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
     }
 
     if (Sys.getenv("R_CONFIG_ACTIVE") == "shinyapps"){
-      common$logger %>% writeLog(type = "error", "Unfortunately asynchronous operations are not
+      common$logger |> writeLog(type = "error", "Unfortunately asynchronous operations are not
                                  supported on the free tier of shinyapps.io - please download the
                                  package to run this module.")
       return()
@@ -68,22 +68,22 @@ select_async_module_server <- function(id, common, parent_session, map) {
 
     # WARNING ####
     if (is.null(common$poly)) {
-      common$logger %>% writeLog(type = "error", "Please draw a rectangle on the map")
+      common$logger |> writeLog(type = "error", "Please draw a rectangle on the map")
       return()
     }
 
     if (length(input$date) == 0) {
-      common$logger %>% writeLog(type = "error", "Please pick a date")
+      common$logger |> writeLog(type = "error", "Please pick a date")
       return()
     }
 
     if (nchar(token()) < 200){
-      common$logger %>% writeLog(type = "error", "That doesn't look like a valid NASA bearer token")
+      common$logger |> writeLog(type = "error", "That doesn't look like a valid NASA bearer token")
       return()
     }
 
     # FUNCTION CALL ####
-    common$logger %>% writeLog(type = "starting", "Starting to download FAPAR data")
+    common$logger |> writeLog(type = "starting", "Starting to download FAPAR data")
 
     # invoke the async task
     common$tasks$select_async$invoke(common$poly, as.character(input$date), token(), TRUE)
@@ -112,8 +112,8 @@ select_async_module_server <- function(id, common, parent_session, map) {
       raster <- terra::unwrap(result$raster)
       common$raster <- raster
 
-      common$logger %>% writeLog(type = "complete", "FAPAR data has been downloaded")
-      common$logger %>% writeLog(result$message)
+      common$logger |> writeLog(type = "complete", "FAPAR data has been downloaded")
+      common$logger |> writeLog(result$message)
 
       # TRIGGER
       trigger("select_async")
@@ -125,7 +125,7 @@ select_async_module_server <- function(id, common, parent_session, map) {
       # set an input value to use in testing
       shinyjs::runjs("Shiny.setInputValue('select_async-complete', 'complete');")
     } else {
-      common$logger %>% writeLog(type = "error", result)
+      common$logger |> writeLog(type = "error", result)
     }
   })
 
@@ -153,17 +153,17 @@ select_async_module_map <- function(map, common) {
   color_bins <- colorBin(custom_greens, domain = terra::values(common$raster), bins = 10, na.color = "pink")
   name <- common$meta$select_async$name
 
-  map %>%
-    leaflet.extras::removeDrawToolbar(clearFeatures = TRUE) %>%
+  map |>
+    leaflet.extras::removeDrawToolbar(clearFeatures = TRUE) |>
     leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE, markerOptions = FALSE,
-                                   circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE) %>%
-    clearGroup(name) %>%
-    removeControl(name) %>%
-    addRasterImage(common$raster, colors = color_bins, group = name) %>%
-    addTiles(urlTemplate = "", attribution = "MODIS data via LAADS DAAC") %>%
-    fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
+                                   circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE) |>
+    clearGroup(name) |>
+    removeControl(name) |>
+    addRasterImage(common$raster, colors = color_bins, group = name) |>
+    addTiles(urlTemplate = "", attribution = "MODIS data via LAADS DAAC") |>
+    fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) |>
     addLegend(position = "bottomright", pal = color_bins, values = terra::values(common$raster),
-              group = name, title = name, layer = name) %>%
+              group = name, title = name, layer = name) |>
     addLayersControl(overlayGroups = name, options = layersControlOptions(collapsed = FALSE))
 }
 

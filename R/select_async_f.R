@@ -35,22 +35,22 @@ select_async <- function(poly, date, token, async = FALSE) {
   check_suggests()
 
   if (!("matrix" %in% class(poly))){
-    return(async %>% asyncLog(type = "error", "poly must be a matrix"))
+    return(async |> asyncLog(type = "error", "poly must be a matrix"))
   }
 
   if (!is.character(date) || is.na(as.Date(date, format = "%Y-%m-%d"))) {
-    return(async %>% asyncLog(type = "error", "date must be a string with the format YYYY-MM-DD"))
+    return(async |> asyncLog(type = "error", "date must be a string with the format YYYY-MM-DD"))
   }
 
   if (nchar(token) < 200 || is.null(token)){
-    return(async %>% asyncLog(type = "error", "This function requires a NASA token - see the documentation"))
+    return(async |> asyncLog(type = "error", "This function requires a NASA token - see the documentation"))
   }
 
   # convert to terra object to calculate area and extent
   terra_poly <- terra::vect(poly, crs = "EPSG:4326", type = "polygons")
   area <- terra::expanse(terra_poly, unit = "km")
   if (area > 1000000) {
-    return(async %>% asyncLog(type = "error", paste0("Your selected area is too large (",round(area,0)," km2)",
+    return(async |> asyncLog(type = "error", paste0("Your selected area is too large (",round(area,0)," km2)",
                               " when the maximum is 1m km2. Please select a smaller area")))
   }
 
@@ -60,24 +60,24 @@ select_async <- function(poly, date, token, async = FALSE) {
   check <- check_url(search_url)
 
   if (!is.null(check)){
-    image_req <- httr2::request(search_url ) %>%
-      httr2::req_auth_bearer_token(token) %>%
+    image_req <- httr2::request(search_url ) |>
+      httr2::req_auth_bearer_token(token) |>
       httr2::req_perform()
 
-    image_resp <- image_req %>% httr2::resp_body_html()
+    image_resp <- image_req |> httr2::resp_body_html()
 
     image_links <- xml2::xml_find_all(image_resp, "//a")
     image_urls <- xml2::xml_attr(image_links, "href")
   } else {
-    return(async %>% asyncLog(type = "error", "The FAPAR API is currently offline"))
+    return(async |> asyncLog(type = "error", "The FAPAR API is currently offline"))
   }
 
   # download and stitch together tiles
   raster <- NULL
   for (file in image_urls){
     if (tools::file_ext(file) == "hdf"){
-      req <- httr2::request(file) %>%
-        httr2::req_auth_bearer_token(token) %>%
+      req <- httr2::request(file) |>
+        httr2::req_auth_bearer_token(token) |>
         httr2::req_perform()
 
       temp <- tempfile(fileext = ".hdf")
@@ -92,7 +92,7 @@ select_async <- function(poly, date, token, async = FALSE) {
     }
   }
   if (is.null(raster)){
-    return(async %>% asyncLog(type = "error", paste0("No data was found for your selected area. ",
+    return(async |> asyncLog(type = "error", paste0("No data was found for your selected area. ",
                       "This could be due to cloud coverage or because the area is not over land.")))
   }
 
@@ -107,7 +107,7 @@ select_async <- function(poly, date, token, async = FALSE) {
 
   # count missing values and log accordingly
   if (missing_values == terra::ncell(raster)) {
-    return(async %>% asyncLog(type = "error", paste0("No data was found for your selected area. ",
+    return(async |> asyncLog(type = "error", paste0("No data was found for your selected area. ",
                                      "This could be due to cloud coverage or because the area is not over land.")))
   }
 

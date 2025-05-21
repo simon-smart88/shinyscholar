@@ -24,7 +24,7 @@ printVecAsis <- function(x) {
 check_url <- function(url){
   req <- httr2::request(url)
   resp <- tryCatch(
-    req %>% httr2::req_perform(),
+    req |> httr2::req_perform(),
     httr2_http_404 = function(cnd){NULL},
     httr2_failure = function(cnd){NULL},
     httr2_error = function(cnd){NULL}

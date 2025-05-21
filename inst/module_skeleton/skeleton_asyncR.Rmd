@@ -25,13 +25,13 @@
   # create the asynchronous task
   common$tasks${{id}} <- ExtendedTask$new(function(...) {
     mirai::mirai(run(...), environment(), .args = list(run = {{id}}))
-  }) %>% bind_task_button("run")
+  }) |> bind_task_button("run")
 
     observeEvent(input$run, {
       # WARNING ####
 
       # FUNCTION CALL ####
-      common$logger %>% writeLog(type = "starting", "Starting to run {{id}}")
+      common$logger |> writeLog(type = "starting", "Starting to run {{id}}")
       # invoke the async task
       common$tasks${{id}}$invoke()
       # reactivate the results observer if it has already been used
@@ -53,7 +53,7 @@
       # check the class of the result is the class when the function runs successfully
       if (class(result) == "list"){
 
-        common$logger %>% writeLog(type = "complete", "{{id}} has completed")
+        common$logger |> writeLog(type = "complete", "{{id}} has completed")
 
         # TRIGGER
         trigger("{{id}}")
@@ -70,7 +70,7 @@
         # set an input value to use in testing
         shinyjs::runjs("Shiny.setInputValue('{{id}}-complete', 'complete');")
       } else {
-        common$logger %>% writeLog(type = "error", result)
+        common$logger |> writeLog(type = "error", result)
       }
     })
 ```
