@@ -528,6 +528,7 @@ create_template <- function(path, name, common_objects, modules, author,
 
   # Install package ====
   if (install){
+  devtools::document(path)
   devtools::install_local(path = path, force = TRUE)
   }
 
