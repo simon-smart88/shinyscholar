@@ -35,7 +35,7 @@ Authors@R:
       person("Bruno", "Vilela", email = "bvilela@wustl.edu", role = "ctb"),
       person("Robert", "Muscarella", email = "bob.muscarella@gmail.com", role = "ctb"))
 Depends:
-    R (>= 3.5.0),
+    R (>= 4.1.0),
     bslib,
     gargoyle,
     leaflet (>= 2.0.2),
@@ -45,7 +45,6 @@ Imports:
     devtools,
     glue,
     knitr,
-    magrittr,
     tools,
     zip
 Suggests:
