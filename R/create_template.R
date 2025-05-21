@@ -216,8 +216,7 @@ create_template <- function(path, name, common_objects, modules, author,
 
   if (async){
     import_line <- grep("*Imports*", description_lines)
-    description_lines <- append(description_lines, "    bslib,", import_line)
-    description_lines <- append(description_lines, "    mirai,", import_line + 7)
+    description_lines <- append(description_lines, "    mirai,", import_line + 6)
   }
 
   if (include_map){
@@ -509,7 +508,9 @@ create_template <- function(path, name, common_objects, modules, author,
 
   helper_function_params <- c(
     file = system.file("app_skeleton", "helper_functions.Rmd", package = "shinyscholar"),
-    list(include_map = include_map)
+    list(include_code = include_code,
+         include_map = include_map,
+         async = async)
   )
   helper_function_lines <- tidy_purl(helper_function_params)
   writeLines(helper_function_lines, file.path(path, "R", "helper_functions.R"))

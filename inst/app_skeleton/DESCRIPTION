@@ -1,7 +1,7 @@
 Package: 
 Version: 0.0.1
 Title: Add a title
-Description: Describe your application
+Description: Describe your application in complete sentences.
 Authors@R: 
     c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut","cre")))
 Depends:
@@ -19,14 +19,13 @@ Imports:
     renv,
     rmarkdown,
     shinyalert,
+    shinybusy,
     shinyjs,
     shinyWidgets (>= 0.6.0),
-    tools,
-    zip
+    tools
 Suggests: 
     shinytest2,
     testthat
 License: GPL-3
-URL: 
 Encoding: UTF-8
 RoxygenNote: 7.2.3
