@@ -21,13 +21,14 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
       return()
     }
     # FUNCTION CALL ####
-    histogram <- plot_hist(common$raster, as.numeric(input$bins))
+    raster_name <- c(common$meta$select_query$name, common$meta$select_async$name, common$meta$select_user$name)
+    histogram <- plot_hist(common$raster, as.numeric(input$bins), input$pal, raster_name, common$logger)
     # LOAD INTO COMMON ####
     common$histogram <- histogram
     # METADATA ####
     common$meta$plot_hist$bins <- as.numeric(input$bins)
     common$meta$plot_hist$pal <- input$pal
-    common$meta$plot_hist$name <- c(common$meta$select_query$name, common$meta$select_async$name, common$meta$select_user$name)
+    common$meta$plot_hist$name <- raster_name
     # TRIGGER ####
     trigger("plot_hist")
     show_results(parent_session)
@@ -45,7 +46,7 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
   output$hist <- renderPlot({
     watch("plot_hist")
     req(common$histogram)
-    plot_function()
+    common$histogram()
   })
 
   output$download <- downloadHandler(
@@ -54,7 +55,7 @@ plot_hist_module_server <- function(id, common, parent_session, map) {
     },
     content = function(file) {
       png(file, width = 1000, height = 500)
-      plot_function()
+      common$histogram()
       dev.off()
     })
 

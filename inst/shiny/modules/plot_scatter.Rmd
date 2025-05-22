@@ -3,9 +3,6 @@ Plots the data on a scatter plot
 ```
 
 ```{r, echo = {{plot_scatter_knit}}, include = {{plot_scatter_knit}}}
-
-scatterplot <- plot_scatter(raster, {{plot_scatter_sample}}, {{plot_scatter_axis_short}})
-
-plot(scatterplot[[1]], scatterplot[[2]], xlab = {{plot_scatter_axis_long}}, ylab = {{plot_scatter_name}})
-
+scatterplot <- plot_scatter(raster, {{plot_scatter_sample}}, {{plot_scatter_axis}}, {{plot_scatter_name}})
+scatterplot()
 ```

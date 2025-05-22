@@ -6,11 +6,6 @@ Plots the data as a histogram
 {r, fig.width = 8, fig.height = 5}
 ```
 ```{r, echo = {{plot_hist_knit}}, include = {{plot_hist_knit}}}
-
-histogram <- plot_hist(raster, {{plot_hist_bins}})
-pal <- RColorBrewer::brewer.pal(9, {{plot_hist_pal}})
-pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
-hist_cols <- pal_ramp({{plot_hist_bins}})
-
-plot(histogram, freq = F, main = "", xlab = {{plot_hist_name}}, ylab = "Frequency (%)", col = hist_cols)
+histogram <- plot_hist(raster, {{plot_hist_bins}}, {{plot_hist_pal}}, {{plot_hist_name}})
+histogram()
 ```
