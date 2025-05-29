@@ -27,7 +27,7 @@ plot_scatter <- function(raster, sample, axis, name, logger = NULL) {
 
   check_suggests()
 
-  if (!("SpatRaster" %in% class(raster))){
+  if (!inherits(raster, "SpatRaster")){
     logger |> writeLog(type = "error", "The raster must be a SpatRaster")
     return()
   }
@@ -37,8 +37,18 @@ plot_scatter <- function(raster, sample, axis, name, logger = NULL) {
     return()
   }
 
+  if (!inherits(axis, "character")){
+    logger |> writeLog(type = "error", "axis must be a character string")
+    return()
+  }
+
   if (!(axis %in% c("Longitude", "Latitude"))){
     logger |> writeLog(type = "error", "axis must be either Longitude or Latitude")
+    return()
+  }
+
+  if (!inherits(name, "character")){
+    logger |> writeLog(type = "error", "name must be a character string")
     return()
   }
 

@@ -27,13 +27,28 @@ plot_hist <- function(raster, bins, palette, name, logger = NULL) {
 
   check_suggests()
 
-  if (!("SpatRaster" %in% class(raster))){
+  if (!inherits(raster, "SpatRaster")){
     logger |> writeLog(type = "error", "The raster must be a SpatRaster")
     return()
   }
 
   if (!is.numeric(bins)){
     logger |> writeLog(type = "error", "bins must be numeric")
+    return()
+  }
+
+  if (!inherits(palette, "character")){
+    logger |> writeLog(type = "error", "palette must be a character string")
+    return()
+  }
+
+  if (!inherits(name, "character")){
+    logger |> writeLog(type = "error", "name must be a character string")
+    return()
+  }
+
+  if (!(palette %in% c("Greens", "YlOrRd", "Greys", "Blues"))){
+    logger |> writeLog(type = "error", "palette must be either 'Greens', 'YlOrRd', 'Greys' or 'Blues'")
     return()
   }
 

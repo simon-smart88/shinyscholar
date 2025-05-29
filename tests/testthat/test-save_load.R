@@ -16,7 +16,7 @@ if (suggests){
     common <- readRDS(save_path)
     common$raster <- terra::unwrap(common$raster)
     expect_is(common$raster, "SpatRaster")
-    expect_is(common$scatterplot, "data.frame")
+    expect_is(common$scatterplot, "function")
 
   })
 
@@ -28,7 +28,7 @@ if (suggests){
     common <- readRDS(save_path)
     common$raster <- terra::unwrap(common$raster)
     expect_is(common$raster, "SpatRaster")
-    expect_is(common$histogram, "histogram")
+    expect_is(common$histogram, "function")
   })
 
   test_that("{shinytest2} recording: e2e_load", {
