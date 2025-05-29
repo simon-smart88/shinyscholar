@@ -43,7 +43,7 @@ plot_scatter <- function(raster, sample, axis, name, logger = NULL) {
   }
 
   if (!(axis %in% c("Longitude", "Latitude"))){
-    logger |> writeLog(type = "error", "axis must be either Longitude or Latitude")
+    logger |> writeLog(type = "error", "axis must be either Latitude or Longitude")
     return()
   }
 
