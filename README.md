@@ -85,7 +85,7 @@ This creates a directory with the following structure:
 │   └── shiny
 │       ├── common.R                                            Data objects shared between modules
 │       ├── global.R                                            Loads package and modules
-│       ├── helpers.R                                           Functions to create module UI
+│       ├── ui_helpers.R                                        Functions to create module UI
 │       ├── server.R                                            App server
 │       ├── ui.R                                                App UI
 │       ├── modules 
