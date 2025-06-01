@@ -149,7 +149,7 @@
 │   └── shiny
 │       ├── common.R                                            Data objects shared between modules
 │       ├── global.R                                            Loads package and modules
-│       ├── helpers.R                                           Functions to create module UI
+│       ├── ui_helpers.R                                        Functions to create module UI
 │       ├── server.R                                            App server
 │       ├── ui.R                                                App UI
 │       ├── modules
@@ -311,7 +311,7 @@
 <div class="section level5">
 <h5 id="running-tasks">Running tasks<a class="anchor" aria-label="anchor" href="#running-tasks"></a>
 </h5>
-<p><code>common$tasks</code> is a list that stores details of all the asynchronous tasks. Each task is added to the list above the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> in the <code>&lt;identifier&gt;_module_server</code> function as <code>common$tasks$&lt;identifier&gt;</code>. The task contains the module’s function wrapped by <code><a href="https://rdrr.io/pkg/mirai/man/mirai.html" class="external-link">mirai::mirai()</a></code> and bound to a <code><a href="https://rstudio.github.io/bslib/reference/bind_task_button.html" class="external-link">bslib::bind_task_button()</a></code> which disables the button when the task is running:</p>
+<p><code>common$tasks</code> is a list that stores details of all the asynchronous tasks. Each task is added to the list above the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> in the <code>&lt;identifier&gt;_module_server</code> function as <code>common$tasks$&lt;identifier&gt;</code>. The task contains the module’s function wrapped by <code><a href="https://mirai.r-lib.org/reference/mirai.html" class="external-link">mirai::mirai()</a></code> and bound to a <code><a href="https://rstudio.github.io/bslib/reference/bind_task_button.html" class="external-link">bslib::bind_task_button()</a></code> which disables the button when the task is running:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>common<span class="sc">$</span>tasks<span class="sc">$</span><span class="er">&lt;</span>identifier<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">-</span> ExtendedTask<span class="sc">$</span><span class="fu">new</span>(<span class="cf">function</span>(...) {</span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  mirai<span class="sc">::</span><span class="fu">mirai</span>(<span class="fu">run</span>(...), <span class="fu">environment</span>(), <span class="at">.args =</span> <span class="fu">list</span>(<span class="at">run =</span> <span class="sc">&lt;</span>identifier<span class="sc">&gt;</span>))</span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>}) <span class="sc">|&gt;</span> bslib<span class="sc">::</span><span class="fu">bind_task_button</span>(<span class="st">"run"</span>)</span></code></pre></div>
@@ -410,7 +410,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
       </footer>

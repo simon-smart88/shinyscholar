@@ -55,7 +55,7 @@ and extracts values from a raster image, returning a histogram of density</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_hist</span><span class="op">(</span><span class="va">raster</span>, <span class="va">bins</span>, logger <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_hist</span><span class="op">(</span><span class="va">raster</span>, <span class="va">bins</span>, <span class="va">palette</span>, <span class="va">name</span>, logger <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -70,6 +70,14 @@ and extracts values from a raster image, returning a histogram of density</p>
 <dd><p>The number of breaks in the histogram</p></dd>
 
 
+<dt id="arg-palette">palette<a class="anchor" aria-label="anchor" href="#arg-palette"></a></dt>
+<dd><p>character. The colour palette to use</p></dd>
+
+
+<dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
+<dd><p>character. The name of the variable</p></dd>
+
+
 <dt id="arg-logger">logger<a class="anchor" aria-label="anchor" href="#arg-logger"></a></dt>
 <dd><p>Stores all notification messages to be displayed in the Log
 Window. Insert the logger reactive list here for running in
@@ -78,7 +86,7 @@ shiny, otherwise leave the default NULL</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a list of class histogram</p>
+    <p>a function that generates a histogram</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -91,11 +99,13 @@ shiny, otherwise leave the default NULL</p></dd>
 <span class="r-in"><span>  <span class="va">raster</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">8</span>, nrow <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">raster</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">ncell</a></span><span class="op">(</span><span class="va">raster</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">8</span> <span class="op">!=</span> <span class="fl">0</span>, <span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">8</span>, <span class="fl">8</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">histogram</span> <span class="op">&lt;-</span> <span class="fu">plot_hist</span><span class="op">(</span><span class="va">raster</span>, bins <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">histogram</span> <span class="op">&lt;-</span> <span class="fu">plot_hist</span><span class="op">(</span><span class="va">raster</span>, bins <span class="op">=</span> <span class="fl">10</span>, palette <span class="op">=</span> <span class="st">"Greens"</span>, name <span class="op">=</span> <span class="st">"Example"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">histogram</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">'reinstall with install.packages("shinyscholar", dependencies = TRUE)</span></span></span>
 <span class="r-in"><span><span class="st">  to run this example'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-plt img"><img src="plot_hist-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </div>
@@ -110,7 +120,7 @@ shiny, otherwise leave the default NULL</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
       </footer></div>
