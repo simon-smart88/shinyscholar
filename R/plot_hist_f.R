@@ -60,7 +60,7 @@ plot_hist <- function(raster, bins, palette, name, logger = NULL) {
   histogram$density <- histogram$counts / sum(histogram$counts) * 100
 
   pal <- RColorBrewer::brewer.pal(9, palette)
-  pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
+  pal_ramp <- grDevices::colorRampPalette(c(pal[1], pal[9]))
   hist_cols <- pal_ramp(bins)
 
   function(){plot(histogram, freq = F, main = "", xlab = name, ylab = "Frequency (%)", col = hist_cols)}
