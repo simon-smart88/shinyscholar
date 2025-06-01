@@ -95,6 +95,7 @@ if (suggests){
 
     skip_if(Sys.which("pandoc") == "")
     skip_if(is_fedora())
+    skip_on_cran()
 
     withr::with_temp_libpaths({
       upload_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),

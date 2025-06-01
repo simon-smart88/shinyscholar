@@ -35,7 +35,8 @@ plot_semi_module_server <- function(id, common, parent_session, map) {
   observeEvent(triggers(), {
     req(common$raster)
     # FUNCTION CALL ####
-    histogram <- plot_hist(common$raster, as.numeric(input$bins))
+    raster_name <- c(common$meta$select_query$name, common$meta$select_async$name, common$meta$select_user$name)
+    histogram <- plot_hist(common$raster, as.numeric(input$bins), input$pal, raster_name, common$logger)
     # LOAD INTO COMMON ####
     common$histogram_semi <- histogram
     # METADATA ####
@@ -49,18 +50,10 @@ plot_semi_module_server <- function(id, common, parent_session, map) {
     shinyjs::show("download")
   })
 
-  plot_function <- function(){
-    pal <- RColorBrewer::brewer.pal(9, common$meta$plot_semi$pal)
-    pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
-    bins <- common$meta$plot_semi$bins
-    cols <- pal_ramp(bins)
-    plot(common$histogram_semi, freq = FALSE, main = "", xlab = common$meta$plot_semi$name, ylab = "Frequency (%)", col = cols)
-  }
-
   output$hist <- renderPlot({
     watch("plot_semi_update")
     req(common$histogram_semi)
-    plot_function()
+    common$histogram_semi()
   })
 
   output$download <- downloadHandler(
@@ -69,7 +62,7 @@ plot_semi_module_server <- function(id, common, parent_session, map) {
     },
     content = function(file) {
       png(file, width = 1000, height = 500)
-      plot_function()
+      common$histogram_semi()
       dev.off()
     })
 

@@ -4,7 +4,7 @@
 \alias{plot_scatter}
 \title{Extract values from a raster to produce a scatterplot}
 \usage{
-plot_scatter(raster, sample, axis, logger = NULL)
+plot_scatter(raster, sample, axis, name, logger = NULL)
 }
 \arguments{
 \item{raster}{SpatRaster. Raster to be sampled}
@@ -13,12 +13,14 @@ plot_scatter(raster, sample, axis, logger = NULL)
 
 \item{axis}{character. Which axis coordinates of the raster to return}
 
+\item{name}{character. The name of the raster variable}
+
 \item{logger}{Stores all notification messages to be displayed in the Log
 Window. Insert the logger reactive list here for running in
 shiny, otherwise leave the default NULL}
 }
 \value{
-a dataframe containing the axis values and the cell values
+a function that generates a scatterplot
 }
 \description{
 Called by the plot_scatter module in the example app and samples
@@ -30,7 +32,8 @@ if (check_suggests(example = TRUE)) {
   raster <- terra::rast(ncol = 8, nrow = 8)
   raster[] <- sapply(1:terra::ncell(raster), function(x){
      rnorm(1, ifelse(x \%\% 8 != 0, x \%\% 8, 8), 3)})
-  scatterplot <- plot_scatter(raster, sample = 10, axis = "y")
+  scatterplot <- plot_scatter(raster, sample = 10, axis = "Longitude", name = "Example")
+  scatterplot()
 } else {
   message('reinstall with install.packages("shinyscholar", dependencies = TRUE)
   to run this example')
