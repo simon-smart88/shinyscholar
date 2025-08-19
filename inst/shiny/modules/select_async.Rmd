@@ -3,19 +3,21 @@ Loads the raster image for the area selected on the map
 ```
 
 ```{r, echo = {{select_async_knit}}, include = {{select_async_knit}}}
-poly <- matrix({{select_async_poly}}, ncol = 2, byrow = FALSE)
+poly <- {{select_async_poly}}
 token <- {{select_async_token}}
 raster <- select_async(poly, {{select_async_date}}, token)$raster
 raster_name <- {{select_async_name}}
 
 raster_extent <- as.vector(terra::ext(raster))
-map_pal <- colorBin("Greens", domain = terra::values(raster), bins = 9, na.color = "#00000000")
+map_pal <- RColorBrewer::brewer.pal(9, "Greens")
+custom_greens <- colorRampPalette(map_pal)(10)
+color_bins <- colorBin(custom_greens, domain = terra::values(raster), bins = 10, na.color = "pink")
 
-leaflet() %>%
-  addProviderTiles("Esri.WorldTopoMap") %>%
-  addRasterImage(raster, colors = map_pal) %>%
-  addTiles(urlTemplate = "", attribution = "MODIS data via LAADS DAAC") %>%
-  fitBounds(lng1 = raster_extent[[1]], lng2 = raster_extent[[2]], lat1 = raster_extent[[3]], lat2 = raster_extent[[4]]) %>%
-  addLegend(position = "bottomright", pal = map_pal, values = terra::values(raster),
-            title = raster_name) 
+leaflet() |>
+  addProviderTiles("Esri.WorldTopoMap") |>
+  addRasterImage(raster, colors = color_bins, group = raster_name) |>
+  addTiles(urlTemplate = "", attribution = "MODIS data via LAADS DAAC") |>
+  fitBounds(lng1 = raster_extent[[1]], lng2 = raster_extent[[2]], lat1 = raster_extent[[3]], lat2 = raster_extent[[4]]) |>
+  addLegend(position = "bottomright", pal = color_bins, values = terra::values(raster),
+            group = raster_name, title = raster_name, layer = raster_name)
 ```

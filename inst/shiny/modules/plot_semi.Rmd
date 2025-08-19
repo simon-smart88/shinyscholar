@@ -3,10 +3,6 @@ Plots the data as a histogram
 ```
 
 ```{r, echo = {{plot_semi_knit}}, include = {{plot_semi_knit}}}
-histogram <- plot_hist(raster, {{plot_semi_bins}})
-pal <- RColorBrewer::brewer.pal(9, {{plot_semi_pal}})
-pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
-hist_cols <- pal_ramp({{plot_semi_bins}})
-
-plot(histogram, freq = F, main = "", xlab = {{plot_semi_name}}, ylab = "Frequency (%)", col = hist_cols)
+histogram <- plot_hist(raster, {{plot_semi_bins}}, {{plot_semi_pal}}, {{plot_semi_name}})
+histogram()
 ```

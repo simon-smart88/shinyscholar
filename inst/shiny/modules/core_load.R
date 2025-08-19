@@ -19,18 +19,18 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
 
       if (!inherits(temp, "common") || temp$state$main$app != "shinyscholar"){
         close_loading_modal()
-        common$logger %>% writeLog(type = "error", "That is not a valid Shinyscholar save file")
+        common$logger |> writeLog(type = "error", "That is not a valid Shinyscholar save file")
         return()
       }
 
       # reload old logs, minus header. if required for testing
       if ("logger" %in% names(temp)){
-        common$logger %>% writeLog(strsplit(temp$logger(), "-----<br>")[[1]][3])
+        common$logger |> writeLog(strsplit(temp$logger(), "-----<br>")[[1]][3])
       }
 
       if (temp$state$main$version != as.character(packageVersion("shinyscholar"))){
         current_version <- as.character(packageVersion("shinyscholar"))
-        common$logger %>% writeLog(type = "warning",
+        common$logger |> writeLog(type = "warning",
                       glue::glue("The save file was created using shinyscholar v{temp$state$main$version},
                                  but you are using shinyscholar v{current_version}"))
       }
@@ -73,7 +73,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
     observeEvent(input$goLoad_session, {
       temp <- readRDS(input$load_session$datapath)
       load_session(temp)
-      common$logger %>% writeLog(type="info", "The previous session has been loaded successfully")
+      common$logger |> writeLog(type="info", "The previous session has been loaded successfully")
     })
 
     # load file if run_shinyscholar has a load_file parameter
@@ -86,14 +86,14 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
     load_on_start <- observe({
       req(load_file_path())
       if (!file.exists(load_file_path())){
-        common$logger %>% writeLog(type = "error", "The specified load file cannot be found - please check the path")
+        common$logger |> writeLog(type = "error", "The specified load file cannot be found - please check the path")
         load_on_start$destroy()
         return()
       }
       show_loading_modal("Loading previous session")
       load_session(readRDS(load_file_path()))
       close_loading_modal()
-      common$logger %>% writeLog(type = "info", "The previous session has been loaded successfully")
+      common$logger |> writeLog(type = "info", "The previous session has been loaded successfully")
       load_on_start$destroy()
     })
 

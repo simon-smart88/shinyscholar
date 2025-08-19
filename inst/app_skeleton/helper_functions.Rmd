@@ -12,7 +12,7 @@ printVecAsis <- function(x) {
   if (is.numeric(x) && length(x) == 1){
     return(x)
   } else {
-    capture.output(dput(x))
+    utils::capture.output(dput(x))
   }
 }
 
@@ -23,9 +23,24 @@ printVecAsis <- function(x) {
 #' @export
 spurious <- function(x) {
   DT::renderDataTable(x)
+  glue::glue(x)
+  R6::R6Class(x)
+  markdown::html_format(x)
+```
+```{r renv.ignore = TRUE, purl = {{async}}}
+  mirai::mirai(x)
+```
+```{r renv.ignore = TRUE}
+  renv::activate(x)
   rmarkdown::github_document(x)
+```
+```{r renv.ignore = TRUE, purl = {{include_code}}}
+  shinyAce::aceEditor(x)
+```
+```{r renv.ignore = TRUE}
   shinyWidgets::pickerInput(x)
   shinyjs::disable(x)
+  tools::add_datalist(x)
   return()
 }
 

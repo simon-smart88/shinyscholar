@@ -12,6 +12,7 @@ if (suggests){
   test_that("{shinytest2} recording: e2e_select_user", {
 
     skip_if(is_fedora())
+    skip_on_cran()
 
     rerun_test("select_user_test", list(raster_path = raster_path, save_path = save_path))
     common <- readRDS(save_path)
@@ -22,6 +23,7 @@ if (suggests){
   test_that("{shinytest2} recording: e2e_select_user_enter", {
 
     skip_if(is_fedora())
+    skip_on_cran()
 
     rerun_test("select_user_test_enter", list(raster_path = raster_path, save_path = save_path))
     common <- readRDS(save_path)
@@ -32,6 +34,8 @@ if (suggests){
   test_that("Error messages reach logger and can be retrieved", {
 
     skip_if(is_fedora())
+    skip_on_cran()
+
     app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_select_user")
     app$set_inputs(tabs = "select")
     app$set_inputs(selectSel = "select_user")

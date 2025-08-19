@@ -24,8 +24,8 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     # create map
     output$map <- renderLeaflet({
       watch("clear_map")
-      leaflet() %>%
-        setView(0, 0, zoom = 2) %>%
+      leaflet() |>
+        setView(0, 0, zoom = 2) |>
         addProviderTiles("Esri.WorldTopoMap") 
     })
 
@@ -34,7 +34,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
 
     # change provider tile option
     observe({
-      map %>% addProviderTiles(input$bmap)
+      map |> addProviderTiles(input$bmap)
     })
 
     component <- reactive({

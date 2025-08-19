@@ -8,7 +8,6 @@ plot_scatter_module_ui <- function(id) {
   )
 }
 
-
 plot_scatter_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
@@ -17,33 +16,28 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$raster)) {
-      common$logger %>% writeLog(type = "error", "Please load a raster file")
+      common$logger |> writeLog(type = "error", "Please load a raster file")
       return()
     }
     # FUNCTION CALL ####
-    if (input$axis == "Longitude"){axis <- "x"} else {axis <- "y"}
-    scatterplot <- plot_scatter(common$raster, input$sample, axis)
+    raster_name <- c(common$meta$select_query$name, common$meta$select_async$name, common$meta$select_user$name)
+    scatterplot <- plot_scatter(common$raster, input$sample, input$axis, raster_name)
     # LOAD INTO SPP ####
     common$scatterplot <- scatterplot
     # METADATA ####
-    common$meta$plot_scatter$axis_short <- axis
-    common$meta$plot_scatter$axis_long <- input$axis
+    common$meta$plot_scatter$axis <- input$axis
     common$meta$plot_scatter$sample <- input$sample
-    common$meta$plot_scatter$name <-  c(common$meta$select_query$name, common$meta$select_async$name, common$meta$select_user$name)
+    common$meta$plot_scatter$name <- raster_name
     # TRIGGER ####
     trigger("plot_scatter")
     show_results(parent_session)
     shinyjs::show("download")
   })
 
-  plot_function <- function(){
-    plot(common$scatterplot[[1]], common$scatterplot[[2]], xlab = common$meta$plot_scatter$axis_long, ylab = common$meta$plot_scatter$name)
-  }
-
   output$result <- renderPlot({
     watch("plot_scatter")
     req(common$scatterplot)
-    plot_function()
+    common$scatterplot()
   })
 
   output$download <- downloadHandler(
@@ -52,7 +46,7 @@ plot_scatter_module_server <- function(id, common, parent_session, map) {
     },
     content = function(file) {
       png(file, width = 1000, height = 500)
-      plot_function()
+      common$scatterplot()
       dev.off()
     })
 
@@ -83,8 +77,7 @@ plot_scatter_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
       plot_scatter_knit = !is.null(common$scatterplot),
-      plot_scatter_axis_short = common$meta$plot_scatter$axis_short,
-      plot_scatter_axis_long = common$meta$plot_scatter$axis_long,
+      plot_scatter_axis = common$meta$plot_scatter$axis,
       plot_scatter_sample = common$meta$plot_scatter$sample,
       plot_scatter_name = common$meta$plot_scatter$name)
 }

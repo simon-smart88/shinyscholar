@@ -62,9 +62,9 @@ rep_markdown_module_server <- function(id, common, parent_session, map, COMPONEN
         md_files <- c(md_files, module_md_file)
 
         combined_md <-
-          md_files %>%
-          lapply(readLines) %>%
-          lapply(paste, collapse = "\n") %>%
+          md_files |>
+          lapply(readLines) |>
+          lapply(paste, collapse = "\n") |>
           paste(collapse = "\n\n")
 
         result_file <- tempfile(pattern = "result_", fileext = input$rmdFileType)

@@ -2,6 +2,7 @@ if (suggests){
   test_that("{shinytest2} recording: e2e_empty_save", {
 
     skip_if(is_fedora())
+    skip_on_cran()
 
     rerun_test("empty_save_test", list(save_path = save_path))
     common <- readRDS(save_path)
@@ -11,29 +12,32 @@ if (suggests){
   test_that("{shinytest2} recording: e2e_save_scat", {
 
     skip_if(is_fedora())
+    skip_on_cran()
 
     rerun_test("save_scat_test", list(path = raster_path, save_path = save_path))
     common <- readRDS(save_path)
     common$raster <- terra::unwrap(common$raster)
     expect_is(common$raster, "SpatRaster")
-    expect_is(common$scatterplot, "data.frame")
+    expect_is(common$scatterplot, "function")
 
   })
 
   test_that("{shinytest2} recording: e2e_save_hist", {
 
     skip_if(is_fedora())
+    skip_on_cran()
 
     rerun_test("save_hist_test", list(path = raster_path, save_path = save_path))
     common <- readRDS(save_path)
     common$raster <- terra::unwrap(common$raster)
     expect_is(common$raster, "SpatRaster")
-    expect_is(common$histogram, "histogram")
+    expect_is(common$histogram, "function")
   })
 
   test_that("{shinytest2} recording: e2e_load", {
 
     skip_if(is_fedora())
+    skip_on_cran()
 
     app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_load")
     app$set_inputs(introTabs = "Load Prior Session")
@@ -49,6 +53,7 @@ if (suggests){
   test_that("load can handle old common objects", {
 
     skip_if(is_fedora())
+    skip_on_cran()
 
     common_class <- R6::R6Class(
       classname = "common",

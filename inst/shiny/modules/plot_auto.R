@@ -25,7 +25,8 @@ plot_auto_module_server <- function(id, common, parent_session, map) {
     req(common$raster)
 
     # FUNCTION CALL ####
-    histogram <- plot_hist(common$raster, as.numeric(input$bins))
+    raster_name <- c(common$meta$select_query$name, common$meta$select_async$name, common$meta$select_user$name)
+    histogram <- plot_hist(common$raster, as.numeric(input$bins), input$pal, raster_name, common$logger)
     # LOAD INTO COMMON ####
     common$histogram_auto <- histogram
     # METADATA ####
@@ -37,20 +38,12 @@ plot_auto_module_server <- function(id, common, parent_session, map) {
     shinyjs::show("download")
   })
 
-  plot_function <- function(){
-    pal <- RColorBrewer::brewer.pal(9, common$meta$plot_auto$pal)
-    pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
-    bins <- common$meta$plot_auto$bins
-    cols <- pal_ramp(bins)
-    plot(common$histogram_auto, freq = FALSE, main = "", xlab = common$meta$plot_auto$name, ylab = "Frequency (%)", col = cols)
-  }
-
   output$hist <- renderPlot({
     watch("plot_auto")
     req(common$histogram_auto)
     # Included here so that the module is only 'used' if the results are rendered
     common$meta$plot_auto$used <- TRUE
-    plot_function()
+    common$histogram_auto()
   })
 
   output$download <- downloadHandler(
@@ -59,7 +52,7 @@ plot_auto_module_server <- function(id, common, parent_session, map) {
     },
     content = function(file) {
       png(file, width = 1000, height = 500)
-      plot_function()
+      common$histogram_auto()
       dev.off()
     })
 

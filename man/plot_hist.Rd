@@ -4,19 +4,23 @@
 \alias{plot_hist}
 \title{Extract values from a raster to produce a histogram}
 \usage{
-plot_hist(raster, bins, logger = NULL)
+plot_hist(raster, bins, palette, name, logger = NULL)
 }
 \arguments{
 \item{raster}{SpatRaster object}
 
 \item{bins}{The number of breaks in the histogram}
 
+\item{palette}{character. The colour palette to use}
+
+\item{name}{character. The name of the variable}
+
 \item{logger}{Stores all notification messages to be displayed in the Log
 Window. Insert the logger reactive list here for running in
 shiny, otherwise leave the default NULL}
 }
 \value{
-a list of class histogram
+a function that generates a histogram
 }
 \description{
 Called by the plot_hist module in the example app
@@ -27,7 +31,8 @@ if (check_suggests(example = TRUE)) {
   raster <- terra::rast(ncol = 8, nrow = 8)
   raster[] <- sapply(1:terra::ncell(raster), function(x){
     rnorm(1, ifelse(x \%\% 8 != 0, x \%\% 8, 8), 3)})
-  histogram <- plot_hist(raster, bins = 10)
+  histogram <- plot_hist(raster, bins = 10, palette = "Greens", name = "Example")
+  histogram()
 } else {
   message('reinstall with install.packages("shinyscholar", dependencies = TRUE)
   to run this example')

@@ -23,9 +23,9 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     # create map
     output$map <- renderLeaflet({
       watch("clear_map")
-      leaflet() %>%
-        setView(0, 0, zoom = 2) %>%
-        addProviderTiles("Esri.WorldTopoMap") %>%
+      leaflet() |>
+        setView(0, 0, zoom = 2) |>
+        addProviderTiles("Esri.WorldTopoMap") |>
         leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                        markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE)
     })
@@ -35,7 +35,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
 
     # change provider tile option
     observe({
-      map %>% addProviderTiles(input$bmap)
+      map |> addProviderTiles(input$bmap)
     })
 
     # Capture coordinates of polygons
@@ -48,7 +48,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
       xy[,1] <- ((xy[,1] + 180) %% 360) - 180
       common$poly <- xy
       trigger("change_poly")
-    }) %>% bindEvent(input$map_draw_new_feature)
+    }) |> bindEvent(input$map_draw_new_feature)
 
     component <- reactive({
       main_input$tabs

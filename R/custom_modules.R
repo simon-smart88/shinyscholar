@@ -97,8 +97,14 @@ create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, sav
   writeLines(module_lines, file.path(module_dir, glue::glue("{id}.R")))
 
   # create empty function
-  empty_function <- paste0(id," <- function(x){return(NULL)}")
-  writeLines(empty_function, file.path(dir, "R", paste0(id, "_f.R")))
+  function_params <- c(
+    file = system.file("module_skeleton", "function.Rmd", package = "shinyscholar"),
+    list(id = id,
+         async = async)
+  )
+
+  function_lines <- tidy_purl(function_params)
+  writeLines(function_lines, file.path(dir, "R", paste0(id, "_f.R")))
 
   # create test
   desc <- readLines(file.path(dir, "DESCRIPTION"))
