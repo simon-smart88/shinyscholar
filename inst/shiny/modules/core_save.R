@@ -34,29 +34,40 @@ core_save_module_server <- function(id, common, modules, COMPONENTS, main_input)
         paste0("shinyscholar-session-", Sys.Date(), ".rds")
       },
       content = function(file) {
-        common$state$main <- list(
+
+        show_loading_modal("Please wait while the session is saved")
+
+        temp <- list()
+        common_items <- names(common)
+        # exclude the non-public, function objects and tasks
+        save_items  <- common_items[!common_items %in% c("clone", ".__enclos_env__", "logger", "reset", "tasks")]
+        temp[save_items] <- as.list(common)[save_items]
+        # save logger minus the header
+        temp$logger <- strsplit(common$logger(), "-----<br>")[[1]][3]
+        class(temp) <- "common"
+
+        temp$state$main <- list(
           selected_module = sapply(COMPONENTS, function(x) main_input[[glue("{x}Sel")]], simplify = FALSE)
         )
 
-        # Store app version and name
-        common$state$main$version <- as.character(packageVersion("shinyscholar"))
-        common$state$main$app <- "shinyscholar"
+        # Store app version
+        temp$state$main$version <- as.character(packageVersion("shinyscholar"))
+        temp$state$main$app <- "shinyscholar"
 
         # Ask each module to save whatever data it wants
         for (module_id in names(modules)) {
-          common$state[[module_id]] <- modules[[module_id]]$save()
+          temp$state[[module_id]] <- modules[[module_id]]$save()
         }
 
         # wrap and unwrap required due to terra objects being pointers to c++ objects
-        if (!is.null(common$raster)){
-          common$raster <- terra::wrap(common$raster)
+        if (!is.null(temp$raster)){
+          temp$raster <- terra::wrap(temp$raster)
         }
 
-        saveRDS(common, file)
+        on.exit(close_loading_modal())
+        on.exit(rm("temp"), add = TRUE)
 
-        if (!is.null(common$raster)){
-          common$raster <- terra::unwrap(common$raster)
-        }
+        saveRDS(temp, file)
       }
     )
   })
