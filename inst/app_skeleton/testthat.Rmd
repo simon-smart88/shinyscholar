@@ -1,0 +1,8 @@
+```{r}
+Sys.setenv("R_TEST" = "")
+library(testthat)
+library(shinytest2)
+library({{app_library}})
+
+test_check("{{app_library}}")
+```
