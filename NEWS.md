@@ -119,3 +119,10 @@ shinyscholar 0.4.2
 - Various tweaks to ensure that created apps pass `R CMD check`
 - Removed `{magrittr}` dependency and migrated to native pipes, increasing R dependency to v4.1.0
 - `create_module()` now creates skeleton functions that include `{roxygen2}` tags
+
+shinyscholar 0.4.3
+=============
+- `create_template()` now creates `testthat.R` file
+- Fixed `create_module()` module function calls for async apps containing a map
+- Saving apps now only stores data in `common` (i.e. excluding `common$tasks`)
+- Updated README with clarifications
