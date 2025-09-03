@@ -1,7 +1,3 @@
----
-title: shinyscholar session `r Sys.Date()`
----
-
 ```{r, include=FALSE}
 library(knitr)
 knit_engines$set(asis = function(options) {
@@ -12,11 +8,11 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, eval = FALSE)
 
 Please find below the R code history from your *shinyscholar* v0.4.2 session. 
 
-You can reproduce your session results by running this R Markdown file in RStudio. 
+You can reproduce your session results by running this quarto file in RStudio. 
 
-Each code block is called a "chunk", and you can run them either one-by-one or all at once by choosing an option in the "Run" menu at the top-right corner of the "Source" pane in RStudio. The file can also be rendered into an html file using `rmarkdown::render()` which will contain all of the outputs alongside the code used to generate them.
+Each code block is called a "chunk", and you can run them either one-by-one or all at once by choosing an option in the "Run" menu at the top-right corner of the "Source" pane in RStudio. The file can also be rendered into an html file using `quarto::quarto_render()` which will contain all of the outputs alongside the code used to generate them.
 
-For more detailed information see <http://rmarkdown.rstudio.com>.
+For more detailed information see <https://quarto.org/>.
 
 ### Package installation
 

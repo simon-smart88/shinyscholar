@@ -328,6 +328,7 @@ create_template <- function(path, name, common_objects, modules, author,
   # Create global ====
 
   full_component_list <- c(components$component, "rep")
+  names(full_component_list) <- c(components$long_component, "Reproduce")
 
   global_params <- c(
     file = system.file("app_skeleton", "global.Rmd", package = "shinyscholar"),
