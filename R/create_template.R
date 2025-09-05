@@ -516,7 +516,6 @@ create_template <- function(path, name, common_objects, modules, author,
   writeLines(helper_function_lines, file.path(path, "R", "helper_functions.R"))
 
   # Create run_app ====
-
   run_app_params <- c(
     file = system.file("app_skeleton", "run_app.Rmd", package = "shinyscholar"),
     list(app_library = name
@@ -525,6 +524,16 @@ create_template <- function(path, name, common_objects, modules, author,
 
   run_app_lines <- tidy_purl(run_app_params)
   writeLines(run_app_lines, file.path(path, "R", paste0("run_", name, ".R")))
+
+  # Create testthat file
+  testthat_params <- c(
+    file = system.file("app_skeleton", "testthat.Rmd", package = "shinyscholar"),
+    list(app_library = name
+    )
+  )
+
+  testthat_lines <- tidy_purl(testthat_params)
+  writeLines(testthat_lines, file.path(path, "tests", "testthat.R"))
 
   # Install package ====
   if (install){

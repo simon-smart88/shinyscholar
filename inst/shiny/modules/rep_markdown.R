@@ -85,7 +85,9 @@ rep_markdown_module_server <- function(id, common, parent_session, map, COMPONEN
             for (i in seq_along(chunk_control_lines)) {
               chunks_to_remove[i] <- min(chunk_starts[chunk_starts > chunk_control_lines[i]])
             }
-            combined_rmd <- combined_rmd[-chunks_to_remove]
+            if (any(!is.na(chunks_to_remove))){
+              combined_rmd <- combined_rmd[-chunks_to_remove]
+            }
             combined_rmd <- gsub("\\{r,", "```{r,", combined_rmd)
           }
 

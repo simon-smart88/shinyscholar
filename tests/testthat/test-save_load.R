@@ -64,10 +64,15 @@ if (suggests){
       )
     )
 
-    common <- common_class$new()
-    common$state$main$version <- as.character(packageVersion("shinyscholar"))
-    common$state$main$app <- "shinyscholar"
-    saveRDS(common, save_path)
+    temp <- as.list(common_class$new())
+    common_items <- names(temp)
+    # exclude the non-public, function objects and tasks
+    save_items  <- common_items[!common_items %in% c("clone", ".__enclos_env__")]
+    temp <- temp[save_items]
+    temp$state$main$version <- as.character(packageVersion("shinyscholar"))
+    temp$state$main$app <- "shinyscholar"
+    class(temp) <- "common"
+    saveRDS(temp, save_path)
 
     app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_load")
     app$set_inputs(introTabs = "Load Prior Session")

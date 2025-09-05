@@ -124,6 +124,14 @@ create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, sav
   writeLines(test_lines, file.path(dir, "tests", "testthat", paste0("test-", id, ".R")))
 
   if (!init){
+    # add map to async apps that contain a map
+    async_app <- grepl("tasks", paste(common, collapse = ""))
+    map_app <- file.exists(file.path(dir, "inst", "shiny", "modules", "core_mapping.R"))
+    if (async_app && map_app && !map){
+      module_lines <- gsub("id, common, parent_session", "id, common, parent_session, map", module_lines)
+      writeLines(module_lines, file.path(module_dir, glue::glue("{id}.R")))
+    }
+
   message(glue::glue("Template for module `{id}` successfully created at ",
                      "`{normalizePath(module_dir)}`."))
   }
