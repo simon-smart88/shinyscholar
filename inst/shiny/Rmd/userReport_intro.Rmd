@@ -6,7 +6,7 @@ title: shinyscholar session `r Sys.Date()`
 library(knitr)
 knit_engines$set(asis = function(options) {
   if (options$echo && options$eval) knit_child(text = options$code)
-})3
+})
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, eval = FALSE)
 ```
 
