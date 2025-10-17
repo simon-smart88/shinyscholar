@@ -4,6 +4,7 @@
 [![CRAN Status](https://www.r-pkg.org/badges/version/shinyscholar)](https://cran.r-project.org/package=shinyscholar)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/shinyscholar)](https://cran.r-project.org/package=shinyscholar)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15078704.svg)](https://doi.org/10.5281/zenodo.15078704)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/simon-smart88/shinyscholar)
 
 <img src="https://raw.githubusercontent.com/simon-smart88/shinyscholar/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;">
 
