@@ -126,3 +126,7 @@ shinyscholar 0.4.3
 - Fixed `create_module()` module function calls for async apps containing a map
 - Saving apps now only stores data in `common` (i.e. excluding `common$tasks`)
 - Updated README with clarifications
+
+shinyscholar 0.4.4
+=============
+- Skip problematic test on CRAN
