@@ -127,7 +127,7 @@ if (suggests){
                       include_table = FALSE, include_code = FALSE, install = FALSE)
 
       devtools::document(file.path(td, name))
-      pak::local_install(file.path(directory, name), dependencies = FALSE)
+      pak::local_install(file.path(td, name), dependencies = FALSE)
 
       test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
       shiny_path <- file.path(td, name, "inst", "shiny")
