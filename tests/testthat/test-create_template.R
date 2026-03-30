@@ -129,6 +129,11 @@ test_that("Check create template returns expected errors", {
 })
 
 test_that("Check create template function works as expected", {
+
+  withr::local_envvar(
+    R_USER_CACHE_DIR = tempfile(),
+  )
+
   withr::with_temp_libpaths({
     modules$map <- c(TRUE, TRUE, FALSE, FALSE)
 
@@ -164,6 +169,11 @@ test_that("Check create template function works as expected", {
 })
 
 test_that("Check create template function works with false settings", {
+
+  withr::local_envvar(
+    R_USER_CACHE_DIR = tempfile(),
+  )
+
   withr::with_temp_libpaths({
     modules$map <- c(FALSE, FALSE, FALSE, FALSE)
     modules$result <- c(TRUE, FALSE, FALSE, FALSE)
@@ -207,6 +217,11 @@ test_that("Check create template function works with false settings", {
 
 test_that("Check async, no map runs correctly", {
   if (suggests){
+
+    withr::local_envvar(
+      R_USER_CACHE_DIR = tempfile(),
+    )
+
     withr::with_temp_libpaths({
       modules$map <- c(FALSE, FALSE, FALSE, FALSE)
       modules$result <- c(TRUE, FALSE, FALSE, FALSE)
@@ -237,6 +252,11 @@ test_that("Check async, no map runs correctly", {
 
 test_that("Check async, with map runs correctly", {
   if (suggests){
+
+    withr::local_envvar(
+      R_USER_CACHE_DIR = tempfile(),
+    )
+
     withr::with_temp_libpaths({
       modules$map <- c(TRUE, FALSE, FALSE, FALSE)
       modules$result <- c(TRUE, FALSE, FALSE, FALSE)
