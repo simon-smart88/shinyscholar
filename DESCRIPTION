@@ -1,5 +1,5 @@
 Package: shinyscholar
-Version: 0.4.4
+Version: 0.4.5
 Title: A Template for Creating Reproducible 'shiny' Applications
 Description: Create a skeleton 'shiny' application with create_template() that is
     reproducible, can be saved and meets academic standards for attribution.
@@ -35,23 +35,23 @@ Authors@R:
       person("Bruno", "Vilela", email = "bvilela@wustl.edu", role = "ctb"),
       person("Robert", "Muscarella", email = "bob.muscarella@gmail.com", role = "ctb"))
 Depends:
-    R (>= 4.1.0),
-    bslib,
-    gargoyle,
-    leaflet (>= 2.0.2),
-    shiny (>= 1.8.1)
+    R (>= 4.1.0)
 Imports:
     curl,
     devtools,
     glue,
     knitr,
+    pak,
     tools,
     zip
 Suggests:
+    bslib,
     DT (>= 0.5),
     dplyr (>= 1.0.2),
     httr2,
+    gargoyle,
     knitcitations,
+    leaflet (>= 2.0.2),
     leaflet.extras (>= 1.0.0),
     markdown,
     mirai,
@@ -60,6 +60,7 @@ Suggests:
     renv,
     rintrojs,
     rmarkdown,
+    shiny (>= 1.8.1),
     shinyAce,
     shinyalert,
     shinybusy,
@@ -75,5 +76,5 @@ License: GPL-3
 URL: https://simon-smart88.github.io/shinyscholar/
 BugReports: https://github.com/simon-smart88/shinyscholar/issues
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)

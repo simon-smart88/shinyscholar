@@ -1,6 +1,12 @@
 ```{r renv.ignore = TRUE}
-library(glue)
 library({{app_library}})
+library(bslib)
+library(gargoyle)
+library(glue)
+library(shiny)
+```
+```{r renv.ignore = TRUE, purl = {{include_map}}}  
+library(leaflet)
 ```
 ```{r renv.ignore = TRUE, purl = {{async}}}
 mirai::daemons(2)

@@ -4,7 +4,6 @@
 #' @aliases {{name}}
 #' @title {{name}}
 #' @description {{name}}
-#' @import bslib gargoyle leaflet shiny
 NULL
 ```
 

@@ -97,6 +97,10 @@ if (suggests){
     skip_if(is_fedora())
     skip_on_cran()
 
+    withr::local_envvar(
+      R_USER_CACHE_DIR = tempfile(),
+    )
+
     withr::with_temp_libpaths({
       upload_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),
                          pattern = ".tif$", full.names = TRUE)
@@ -123,7 +127,7 @@ if (suggests){
                       include_table = FALSE, include_code = FALSE, install = FALSE)
 
       devtools::document(file.path(td, name))
-      devtools::install(file.path(td, name), force = TRUE, quick = TRUE, dependencies = FALSE)
+      pak::local_install(file.path(td, name), dependencies = FALSE)
 
       test_files <- list.files(system.file("extdata", package = "shinyscholar"), pattern = "test_test*", full.names = TRUE)
       shiny_path <- file.path(td, name, "inst", "shiny")

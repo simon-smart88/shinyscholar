@@ -215,13 +215,13 @@ create_template <- function(path, name, common_objects, modules, author,
   description_lines[1] <- glue::glue("Package: {name}")
 
   if (async){
-    import_line <- grep("*Imports*", description_lines)
-    description_lines <- append(description_lines, "    mirai,", import_line + 6)
+    markdown_line <- grep("* markdown*", description_lines)
+    description_lines <- append(description_lines, "    mirai,", markdown_line + 1)
   }
 
   if (include_map){
-    shiny_line <- grep("*shiny (>= 1.8.1)*", description_lines)
-    description_lines <- append(description_lines, "    leaflet (>= 2.0.2),", shiny_line - 1)
+    markdown_line <- grep("* markdown*", description_lines)
+    description_lines <- append(description_lines, "    leaflet (>= 2.0.2),", markdown_line - 1)
   }
 
   if (include_code){
@@ -538,7 +538,7 @@ create_template <- function(path, name, common_objects, modules, author,
   # Install package ====
   if (install){
   devtools::document(path)
-  devtools::install(path, force = TRUE)
+  pak::local_install(path)
   }
 
   invisible()

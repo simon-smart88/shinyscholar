@@ -1,4 +1,4 @@
-# shinyscholar (v0.4.4)
+# shinyscholar (v0.4.5)
 
 [![R CMD check](https://github.com/simon-smart88/shinyscholar/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/simon-smart88/shinyscholar/actions/workflows/R-CMD-check.yaml)
 [![CRAN Status](https://www.r-pkg.org/badges/version/shinyscholar)](https://cran.r-project.org/package=shinyscholar)
@@ -33,7 +33,7 @@ Or via Github with:
 
 ```R
 install.packages("remotes")
-remotes::install_github("simon-smart88/shinyscholar")
+pak::pak("simon-smart88/shinyscholar")
 ```
 
 To run the example application requires additional packages and this can be achieved with:

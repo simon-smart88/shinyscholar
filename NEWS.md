@@ -130,3 +130,9 @@ shinyscholar 0.4.3
 shinyscholar 0.4.4
 =============
 - Skip problematic test on CRAN
+
+shinyscholar 0.4.5
+=============
+- Migrate from `{devtools}` to `{pak}` for installation
+- Set `R_USER_CACHE_DIR` in tests
+- Import app dependencies in `global.R` instead of via `Depends`
