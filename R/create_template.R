@@ -538,7 +538,7 @@ create_template <- function(path, name, common_objects, modules, author,
   # Install package ====
   if (install){
   devtools::document(path)
-  devtools::install(path, force = TRUE)
+  pak::local_install(path)
   }
 
   invisible()

@@ -33,7 +33,7 @@ Or via Github with:
 
 ```R
 install.packages("remotes")
-remotes::install_github("simon-smart88/shinyscholar")
+pak::pak("simon-smart88/shinyscholar")
 ```
 
 To run the example application requires additional packages and this can be achieved with:

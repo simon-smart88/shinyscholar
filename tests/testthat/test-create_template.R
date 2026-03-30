@@ -158,7 +158,7 @@ test_that("Check create template function works as expected", {
 
     if (suggests){
       devtools::document(file.path(directory, name))
-      devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
+      pak::local_install(file.path(directory, name), dependencies = FALSE)
 
       app <- shinytest2::AppDriver$new(app_dir = file.path(directory, name, "inst", "shiny"), name = "create_test")
       common <- app$get_value(export = "common")
@@ -205,7 +205,7 @@ test_that("Check create template function works with false settings", {
 
     if (suggests){
       devtools::document(file.path(directory, name))
-      devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
+      pak::local_install(file.path(directory, name), dependencies = FALSE)
 
       app <- shinytest2::AppDriver$new(app_dir = file.path(directory, name, "inst", "shiny"), name = "create_test")
       common <- app$get_value(export = "common")
@@ -240,7 +240,7 @@ test_that("Check async, no map runs correctly", {
                   include_table = FALSE, include_code = FALSE, install = FALSE)
 
       devtools::document(file.path(directory, name))
-      devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
+      pak::local_install(file.path(directory, name), dependencies = FALSE)
 
       app <- shinytest2::AppDriver$new(app_dir = file.path(directory, name, "inst", "shiny"), name = "create_test")
       common <- app$get_value(export = "common")
@@ -275,7 +275,7 @@ test_that("Check async, with map runs correctly", {
                       include_table = FALSE, include_code = TRUE, install = FALSE)
 
       devtools::document(file.path(directory, name))
-      devtools::install(file.path(directory, name), force = TRUE, quick = TRUE, dependencies = FALSE)
+      pak::local_install(file.path(directory, name), dependencies = FALSE)
 
       app <- shinytest2::AppDriver$new(app_dir = file.path(directory, name, "inst", "shiny"), name = "create_test")
       common <- app$get_value(export = "common")
