@@ -215,12 +215,12 @@ create_template <- function(path, name, common_objects, modules, author,
   description_lines[1] <- glue::glue("Package: {name}")
 
   if (async){
-    markdown_line <- grep("*markdown*", description_lines)
+    markdown_line <- grep("* markdown*", description_lines)
     description_lines <- append(description_lines, "    mirai,", markdown_line + 1)
   }
 
   if (include_map){
-    markdown_line <- grep("*markdown*", description_lines)
+    markdown_line <- grep("* markdown*", description_lines)
     description_lines <- append(description_lines, "    leaflet (>= 2.0.2),", markdown_line - 1)
   }
 
