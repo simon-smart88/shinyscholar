@@ -119,6 +119,11 @@ if (suggests){
 
     skip_on_ci()
     skip_on_cran()
+
+    withr::local_envvar(
+      R_USER_CACHE_DIR = tempfile(),
+    )
+
     withr::with_temp_libpaths({
       modules <- data.frame(
         "component" = c("test"),

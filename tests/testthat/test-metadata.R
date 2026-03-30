@@ -97,6 +97,10 @@ if (suggests){
     skip_if(is_fedora())
     skip_on_cran()
 
+    withr::local_envvar(
+      R_USER_CACHE_DIR = tempfile(),
+    )
+
     withr::with_temp_libpaths({
       upload_path <- list.files(system.file("extdata", "wc", package = "shinyscholar"),
                          pattern = ".tif$", full.names = TRUE)
