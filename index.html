@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">shinyscholar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.5</span>
       </span>
     </div>
 
@@ -66,7 +66,7 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="shinyscholar-v044">shinyscholar (v0.4.4)<a class="anchor" aria-label="anchor" href="#shinyscholar-v044"></a>
+<div class="page-header"><h1 id="shinyscholar-v045">shinyscholar (v0.4.5)<a class="anchor" aria-label="anchor" href="#shinyscholar-v045"></a>
 </h1></div>
 <p><a href="https://github.com/simon-smart88/shinyscholar/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/simon-smart88/shinyscholar/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R CMD check"></a> <a href="https://cran.r-project.org/package=shinyscholar" class="external-link"><img src="https://www.r-pkg.org/badges/version/shinyscholar" alt="CRAN Status"></a> <a href="https://cran.r-project.org/package=shinyscholar" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/shinyscholar" alt="CRAN Downloads"></a> <a href="https://doi.org/10.5281/zenodo.15078704" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.15078704.svg" alt="DOI"></a> <a href="https://deepwiki.com/simon-smart88/shinyscholar" class="external-link"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a></p>
 <p><img src="https://raw.githubusercontent.com/simon-smart88/shinyscholar/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;"></p>
@@ -78,7 +78,7 @@
 <p>Or via Github with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"simon-smart88/shinyscholar"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"simon-smart88/shinyscholar"</span><span class="op">)</span></span></code></pre></div>
 <p>To run the example application requires additional packages and this can be achieved with:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"shinyscholar"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -221,23 +221,23 @@
 <h5 id="r">.R<a class="anchor" aria-label="anchor" href="#r"></a>
 </h5>
 <p>This is the main module file and contains the UI and server components as well as any other functionality specified at initialisation.</p>
-<p>The <code>&lt;identifier&gt;_module_ui</code> function can be developed just like a normal UI function inside a shiny app, but only contains input widgets (e.g. <code><a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="external-link">selectInput()</a></code> or <code><a href="https://rdrr.io/pkg/shiny/man/numericInput.html" class="external-link">numericInput()</a></code>) and the input ids need wrapping inside <code>ns()</code> to create ids that are unique to the module. The template contains an <code>actionButton</code> which when clicked runs the code inside the <code>*_module_server</code> function. If the computations performed by the module are simple, then you could choose to remove the <code><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton()</a></code> so that the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> runs reactively whenever the inputs are changed. The <code>plot_auto</code> and <code>plot_semi</code> modules in the example app demonstrate how this can be achieved.</p>
-<p>The <code>&lt;identifier&gt;_module_server</code> function contains an <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> which is run when the <code><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton()</a></code> in the UI is clicked.</p>
+<p>The <code>&lt;identifier&gt;_module_ui</code> function can be developed just like a normal UI function inside a shiny app, but only contains input widgets (e.g. <code>selectInput()</code> or <code>numericInput()</code>) and the input ids need wrapping inside <code>ns()</code> to create ids that are unique to the module. The template contains an <code>actionButton</code> which when clicked runs the code inside the <code>*_module_server</code> function. If the computations performed by the module are simple, then you could choose to remove the <code>actionButton()</code> so that the <code>observeEvent()</code> runs reactively whenever the inputs are changed. The <code>plot_auto</code> and <code>plot_semi</code> modules in the example app demonstrate how this can be achieved.</p>
+<p>The <code>&lt;identifier&gt;_module_server</code> function contains an <code>observeEvent()</code> which is run when the <code>actionButton()</code> in the UI is clicked.</p>
 <ul>
-<li>Inside the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> there is a consistent structure to the code:
+<li>Inside the <code>observeEvent()</code> there is a consistent structure to the code:
 <ul>
 <li>In the <em>warning</em> block, examine inputs to check that they are as expected and issue warnings if not using <code>common$logger |&gt; writeLog()</code> See the documentation of <code><a href="reference/writeLog.html">shinyscholar::writeLog()</a></code> for more details.</li>
 <li>In the <em>function call</em> block, pass <code>common</code> objects created by other modules and <code>input</code> values to the module function.</li>
 <li>In the <em>load into common</em> block, store the result(s) of the function call in the relevant <code>common</code> object.</li>
 <li>In the <em>metadata</em> block, store any relevant input metadata which is required to reproduce the function call in the <code>common$meta$&lt;identifier&gt;</code> object. This can be semi-automated using the <code><a href="reference/metadata.html">metadata()</a></code> function once you have finished developing the module.</li>
-<li>In the <em>trigger</em> block, <code><a href="https://rdrr.io/pkg/gargoyle/man/Event.html" class="external-link">trigger()</a></code> is called which can be used to trigger actions elsewhere in the module or app using <code><a href="https://rdrr.io/pkg/gargoyle/man/Event.html" class="external-link">watch()</a></code>. This should not need editing.</li>
+<li>In the <em>trigger</em> block, <code>trigger()</code> is called which can be used to trigger actions elsewhere in the module or app using <code>watch()</code>. This should not need editing.</li>
 </ul>
 </li>
 <li>In the <em>result</em> block, use the relevant <code>input</code> values or <code>common</code> objects to produce <code>render*</code> objects which will be passed to the <code>_module_result</code> function.</li>
 <li>In the <em>return</em> block, the current <code>input</code> values can be stored as a <code>list</code> inside the <code>save</code> function e.g. <code>select_date = input$date</code> when the app is saved and then retrieved when the app is loaded using various <code>updateInput</code> functions inside the <code>load</code> function e.g. <code>updateSelectInput(session, "date", selected = state$select_date</code>). This can be done automatically by calling <code><a href="reference/save_and_load.html">save_and_load()</a></code> either for all the modules or a single module.</li>
 </ul>
 <p>If <code>modules$result</code> is <code>TRUE</code>, the module contains a <code>&lt;identifier&gt;_module_result</code> function, containing the <code>*Output()</code> functions which would normally be included in the UI function. As in the <code>&lt;identifier&gt;_module_ui</code> function, the object ids need wrapping inside <code>ns()</code>.</p>
-<p>If <code>include_map</code> is <code>TRUE</code> and <code>modules$map</code> is <code>TRUE</code>, the module contains a <code>&lt;identifier&gt;_module_map</code> function. <code>map</code> is a <code><a href="https://rstudio.github.io/leaflet/reference/leafletProxy.html" class="external-link">leafletProxy()</a></code> object created in the main server function so leaflet functions can be piped to it e.g. <code>map |&gt; addRasterImage()</code></p>
+<p>If <code>include_map</code> is <code>TRUE</code> and <code>modules$map</code> is <code>TRUE</code>, the module contains a <code>&lt;identifier&gt;_module_map</code> function. <code>map</code> is a <code>leafletProxy()</code> object created in the main server function so leaflet functions can be piped to it e.g. <code>map |&gt; addRasterImage()</code></p>
 <p>If <code>modules$rmd</code> is <code>TRUE</code>, the module contains a <code>&lt;identifier&gt;_module_rmd</code> function, which creates a list of objects which are passed to the module’s .Rmd file to reproduce the step in the analysis. The first <code>&lt;identifier&gt;_knit</code> object is a boolean used to control whether or not the module has been used and therefore whether the markdown should be included in the user’s markdown. Writing this code can be semi-automated using the <code><a href="reference/metadata.html">metadata()</a></code> function once you have finished developing the module.</p>
 </div>
 <div class="section level5">
@@ -328,11 +328,11 @@
 <div class="section level5">
 <h5 id="running-tasks">Running tasks<a class="anchor" aria-label="anchor" href="#running-tasks"></a>
 </h5>
-<p><code>common$tasks</code> is a list that stores details of all the asynchronous tasks. Each task is added to the list above the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> in the <code>&lt;identifier&gt;_module_server</code> function as <code>common$tasks$&lt;identifier&gt;</code>. The task contains the module’s function wrapped by <code><a href="https://mirai.r-lib.org/reference/mirai.html" class="external-link">mirai::mirai()</a></code> and bound to a <code><a href="https://rstudio.github.io/bslib/reference/bind_task_button.html" class="external-link">bslib::bind_task_button()</a></code> which disables the button when the task is running:</p>
+<p><code>common$tasks</code> is a list that stores details of all the asynchronous tasks. Each task is added to the list above the <code>observeEvent()</code> in the <code>&lt;identifier&gt;_module_server</code> function as <code>common$tasks$&lt;identifier&gt;</code>. The task contains the module’s function wrapped by <code><a href="https://mirai.r-lib.org/reference/mirai.html" class="external-link">mirai::mirai()</a></code> and bound to a <code><a href="https://rstudio.github.io/bslib/reference/bind_task_button.html" class="external-link">bslib::bind_task_button()</a></code> which disables the button when the task is running:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>common<span class="sc">$</span>tasks<span class="sc">$</span><span class="er">&lt;</span>identifier<span class="sc">&gt;</span> <span class="er">&lt;</span><span class="sc">-</span> ExtendedTask<span class="sc">$</span><span class="fu">new</span>(<span class="cf">function</span>(...) {</span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  mirai<span class="sc">::</span><span class="fu">mirai</span>(<span class="fu">run</span>(...), <span class="fu">environment</span>(), <span class="at">.args =</span> <span class="fu">list</span>(<span class="at">run =</span> <span class="sc">&lt;</span>identifier<span class="sc">&gt;</span>))</span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>}) <span class="sc">|&gt;</span> bslib<span class="sc">::</span><span class="fu">bind_task_button</span>(<span class="st">"run"</span>)</span></code></pre></div>
-<p>The task is invoked inside the <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> by calling <code>common$tasks$&lt;identifier&gt;$invoke()</code> with the arguments of the module’s function. As in the default implementation, metadata should be stored at this point when the function is called.</p>
+<p>The task is invoked inside the <code>observeEvent()</code> by calling <code>common$tasks$&lt;identifier&gt;$invoke()</code> with the arguments of the module’s function. As in the default implementation, metadata should be stored at this point when the function is called.</p>
 </div>
 <div class="section level5">
 <h5 id="logging">Logging<a class="anchor" aria-label="anchor" href="#logging"></a>
@@ -342,7 +342,7 @@
 <div class="section level5">
 <h5 id="receiving-results">Receiving results<a class="anchor" aria-label="anchor" href="#receiving-results"></a>
 </h5>
-<p>A separate <code><a href="https://rdrr.io/pkg/shiny/man/observe.html" class="external-link">observe()</a></code> named <code>results</code> is required to listen for the result of the task available at <code>common$tasks$&lt;identifier&gt;$result()</code> but to prevent endless loops, we must stop the observer from functioning once the results are calculated by calling <code>results$suspend()</code> and reactivate it prior to the task being invoked using <code>results$resume()</code>. Inside <code>results</code>, the class of the object returned by the function should be checked and either passed to <code>common$logger</code> if it is an error message or stored in <code>common</code> as in the default implementation.</p>
+<p>A separate <code>observe()</code> named <code>results</code> is required to listen for the result of the task available at <code>common$tasks$&lt;identifier&gt;$result()</code> but to prevent endless loops, we must stop the observer from functioning once the results are calculated by calling <code>results$suspend()</code> and reactivate it prior to the task being invoked using <code>results$resume()</code>. Inside <code>results</code>, the class of the object returned by the function should be checked and either passed to <code>common$logger</code> if it is an error message or stored in <code>common</code> as in the default implementation.</p>
 </div>
 <div class="section level5">
 <h5 id="mapping">Mapping<a class="anchor" aria-label="anchor" href="#mapping"></a>
