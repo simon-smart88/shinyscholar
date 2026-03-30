@@ -1,7 +1,11 @@
 shinyscholar::check_suggests()
-
-library(glue)
 library(shinyscholar)
+library(bslib)
+library(gargoyle)
+library(glue)
+library(leaflet)
+library(shiny)
+
 mirai::daemons(2)
 onStop(function() mirai::daemons(0))
 
