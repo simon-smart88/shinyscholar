@@ -7,7 +7,6 @@
 <url><loc>/reference/asyncLog.html</loc></url>
 <url><loc>/reference/check_suggests.html</loc></url>
 <url><loc>/reference/check_url.html</loc></url>
-<url><loc>/reference/close_loading_modal.html</loc></url>
 <url><loc>/reference/create_module.html</loc></url>
 <url><loc>/reference/create_template.html</loc></url>
 <url><loc>/reference/get_nasa_token.html</loc></url>
@@ -17,17 +16,12 @@
 <url><loc>/reference/plot_scatter.html</loc></url>
 <url><loc>/reference/printVecAsis.html</loc></url>
 <url><loc>/reference/register_module.html</loc></url>
-<url><loc>/reference/reset_data.html</loc></url>
 <url><loc>/reference/run_shinyscholar.html</loc></url>
 <url><loc>/reference/save_and_load.html</loc></url>
 <url><loc>/reference/select_async.html</loc></url>
 <url><loc>/reference/select_query.html</loc></url>
 <url><loc>/reference/select_user.html</loc></url>
 <url><loc>/reference/shinyscholar-package.html</loc></url>
-<url><loc>/reference/show_loading_modal.html</loc></url>
-<url><loc>/reference/show_map.html</loc></url>
-<url><loc>/reference/show_results.html</loc></url>
-<url><loc>/reference/show_table.html</loc></url>
 <url><loc>/reference/spurious.html</loc></url>
 <url><loc>/reference/tidy_purl.html</loc></url>
 <url><loc>/reference/writeLog.html</loc></url>

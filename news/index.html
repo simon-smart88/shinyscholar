@@ -67,7 +67,7 @@
 </li>
 <li>Added a new function <code><a href="../reference/create_template.html">create_template()</a></code> which can be used to create a skeleton app.</li>
 <li>Added a Dockerfile which can be used to run the app on a shiny-server.</li>
-<li>Added <code><a href="../reference/show_loading_modal.html">show_loading_modal()</a></code> which uses <a href="https://github.com/dreamRs/shinybusy" class="external-link">shinybusy</a> to display a modal whilst slow functions are running.</li>
+<li>Added <code>show_loading_modal()</code> which uses <a href="https://github.com/dreamRs/shinybusy" class="external-link">shinybusy</a> to display a modal whilst slow functions are running.</li>
 </ol></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.1" id="shinyscholar-011">shinyscholar 0.1.1<a class="anchor" aria-label="anchor" href="#shinyscholar-011"></a></h2>
@@ -77,7 +77,7 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.2" id="shinyscholar-012">shinyscholar 0.1.2<a class="anchor" aria-label="anchor" href="#shinyscholar-012"></a></h2>
 <ul><li>Moved mapping, introduction, code, save and load functionality out of server into <code>core_</code> modules.</li>
-<li>Passed <code>parent_session</code> to the modules enabling switching to the results, map and table tab from within modules and added <code><a href="../reference/show_table.html">show_table()</a></code>, <code><a href="../reference/show_results.html">show_results()</a></code> and <code><a href="../reference/show_table.html">show_table()</a></code> to simplify code.</li>
+<li>Passed <code>parent_session</code> to the modules enabling switching to the results, map and table tab from within modules and added <code>show_table()</code>, <code>show_results()</code> and <code>show_table()</code> to simplify code.</li>
 <li>Added <code>rep_renv</code> module to enable capturing dependencies.</li>
 </ul></div>
     <div class="section level2">
@@ -146,7 +146,7 @@
 <li>Added <code>plot_auto</code> and <code>plot_semi</code> modules to the example app that run automatically and semi-automatically respectively</li>
 <li>Added ability to control generated markdown chunks using <code>asis</code> chunks and example to <code>plot_hist.Rmd</code>
 </li>
-<li>Added <code>common$reset()</code> and <code><a href="../reference/reset_data.html">reset_data()</a></code> to reset the <code>common</code> object and remove all outputs</li>
+<li>Added <code>common$reset()</code> and <code>reset_data()</code> to reset the <code>common</code> object and remove all outputs</li>
 <li>Added an area to the UI for including global options available inside all modules</li>
 <li>Added an options to <code><a href="../reference/create_template.html">create_template()</a></code> and <code><a href="../reference/create_module.html">create_module()</a></code> to include a <code>downloadButton</code> and <code>downloadHandler</code> to modules that is only visible once the module runs successfully</li>
 <li>Rewrote <code><a href="../reference/create_template.html">create_template()</a></code> and <code><a href="../reference/create_module.html">create_module()</a></code> so that <code><a href="../reference/create_module.html">create_module()</a></code> creates the module function and tests</li>
@@ -203,6 +203,11 @@
 <li>Set <code>R_USER_CACHE_DIR</code> in tests</li>
 <li>Import app dependencies in <code>global.R</code> instead of via <code>Depends</code>
 </li>
+<li>Fixed bug in <code>global.R</code> due to missing function</li>
+<li>
+<code><a href="../reference/create_module.html">create_module()</a></code> updates the module <code>.yml</code> and <code>global.R</code> so that the app runs</li>
+<li>
+<code>reset_data()</code>, <code>show_loading_modal()</code>, <code>close_loading_modal()</code>, <code>show_map()</code>, <code>show_results()</code> and <code>show_table()</code> have been moved from <code>R/helper_functions</code> to <code>inst/shiny/ui_helpers.R</code> and are no longer exported</li>
 </ul></div>
   </div>
 

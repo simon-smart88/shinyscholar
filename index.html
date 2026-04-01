@@ -314,7 +314,7 @@
 <div class="section level4">
 <h4 id="adding-extra-modules">Adding extra modules<a class="anchor" aria-label="anchor" href="#adding-extra-modules"></a>
 </h4>
-<p>Further modules can be added using <code><a href="reference/create_module.html">create_module()</a></code> which creates the four files for the module and the test and function files. The module configuration file then needs to be added to <code>base_module_configs</code> in <code>global.R</code> and should be placed in the relevant position for the analysis since this vector controls the order of chunks within the Rmarkdown output. Any extra data objects that the modules creates must be added to <code>common.R</code>. The intro tab also needs manually updating found in <code>inst/shiny/Rmd/text_intro_tab.Rmd</code>.</p>
+<p>Further modules can be added using <code><a href="reference/create_module.html">create_module()</a></code> which creates the four files for the module and the test and function files. The module configuration file is added to the end of the component’s modules in <code>base_module_configs</code> in <code>global.R</code> and may need adjusting to the relevant position for the analysis since this vector controls the order of chunks within the Rmarkdown output. Any extra data objects that the modules creates must be added to <code>common.R</code>. The intro tab also needs manually updating found in <code>inst/shiny/Rmd/text_intro_tab.Rmd</code>.</p>
 </div>
 <div class="section level4">
 <h4 id="adding-extra-components">Adding extra components<a class="anchor" aria-label="anchor" href="#adding-extra-components"></a>
