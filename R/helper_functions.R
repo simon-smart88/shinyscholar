@@ -66,25 +66,6 @@ spurious <- function(x) {
 }
 
 ####################### #
-# RESET DATA #
-####################### #
-
-#' @title reset_data
-#' @description For internal use. Clears the common structure of data, resets the map and any plots
-#' @keywords internal
-#' @param common The common data structure
-#' @export
-reset_data <- function(common){
-  modules <- names(common$meta)
-  common$reset()
-  trigger("clear_map")
-  for (module in modules){
-    trigger(module)
-    shinyjs::hide(paste0(module, "-download"), asis = TRUE)
-  }
-}
-
-####################### #
 # SHINY LOG #
 ####################### #
 
@@ -109,9 +90,9 @@ writeLog <- function(logger, ..., type = "default") {
     if (type == "default") {
       pre <- "> "
     } else if (type == "starting") {
-      pre <- paste0(icon("clock", class = "log_start"), " ")
+      pre <- paste0(shiny::icon("clock", class = "log_start"), " ")
     } else if (type == "complete") {
-      pre <- paste0(icon("check", class = "log_end"), " ")
+      pre <- paste0(shiny::icon("check", class = "log_end"), " ")
     } else if (type == "info") {
       if (nchar(...) < 80){
         shinyalert::shinyalert(..., type = "info")
@@ -119,7 +100,7 @@ writeLog <- function(logger, ..., type = "default") {
         shinyalert::shinyalert("Please, check Log window for more information ",
                                type = "info")
       }
-      pre <- paste0(icon("info", class = "log_info"), " ")
+      pre <- paste0(shiny::icon("info", class = "log_info"), " ")
     } else if (type == "error") {
       if (nchar(...) < 80){
         shinyalert::shinyalert(...,
@@ -128,7 +109,7 @@ writeLog <- function(logger, ..., type = "default") {
         shinyalert::shinyalert("Please, check Log window for more information ",
                                type = "error")
       }
-      pre <- paste0(icon("xmark", class = "log_error"), " ")
+      pre <- paste0(shiny::icon("xmark", class = "log_error"), " ")
     } else if (type == "warning") {
       if (nchar(...) < 80){
         shinyalert::shinyalert(...,
@@ -138,7 +119,7 @@ writeLog <- function(logger, ..., type = "default") {
                                type = "warning")
 
       }
-      pre <- paste0(icon("triangle-exclamation", class = "log_warn"), " ")
+      pre <- paste0(shiny::icon("triangle-exclamation", class = "log_warn"), " ")
     }
     newEntries <- paste0("<br>", pre, ..., collapse = "")
     logger(paste0(logger(), newEntries))
@@ -169,68 +150,4 @@ asyncLog <- function(async, ..., type = "default"){
   } else {
     return(as.character(...))
   }
-}
-
-####################### #
-# LOADING MODAL #
-####################### #
-
-#' @title show_loading_modal
-#' @description For internal use. Show a modal when something is loading
-#' @param message The message to be displayed to the user
-#' @returns No return value, called for side effects
-#' @keywords internal
-#' @export
-
-show_loading_modal <- function(message){
-  shinybusy::show_modal_spinner(
-    spin = "self-building-square",
-    color = "#446e9b",
-    text = message
-  )
-}
-#' @title close_loading_modal
-#' @description For internal use. Close the modal once loading is complete
-#' @param session The session object passed to function given to shinyServer.
-#' @returns No return value, called for side effects
-#' @keywords internal
-#' @export
-
-close_loading_modal <- function (session = getDefaultReactiveDomain())
-{
-  session$sendModal("remove", NULL)
-}
-
-####################### #
-# CHANGING TABS #
-####################### #
-
-#' @title show_map
-#' @description For internal use. Switches the view to the Map tab
-#' @param parent_session Session object of the main server function
-#' @returns No return value, called for side effects
-#' @keywords internal
-#' @export
-show_map <- function(parent_session){
-  updateTabsetPanel(parent_session, "main", selected = "Map")
-}
-
-#' @title show_results
-#' @description For internal use. Switches the view to the Results tab
-#' @param parent_session Session object of the main server function
-#' @returns No return value, called for side effects
-#' @keywords internal
-#' @export
-show_results <- function(parent_session){
-  updateTabsetPanel(parent_session, "main", selected = "Results")
-}
-
-#' @title show_table
-#' @description For internal use. Switches the view to the Table panel
-#' @param parent_session Session object of the main server function
-#' @returns No return value, called for side effects
-#' @keywords internal
-#' @export
-show_table <- function(parent_session){
-  updateTabsetPanel(parent_session, "main", selected = "Table")
 }

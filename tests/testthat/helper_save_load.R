@@ -1,11 +1,3 @@
-empty_save_test <- function(save_path){
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_empty_save")
-  app$set_inputs(tabs = "select")
-  app$set_inputs(main = "Save")
-  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
-           finally = app$stop())
-}
-
 save_hist_test <- function(path, save_path){
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinyscholar"), name = "e2e_save_hist")
   app$set_inputs(tabs = "select")

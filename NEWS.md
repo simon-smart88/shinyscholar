@@ -136,3 +136,7 @@ shinyscholar 0.4.5
 - Migrate from `{devtools}` to `{pak}` for installation
 - Set `R_USER_CACHE_DIR` in tests
 - Import app dependencies in `global.R` instead of via `Depends`
+- Fixed bug in `global.R` due to missing function
+- `create_module()` updates the module `.yml` and `global.R` so that the app runs
+- `reset_data()`, `show_loading_modal()`, `close_loading_modal()`, `show_map()`, `show_results()` and `show_table()` have been moved from `R/helper_functions` to `inst/shiny/ui_helpers.R` and are no longer exported
+

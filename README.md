@@ -288,8 +288,8 @@ the `common$meta$plot_auto$used` flag is set inside the `renderPlot` which ensur
 results have been viewed by the user.
 
 #### Adding extra modules
-Further modules can be added using `create_module()` which creates the four files for the module and the test and function files. The module configuration file then needs to be added to 
-`base_module_configs` in `global.R` and should be placed in the relevant position for the analysis since this vector controls the order of chunks within the Rmarkdown output. Any extra data 
+Further modules can be added using `create_module()` which creates the four files for the module and the test and function files. The module configuration file is added to the end of 
+the component's modules in `base_module_configs` in `global.R` and may need adjusting to the relevant position for the analysis since this vector controls the order of chunks within the Rmarkdown output. Any extra data 
 objects that the modules creates must be added to `common.R`. The intro tab also needs manually updating found in `inst/shiny/Rmd/text_intro_tab.Rmd`.
 
 #### Adding extra components
