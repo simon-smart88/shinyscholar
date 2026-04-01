@@ -503,8 +503,13 @@ create_template <- function(path, name, common_objects, modules, author,
   file.copy(www_files, file.path(path, "inst", "shiny"), recursive = TRUE)
 
   # copy helpers ====
-  helper_file <- system.file("shiny", "ui_helpers.R", package = "shinyscholar")
-  file.copy(helper_file, file.path(path, "inst", "shiny"))
+
+  ui_helper_params <- c(
+    file = system.file("app_skeleton", "ui_helpers.Rmd", package = "shinyscholar"),
+    list(include_map = include_map)
+  )
+  ui_helper_lines <- tidy_purl(ui_helper_params)
+  writeLines(ui_helper_lines, file.path(path, "inst", "shiny", "ui_helpers.R"))
 
   helper_function_params <- c(
     file = system.file("app_skeleton", "helper_functions.Rmd", package = "shinyscholar"),
