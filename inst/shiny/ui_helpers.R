@@ -158,7 +158,7 @@ flex_wrap <- function(content) {
                              lg = c(-2, 8, -2),
                              xl = c(-2, 8, -2),
                              xxl = c(-3, 6, -3)),
-    content,
+    content
   )
 }
 
@@ -166,9 +166,7 @@ flex_wrap <- function(content) {
 # RESET DATA #
 ####################### #
 
-#' @title reset_data
-#' @description For internal use. Clears the common structure of data, resets the map and any plots
-#' @keywords internal
+#' @description Clears the common structure of data, resets the map and any plots
 #' @param common The common data structure
 reset_data <- function(common){
   modules <- names(common$meta)
@@ -184,13 +182,8 @@ reset_data <- function(common){
 # LOADING MODAL #
 ####################### #
 
-#' @title show_loading_modal
-#' @description For internal use. Show a modal when something is loading
+#' @description Show a modal when something is loading
 #' @param message The message to be displayed to the user
-#' @returns No return value, called for side effects
-#' @keywords internal
-#' @export
-
 show_loading_modal <- function(message){
   shinybusy::show_modal_spinner(
     spin = "self-building-square",
@@ -198,15 +191,9 @@ show_loading_modal <- function(message){
     text = message
   )
 }
-#' @title close_loading_modal
-#' @description For internal use. Close the modal once loading is complete
+#' @description Close the modal once loading is complete
 #' @param session The session object passed to function given to shinyServer.
-#' @returns No return value, called for side effects
-#' @keywords internal
-#' @export
-
-close_loading_modal <- function (session = getDefaultReactiveDomain())
-{
+close_loading_modal <- function (session = getDefaultReactiveDomain()){
   session$sendModal("remove", NULL)
 }
 
@@ -214,29 +201,20 @@ close_loading_modal <- function (session = getDefaultReactiveDomain())
 # CHANGING TABS #
 ####################### #
 
-#' @title show_map
-#' @description For internal use. Switches the view to the Map tab
+#' @description Switches the view to the Map tab
 #' @param parent_session Session object of the main server function
-#' @returns No return value, called for side effects
-#' @keywords internal
 show_map <- function(parent_session){
   updateTabsetPanel(parent_session, "main", selected = "Map")
 }
 
-#' @title show_results
-#' @description For internal use. Switches the view to the Results tab
+#' @description Switches the view to the Results tab
 #' @param parent_session Session object of the main server function
-#' @returns No return value, called for side effects
-#' @keywords internal
 show_results <- function(parent_session){
   updateTabsetPanel(parent_session, "main", selected = "Results")
 }
 
-#' @title show_table
-#' @description For internal use. Switches the view to the Table panel
+#' @description Switches the view to the Table panel
 #' @param parent_session Session object of the main server function
-#' @returns No return value, called for side effects
-#' @keywords internal
 show_table <- function(parent_session){
   updateTabsetPanel(parent_session, "main", selected = "Table")
 }
