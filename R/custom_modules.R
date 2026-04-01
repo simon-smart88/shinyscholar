@@ -62,11 +62,34 @@ create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, sav
     stop("No modules could be found in the specified folder")
   }
 
-  # only create the yml when not created with init() which otherwise creates it
+  # only create the yml and edit global.R when not created with init() which otherwise creates them
   if (!init){
-  file.copy(system.file("module_skeleton", "skeleton.yml", package = "shinyscholar"),
-            file.path(module_dir, glue::glue("{id}.yml")), overwrite = TRUE)
+    yml_path <- file.path(module_dir, glue::glue("{id}.yml"))
+    file.copy(system.file("module_skeleton", "skeleton.yml", package = "shinyscholar"),
+              yml_path, overwrite = TRUE)
+    yml <- readLines(yml_path)
+    component <- strsplit(id, "_")[[1]][1]
+    module <- strsplit(id, "_")[[1]][2]
+    yml[1] <- glue::glue('component: "{component}"')
+    writeLines(yml, yml_path)
+
+    global_lines <- readLines(file.path(dir, "inst", "shiny", "global.R"))
+    component_line <- global_lines[grep("COMPONENTS <- *", global_lines)]
+    existing_components <- regmatches(component_line, gregexpr('"[^"]*"', component_line))[[1]]
+    existing_components <- gsub('"', '', existing_components)
+
+    if (component %in% existing_components){
+      last_module_line <- glue::glue("*modules/{component}*")
+      insert_line <- max(grep(last_module_line, global_lines)) + 1
+      global_lines <- append(global_lines, glue::glue('  "modules/{id}.yml",'), insert_line)
+      writeLines(global_lines, file.path(dir, "inst", "shiny", "global.R"))
+    } else {
+      warning("The new module belongs to a new component - some changes need to be made manually.
+              See 'Adding extra components' in the README")
+    }
+
   }
+
   file.copy(system.file("module_skeleton", "skeleton.md", package = "shinyscholar"),
             file.path(module_dir, glue::glue("{id}.md")), overwrite = TRUE)
 
