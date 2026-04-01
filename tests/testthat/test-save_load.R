@@ -4,8 +4,9 @@ if (suggests){
     skip_if(is_fedora())
     skip_on_cran()
 
-    rerun_test("empty_save_test", list(save_path = save_path))
-    common <- readRDS(save_path)
+    empty_save_path <- tempfile(fileext = ".rds")
+    rerun_test("empty_save_test", list(save_path = empty_save_path))
+    common <- readRDS(empty_save_path)
     expect_true(is.null(common$raster))
   })
 
