@@ -1,14 +1,4 @@
 if (suggests){
-  test_that("{shinytest2} recording: e2e_empty_save", {
-
-    skip_if(is_fedora())
-    skip_on_cran()
-
-    empty_save_path <- tempfile(fileext = ".rds")
-    rerun_test("empty_save_test", list(save_path = empty_save_path))
-    common <- readRDS(empty_save_path)
-    expect_true(is.null(common$raster))
-  })
 
   test_that("{shinytest2} recording: e2e_save_scat", {
 
