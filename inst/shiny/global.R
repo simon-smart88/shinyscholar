@@ -64,13 +64,13 @@ for (module_config_file in all_module_configs) {
 
   missing <- required_fields[!required_fields %in% names(module_config)]
   if (length(missing) > 0) {
-    stop(glue("Module {id}: Some required fields are missing: {join(missing)}"),
+    stop(glue("Module {id}: Some required fields are missing: {paste(missing, collapse = ", ")}"),
          call. = FALSE)
   }
 
   if (!module_config$component %in% COMPONENTS) {
     stop(glue("Module {id}: Invalid component `{module_config$component}` ",
-              "(options are: {join(COMPONENTS)})"), call. = FALSE)
+              "(options are: {paste(COMPONENTS, collapse = ", ")})"), call. = FALSE)
   }
 
   module_config$instructions <- suppressWarnings(
