@@ -6,17 +6,17 @@ Authors@R:
     c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut","cre")))
 Depends:
     R (>= 4.1.0),
-    bslib,
-    gargoyle,
-    shiny (>= 1.8.1)
 Imports:
+    bslib,
     DT (>= 0.5),
+    gargoyle,
     glue,
     knitcitations,
     markdown,
     R6,
     renv,
     rmarkdown,
+    shiny (>= 1.8.1),
     shinyalert,
     shinybusy,
     shinyjs,

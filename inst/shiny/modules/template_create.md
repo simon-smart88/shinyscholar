@@ -21,6 +21,6 @@ This module allows you to create and download a template for your own applicatio
 
 The app checks that the lengths of the components and long components and the lengths of the modules and long modules match and prints errors if they do not. Other errors are caught by the function and reported in the logger. 
 
-Once all the fields are filled in and validated, the Download! button will appear below the boxes and clicking it will generate a .zip file. After extracting that file, navigate into the folder, and run `devtools::install_local()` to install the package and then you can run the app using `<name>::run_<name>`.
+Once all the fields are filled in and validated, the Download! button will appear below the boxes and clicking it will generate a .zip file. After extracting that file, navigate into the folder, and run `pak::local_install()` to install the package and then you can run the app using `<name>::run_<name>`.
 
 Information on how to develop the app can be found in the <a href="https://github.com/simon-smart88/shinyscholar/blob/master/README.md" target="_blank">project's README</a>

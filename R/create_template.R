@@ -215,13 +215,13 @@ create_template <- function(path, name, common_objects, modules, author,
   description_lines[1] <- glue::glue("Package: {name}")
 
   if (async){
-    import_line <- grep("*Imports*", description_lines)
-    description_lines <- append(description_lines, "    mirai,", import_line + 6)
+    markdown_line <- grep("* markdown*", description_lines)
+    description_lines <- append(description_lines, "    mirai,", markdown_line + 1)
   }
 
   if (include_map){
-    shiny_line <- grep("*shiny (>= 1.8.1)*", description_lines)
-    description_lines <- append(description_lines, "    leaflet (>= 2.0.2),", shiny_line - 1)
+    markdown_line <- grep("* markdown*", description_lines)
+    description_lines <- append(description_lines, "    leaflet (>= 2.0.2),", markdown_line - 1)
   }
 
   if (include_code){
@@ -503,8 +503,13 @@ create_template <- function(path, name, common_objects, modules, author,
   file.copy(www_files, file.path(path, "inst", "shiny"), recursive = TRUE)
 
   # copy helpers ====
-  helper_file <- system.file("shiny", "ui_helpers.R", package = "shinyscholar")
-  file.copy(helper_file, file.path(path, "inst", "shiny"))
+
+  ui_helper_params <- c(
+    file = system.file("app_skeleton", "ui_helpers.Rmd", package = "shinyscholar"),
+    list(include_map = include_map)
+  )
+  ui_helper_lines <- tidy_purl(ui_helper_params)
+  writeLines(ui_helper_lines, file.path(path, "inst", "shiny", "ui_helpers.R"))
 
   helper_function_params <- c(
     file = system.file("app_skeleton", "helper_functions.Rmd", package = "shinyscholar"),
@@ -516,7 +521,6 @@ create_template <- function(path, name, common_objects, modules, author,
   writeLines(helper_function_lines, file.path(path, "R", "helper_functions.R"))
 
   # Create run_app ====
-
   run_app_params <- c(
     file = system.file("app_skeleton", "run_app.Rmd", package = "shinyscholar"),
     list(app_library = name
@@ -526,10 +530,20 @@ create_template <- function(path, name, common_objects, modules, author,
   run_app_lines <- tidy_purl(run_app_params)
   writeLines(run_app_lines, file.path(path, "R", paste0("run_", name, ".R")))
 
+  # Create testthat file
+  testthat_params <- c(
+    file = system.file("app_skeleton", "testthat.Rmd", package = "shinyscholar"),
+    list(app_library = name
+    )
+  )
+
+  testthat_lines <- tidy_purl(testthat_params)
+  writeLines(testthat_lines, file.path(path, "tests", "testthat.R"))
+
   # Install package ====
   if (install){
   devtools::document(path)
-  devtools::install(path, force = TRUE)
+  pak::local_install(path)
   }
 
   invisible()
